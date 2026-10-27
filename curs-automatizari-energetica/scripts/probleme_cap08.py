@@ -214,11 +214,12 @@ verifica("momentele deconectării: pas fix vs solve_ivp (în 2 ms)", np.array([a
 verifica("frecvența minimă: pas fix (1 ms) vs solve_ivp, în 2 mHz", f_cu.min(), rv["minim"][1], rtol=0, atol=2e-3)
 verifica("momentul minimului: pas fix vs solve_ivp", t[np.argmin(f_cu)], rv["minim"][0], rtol=0, atol=5e-3)
 # Dacă autoreglarea sarcinii scade proporțional cu sarcina rămasă (D·(1 − desc/PL0))
-_, f_p, _, desc_p, _ = dasf_simulare(dP3, M3, D3, K3, Tg=0.2, Tt=1.0, rezerva=rez, trepte=trepte,
-                                     t_intarziere=t_int, t_end=40.0, dt=1e-3, PL0=PL0)
+_, f_p, _, desc_p, act_p = dasf_simulare(dP3, M3, D3, K3, Tg=0.2, Tt=1.0, rezerva=rez, trepte=trepte,
+                                         t_intarziere=t_int, t_end=40.0, dt=1e-3, PL0=PL0)
 D_rest = D3 * (1 - desc_p[-1] / PL0)
 df_p_an = -(dP3 - desc_p[-1]) / (K3 + D_rest)
-print(f"  cu D proporțional cu sarcina rămasă (D = {fmt(D_rest, 1)} MW/Hz după deconectare): frecvența finală "
+print(f"  cu D proporțional cu sarcina rămasă: acționează {len(act_p)} trepte ({fmt(desc_p[-1], 0)} MW), minimul "
+      f"{fmt(f_p.min(), 3)} Hz; D = {fmt(D_rest, 1)} MW/Hz după deconectare; frecvența finală "
       f"{fmt(f_p[-1], 3)} Hz (analitic {fmt(F0 + df_p_an, 3)} Hz), față de {fmt(f_cu[-1], 3)} Hz cu D constant")
 verifica("D proporțional: frecvența finală analitic vs simulare", F0 + df_p_an, f_p[-1], rtol=1e-5)
 # Aceeași insulă cu schema de 6 trepte inegale (trepte mai mari)
