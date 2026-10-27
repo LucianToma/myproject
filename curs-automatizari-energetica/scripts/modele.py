@@ -585,18 +585,24 @@ def timp_termic(I, IB, k, tau, Ip=0.0):
 
 
 def timp_termic_ode(I, IB, k, tau, Ip=0.0, dt=1e-3, tmax=1e5):
-    """Calea de verificare: integrează τ·dθ/dt + θ = (I/(k·IB))², cu θ(0) = (Ip/(k·IB))²,
-    până la θ = 1 (metoda exactă pe pas pentru o ecuație liniară de ordinul întâi)."""
+    """Calea de verificare: integrează numeric τ·dθ/dt + θ = (I/(k·IB))², cu θ(0) = (Ip/(k·IB))²,
+    prin metoda Runge–Kutta de ordinul 4, până când θ atinge 1; momentul atingerii pragului se
+    obține prin interpolare liniară în ultimul pas (fără a folosi soluția analitică)."""
     th = (Ip / (k * IB))**2
     tinta = (I / (k * IB))**2
+
+    def f(x):
+        return (tinta - x) / tau
+
     t = 0.0
-    q = np.exp(-dt / tau)
     while th < 1.0 and t < tmax:
-        th_nou = tinta + (th - tinta) * q
+        k1 = f(th)
+        k2 = f(th + dt / 2 * k1)
+        k3 = f(th + dt / 2 * k2)
+        k4 = f(th + dt * k3)
+        th_nou = th + dt / 6 * (k1 + 2 * k2 + 2 * k3 + k4)
         if th_nou >= 1.0:
-            # fracțiunea de pas la care se atinge pragul
-            frac = np.log((tinta - th) / (tinta - 1.0)) * tau
-            return t + frac
+            return t + dt * (1.0 - th) / (th_nou - th)
         th = th_nou
         t += dt
     return np.inf

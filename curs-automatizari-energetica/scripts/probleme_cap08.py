@@ -122,6 +122,7 @@ def abatere_exacta(praguri_, cote_):
         ab.append(C[k] - L)
         if k > 0:
             ab.append(C[k - 1] - L)
+    abatere_exacta.domeniu = (min(ab), max(ab))
     return max(ab, key=abs)
 
 
@@ -151,6 +152,8 @@ def verifica_schema(nume, praguri_, cote_):
           f"{fmt(100 * ab_g, 2)}); condiții neîndeplinite: "
           f"{', '.join(k for k, v in conditii.items() if not v) or 'niciuna'}")
     verifica(f"{nume}: abaterea maximă – calcul exact la praguri vs grilă fină", ab_e, ab_g, rtol=0, atol=1e-4)
+    lo, hi = abatere_exacta.domeniu
+    print(f"     scara oscilează între {fmt(100 * lo, 2)} și {fmt(100 * hi, 2)} puncte față de dreaptă")
     return all(conditii.values()), ab_e
 
 

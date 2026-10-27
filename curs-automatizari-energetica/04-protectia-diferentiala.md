@@ -193,7 +193,7 @@ Cu pragul minim de 0,30·In, protecția sesizează defectul numai dacă homopola
 
 ### Problema 4.4 – Curentul de magnetizare la conectare
 
-T1 se conectează în gol pe partea de 110 kV. Model (monofazat, pentru o fază): tensiunea de fază $V_m = \sqrt2 \cdot 110/\sqrt3$ kV, rețeaua de la bara B ($R$ = 2,434 Ω, $X$ = 10,314 Ω, capitolul 1), rezistența înfășurării 1,16 Ω; curba de magnetizare liniară până la 1,2·ψn (curentul de magnetizare la ψn: 0,4 % din In, valoare de vârf), iar peste cot inductivitatea înfășurării cu miezul saturat corespunde unei reactanțe de 0,30 u.r. (date de model). Flux remanent 0,8·ψn, conectare la trecerea tensiunii prin zero. Să se determine vârful curentului, armonica a doua și să se justifice pragul de blocare.
+T1 se conectează în gol pe partea de 110 kV. Model (monofazat, pentru o fază): tensiunea de fază $V_m = \sqrt2 \cdot 110/\sqrt3$ kV, rețeaua de la bara B ($R$ = 2,434 Ω, $X$ = 10,314 Ω, capitolul 1), rezistența înfășurării 1,16 Ω; curba de magnetizare liniară până la 1,2·ψn (la tensiunea nominală, curentul de magnetizare are valoarea efectivă de 0,4 % din In), iar peste cot inductivitatea înfășurării cu miezul saturat corespunde unei reactanțe de 0,30 u.r. (date de model). Flux remanent 0,8·ψn, conectare la trecerea tensiunii prin zero. Să se determine vârful curentului, armonica a doua și să se justifice pragul de blocare.
 
 **Rezolvare.**
 
