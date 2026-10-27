@@ -102,21 +102,39 @@ print(f"  clapetă: {fmt(P_clapeta, 2)} kW; convertor: {fmt(P_vsd, 2)} kW; econo
       f" → {fmt((P_clapeta - P_vsd) * ore, 0)} kWh/an la {ore} h/an")
 verifica("P ∝ n³ vs Q·H", P_vsd, P_vsd_b)
 
-print("\nProblema 5.5 – stabilitatea punctelor de funcționare (Kloss, Mr = constant)")
-Mr = 2.0 * Mn
-s_a = brentq(lambda s: kloss(s, Mmax, sk) - Mr, 1e-6, sk)
-s_b = brentq(lambda s: kloss(s, Mmax, sk) - Mr, sk, 1.0)
-# Soluția analitică a ecuației lui Kloss: s = sk (λ' ± √(λ'² - 1)), λ' = Mmax/Mr
-lp = Mmax / Mr
-s_a2, s_b2 = sk * (lp - np.sqrt(lp**2 - 1)), sk * (lp + np.sqrt(lp**2 - 1))
+print("\nProblema 5.5 – stabilitatea punctelor de funcționare (M15, model cu colivie dublă, Mr = 2,5·Mn)")
+MD = motor_M15(colivie_dubla=True)
+Mr = 2.5 * Mn
+sk_d, Mmax_d = MD.cuplu_maxim()
+s_a = brentq(lambda s: MD.cuplu(s) - Mr, 1e-5, sk_d)
+s_b = brentq(lambda s: MD.cuplu(s) - Mr, sk_d, 1.0)
+print(f"  Mp = {fmt(MD.cuplu(1.0), 1)} N·m = {fmt(MD.cuplu(1.0) / Mn, 2)}·Mn < Mr = {fmt(Mr, 1)} N·m → nu pornește cu această sarcină")
 for nume, s in (("A", s_a), ("B", s_b)):
     h = 1e-6
-    dM_ds = (kloss(s + h, Mmax, sk) - kloss(s - h, Mmax, sk)) / (2 * h)
-    dM_dW = -dM_ds / W1          # Ω = (1 - s) Ω1  →  dΩ = -Ω1 ds
-    stabil = dM_dW < 0           # dMr/dΩ = 0 pentru cuplu rezistent constant
-    print(f"  punctul {nume}: s = {fmt(s, 4)}, n = {fmt(1500 * (1 - s), 1)} rot/min, dM/dΩ = {fmt(dM_dW, 2)} N·m·s → {'STABIL' if stabil else 'INSTABIL'}")
-verifica("s_A numeric vs analitic", s_a, s_a2, rtol=1e-8)
-verifica("s_B numeric vs analitic", s_b, s_b2, rtol=1e-8)
+    dM_dW = -(MD.cuplu(s + h) - MD.cuplu(s - h)) / (2 * h) / W1     # Ω = (1 - s) Ω1
+    print(f"  punctul {nume}: s = {fmt(s, 4)}, n = {fmt(1500 * (1 - s), 1)} rot/min, dM/dΩ = {fmt(dM_dW, 2)} N·m·s"
+          f" → {'STABIL' if dM_dW < 0 else 'INSTABIL'}")
+# Calea a doua: simularea ecuației mișcării după o mică perturbație a vitezei
+Jp = 0.3
+
+
+def evolutie(n0, durata=3.0):
+    def f(t, y):
+        sx = min(max(1 - y[0] / W1, 1e-5), 1.0)
+        return [(MD.cuplu(sx) - Mr) / Jp] if y[0] > 0 else [0.0]
+    sol = solve_ivp(f, (0, durata), [n0 * np.pi / 30], max_step=1e-3)
+    return sol.y[0, -1] * 30 / np.pi
+
+
+nA, nB = 1500 * (1 - s_a), 1500 * (1 - s_b)
+rez = {f"A{d:+d}": evolutie(nA + d) for d in (-20, 20)}
+rez.update({f"B{d:+d}": evolutie(nB + d) for d in (-10, 10)})
+for k, v in rez.items():
+    print(f"  pornind de la n_{k[0]} {k[1:]} rot/min, după 3 s: n = {fmt(v, 1)} rot/min")
+verifica("perturbație în A: revine în A (de jos)", rez["A-20"], nA, rtol=1e-3)
+verifica("perturbație în A: revine în A (de sus)", rez["A+20"], nA, rtol=1e-3)
+verifica("perturbație în B (+): pleacă spre A", rez["B+10"], nA, rtol=1e-3)
+verifica("perturbație în B (−): se oprește", rez["B-10"], 0.0, atol=1.0)
 
 print("\nProblema 5.6 – punctul de funcționare al ventilatorului pe caracteristica motorului M15")
 k_v = 0.9 * Mn / Wn**2            # ventilatorul cere 0,9·Mn la viteza nominală
@@ -152,3 +170,17 @@ s_fin = 1 - sol.y[0, -1] / MD.W1
 print(f"  ½·J·Ω1² = {fmt(W_teoretic, 1)} J; integrare numerică (până la s = {s_fin:.4f}): {fmt(W_num, 1)} J;"
       f" durata pornirii ≈ {fmt(sol.t[-1], 3)} s")
 verifica("energia în rotor: ½JΩ1² vs integrare", W_teoretic * (1 - s_fin**2), W_num, rtol=5e-3)
+
+print("\nProblema 5.8 – regimul de scurtă durată S2 (model termic de ordinul 1)")
+# Motorul din problema 5.3: la sarcina nominală continuă (S1) atinge Δθn = (Pc + Pvn)·Rth
+Pc, Pvn, Rth, tau = 350.0, 700.0, 0.08, 1200.0
+dtheta_n = (Pc + Pvn) * Rth
+t_s = 600.0                       # S2 – 10 min, pornind de la temperatura mediului
+P_S2 = (Pc + Pvn) / (1 - np.exp(-t_s / tau))
+m_S2 = np.sqrt((P_S2 - Pc) / Pvn)
+# Calea a doua: simularea încălzirii cu pierderile P_S2 timp de 10 minute
+sol = solve_ivp(lambda t, y: [(P_S2 * Rth - y[0]) / tau], (0, t_s), [0.0], rtol=1e-10, atol=1e-10)
+print(f"  Δθn (S1) = {fmt(dtheta_n, 1)} K; pierderi admise în S2-10 min = {fmt(P_S2, 0)} W"
+      f" ({fmt(P_S2 / (Pc + Pvn), 2)} × pierderile nominale) → M ≈ {fmt(m_S2, 2)}·Mn")
+print(f"  simulare: după 10 min Δθ = {fmt(sol.y[0, -1], 2)} K")
+verifica("S2: încălzirea după t_s = Δθn", sol.y[0, -1], dtheta_n, rtol=1e-6)

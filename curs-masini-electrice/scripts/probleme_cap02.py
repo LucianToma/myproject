@@ -76,9 +76,11 @@ verifica("Kloss(sn) = Mn", kloss(sn, Mmax, sk), Mn, rtol=1e-9)
 # (a) cuplul la s = 0,04 – Kloss vs schema echivalentă
 s_a = 0.04
 M_kloss = kloss(s_a, Mmax, sk)
-M_model = M15.cuplu(s_a)
-print(f"  (a) s = 0,04 (n = {fmt(1500 * (1 - s_a), 0)} rot/min): Kloss = {fmt(M_kloss, 1)} N·m, schema echivalentă (Me) = {fmt(M_model, 1)} N·m")
-verifica("Kloss vs schema echivalentă la s=0,04", M_kloss, M_model, rtol=0.03)
+# Kloss este calibrat pe cuplul util din catalog, deci se compară cu cuplul util M2 al modelului
+M_model = M15.punct(s_a)["M2"]
+print(f"  (a) s = 0,04 (n = {fmt(1500 * (1 - s_a), 0)} rot/min): Kloss = {fmt(M_kloss, 1)} N·m,"
+      f" schema echivalentă: M2 = {fmt(M_model, 1)} N·m (Me = {fmt(M15.cuplu(s_a), 1)} N·m)")
+verifica("Kloss vs schema echivalentă (M2) la s=0,04", M_kloss, M_model, rtol=0.03)
 # (b) viteza la Mr = 0,5 Mn: din Kloss rezolvat analitic vs numeric
 m = 0.5 * Mn / Mmax
 s_b = sk * (1 / m - np.sqrt(1 / m**2 - 1))

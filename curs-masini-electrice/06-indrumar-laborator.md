@@ -24,7 +24,7 @@ Activitatea în laborator se desfășoară numai după **instruirea de securitat
 2. Se folosesc numai conductoare și borne de securitate (izolate), în stare bună. Nu se ating părțile conductoare ale montajului aflat sub tensiune.
 3. Orice modificare a montajului se face **numai după deconectarea alimentării** și verificarea lipsei tensiunii.
 4. **Piesele în mișcare** (arbori, cuplaje) trebuie să aibă apărătoare; nu se poartă haine largi, fulare, părul se strânge.
-5. **Sursele reglabile** (autotransformatoare, excitații) se aduc la **zero** înainte de conectare și de deconectare.
+5. **Autotransformatoarele reglabile și sursele care alimentează indusul (armătura)** se aduc la **zero** înainte de conectare și de deconectare. **Excepții importante:** (a) **excitația unui motor de curent continuu** de antrenare nu se reduce și nu se întrerupe niciodată cât timp indusul este alimentat (motorul s-ar ambala) – la pornire ea trebuie să fie maximă; (b) **excitația unei mașini sincrone conectate la rețea** nu se reduce la zero (ar ieși din sincronism, cu curenți mari): la deconectare se aduc întâi $P$ și $Q$ aproape de zero, se deschide întrerupătorul, apoi se reduce excitația.
 6. **Secundarul unui transformator de curent nu se lasă niciodată deschis** (§ 1.10).
 7. **Condensatoarele** din convertoarele de frecvență rămân încărcate după deconectare: se așteaptă timpul indicat de producător (de ordinul minutelor) și se verifică lipsa tensiunii înainte de orice intervenție.
 8. La orice situație anormală (miros de ars, zgomot, fum, încălzire) se acționează **oprirea de urgență** și se anunță cadrul didactic.
@@ -219,7 +219,7 @@ Activitatea în laborator se desfășoară numai după **instruirea de securitat
 1. Se aduce generatorul la turația nominală și se menține constantă.
 2. **Mers în gol:** se crește $I_e$ de la zero până la $U_0 \approx 1{,}2U_n$; se notează $I_e$, $U_0$ (și tensiunea remanentă la $I_e = 0$).
 3. **Scurtcircuit:** cu statorul scurtcircuitat, se crește $I_e$ până la $I_{sc} \approx I_n$; se notează $I_e$, $I_{sc}$.
-4. **Caracteristica externă:** se reglează $I_e$ pentru $U = U_n$ la $I = I_n$ (sarcină rezistivă), apoi, cu $I_e$ și $n$ constante, se reduce sarcina până la gol, notând $U$ și $I$.
+4. **Caracteristica externă:** în gol, se reglează $I_e$ pentru $U = U_n$; apoi, cu $I_e$ și $n$ constante, se crește treptat sarcina rezistivă până la circa $I_n$, notând $U$ și $I$. (Varianta inversă – excitația reglată pentru $U_n$ la $I_n$ și descărcarea până la gol – duce la tensiuni mult peste $U_n$ în gol, la G10 de circa 1,5·$U_n$ pe modelul liniar, care pot depăși domeniul aparatelor și solicită izolația.)
 
 | $I_e$ [A] | $U_0$ [V] | | $I_e$ [A] | $I_{sc}$ [A] | | $I$ [A] | $U$ [V] |
 |---|---|---|---|---|---|---|---|
@@ -250,7 +250,7 @@ Activitatea în laborator se desfășoară numai după **instruirea de securitat
 
 1. **Condițiile de sincronizare** (§ 3.9): se reglează turația (frecvența) și excitația (tensiunea) generatorului până la valori egale cu ale rețelei.
 2. **Becurile „stinse”:** becurile sunt legate între fazele omoloage ale generatorului și rețelei. Când frecvențele sunt apropiate, becurile se aprind și se sting **simultan**, din ce în ce mai rar; dacă ele se aprind **pe rând** (lumina „se rotește”), succesiunea fazelor diferă și se inversează două faze ale generatorului. Întrerupătorul se închide în mijlocul intervalului în care becurile sunt stinse.
-3. **Puterea activă:** se mărește cuplul mașinii de antrenare; se observă creșterea lui $P$, turația rămânând constantă. Apoi se reduce cuplul de antrenare până la zero și chiar negativ: mașina sincronă trece în regim de **motor** (P schimbă semnul).
+3. **Puterea activă:** se mărește cuplul mașinii de antrenare; se observă creșterea lui $P$, turația rămânând constantă. Apoi se reduce cuplul de antrenare până la zero: puterea activă scade spre zero, iar mașina sincronă acoperă singură pierderile grupului, trecând în regim de **motor** (P schimbă semnul). Un cuplu de antrenare negativ (mașina de antrenare lucrând ca frână) este posibil numai dacă sursa ei poate prelua energia (sursă de c.c. reversibilă sau convertor cu rezistor de frânare); altfel sursa se deconectează la supratensiune.
 4. **Curbele în V:** la puterea activă menținută constantă (de exemplu $P \approx 0$ și $P \approx 0{,}5P_n$), se variază $I_e$ și se notează $I_e$, $I$, $P$, $Q$, $\cos\varphi$; nu se coboară excitația până la ieșirea din sincronism.
 
 | $P$ ≈ ... | $I_e$ [A] | $I$ [A] | $P$ [W] | $Q$ [var] | $\cos\varphi$ | caracter |
@@ -281,8 +281,8 @@ Activitatea în laborator se desfășoară numai după **instruirea de securitat
 ### Mod de lucru
 
 1. **Parametrizare:** se introduc datele de pe plăcuța motorului ($P_n$, $U_n$, $I_n$, $f_n$, $n_n$, $\cos\varphi_n$); se rulează, dacă există, funcția de identificare automată a motorului; se aleg comanda U/f și rampele (de exemplu 5 s).
-2. Se observă tensiunea circuitului intermediar (afișată de convertor) – se compară cu valoarea teoretică ≈ 540 V la rețeaua de 400 V (§ 5.9).
-3. **Rampe:** se reduce progresiv timpul rampei de frânare și se observă (fără rezistor de frânare) apariția avertizării sau a deconectării la supratensiune în circuitul intermediar; se explică fenomenul (§ 5.9).
+2. Se observă tensiunea circuitului intermediar (afișată de convertor) – se compară cu valorile teoretice la rețeaua de 400 V: aproape de 565 V în gol (valoarea de vârf) și spre 540 V (valoarea medie) în sarcină (§ 5.9).
+3. **Rampe:** se reduce progresiv timpul rampei de frânare și se observă (fără rezistor de frânare) apariția avertizării sau a deconectării la supratensiune în circuitul intermediar; se explică fenomenul (§ 5.9). Multe convertoare au activată implicit o funcție de **limitare a tensiunii circuitului intermediar**, care prelungește automat rampa: cu ea activă se observă doar că frânarea durează mai mult decât s-a programat; pentru a vedea deconectarea, funcția se dezactivează temporar, cu acordul cadrului didactic.
 4. **Legile de similitudine:** cu vana/clapeta complet deschisă, pentru $f$ = 50, 45, 40, 35, 30, 25 Hz se notează: $f$, $n$, $Q$, $H$ (sau $\Delta p$), $P_1$ (la intrarea convertorului).
 5. **Comparație cu laminarea:** la $f$ = 50 Hz, se reduce debitul cu vana/clapeta la aceleași valori ca la pasul 4 și se notează $P_1$.
 

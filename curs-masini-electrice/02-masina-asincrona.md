@@ -41,17 +41,17 @@ $$\boxed{s = \frac{n_1 - n}{n_1}}, \qquad n = n_1(1 - s) .$$
 
 La sarcină nominală, $s_n$ este de ordinul 1–5 % (mai mic la motoarele mari). Motorul M15: $s_n = (1500 - 1466)/1500 = 2{,}27$ %.
 
-**Frecvența mărimilor rotorice.** Câmpul se rotește față de rotor cu $n_1 - n = s\,n_1$, deci tensiunile și curenții rotorici au frecvența
+**Frecvența mărimilor rotorice.** Câmpul se rotește față de rotor cu $n_1 - n = s\thinspace n_1$, deci tensiunile și curenții rotorici au frecvența
 
-$$f_2 = s\,f_1 .$$
+$$f_2 = s\thinspace f_1 .$$
 
-La pornire ($s = 1$), $f_2 = f_1 = 50$ Hz; la funcționarea nominală a lui M15, $f_2 = 1{,}13$ Hz. Câmpul produs de curenții rotorici se rotește față de rotor cu $s\,n_1$, deci față de stator cu $n + s\,n_1 = n_1$: **câmpurile statoric și rotoric sunt fixe unul față de altul**, condiția pentru un cuplu constant.
+La pornire ($s = 1$), $f_2 = f_1 = 50$ Hz; la funcționarea nominală a lui M15, $f_2 = 1{,}13$ Hz. Câmpul produs de curenții rotorici se rotește față de rotor cu $s\thinspace n_1$, deci față de stator cu $n + s\thinspace n_1 = n_1$: **câmpurile statoric și rotoric sunt fixe unul față de altul**, condiția pentru un cuplu constant.
 
 ## 2.3. Schema echivalentă
 
 Mașina asincronă cu rotorul blocat este un **transformator** cu secundarul în scurtcircuit (statorul = primar, rotorul = secundar). Cu rotorul în mișcare se schimbă doar frecvența rotorică; se poate arăta că mașina se comportă ca un transformator la frecvența $f_1$, la care rezistența rotorică raportată devine $R_2'/s$ [1, 2]. Rezultă **schema echivalentă pe fază** (figura 2.3), identică cu cea a transformatorului (§ 1.4), cu sarcina $R_2'/s$:
 
-$$\frac{R_2'}{s} = R_2' + R_2'\,\frac{1-s}{s} .$$
+$$\frac{R_2'}{s} = R_2' + R_2'\thinspace \frac{1-s}{s} .$$
 
 Primul termen reprezintă pierderile Joule reale din rotor, al doilea – o **rezistență fictivă de sarcină**, în care puterea disipată este egală cu puterea mecanică.
 
@@ -71,9 +71,9 @@ Puterea absorbită din rețea, $P_1 = \sqrt3 U I\cos\varphi$, se împarte astfel
 |---|---|---|
 | pierderi în cuprul statoric | $P_{Cu1} = 3R_1I_1^2$ | înfășurarea statorică |
 | pierderi în fier (în $P_0$) | $P_{Fe}$ | miezul statoric (cel rotoric are frecvența mică $f_2$) |
-| **puterea electromagnetică** | $P_\delta = 3\,\dfrac{R_2'}{s}\,I_2'^2$ | trece prin întrefier spre rotor |
-| pierderi în cuprul rotoric | $P_{Cu2} = 3R_2'I_2'^2 = s\,P_\delta$ | colivia |
-| puterea mecanică internă | $P_{mi} = (1-s)\,P_\delta$ | |
+| **puterea electromagnetică** | $P_\delta = 3\thinspace \dfrac{R_2'}{s}\thinspace I_2'^2$ | trece prin întrefier spre rotor |
+| pierderi în cuprul rotoric | $P_{Cu2} = 3R_2'I_2'^2 = s\thinspace P_\delta$ | colivia |
+| puterea mecanică internă | $P_{mi} = (1-s)\thinspace P_\delta$ | |
 | pierderi mecanice (în $P_0$) | $P_m$ | lagăre, ventilator |
 | **puterea utilă** | $P_2 = P_{mi} - P_m$ | arborele |
 
@@ -81,23 +81,23 @@ Puterea absorbită din rețea, $P_1 = \sqrt3 U I\cos\varphi$, se împarte astfel
 
 *Figura 2.4 – Bilanțul puterilor motorului M15 la 1466 rot/min, calculat din schema echivalentă (problema 2.2).*
 
-Relația $P_{Cu2} = s\,P_\delta$ este fundamentală: **o fracțiune egală cu alunecarea din puterea care ajunge la rotor se pierde în rotor**. O mașină care funcționează cu alunecare mare are, inevitabil, randament mic.
+Relația $P_{Cu2} = s\thinspace P_\delta$ este fundamentală: **o fracțiune egală cu alunecarea din puterea care ajunge la rotor se pierde în rotor**. O mașină care funcționează cu alunecare mare are, inevitabil, randament mic.
 
 **Cuplul electromagnetic.** Câmpul transmite rotorului puterea $P_\delta$ cu viteza $\Omega_1$, deci
 
 $$\boxed{M = \frac{P_\delta}{\Omega_1} = \frac{P_{mi}}{\Omega}}, \qquad \Omega_1 = \frac{2\pi n_1}{60} .$$
 
-Cuplul util la arbore este $M_2 = P_2/\Omega$. Formula practică: $M\,[\text{N·m}] = 9550\cdot P\,[\text{kW}]/n\,[\text{rot/min}]$.
+Cuplul util la arbore este $M_2 = P_2/\Omega$. Formula practică: $M\thinspace [\text{N·m}] = 9550\cdot P\thinspace [\text{kW}]/n\thinspace [\text{rot/min}]$.
 
 ## 2.5. Caracteristica mecanică
 
-Neglijând ramura de magnetizare (schema simplificată Γ, ca la transformator) și notând $X_{sc} = X_{1\sigma} + X_{2\sigma}'$, curentul rotoric este $I_2' = U_f/\sqrt{(R_1 + R_2'/s)^2 + X_{sc}^2}$, deci
+Mutând ramura de magnetizare la bornele de alimentare (schema Γ; pentru curentul rotoric efectul este același cu neglijarea ei, ca în schema simplificată a transformatorului) și notând $X_{sc} = X_{1\sigma} + X_{2\sigma}'$, curentul rotoric este $I_2' = U_f/\sqrt{(R_1 + R_2'/s)^2 + X_{sc}^2}$, deci
 
-$$M = \frac{3\,U_f^2\,R_2'/s}{\Omega_1\left[\left(R_1 + R_2'/s\right)^2 + X_{sc}^2\right]} .$$
+$$M = \frac{3\thinspace U_f^2\thinspace R_2'/s}{\Omega_1\left[\left(R_1 + R_2'/s\right)^2 + X_{sc}^2\right]} .$$
 
 Derivând în raport cu $s$:
 
-$$s_k = \frac{R_2'}{\sqrt{R_1^2 + X_{sc}^2}}, \qquad M_{max} = \frac{3\,U_f^2}{2\,\Omega_1\left(R_1 + \sqrt{R_1^2 + X_{sc}^2}\right)} .$$
+$$s_k = \frac{R_2'}{\sqrt{R_1^2 + X_{sc}^2}}, \qquad M_{max} = \frac{3\thinspace U_f^2}{2\thinspace \Omega_1\left(R_1 + \sqrt{R_1^2 + X_{sc}^2}\right)} .$$
 
 Consecințe importante, valabile și pentru calculul exact:
 
@@ -107,7 +107,7 @@ Consecințe importante, valabile și pentru calculul exact:
 
 **Formula lui Kloss.** Neglijând și $R_1$, raportul $M/M_{max}$ depinde doar de $s/s_k$:
 
-$$\boxed{M = \frac{2\,M_{max}}{\dfrac{s}{s_k} + \dfrac{s_k}{s}}}$$
+$$\boxed{M = \frac{2\thinspace M_{max}}{\dfrac{s}{s_k} + \dfrac{s_k}{s}}}$$
 
 Este foarte utilă pentru că se aplică direct pe **datele de catalog**: din $s_n$ și capacitatea de supraîncărcare $\lambda = M_{max}/M_n$ rezultă
 
@@ -125,11 +125,11 @@ $$s_k = s_n\left(\lambda + \sqrt{\lambda^2 - 1}\right).$$
 | **generator** | $s < 0$ | $n > n_1$ (antrenat din exterior) | primită la arbore, cedată rețelei |
 | **frână (contracurent)** | $s > 1$ | rotorul se rotește invers față de câmp | primită și la arbore, și din rețea; totul se transformă în căldură în rotor |
 
-Ramura dintre $s = 0$ și $s_k$ este zona **stabilă** de funcționare ca motor: dacă sarcina crește, viteza scade puțin și cuplul motorului crește până echilibrează sarcina (§ 5.5). Dacă sarcina depășește $M_{max}$, motorul se oprește („se calează”) și absoarbe curentul de pornire – protecțiile trebuie să-l deconecteze.
+Ramura dintre $s = 0$ și $s_k$ este zona **stabilă** de funcționare ca motor (strict, pentru sarcini cu cuplu constant sau crescător cu viteza; criteriul general este în § 5.5): dacă sarcina crește, viteza scade puțin și cuplul motorului crește până echilibrează sarcina (§ 5.5). Dacă sarcina depășește $M_{max}$, motorul se oprește („se calează”) și absoarbe curentul de pornire – protecțiile trebuie să-l deconecteze.
 
 ## 2.6. Caracteristicile de funcționare
 
-![Figura 2.6 – Caracteristicile de funcționare](figuri/f02-7-caracteristici-functionare.svg)
+![Figura 2.6 – Caracteristicile de funcționare](figuri/f02-6-caracteristici-functionare.svg)
 
 *Figura 2.6 – Randamentul, factorul de putere, curentul și turația lui M15 în funcție de puterea utilă.*
 
@@ -155,7 +155,7 @@ $$I_{p,Y} = \frac{I_{p,\Delta}}{3}, \qquad M_{p,Y} = \frac{M_{p,\Delta}}{3} .$$
 
 Metoda este potrivită pentru pornirea **în gol sau cu sarcină mică** (ventilatoare, pompe centrifuge, unele mașini-unelte), nu și pentru sarcini cu cuplu mare la pornire (figura 2.7).
 
-![Figura 2.7 – Pornirea stea-triunghi](figuri/f02-10-stea-triunghi.svg)
+![Figura 2.7 – Pornirea stea-triunghi](figuri/f02-7-stea-triunghi.svg)
 
 *Figura 2.7 – Cuplul și curentul lui M15 în conexiune triunghi și stea (model cu colivie dublă, § 2.7), comparate cu un ventilator și un transportor.*
 
@@ -163,7 +163,7 @@ Metoda este potrivită pentru pornirea **în gol sau cu sarcină mică** (ventil
 
 - **Autotransformator de pornire** cu raportul $k$ ($U_{motor} = U/k$): curentul motorului scade de $k$ ori, curentul din rețea de $k^2$ ori, iar cuplul de $k^2$ ori.
 - **Pornitor static (soft-starter)**: tiristoare care cresc treptat tensiunea; curentul scade proporțional cu tensiunea, cuplul cu pătratul ei.
-- **Convertor de frecvență**: pornire cu curent apropiat de cel nominal și cuplu mare, pentru că alunecarea rămâne mică (§ 2.8); este soluția cea mai bună tehnic, dar și cea mai scumpă.
+- **Convertor de frecvență**: pornire cu curent apropiat de cel nominal și cuplu mare, pentru că frecvența crește treptat de la valori mici, iar viteza de alunecare $n_1 - n$ (deci frecvența rotorică $f_2$) rămâne mică (§ 2.8); este soluția cea mai bună tehnic, dar și cea mai scumpă.
 - **Rezistențe în circuitul rotoric** (doar la motoarele cu **rotor bobinat**): mărind $R_2'$, $s_k$ crește (figura 2.8) și cuplul maxim poate fi obținut chiar la pornire, cu curent redus. Rezistențele se scot treptat pe măsură ce motorul accelerează.
 
 ![Figura 2.8 – Influența rezistenței rotorice](figuri/f02-8-rezistenta-rotorica.svg)
@@ -176,7 +176,7 @@ Un motor cu colivie obișnuită și parametri constanți nu poate avea simultan 
 
 Figura 2.9 compară, pentru M15: modelul cu parametri constanți, formula lui Kloss (aplicată pe datele de catalog) și un **model cu colivie dublă**, ai cărui parametri ($X_{2c}$ = 0,23 Ω, ramurile 0,51 Ω + j0,21 Ω și 0,33 Ω + j1,39 Ω) au fost ajustați pentru curs astfel încât să reproducă datele de catalog. Primele două modele descriu bine zona de funcționare, dar **subestimează cuplul de pornire de 2,3–2,8 ori** – formula lui Kloss nu se folosește pentru calculul pornirii motoarelor cu colivie (problema 2.3).
 
-![Figura 2.9 – Modele și catalog](figuri/f02-6-model-vs-catalog.svg)
+![Figura 2.9 – Modele și catalog](figuri/f02-9-model-vs-catalog.svg)
 
 *Figura 2.9 – Cuplul și curentul motorului M15: modele comparate cu datele de catalog (punctele negre).*
 
@@ -186,13 +186,13 @@ Din $n = \dfrac{60 f_1}{p}(1 - s)$ rezultă trei căi:
 
 1. **Schimbarea numărului de perechi de poli** – în trepte (de exemplu 1500/3000 rot/min cu conexiunea Dahlander); motoare speciale, pentru ventilatoare, mașini-unelte.
 2. **Schimbarea frecvenței** – cu **convertor de frecvență** (§ 5.9); reglaj continuu, economic, cu randament bun. Este metoda modernă și cea mai răspândită.
-3. **Schimbarea alunecării** – prin reducerea tensiunii sau prin rezistențe în rotor; metode **neeconomice**, pentru că puterea $s\,P_\delta$ se pierde în rotor (§ 2.4).
+3. **Schimbarea alunecării** – prin reducerea tensiunii sau prin rezistențe în rotor; metode **neeconomice**, pentru că puterea $s\thinspace P_\delta$ se pierde în rotor (§ 2.4).
 
 ### Comanda U/f = constant
 
 Fluxul este proporțional cu $U/f$ (§ 0.4). Ca să rămână nominal (cuplul maxim să se păstreze, iar miezul să nu se satureze), convertorul modifică tensiunea proporțional cu frecvența: la 30 Hz, $U = 400\cdot 30/50 = 240$ V. Neglijând $R_1$, cuplul depinde doar de $U/f$ și de **viteza de alunecare** $n_1 - n$, astfel că **familia de caracteristici se deplasează paralel** (figura 2.10): la cuplu constant, $n_1 - n$ rămâne aproximativ același la orice frecvență (problema 2.5).
 
-![Figura 2.10 – Familia U/f](figuri/f02-9-familie-uf.svg)
+![Figura 2.10 – Familia U/f](figuri/f02-10-familie-uf.svg)
 
 *Figura 2.10 – Caracteristicile mecanice ale lui M15 la U/f = constant. La frecvențe mici, căderea de tensiune pe $R_1$ reduce cuplul maxim; convertoarele compensează printr-o tensiune suplimentară („boost”).*
 
@@ -212,7 +212,7 @@ Peste frecvența nominală tensiunea nu mai poate crește (este limitată de re�
 
 ## 2.11. Eficiența energetică – clasele IE
 
-Standardul IEC 60034-30-1 [S2] definește clasele de randament **IE1** (standard) ... **IE4** (super-premium), cu valori minime în funcție de putere și de numărul de poli (exemplu, 15 kW, 4 poli, 50 Hz: IE2 – 90,6 %, IE3 – 92,1 %, IE4 – 93,9 %, după ediția din 2014). În UE, **Regulamentul (UE) 2019/1781** [S6] impune, din **1 iulie 2021**, cel puțin clasa **IE3** pentru motoarele trifazate de 0,75–1000 kW (2–8 poli) și, din **1 iulie 2023**, clasa **IE4** pentru motoarele de 75–200 kW cu 2, 4 sau 6 poli (cu unele excepții, de exemplu motoarele cu frână sau cele antideflagrante); variatoarele de viteză trebuie să îndeplinească clasa IE2 a convertoarelor.
+Standardul IEC 60034-30-1 [S2] definește clasele de randament **IE1** (standard) ... **IE4** (super-premium), cu valori minime în funcție de putere și de numărul de poli (exemplu, 15 kW, 4 poli, 50 Hz: IE2 – 90,6 %, IE3 – 92,1 %, IE4 – 93,9 %, după ediția din 2014); ediția a 2-a (decembrie 2025) adaugă și clasa **IE5**. În UE, **Regulamentul (UE) 2019/1781** [S6] impune, din **1 iulie 2021**, cel puțin clasa **IE3** pentru motoarele trifazate de 0,75–1000 kW (2–8 poli) și, din **1 iulie 2023**, clasa **IE4** pentru motoarele de 75–200 kW cu 2, 4 sau 6 poli (cu unele excepții, de exemplu motoarele cu frână sau cele antideflagrante); variatoarele de viteză trebuie să îndeplinească clasa IE2 a convertoarelor.
 
 Diferența de randament pare mică, dar motoarele funcționează mii de ore pe an: problema 2.6 arată că pentru un singur motor de 15 kW, trecerea de la IE2 la IE3 economisește peste 1000 kWh/an.
 
@@ -250,12 +250,12 @@ Calculați curentul, factorul de putere, puterile, pierderile, cuplul și randam
 |---|---|---|---|---|---|---|
 | 16 403 W | 581 W | 15 822 W | 359 W | 15 463 W | 330 W | **15 133 W** |
 
-6. Cuplul: $M = P_\delta/\Omega_1 = 15\,822/157{,}08 = 100{,}7$ N·m; la arbore $M_2 = P_2/\Omega = 15\,133/153{,}52 = 98{,}6$ N·m. Randamentul: $\eta = 15\,133/16\,403 = 92{,}3$ %.
+6. Cuplul: $M = P_\delta/\Omega_1 = 15\thinspace 822/157{,}08 = 100{,}7$ N·m; la arbore $M_2 = P_2/\Omega = 15\thinspace 133/153{,}52 = 98{,}6$ N·m. Randamentul: $\eta = 15\thinspace 133/16\thinspace 403 = 92{,}3$ %.
 
 **Verificări (căi independente).**
 - Bilanțul: $P_2 + P_{Cu1} + P_{Cu2} + P_0 = P_1$ ✓ (exact).
 - Cuplul: $P_\delta/\Omega_1 = P_{mi}/\Omega = 100{,}7$ N·m ✓.
-- $P_1 = 3U_fI_1\cos\varphi = 16\,403$ W ✓; $P_{Cu2} = 3R_2'I_2'^2 = sP_\delta = 359$ W ✓.
+- $P_1 = 3U_fI_1\cos\varphi = 16\thinspace 403$ W ✓; $P_{Cu2} = 3R_2'I_2'^2 = sP_\delta = 359$ W ✓.
 - Rezultatele concordă cu datele de catalog (15 kW, 27,6 A, 0,85, 92,3 %) cu abateri sub 1 %.
 - Cuplul maxim: căutare numerică pe schema completă și formula analitică pe echivalentul Thévenin dau aceeași valoare, $M_{max} = 300{,}9$ N·m la $s_k = 0{,}1476$ ✓. Formulele din § 2.5 (schema Γ) dau 313,8 N·m – o supraestimare de 4,3 %, prețul simplificării.
 
@@ -263,21 +263,21 @@ Calculați curentul, factorul de putere, puterile, pierderile, cuplul și randam
 
 Folosind doar datele de catalog ale lui M15, calculați: (a) cuplul la $n$ = 1440 rot/min; (b) turația la cuplul $0{,}5M_n$; (c) cuplul de pornire prezis de formulă.
 
-**Rezolvare.** $s_n = 0{,}02267$, $M_n = 9550\cdot 15/1466 = 97{,}71$ N·m, $M_{max} = 3{,}1\,M_n = 302{,}9$ N·m,
+**Rezolvare.** $s_n = 0{,}02267$, $M_n = 9550\cdot 15/1466 = 97{,}71$ N·m, $M_{max} = 3{,}1\thinspace M_n = 302{,}9$ N·m,
 
-$$s_k = s_n\left(\lambda + \sqrt{\lambda^2-1}\right) = 0{,}02267\,(3{,}1 + 2{,}934) = 0{,}1368 .$$
+$$s_k = s_n\left(\lambda + \sqrt{\lambda^2-1}\right) = 0{,}02267\thinspace (3{,}1 + 2{,}934) = 0{,}1368 .$$
 
-**(a)** $s = 0{,}04$: $M = \dfrac{2\cdot 302{,}9}{0{,}04/0{,}1368 + 0{,}1368/0{,}04} = 163{,}2$ N·m. *Verificare:* schema echivalentă (problema 2.2) dă 164,0 N·m – abatere 0,5 % ✓.
+**(a)** $s = 0{,}04$: $M = \dfrac{2\cdot 302{,}9}{0{,}04/0{,}1368 + 0{,}1368/0{,}04} = 163{,}2$ N·m. *Verificare:* formula este calibrată pe cuplul util din catalog, deci se compară cu cuplul util al schemei echivalente (problema 2.2) la aceeași alunecare: $M_2 = 161{,}8$ N·m – abatere 0,9 % ✓ (cuplul electromagnetic este 164,0 N·m).
 
 **(b)** Rezolvând ecuația lui Kloss pentru $M/M_{max} = m$: $s = s_k\left(\dfrac1m - \sqrt{\dfrac1{m^2} - 1}\right)$, cu $m = 48{,}85/302{,}9$: $s = 0{,}01110$, $n = 1483{,}3$ rot/min. *Verificare:* rezolvarea numerică dă aceeași valoare ✓; aproximarea liniară $s \approx s_n M/M_n = 0{,}01133$ ($n$ = 1483 rot/min) este și ea foarte bună în această zonă.
 
-**(c)** La $s = 1$: $M_p = 81{,}3$ N·m $= 0{,}83\,M_n$, față de $2{,}3\,M_n = 224{,}7$ N·m din catalog. Diferența nu este o eroare de calcul, ci limita modelului cu parametri constanți (§ 2.7, efectul de refulare). Modelul cu colivie dublă dă $M_p = 2{,}29\,M_n$ și $I_p = 6{,}80\,I_n$, adică datele de catalog ✓.
+**(c)** La $s = 1$: $M_p = 81{,}3$ N·m $= 0{,}83\thinspace M_n$, față de $2{,}3\thinspace M_n = 224{,}7$ N·m din catalog. Diferența nu este o eroare de calcul, ci limita modelului cu parametri constanți (§ 2.7, efectul de refulare). Modelul cu colivie dublă dă $M_p = 2{,}29\thinspace M_n$ și $I_p = 6{,}80\thinspace I_n$, adică datele de catalog ✓.
 
 ### Problema 2.4 – Pornirea stea-triunghi
 
 Calculați curentul și cuplul de pornire ale lui M15 pornit în stea. Poate porni astfel (a) un ventilator ($M_r \approx 0{,}1M_n$ la pornire); (b) un transportor ($M_r \approx M_n$)?
 
-**Rezolvare.** În triunghi (catalog): $I_{p\Delta} = 6{,}8\cdot 27{,}6 = 187{,}7$ A, $M_{p\Delta} = 2{,}3\cdot 97{,}71 = 224{,}7$ N·m. În stea: $I_{pY} = 62{,}6$ A, $M_{pY} = 74{,}9$ N·m $= 0{,}77\,M_n$.
+**Rezolvare.** În triunghi (catalog): $I_{p\Delta} = 6{,}8\cdot 27{,}6 = 187{,}7$ A, $M_{p\Delta} = 2{,}3\cdot 97{,}71 = 224{,}7$ N·m. În stea: $I_{pY} = 62{,}6$ A, $M_{pY} = 74{,}9$ N·m $= 0{,}77\thinspace M_n$.
 
 (a) $74{,}9 > 9{,}8$ N·m – **ventilatorul pornește**; (b) $74{,}9 < 97{,}7$ N·m – **transportorul nu pornește** în stea.
 
@@ -333,7 +333,7 @@ Un motor de 15 kW, 4 poli, funcționează 4000 h/an la sarcină nominală. Cât 
 8. La pornirea în gol sau cu sarcină mică, deoarece cuplul scade de 3 ori. Motorul trebuie să fie prevăzut pentru funcționare în triunghi la tensiunea rețelei (de exemplu 400/690 V la rețeaua de 400 V) (§ 2.7).
 9. Pentru că presupune parametri constanți și neglijează efectul de refulare; subestimează cuplul de pornire de câteva ori (problema 2.3).
 10. Pentru a menține fluxul constant ($\Phi \propto U/f$): cuplul maxim se păstrează, iar miezul nu se saturează (§ 2.8).
-11. Pentru că puterea $s\,P_\delta$ se transformă în căldură în rotor; la jumătate din viteza de sincronism se pierde jumătate din puterea electromagnetică (§ 2.4, § 2.8).
+11. Pentru că puterea $s\thinspace P_\delta$ se transformă în căldură în rotor; la jumătate din viteza de sincronism se pierde jumătate din puterea electromagnetică (§ 2.4, § 2.8).
 12. Regim de generator ($s < 0$): primește putere mecanică și dă putere activă rețelei, dar absoarbe putere reactivă (§ 2.5, § 2.10).
 13. Lucrează la sarcină relativă mică, unde randamentul și mai ales factorul de putere sunt mici (§ 2.6).
 14. IE3 (Regulamentul (UE) 2019/1781, de la 1 iulie 2021); IE4 este obligatorie de la 1 iulie 2023 pentru motoarele de 75–200 kW cu 2, 4 sau 6 poli (§ 2.11).

@@ -51,7 +51,7 @@ pip install -r requirements.txt
 python ruleaza_tot.py
 ```
 
-La ultima rulare: 13 scripturi, 88 de verificări, toate trecute.
+La ultima rulare: 13 scripturi, 92 de verificări, toate trecute.
 
 Afirmațiile care nu rezultă din calcul (date normative, valori tipice, proprietăți constructive) sunt însoțite de trimiteri la bibliografie și standarde.
 
@@ -79,7 +79,7 @@ Afirmațiile care nu rezultă din calcul (date normative, valori tipice, proprie
 - Fazorii (numere complexe) sunt subliniați: $\underline{U}$, $\underline{I}$; valorile efective nu: $U$, $I$.
 - Mărimile raportate la primar (stator) au apostrof: $R_2'$, $I_2'$.
 - Indicii: $n$ – nominal, $f$ – de fază, $l$ – de linie, $0$ – mers în gol, $sc$ – scurtcircuit, $p$ – pornire.
-- $M$ – cuplu [N·m], $\Omega$ – viteză unghiulară [rad/s], $n$ – turație [rot/min]; $\Omega = 2\pi n/60$, iar $M\,[\text{N·m}] = 9550\,P\,[\text{kW}]/n\,[\text{rot/min}]$.
+- $M$ – cuplu [N·m], $\Omega$ – viteză unghiulară [rad/s], $n$ – turație [rot/min]; $\Omega = 2\pi n/60$, iar $M\thinspace [\text{N·m}] = 9550\thinspace P\thinspace [\text{kW}]/n\thinspace [\text{rot/min}]$.
 - Virgula este separatorul zecimal (convenția românească).
 
 ## Bibliografie
@@ -98,7 +98,7 @@ Afirmațiile care nu rezultă din calcul (date normative, valori tipice, proprie
 **Standarde și reglementări**
 
 - [S1] IEC 60034-1 – *Rotating electrical machines – Part 1: Rating and performance* (regimurile S1–S10, datele nominale).
-- [S2] IEC 60034-30-1:2014 – *Efficiency classes of line operated AC motors (IE code)*. A apărut ediția a 2-a (2025); valorile citate în curs sunt din ediția 2014.
+- [S2] IEC 60034-30-1:2014 – *Efficiency classes of line operated AC motors (IE code)*. Ediția a 2-a (decembrie 2025) o înlocuiește și adaugă clasa IE5; valorile citate în curs sunt din ediția 2014.
 - [S3] IEC 60076-1 – *Power transformers – Part 1: General*.
 - [S4] IEC 60085 – *Electrical insulation – Thermal evaluation and designation* (clasele termice 130 (B), 155 (F), 180 (H) etc.).
 - [S5] IEC 60529 – *Degrees of protection provided by enclosures (IP Code)*.

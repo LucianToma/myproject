@@ -59,27 +59,29 @@ ax.set_ylim(-1.05, 1.2)
 ax.set_aspect("equal")
 ax.axis("off")
 ax.set_title("Cadranele de funcționare ale unei acționări (exemplu: troliu de macara)")
-salveaza(fig, "f05-2-cadrane")
+salveaza(fig, "f05-3-cadrane")
 
-# --- Stabilitatea punctelor de funcționare -----------------------------------
+# --- Stabilitatea punctelor de funcționare (model cu colivie dublă, problema 5.5) ---
+MDs = motor_M15(colivie_dubla=True)
 n = np.linspace(0, 1499.5, 800)
 s = (1500 - n) / 1500
-Mr = 2.0 * Mn
+Mr = 2.5 * Mn
+skd, _ = MDs.cuplu_maxim()
 fig, ax = plt.subplots(figsize=(6.8, 4.0))
-ax.plot(n, kloss(s, Mmax, sk), color=C1, label="motor (formula lui Kloss)")
-ax.axhline(Mr, color=C2, lw=2, label="sarcină M$_r$ = 2·Mₙ = const")
-lp = Mmax / Mr
-for nume, sx, txt, xt in (("A", sk * (lp - np.sqrt(lp**2 - 1)), "A – stabil", (1150, 120)),
-                          ("B", sk * (lp + np.sqrt(lp**2 - 1)), "B – instabil", (650, 120))):
+ax.plot(n, [MDs.cuplu(x) for x in s], color=C1, label="motorul M15 (model cu colivie dublă)")
+ax.axhline(Mr, color=C2, lw=2, label="sarcină M$_r$ = 2,5·Mₙ = const")
+for sx, txt, xt in ((brentq(lambda x: MDs.cuplu(x) - Mr, 1e-5, skd), "A – stabil", (1080, 120)),
+                    (brentq(lambda x: MDs.cuplu(x) - Mr, skd, 1.0), "B – instabil", (420, 120))):
     ax.plot([1500 * (1 - sx)], [Mr], "o", color=TEXT, ms=8, mec=FUNDAL, mew=2)
     ax.annotate(f"{txt}\nn = {1500 * (1 - sx):.0f} rot/min", xy=(1500 * (1 - sx), Mr), xytext=xt,
                 color=TEXT, fontsize=9, arrowprops=dict(arrowstyle="-", color=TEXT2, lw=0.8))
+ax.set_ylim(0, 330)
 ax.set_xlabel("n [rot/min]")
 ax.set_ylabel("M [N·m]")
 ax.set_title("Criteriul de stabilitate: dM/dΩ < dM$_r$/dΩ")
-ax.legend(loc="upper left")
+ax.legend(loc="lower left")
 virgula(ax)
-salveaza(fig, "f05-3-stabilitate")
+salveaza(fig, "f05-2-stabilitate")
 
 # --- Accelerarea unui ventilator cu cuplu motor constant (problema 5.2) ---------
 J, M = 1.0, 1.2 * Mn
@@ -108,7 +110,7 @@ ax.set_ylabel("n [rot/min]")
 ax.set_title("Pornirea unui ventilator cu cuplu motor constant 1,2·Mₙ")
 ax.legend(loc="lower right", fontsize=8.5)
 virgula(ax)
-salveaza(fig, "f05-4-accelerare-ventilator")
+salveaza(fig, "f05-10-accelerare-ventilator")
 
 # --- Pornirea directă a motorului M15 cu ventilator (model cvasistaționar) ------
 MD = motor_M15(colivie_dubla=True)
@@ -137,7 +139,7 @@ a2.set_ylabel("I [A]")
 a2.set_xlabel("t [s]")
 for a in (a1, a2):
     virgula(a)
-salveaza(fig, "f05-5-pornire-directa")
+salveaza(fig, "f05-4-pornire-directa")
 t_porn = tt[np.argmax(WW * 30 / np.pi > 0.95 * 1470)]
 print(f"  pornire directă: n atinge 95 % din viteza finală după ≈ {t_porn:.2f} s")
 
@@ -179,7 +181,7 @@ a2.legend(loc="lower right", fontsize=8.5)
 for a in (a1, a2):
     virgula(a)
 fig.tight_layout()
-salveaza(fig, "f05-6-ciclu-incalzire")
+salveaza(fig, "f05-5-ciclu-incalzire")
 
 # --- Structura convertorului de frecvență (schemă bloc) ------------------------
 fig, ax = plt.subplots(figsize=(10, 3.4))
@@ -204,7 +206,7 @@ ax.text(5.3, -0.35, "Redresorul cu diode nu poate trimite energie înapoi în re
 ax.set_xlim(-0.1, 10.7)
 ax.set_ylim(-1.2, 3.0)
 ax.axis("off")
-salveaza(fig, "f05-7-convertor-frecventa")
+salveaza(fig, "f05-6-convertor-frecventa")
 
 # --- Modulația PWM sinus–triunghi -------------------------------------------
 f1, fc, ma, Ud = 50.0, 750.0, 0.8, 540.0
@@ -229,7 +231,7 @@ a2.legend(loc="upper center", fontsize=8.5, ncol=2)
 a1.set_title("Modulația în lățime a impulsurilor (PWM sinus–triunghi)", fontsize=10)
 for a in (a1, a2):
     virgula(a)
-salveaza(fig, "f05-8-pwm")
+salveaza(fig, "f05-7-pwm")
 
 # --- Ventilator: clapetă vs convertor de frecvență (problema 5.4) ------------------
 q = np.linspace(0.3, 1.0, 100)
@@ -245,7 +247,7 @@ ax.set_ylabel("P/Pₙ")
 ax.set_title("Puterea absorbită de un ventilator la debit redus")
 ax.legend(loc="upper left", fontsize=8.5)
 virgula(ax)
-salveaza(fig, "f05-9-ventilator")
+salveaza(fig, "f05-8-ventilator")
 
 # --- Schema de forță a pornirii directe ------------------------------------
 class Cerc(elm.Element):
@@ -262,18 +264,18 @@ with schemdraw.Drawing(show=False) as d:
     for x, L in zip(xs, ("L1", "L2", "L3")):
         d.add(elm.Line().at((x, 10)).to((x, 9.4)))
         d.add(elm.Label().at((x, 10.25)).label(L))
-        d.add(elm.Fuse().at((x, 9.4)).to((x, 8.0)))
+        d.add(elm.Switch().at((x, 9.4)).to((x, 8.0)))
         d.add(elm.Line().at((x, 8.0)).to((x, 7.6)))
-        d.add(elm.Switch().at((x, 7.6)).to((x, 6.2)))
+        d.add(elm.Fuse().at((x, 7.6)).to((x, 6.2)))
         d.add(elm.Line().at((x, 6.2)).to((x, 5.4)))
         d.add(elm.Switch().at((x, 5.4)).to((x, 4.0)))
         d.add(elm.Line().at((x, 4.0)).to((x, 3.6)))
         d.add(elm.Resistor().at((x, 3.6)).to((x, 2.2)))
-    d.add(elm.Line().at((-0.1, 6.95)).to((2.6, 6.95)).linestyle("--").color(TEXT2))
+    d.add(elm.Line().at((-0.1, 8.75)).to((2.6, 8.75)).linestyle("--").color(TEXT2))
     d.add(elm.Line().at((-0.1, 4.75)).to((2.6, 4.75)).linestyle("--").color(TEXT2))
     d.add(elm.Line().at((-0.1, 2.9)).to((2.6, 2.9)).linestyle("--").color(TEXT2))
-    for y, t in ((8.7, "F1 – siguranțe fuzibile\n(protecție la scurtcircuit)"),
-                 (6.9, "Q1 – separator / întrerupător"),
+    for y, t in ((8.7, "Q1 – separator\n(separare vizibilă de rețea)"),
+                 (6.9, "F1 – siguranțe fuzibile\n(protecție la scurtcircuit)"),
                  (4.7, "K1 – contactele principale\nale contactorului"),
                  (2.9, "F2 – releu termic\n(protecție la suprasarcină)")):
         d.add(elm.Label().at((3.2, y)).label(t, halign="left", fontsize=10))
@@ -282,5 +284,5 @@ with schemdraw.Drawing(show=False) as d:
         d.add(elm.Label().at((x - 0.25, 1.85)).label(b, fontsize=10))
     d.add(Cerc().at((1.2, 0.3)))
     d.add(elm.Label().at((1.2, 0.3)).label("M\n3~"))
-    d.save(str(FIGURI / "f05-10-schema-pornire-directa.svg"))
-print("  figura f05-10-schema-pornire-directa.svg")
+    d.save(str(FIGURI / "f05-9-schema-pornire-directa.svg"))
+print("  figura f05-9-schema-pornire-directa.svg")

@@ -57,7 +57,7 @@ $$\oint \vec H\cdot d\vec l = \Theta = N I .$$
 
 Pentru un circuit format din porțiuni cu $H$ constant pe fiecare porțiune:
 
-$$\sum_k H_k\, l_k = N I .$$
+$$\sum_k H_k\thinspace l_k = N I .$$
 
 Scriind $H_k = \dfrac{B_k}{\mu_k} = \dfrac{\Phi}{\mu_k A_k}$, se obține o analogie cu legea lui Ohm:
 
@@ -88,7 +88,7 @@ Fluxul poate varia în două moduri, iar ambele sunt folosite în mașini:
 1. **inducție de transformare** – conductorul stă pe loc, fluxul variază în timp (transformatorul);
 2. **inducție de mișcare** – conductorul se mișcă într-un câmp: un conductor de lungime $l$ care se deplasează cu viteza $v$ perpendicular pe un câmp $B$ are la capete tensiunea
 
-$$e = B\,l\,v \qquad \text{(generatoarele)} .$$
+$$e = B\thinspace l\thinspace v \qquad \text{(generatoarele)} .$$
 
 ### Tensiunea indusă de un flux sinusoidal
 
@@ -98,15 +98,15 @@ $$e = -N\frac{d\Phi}{dt} = -N\omega\Phi_{max}\cos\omega t,$$
 
 deci amplitudinea este $E_{max} = 2\pi f N \Phi_{max}$, iar valoarea efectivă
 
-$$\boxed{E = \frac{E_{max}}{\sqrt 2} = \sqrt 2\,\pi f N\Phi_{max} \approx 4{,}44\, f N \Phi_{max}}$$
+$$\boxed{E = \frac{E_{max}}{\sqrt 2} = \sqrt 2\thinspace \pi f N\Phi_{max} \approx 4{,}44\thinspace f N \Phi_{max}}$$
 
-Aceasta este **formula fundamentală a transformatorului** și, cu un factor de înfășurare $k_w < 1$, a tuturor mașinilor de c.a.: $E = 4{,}44\, f N k_w \Phi$. Ea arată că, la tensiune și frecvență date, **fluxul este impus de tensiunea de alimentare** – idee folosită des în capitolele următoare.
+Aceasta este **formula fundamentală a transformatorului** și, cu un factor de înfășurare $k_w < 1$, a tuturor mașinilor de c.a.: $E = 4{,}44\thinspace f N k_w \Phi$. Ea arată că, la tensiune și frecvență date, **fluxul este impus de tensiunea de alimentare** – idee folosită des în capitolele următoare.
 
 ## 0.5. Forța electromagnetică
 
 Un conductor de lungime $l$, parcurs de curentul $I$ și aflat într-un câmp de inducție $B$ perpendicular pe el, este acționat de **forța Laplace**
 
-$$F = B\, I\, l ,$$
+$$F = B\thinspace I\thinspace l ,$$
 
 cu sensul dat de regula mâinii stângi. Într-o mașină rotativă cu raza rotorului $r$, suma acestor forțe dă **cuplul electromagnetic** $M = \sum F\cdot r$. Cele două legi – inducția (§ 0.4) și forța (§ 0.5) – lucrează mereu împreună: când prin conductorul care se mișcă trece curent, puterea mecanică $F v = B I l v$ este egală cu puterea electrică $e I = B l v I$. Aceasta este, pe scurt, **conversia electromecanică a energiei**.
 
@@ -116,7 +116,7 @@ O tensiune sinusoidală $u(t) = U\sqrt 2 \sin(\omega t + \alpha)$ se caracterize
 
 Calculele se fac cu **fazori** (numere complexe), notați cu bară dedesubt: $\underline{U} = U e^{j\alpha} = U\angle\alpha$. Pentru un receptor cu impedanța $\underline{Z} = R + jX$:
 
-$$\underline{U} = \underline{Z}\,\underline{I}, \qquad X_L = \omega L,\quad X_C = -\frac{1}{\omega C}.$$
+$$\underline{U} = \underline{Z}\thinspace \underline{I}, \qquad X_L = \omega L,\quad X_C = -\frac{1}{\omega C}.$$
 
 Unghiul $\varphi$ dintre $\underline{U}$ și $\underline{I}$ definește **factorul de putere** $\cos\varphi$. Puterile pe un receptor monofazat:
 
@@ -126,7 +126,7 @@ Unghiul $\varphi$ dintre $\underline{U}$ și $\underline{I}$ definește **factor
 | reactivă | $Q = U I\sin\varphi$ | var | se schimbă periodic între sursă și câmpurile magnetice/electrice |
 | aparentă | $S = U I = \sqrt{P^2 + Q^2}$ | VA | dimensionează conductoarele, transformatoarele, generatoarele |
 
-Puterea complexă este $\underline{S} = \underline{U}\,\underline{I}^{*} = P + jQ$. Convenție folosită în curs: $Q > 0$ pentru receptoare **inductive** (motoare asincrone, bobine), $Q < 0$ pentru receptoare **capacitive**.
+Puterea complexă este $\underline{S} = \underline{U}\thinspace \underline{I}^{\ast} = P + jQ$ ($\underline{I}^{\ast}$ – conjugatul curentului). Convenție folosită în curs: $Q > 0$ pentru receptoare **inductive** (motoare asincrone, bobine), $Q < 0$ pentru receptoare **capacitive**.
 
 > **De ce contează $\cos\varphi$?** La aceeași putere activă $P$ și aceeași tensiune, curentul este $I = P/(U\cos\varphi)$: un factor de putere mic înseamnă curent mare, deci pierderi mai mari în linii și echipamente mai mari. De aceea furnizorii de energie penalizează consumatorii cu $\cos\varphi$ mic, iar motorul sincron supraexcitat (cap. 4) este folosit și pentru compensarea lui.
 
@@ -134,24 +134,24 @@ Puterea complexă este $\underline{S} = \underline{U}\,\underline{I}^{*} = P + j
 
 Energia electrică se produce și se transportă în **sistem trifazat**: trei tensiuni de aceeași valoare efectivă, decalate cu 120° (figura 0.2).
 
-![Figura 0.2 – Sistemul trifazat de tensiuni](figuri/f00-3-sistem-trifazat.svg)
+![Figura 0.2 – Sistemul trifazat de tensiuni](figuri/f00-2-sistem-trifazat.svg)
 
 *Figura 0.2 – Tensiunile de fază ale unui sistem trifazat simetric și fazorii lor. Tensiunea dintre două faze (de linie) este de $\sqrt 3$ ori mai mare decât tensiunea de fază.*
 
 Cele trei faze ale unui receptor (de exemplu, cele trei înfășurări ale unui motor) se pot lega în **stea (Y)** sau în **triunghi (Δ)** (figura 0.3):
 
-![Figura 0.3 – Conexiunile stea și triunghi](figuri/f00-4-stea-triunghi.svg)
+![Figura 0.3 – Conexiunile stea și triunghi](figuri/f00-3-stea-triunghi.svg)
 
 *Figura 0.3 – Conexiunile stea și triunghi; indicele $f$ – mărime de fază (pe o înfășurare), indicele $l$ – mărime de linie (pe conductorul de alimentare).*
 
 | Conexiune | Tensiuni | Curenți |
 |---|---|---|
-| stea (Y) | $U_l = \sqrt 3\, U_f$ | $I_l = I_f$ |
-| triunghi (Δ) | $U_l = U_f$ | $I_l = \sqrt 3\, I_f$ |
+| stea (Y) | $U_l = \sqrt 3\thinspace U_f$ | $I_l = I_f$ |
+| triunghi (Δ) | $U_l = U_f$ | $I_l = \sqrt 3\thinspace I_f$ |
 
 Pentru ambele conexiuni, puterile unui receptor trifazat echilibrat sunt
 
-$$P = \sqrt 3\, U_l I_l \cos\varphi, \qquad Q = \sqrt 3\, U_l I_l \sin\varphi, \qquad S = \sqrt 3\, U_l I_l ,$$
+$$P = \sqrt 3\thinspace U_l I_l \cos\varphi, \qquad Q = \sqrt 3\thinspace U_l I_l \sin\varphi, \qquad S = \sqrt 3\thinspace U_l I_l ,$$
 
 unde $\varphi$ este defazajul pe o fază. Rețeaua de joasă tensiune din România este 230/400 V: 230 V între fază și neutru, 400 V între două faze.
 
@@ -163,13 +163,13 @@ Este ideea pe care se bazează **toate** mașinile rotative de c.a. (Ferraris ș
 
 Considerăm trei bobine identice, cu axele decalate în spațiu la 120°, alimentate cu trei curenți decalați în timp cu 120°. Fiecare bobină produce un câmp **pulsatoriu** (fix în spațiu, variabil în timp). Suma celor trei câmpuri este un câmp de **amplitudine constantă** ($1{,}5$ ori amplitudinea unei faze) care **se rotește** cu viteza unghiulară $\omega$ (figura 0.4).
 
-![Figura 0.4 – Câmpul magnetic învârtitor](figuri/f00-2-camp-invartitor.svg)
+![Figura 0.4 – Câmpul magnetic învârtitor](figuri/f00-4-camp-invartitor.svg)
 
 *Figura 0.4 – Solenațiile celor trei faze (colorate) și rezultanta lor (negru) la patru momente succesive. Figura este calculată numeric (problema 0.6).*
 
 Demonstrația, pentru solenațiile $\Theta_k = \Theta_m\cos(\omega t - k\cdot 120°)$ orientate după axele $\underline{a}_k = e^{jk\cdot 120°}$, $k = 0, 1, 2$:
 
-$$\underline{\Theta}_{rez} = \sum_{k=0}^{2} \Theta_m\cos(\omega t - k\cdot 120°)\, e^{jk\cdot 120°} = \frac{3}{2}\Theta_m\, e^{j\omega t},$$
+$$\underline{\Theta}_{rez} = \sum_{k=0}^{2} \Theta_m\cos(\omega t - k\cdot 120°)\thinspace e^{jk\cdot 120°} = \frac{3}{2}\Theta_m\thinspace e^{j\omega t},$$
 
 adică un vector de modul constant $\tfrac32\Theta_m$ care se rotește cu $\omega$ (s-au folosit $\cos x = \tfrac12(e^{jx}+e^{-jx})$ și faptul că $\sum_k e^{\pm jk\cdot 240°} = 0$).
 
@@ -201,15 +201,15 @@ Miezurile se fac din **tole** (tablă subțire, uzual 0,23–0,65 mm, izolată) 
 
 $$\eta = \frac{P_2}{P_1} = \frac{P_2}{P_2 + \sum P_{pierderi}} .$$
 
-**Încălzirea** limitează puterea unei mașini: căldura degajată ridică temperatura înfășurărilor, iar izolația se degradează din ce în ce mai repede pe măsură ce temperatura crește. Standardul IEC 60085 definește **clasele termice** ale sistemelor de izolație, de exemplu 130 (B), 155 (F) și 180 (H) – temperatura maximă, în °C, pentru care este garantată izolația [S4]. În practică, motoarele cu izolație clasa F sunt adesea folosite cu încălzirea limitată la clasa B, pentru o rezervă termică și o durată de viață mai mare.
+**Încălzirea** limitează puterea unei mașini: căldura degajată ridică temperatura înfășurărilor, iar izolația se degradează din ce în ce mai repede pe măsură ce temperatura crește. Standardul IEC 60085 definește **clasele termice** ale sistemelor de izolație, de exemplu 130 (B), 155 (F) și 180 (H) – temperatura maximă de utilizare continuă, în °C, pentru care este evaluat sistemul de izolație [S4]. Pentru mașinile rotative, IEC 60034-1 [S1] limitează, în funcție de clasă, **supratemperatura** medie a înfășurărilor față de mediu. În practică, motoarele cu izolație clasa F sunt adesea folosite cu încălzirea limitată la clasa B, pentru o rezervă termică și o durată de viață mai mare.
 
-**Regimurile de funcționare** standardizate (IEC 60034-1 [S1]) descriu cum variază sarcina în timp: **S1** – continuu, **S2** – de scurtă durată, **S3** – intermitent periodic, ... până la **S10**. O mașină de 15 kW în regim S1 poate da mai mult de 15 kW în regim S2 de 10 minute, pentru că nu ajunge la temperatura de regim permanent (cap. 5).
+**Regimurile de funcționare** standardizate (IEC 60034-1 [S1]) descriu cum variază sarcina în timp: **S1** – continuu, **S2** – de scurtă durată, **S3** – intermitent periodic, ... până la **S10**. O mașină de 15 kW în regim S1 poate da mai mult de 15 kW în regim S2 de 10 minute, pentru că nu ajunge la temperatura de regim permanent (§ 5.8).
 
 ## 0.10. Plăcuța indicatoare
 
 Pe plăcuța unui motor asincron se găsesc, de regulă: tipul, standardul (IEC 60034), puterea **utilă** nominală $P_n$ (la arbore!), tensiunea și conexiunea, curentul nominal, frecvența, turația nominală, $\cos\varphi_n$, clasa de randament (IE2, IE3...) și randamentul, clasa de izolație, gradul de protecție **IP** (de exemplu IP55; IEC 60529 [S5]: prima cifră – protecția la corpuri solide/praf, a doua – la apă) și regimul de funcționare (S1).
 
-> **Verificare rapidă de coerență** a datelor de pe plăcuță: $P_n = \sqrt 3\, U_n I_n \cos\varphi_n\,\eta_n$. Dacă relația nu se verifică aproximativ, una dintre valori este citită greșit (vezi problema 0.3).
+> **Verificare rapidă de coerență** a datelor de pe plăcuță: $P_n = \sqrt 3\thinspace U_n I_n \cos\varphi_n\thinspace \eta_n$. Dacă relația nu se verifică aproximativ, una dintre valori este citită greșit (vezi problema 0.3).
 
 ---
 
@@ -223,11 +223,11 @@ O bobină cu $N = 500$ spire este străbătută de un flux sinusoidal cu $\Phi_{
 
 **Rezolvare.**
 
-$$E = 4{,}44\, f N \Phi_{max} = 4{,}44 \cdot 50 \cdot 500 \cdot 0{,}002 = 222\ \text{V}.$$
+$$E = 4{,}44\thinspace f N \Phi_{max} = 4{,}44 \cdot 50 \cdot 500 \cdot 0{,}002 = 222\ \text{V}.$$
 
 Cu factorul exact $\sqrt 2\pi = 4{,}4429$: $E = 222{,}14$ V; amplitudinea este $E_{max} = 2\pi f N\Phi_{max} = 314{,}2$ V.
 
-**Verificare (calea a doua).** Se calculează numeric $e(t) = -N\,d\Phi/dt$ pe o perioadă, apoi valoarea efectivă $\sqrt{\frac1T\int_0^T e^2\,dt}$: rezultă tot 222,14 V.
+**Verificare (calea a doua).** Se calculează numeric $e(t) = -N\thinspace d\Phi/dt$ pe o perioadă, apoi valoarea efectivă $\sqrt{\frac1T\int_0^T e^2\thinspace dt}$: rezultă tot 222,14 V.
 
 ### Problema 0.2 – Circuit magnetic cu întrefier
 
@@ -235,7 +235,7 @@ Un miez de fier cu lungimea medie $l_{Fe} = 0{,}5$ m, secțiunea $A = 10$ cm² �
 
 **Rezolvare (prin intensitățile câmpului).**
 
-$$H_{Fe} = \frac{B}{\mu_0\mu_r} = \frac{1{,}2}{4\pi\cdot 10^{-7}\cdot 2000} = 477{,}5\ \text{A/m}, \qquad H_\delta = \frac{B}{\mu_0} = 954\,930\ \text{A/m}.$$
+$$H_{Fe} = \frac{B}{\mu_0\mu_r} = \frac{1{,}2}{4\pi\cdot 10^{-7}\cdot 2000} = 477{,}5\ \text{A/m}, \qquad H_\delta = \frac{B}{\mu_0} = 954\thinspace 930\ \text{A/m}.$$
 
 $$\Theta = H_{Fe}l_{Fe} + H_\delta\delta = 238{,}7 + 954{,}9 = 1193{,}7\ \text{A} \quad\Rightarrow\quad I = \frac{\Theta}{N} = 5{,}97\ \text{A}.$$
 
@@ -249,11 +249,11 @@ Inductivitatea: $L = N\Phi/I = 40{,}2$ mH, identic cu $L = N^2/(\mathcal{R}_{Fe}
 
 Un motor are pe plăcuță: $P_n = 11$ kW, $U_n = 400$ V, $\eta_n = 0{,}90$, $\cos\varphi_n = 0{,}85$. Ce curent absoarbe la sarcină nominală?
 
-**Rezolvare.** $P_n$ este puterea **utilă**; puterea absorbită este $P_1 = P_n/\eta_n = 12\,222$ W, deci
+**Rezolvare.** $P_n$ este puterea **utilă**; puterea absorbită este $P_1 = P_n/\eta_n = 12\thinspace 222$ W, deci
 
-$$I_n = \frac{P_n}{\sqrt 3\, U_n\, \eta_n \cos\varphi_n} = \frac{11\,000}{\sqrt 3 \cdot 400 \cdot 0{,}90 \cdot 0{,}85} = 20{,}75\ \text{A}.$$
+$$I_n = \frac{P_n}{\sqrt 3\thinspace U_n\thinspace \eta_n \cos\varphi_n} = \frac{11\thinspace 000}{\sqrt 3 \cdot 400 \cdot 0{,}90 \cdot 0{,}85} = 20{,}75\ \text{A}.$$
 
-**Verificare (două căi).** (a) Prin puterea aparentă: $S = P_1/\cos\varphi = 14\,379$ VA, $I = S/(\sqrt3 U) = 20{,}75$ A ✓. (b) Pe o fază, în conexiune stea: $P_1/3 = 4074$ W, $U_f = 230{,}9$ V, $I = 4074/(230{,}9\cdot 0{,}85) = 20{,}75$ A ✓. Puterea reactivă absorbită: $Q = \sqrt{S^2 - P_1^2} = 7575$ var.
+**Verificare (două căi).** (a) Prin puterea aparentă: $S = P_1/\cos\varphi = 14\thinspace 379$ VA, $I = S/(\sqrt3 U) = 20{,}75$ A ✓. (b) Pe o fază, în conexiune stea: $P_1/3 = 4074$ W, $U_f = 230{,}9$ V, $I = 4074/(230{,}9\cdot 0{,}85) = 20{,}75$ A ✓. Puterea reactivă absorbită: $Q = \sqrt{S^2 - P_1^2} = 7575$ var.
 
 ### Problema 0.4 – Aceeași sarcină în stea și în triunghi
 
@@ -261,10 +261,10 @@ Trei impedanțe $\underline{Z} = 10 + j7{,}5$ Ω ($\lvert\underline{Z}\rvert = 1
 
 **Rezolvare.**
 
-- Stea: $U_f = 400/\sqrt 3 = 230{,}9$ V, $I_l = I_f = 230{,}9/12{,}5 = 18{,}48$ A, $P_Y = 3 I_f^2 R = 10\,240$ W.
-- Triunghi: $U_f = 400$ V, $I_f = 32{,}0$ A, $I_l = \sqrt 3\cdot 32 = 55{,}43$ A, $P_\Delta = 3 I_f^2 R = 30\,720$ W.
+- Stea: $U_f = 400/\sqrt 3 = 230{,}9$ V, $I_l = I_f = 230{,}9/12{,}5 = 18{,}48$ A, $P_Y = 3 I_f^2 R = 10\thinspace 240$ W.
+- Triunghi: $U_f = 400$ V, $I_f = 32{,}0$ A, $I_l = \sqrt 3\cdot 32 = 55{,}43$ A, $P_\Delta = 3 I_f^2 R = 30\thinspace 720$ W.
 
-Raportul puterilor și al curenților de linie este exact **3**. **Verificare:** $P_\Delta = \sqrt 3\, U_l I_l\cos\varphi = \sqrt3 \cdot 400\cdot 55{,}43\cdot 0{,}8 = 30\,720$ W ✓.
+Raportul puterilor și al curenților de linie este exact **3**. **Verificare:** $P_\Delta = \sqrt 3\thinspace U_l I_l\cos\varphi = \sqrt3 \cdot 400\cdot 55{,}43\cdot 0{,}8 = 30\thinspace 720$ W ✓.
 
 **Concluzie utilă mai departe:** trecând un motor din triunghi în stea pe aceeași rețea, curentul de linie și cuplul scad de 3 ori – principiul pornirii stea-triunghi (§ 2.7, problema 2.4).
 
@@ -274,7 +274,7 @@ Valorile din tabelul din § 0.8 se obțin din $n_1 = 60f/p$; de exemplu, pentru 
 
 ### Problema 0.6 – Câmpul învârtitor, verificat numeric
 
-Scriptul calculează rezultanta celor trei solenații pentru 721 de valori ale lui $\omega t$ între 0 și 360°: modulul rămâne $1{,}500\,\Theta_m$ (cu abatere sub $10^{-15}$), iar unghiul rezultantei este egal cu $\omega t$. Rezultatul confirmă demonstrația analitică din § 0.8 și a fost folosit pentru figura 0.4.
+Scriptul calculează rezultanta celor trei solenații pentru 721 de valori ale lui $\omega t$ între 0 și 360°: modulul rămâne $1{,}500\thinspace \Theta_m$ (cu abatere sub $10^{-15}$), iar unghiul rezultantei este egal cu $\omega t$. Rezultatul confirmă demonstrația analitică din § 0.8 și a fost folosit pentru figura 0.4.
 
 ---
 
@@ -302,7 +302,7 @@ Scriptul calculează rezultanta celor trei solenații pentru 721 de valori ale l
 6. Stea: $U_l = \sqrt3 U_f$, $I_l = I_f$; triunghi: $U_l = U_f$, $I_l = \sqrt3 I_f$ (§ 0.7).
 7. Se inversează două faze oarecare ale alimentării (§ 0.8).
 8. $2p = 6 \Rightarrow p = 3$, $n_1 = 60\cdot 50/3 = 1000$ rot/min.
-9. De exemplu 130 (B), 155 (F), 180 (H) – temperatura maximă admisă pentru sistemul de izolație, în °C, conform IEC 60085 (§ 0.9).
+9. De exemplu 130 (B), 155 (F), 180 (H) – temperatura maximă de utilizare continuă pentru care este evaluat sistemul de izolație, în °C, conform IEC 60085 (§ 0.9).
 10. Puterea **utilă** (mecanică, la arbore); puterea absorbită este mai mare, $P_1 = P_n/\eta$ (§ 0.10).
 
 </details>

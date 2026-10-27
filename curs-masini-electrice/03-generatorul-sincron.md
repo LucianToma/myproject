@@ -30,13 +30,13 @@ Pe piesele polare se montează adesea o **înfășurare de amortizare** (o coliv
 
 Rotorul excitat este rotit de turbină cu turația $n$. Câmpul lui, solidar cu rotorul, este un **câmp învârtitor obținut mecanic**, care induce în cele trei faze ale statorului tensiuni decalate cu 120° (fazele sunt decalate în spațiu). Frecvența lor este
 
-$$\boxed{f = \frac{p\,n}{60}}$$
+$$\boxed{f = \frac{p\thinspace n}{60}}$$
 
 – aceeași relație ca viteza de sincronism (§ 0.8), citită invers. Pentru a da 50 Hz, un turbogenerator cu 2 poli trebuie să se rotească cu 3000 rot/min, iar un hidrogenerator cu 48 de poli – cu 125 rot/min (problema 3.1).
 
 Valoarea efectivă a tensiunii induse pe fază este (§ 0.4)
 
-$$E_0 = 4{,}44\, f\, N\, k_w\, \Phi ,$$
+$$E_0 = 4{,}44\thinspace f\thinspace N\thinspace k_w\thinspace \Phi ,$$
 
 unde $\Phi$ este fluxul pe pol, produs de curentul de excitație. La frecvență constantă, $E_0$ se reglează **numai prin curentul de excitație**.
 
@@ -50,19 +50,21 @@ Cu statorul deschis, $U_0 = E_0$. Curba $U_0(I_e)$ la turație nominală (figura
 
 ## 3.4. Reacția indusului
 
-Când generatorul debitează, curenții statorici produc un **câmp învârtitor propriu**, care se rotește sincron cu rotorul și se suprapune peste câmpul de excitație. Efectul (**reacția indusului**) depinde de natura sarcinii:
+Când generatorul debitează, curenții statorici produc un **câmp învârtitor propriu**, care se rotește sincron cu rotorul și se suprapune peste câmpul de excitație. Efectul (**reacția indusului**) depinde de unghiul $\psi$ dintre curent și tensiunea electromotoare $\underline{E}_0$ (adică de poziția curentului față de axa polilor rotorului):
 
-| Sarcină | Reacția indusului | Consecință |
+| Curentul față de $\underline{E}_0$ | Reacția indusului | Consecință |
 |---|---|---|
-| rezistivă ($\varphi = 0$) | **transversală** – deformează câmpul | tensiunea scade puțin |
-| inductivă ($\varphi = 90°$) | **longitudinală demagnetizantă** – se opune excitației | tensiunea scade mult; e nevoie de mai mult curent de excitație |
-| capacitivă ($\varphi = -90°$) | **longitudinală magnetizantă** – se adaugă excitației | tensiunea crește |
+| în fază ($\psi = 0$) | **transversală** – deformează câmpul | tensiunea variază puțin |
+| în urmă cu 90° ($\psi = 90°$; sarcină pur inductivă) | **longitudinală demagnetizantă** – se opune excitației | tensiunea scade mult; e nevoie de mai mult curent de excitație |
+| înainte cu 90° ($\psi = -90°$; sarcină pur capacitivă) | **longitudinală magnetizantă** – se adaugă excitației | tensiunea crește |
+
+În cazurile intermediare, curentul are ambele componente. Atenție: la o sarcină **rezistivă** curentul este în fază cu $\underline{U}$, dar în urma lui $\underline{E}_0$ cu unghiul $\delta$, deci reacția este parțial transversală și **parțial demagnetizantă** (pentru G10 la $I_n$: $\psi = \delta = 47{,}8°$, componenta demagnetizantă $I\sin\psi = 0{,}74\thinspace I$). Tensiunea scade și la sarcină rezistivă, dar mai puțin decât la sarcină inductivă (figura 3.5).
 
 ## 3.5. Schema echivalentă și diagrama fazorială
 
 Pentru o mașină cu poli înecați, nesaturată, efectul reacției indusului și al fluxului de dispersie se reprezintă printr-o singură reactanță, **reactanța sincronă** $X_s$. Ecuația pe fază (convenția de generator) este
 
-$$\boxed{\underline{E}_0 = \underline{U} + (R + jX_s)\,\underline{I}}$$
+$$\boxed{\underline{E}_0 = \underline{U} + (R + jX_s)\thinspace \underline{I}}$$
 
 La generatoarele mari $R \ll X_s$ și se neglijează. Schema echivalentă este o sursă $\underline{E}_0$ în serie cu $jX_s$ (figura 3.3).
 
@@ -93,7 +95,7 @@ $$X_s = \frac{U_{0f}(I_e)}{I_{sc}(I_e)}$$
 
 La curent de excitație constant, tensiunea la borne variază puternic cu sarcina (figura 3.5) – mult mai mult decât la un transformator. Dacă sarcina inductivă nominală ar fi deconectată brusc, tensiunea (în regim permanent, pe modelul liniar) ar crește la $E_0$ – în problema 3.3, cu 88 %. De aceea generatoarele au un **regulator automat de tensiune** (RAT, în engleză AVR), care modifică excitația pentru a menține tensiunea constantă.
 
-![Figura 3.5 – Caracteristicile externe](figuri/f03-6-caracteristici-externe.svg)
+![Figura 3.5 – Caracteristicile externe](figuri/f03-5-caracteristici-externe.svg)
 
 *Figura 3.5 – Caracteristicile externe ale lui G10 la excitație constantă (aleasă pentru $U_n$ la $I_n$, pentru fiecare factor de putere). La sarcină capacitivă, peste 1,07·$I_n$ nu mai există regim permanent stabil.*
 
@@ -101,13 +103,13 @@ La curent de excitație constant, tensiunea la borne variază puternic cu sarcin
 
 Neglijând $R$, din diagrama fazorială rezultă (proiectând $jX_s\underline{I}$ perpendicular pe $\underline{U}$: $X_s I\cos\varphi = E_0\sin\delta$):
 
-$$\boxed{P = 3\,\frac{U\,E_0}{X_s}\,\sin\delta}, \qquad Q = 3\,\frac{U E_0\cos\delta - U^2}{X_s}, \qquad M = \frac{P}{\Omega_1}$$
+$$\boxed{P = 3\thinspace \frac{U\thinspace E_0}{X_s}\thinspace \sin\delta}, \qquad Q = 3\thinspace \frac{U E_0\cos\delta - U^2}{X_s}, \qquad M = \frac{P}{\Omega_1}$$
 
 (mărimi de fază). Puterea crește cu unghiul intern până la **puterea maximă** la $\delta = 90°$:
 
-$$P_{max} = 3\,\frac{U E_0}{X_s} .$$
+$$P_{max} = 3\thinspace \frac{U E_0}{X_s} .$$
 
-![Figura 3.6 – Caracteristica putere–unghi](figuri/f03-5-putere-unghi.svg)
+![Figura 3.6 – Caracteristica putere–unghi](figuri/f03-6-putere-unghi.svg)
 
 *Figura 3.6 – Caracteristica $P(\delta)$ a lui G10 la excitația nominală.*
 
@@ -147,7 +149,7 @@ Un generator care alimentează singur o rețea izolată (grup electrogen, rețea
 
 Regulatoarele de viteză ale turbinelor au o caracteristică cu **statism** (în engleză *droop*) $s_t$: frecvența scade liniar cu puterea,
 
-$$f = f_0 - s_t\, f_n\,\frac{P}{P_n}, \qquad \text{deci}\qquad \Delta P = \frac{P_n}{s_t f_n}\,(-\Delta f) .$$
+$$f = f_0 - s_t\thinspace f_n\thinspace \frac{P}{P_n}, \qquad \text{deci}\qquad \Delta P = \frac{P_n}{s_t f_n}\thinspace (-\Delta f) .$$
 
 Statismul permite împărțirea stabilă a variațiilor de sarcină între generatoarele care funcționează în paralel, proporțional cu $P_n/s_t$ (problema 3.5, figura 3.7). Valori tipice: 4–5 % [8].
 
@@ -210,7 +212,7 @@ Pentru comparație, la același curent: cu $\cos\varphi = 1$, $E_0 = 5418$ V și
 
 G10, conectat la o rețea de 6,3 kV, debitează $P$ = 8 MW (turbina nu se modifică). Cum variază curentul, factorul de putere și puterea reactivă când se modifică excitația?
 
-**Rezolvare.** Pentru fiecare $E_0$: $\sin\delta = \dfrac{P X_s}{3UE_0}$, apoi $\underline{I} = (\underline{E}_0 - \underline{U})/(jX_s)$ și $\underline{S} = 3\underline{U}\,\underline{I}^*$.
+**Rezolvare.** Pentru fiecare $E_0$: $\sin\delta = \dfrac{P X_s}{3UE_0}$, apoi $\underline{I} = (\underline{E}_0 - \underline{U})/(jX_s)$ și $\underline{S} = 3\underline{U}\thinspace \underline{I}^{\ast}$.
 
 Excitația pentru $\cos\varphi = 1$: $I = P/(3U) = 733{,}1$ A și $E_0 = \sqrt{U^2 + (X_sI)^2} = 4853$ V.
 
@@ -261,7 +263,7 @@ $$\Delta f = -\frac{12}{50 + 20} = -0{,}1714\ \text{Hz} \Rightarrow f = 49{,}83\
 5. Pentru că reacția indusului este demagnetizantă la sarcină inductivă; diagrama fazorială arată un $E_0$ mai mare (problema 3.3, figura 3.4).
 6. Unghiul dintre $\underline{E}_0$ și $\underline{U}$ (și, în grade electrice, dintre axa rotorului și cea a câmpului rezultant); în regim stabil, $\delta < 90°$, iar practic mult mai mic (§ 3.8).
 7. Aceeași tensiune, aceeași frecvență, aceeași succesiune a fazelor, tensiuni în fază la momentul conectării (§ 3.9).
-8. Crește puterea activă (prin creșterea lui $\delta$); turația rămâne sincronă, iar puterea reactivă se modifică doar puțin (§ 3.9).
+8. Crește puterea activă (prin creșterea lui $\delta$); turația rămâne sincronă. La excitație constantă, puterea reactivă livrată scade, pentru că $Q = 3(UE_0\cos\delta - U^2)/X_s$ și $\cos\delta$ scade (pentru G10 la $E_0$ = 6847 V: de la 8,0 Mvar la $P = 0$ la 6,0 Mvar la $P$ = 8 MW) (§ 3.8, § 3.9).
 9. Generatorul livrează mai multă putere reactivă inductivă (supraexcitat); puterea activă nu se modifică (problema 3.4).
 10. Asigură împărțirea stabilă și previzibilă a variațiilor de sarcină între generatoare, proporțional cu $P_n/s_t$ (§ 3.10).
 11. Pentru că dispare căderea mare de tensiune pe reactanța sincronă: tensiunea devine $E_0$. De aceea este necesar regulatorul automat de tensiune (§ 3.7).

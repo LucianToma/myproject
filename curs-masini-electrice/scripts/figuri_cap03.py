@@ -124,7 +124,7 @@ for ax, (titlu, phi) in zip(axs, (("sarcină inductivă (cos φ = 0,8)", np.arcc
     d_ = np.angle(E0)
     th = np.linspace(0, d_, 30)
     ax.plot(900 * np.cos(th), 900 * np.sin(th), color=TEXT2, lw=1)
-    ax.text(1150 * np.cos(d_ / 2), 1150 * np.sin(d_ / 2), "δ", color=TEXT, fontsize=11, va="center")
+    ax.text(1150 * np.cos(0.8 * d_), 1150 * np.sin(0.8 * d_), "δ", color=TEXT, fontsize=11, va="center")
     ax.text(0, -2600, f"E₀ = {abs(E0) * SQRT3 / 1e3:.2f} kV (linie)\nδ = {np.degrees(d_):.1f}°".replace(".", ","),
             color=TEXT, fontsize=9, va="top")
     ax.set_xlim(-800, 7200)
@@ -158,7 +158,7 @@ ax.set_xlabel("δ [°]")
 ax.set_ylabel("P [MW]")
 ax.set_title("P(δ) = 3·U·E₀·sin δ / X$_s$ (excitație constantă)")
 virgula(ax)
-salveaza(fig, "f03-5-putere-unghi")
+salveaza(fig, "f03-6-putere-unghi")
 
 # --- Caracteristicile externe (excitație constantă, aleasă pentru U = Uₙ la Iₙ) ---
 fig, ax = plt.subplots(figsize=(6.8, 3.9))
@@ -178,7 +178,7 @@ ax.annotate("limita de stabilitate\n(δ = 90°)", xy=(1.068, 4.9), xytext=(0.72,
             arrowprops=dict(arrowstyle="-", color=TEXT2, lw=0.8))
 ax.legend(loc="lower left")
 virgula(ax)
-salveaza(fig, "f03-6-caracteristici-externe")
+salveaza(fig, "f03-5-caracteristici-externe")
 
 # --- Statismul: împărțirea sarcinii între două generatoare ---------------------
 fig, ax = plt.subplots(figsize=(6.8, 3.9))

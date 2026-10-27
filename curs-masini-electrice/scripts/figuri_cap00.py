@@ -53,7 +53,7 @@ fig.legend(handles=[plt.Line2D([], [], color=c, lw=2) for c in culori + [TEXT]],
            labels=["solenația fazei a", "faza b", "faza c", "rezultanta (1,5·F$_m$)"],
            loc="lower center", ncol=4, bbox_to_anchor=(0.5, -0.06))
 fig.suptitle("Câmpul învârtitor: rezultanta are amplitudine constantă și se rotește cu ωt", color=TEXT, fontsize=11)
-salveaza(fig, "f00-2-camp-invartitor")
+salveaza(fig, "f00-4-camp-invartitor")
 
 # --- Sistemul trifazat de tensiuni -------------------------------------------
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 3.4), gridspec_kw=dict(width_ratios=[2.2, 1]))
@@ -77,7 +77,7 @@ ax2.set_aspect("equal")
 ax2.axis("off")
 ax2.set_title("Fazori (decalaj 120°)")
 virgula(ax1)
-salveaza(fig, "f00-3-sistem-trifazat")
+salveaza(fig, "f00-2-sistem-trifazat")
 
 # --- Conexiunile stea și triunghi -------------------------------------------
 def impedanta(ax, z0, z1, eticheta=None):
@@ -124,4 +124,4 @@ for a in (a1, a2):
     a.set_ylim(-1.75, 2.0)
     a.set_aspect("equal")
     a.axis("off")
-salveaza(fig, "f00-4-stea-triunghi")
+salveaza(fig, "f00-3-stea-triunghi")

@@ -22,11 +22,11 @@ Când crește cuplul de sarcină, rotorul **rămâne puțin în urmă** față d
 
 În **convenția de motor** (curentul $\underline{I}$ este absorbit din rețea), ecuația pe fază este
 
-$$\boxed{\underline{U} = \underline{E}_0 + jX_s\,\underline{I}}$$
+$$\boxed{\underline{U} = \underline{E}_0 + jX_s\thinspace \underline{I}}$$
 
 – aceeași ecuație ca la generator (§ 3.5), cu sensul curentului inversat. Diagrama fazorială arată că, la motor, $\underline{E}_0$ este **în urma** tensiunii rețelei cu unghiul $\delta$ (figura 4.1). Puterea absorbită și cuplul electromagnetic sunt
 
-$$P_1 = 3\,\frac{U E_0}{X_s}\sin\delta, \qquad M = \frac{P_1}{\Omega_1} = \frac{3}{\Omega_1}\,\frac{U E_0}{X_s}\sin\delta .$$
+$$P_1 = 3\thinspace \frac{U E_0}{X_s}\sin\delta, \qquad M = \frac{P_1}{\Omega_1} = \frac{3}{\Omega_1}\thinspace \frac{U E_0}{X_s}\sin\delta .$$
 
 ![Figura 4.1 – Diagrame fazoriale](figuri/f04-1-fazori-excitatie.svg)
 
@@ -34,11 +34,11 @@ $$P_1 = 3\,\frac{U E_0}{X_s}\sin\delta, \qquad M = \frac{P_1}{\Omega_1} = \frac{
 
 **Cuplul maxim (de desprindere)** apare la $\delta = 90°$ (figura 4.2):
 
-$$M_{max} = \frac{3}{\Omega_1}\,\frac{U E_0}{X_s} .$$
+$$M_{max} = \frac{3}{\Omega_1}\thinspace \frac{U E_0}{X_s} .$$
 
 Se observă că $M_{max}$ este **proporțional cu $U$** (nu cu $U^2$, ca la motorul asincron) și crește cu excitația: motorul sincron este mai puțin sensibil la scăderile de tensiune, iar la nevoie se poate mări rezerva de stabilitate prin supraexcitare (problema 4.4).
 
-![Figura 4.2 – Cuplul în funcție de unghiul intern](figuri/f04-3-cuplu-unghi.svg)
+![Figura 4.2 – Cuplul în funcție de unghiul intern](figuri/f04-2-cuplu-unghi.svg)
 
 *Figura 4.2 – Caracteristica $M(\delta)$ a lui MS1000 la excitația nominală.*
 
@@ -54,7 +54,7 @@ La **putere constantă**, curentul de excitație nu modifică puterea activă, c
 
 Graficul curentului în funcție de excitație, la putere constantă, are forma literei V – **curbele în V** (figura 4.3). Minimul fiecărei curbe corespunde lui $\cos\varphi = 1$. La excitație prea mică, $\delta$ ajunge la 90° și motorul iese din sincronism (punctele marcate).
 
-![Figura 4.3 – Curbele în V](figuri/f04-2-curbe-V.svg)
+![Figura 4.3 – Curbele în V](figuri/f04-3-curbe-V.svg)
 
 *Figura 4.3 – Curbele în V ale lui MS1000, calculate din ecuația fazorială la trei puteri. Linia întreruptă unește punctele cu $\cos\varphi = 1$.*
 
@@ -100,7 +100,7 @@ Toate rezultatele sunt calculate și verificate de scriptul [`scripts/probleme_c
 
 Calculați pentru MS1000 la sarcină nominală: curentul, $E_0$, unghiul intern, puterea reactivă și cuplul maxim.
 
-**Rezolvare.** $P_1 = P_n/\eta = 1041{,}7$ kW; $I_n = \dfrac{1\,041\,700}{\sqrt3\cdot 6000\cdot 0{,}9} = 111{,}4$ A; $\varphi = \arccos 0{,}9 = 25{,}84°$ (curent **înainte** față de tensiune, motor supraexcitat). $U_f = 3464{,}1$ V; $n_1$ = 750 rot/min; $M_n = 9550\cdot 1000/750 = 12\,732$ N·m.
+**Rezolvare.** $P_1 = P_n/\eta = 1041{,}7$ kW; $I_n = \dfrac{1\thinspace 041\thinspace 700}{\sqrt3\cdot 6000\cdot 0{,}9} = 111{,}4$ A; $\varphi = \arccos 0{,}9 = 25{,}84°$ (curent **înainte** față de tensiune, motor supraexcitat). $U_f = 3464{,}1$ V; $n_1$ = 750 rot/min, $\Omega_1 = 78{,}54$ rad/s; $M_n = P_n/\Omega_1 = 1\thinspace 000\thinspace 000/78{,}54 = 12\thinspace 732$ N·m.
 
 $$jX_s\underline{I} = 36\cdot 111{,}4\angle(90° + 25{,}84°) = -1747{,}6 + j3608{,}4\ \text{V},$$
 
@@ -108,7 +108,7 @@ $$\underline{E}_0 = \underline{U} - jX_s\underline{I} = 5211{,}7 - j3608{,}4 = 6
 
 Deci $E_0$ = 6339 V pe fază (10,98 kV de linie), iar rotorul este cu $\delta$ = 34,70° în urma câmpului. Motorul **furnizează** rețelei $Q = 3U_fI\sin\varphi = 504{,}5$ kvar.
 
-Puterea maximă la această excitație: $P_{1max} = 3\cdot 3464{,}1\cdot 6339/36 = 1830$ kW, deci $M_{max} \approx 1\,830\,000/78{,}54 = 23\,300$ N·m – de **1,76 ori** cuplul electromagnetic la sarcină nominală.
+Puterea maximă la această excitație: $P_{1max} = 3\cdot 3464{,}1\cdot 6339/36 = 1830$ kW, deci $M_{max} \approx 1\thinspace 830\thinspace 000/78{,}54 = 23\thinspace 300$ N·m – de **1,76 ori** cuplul electromagnetic la sarcină nominală.
 
 **Verificare.** $P_1 = 3U_fE_0\sin\delta/X_s = 1041{,}7$ kW ✓; $Q = 3(U_f^2 - U_fE_0\cos\delta)/X_s = -504{,}5$ kvar (semnul minus, în convenția de receptor, înseamnă Q furnizat) ✓.
 
@@ -152,7 +152,7 @@ Tensiunea rețelei scade cu 20 %, excitația rămâne cea nominală. Rămâne MS
 
 Un motor cu magneți permanenți are 8 poli. Ce turație are la 50, 200 și 800 Hz? Ce frecvență este necesară pentru 12 000 rot/min?
 
-**Rezolvare.** $n = 60f/p$, cu $p = 4$: 750, 3000 și 12 000 rot/min. Pentru 12 000 rot/min: $f = 12\,000\cdot 4/60 = 800$ Hz. Astfel de frecvențe sunt obișnuite la motoarele de tracțiune ale vehiculelor electrice.
+**Rezolvare.** $n = 60f/p$, cu $p = 4$: 750, 3000 și 12 000 rot/min. Pentru 12 000 rot/min: $f = 12\thinspace 000\cdot 4/60 = 800$ Hz. Astfel de frecvențe sunt obișnuite la motoarele de tracțiune ale vehiculelor electrice.
 
 ---
 

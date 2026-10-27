@@ -170,7 +170,7 @@ a2.set_title("Curentul absorbit")
 fig.legend(*a1.get_legend_handles_labels(), loc="lower center", ncol=4, bbox_to_anchor=(0.5, -0.07))
 for a in (a1, a2):
     virgula(a)
-salveaza(fig, "f02-6-model-vs-catalog")
+salveaza(fig, "f02-9-model-vs-catalog")
 
 # --- Caracteristicile de funcționare ----------------------------------------
 s_ = np.linspace(0.0015, 0.04, 300)
@@ -189,7 +189,7 @@ for ax in axs[1]:
     ax.set_xlabel("P₂/Pₙ")
 fig.suptitle("Caracteristicile de funcționare ale motorului M15 (U = Uₙ, f = fₙ)", color=TEXT, fontsize=11)
 fig.tight_layout()
-salveaza(fig, "f02-7-caracteristici-functionare")
+salveaza(fig, "f02-6-caracteristici-functionare")
 
 # --- Influența rezistenței rotorice -------------------------------------------
 n = np.linspace(0, 1499, 600)
@@ -221,7 +221,7 @@ ax.set_xlabel("n [rot/min]")
 ax.set_ylabel("M [N·m]")
 ax.set_title("Alimentare de la convertor cu U/f = constant (fără compensarea R₁)")
 virgula(ax)
-salveaza(fig, "f02-9-familie-uf")
+salveaza(fig, "f02-10-familie-uf")
 
 # --- Pornirea stea-triunghi ---------------------------------------------------
 n = np.linspace(0, 1499, 600)
@@ -249,4 +249,4 @@ a2.set_title("Curentul de linie")
 fig.legend(*a1.get_legend_handles_labels(), loc="lower center", ncol=4, bbox_to_anchor=(0.5, -0.07))
 for a in (a1, a2):
     virgula(a)
-salveaza(fig, "f02-10-stea-triunghi")
+salveaza(fig, "f02-7-stea-triunghi")

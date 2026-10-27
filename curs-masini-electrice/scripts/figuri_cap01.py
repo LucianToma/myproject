@@ -133,7 +133,7 @@ ax.set_ylabel("η [%]")
 ax.set_title("Randamentul transformatorului de 400 kVA")
 ax.legend(loc="lower right")
 virgula(ax)
-salveaza(fig, "f01-5-randament")
+salveaza(fig, "f01-6-randament")
 
 # --- Caracteristica externă (400 kVA, 20/0,4 kV, usc = 4 %) -----------------
 U2f, I2n = 400 / SQRT3, Sn / (SQRT3 * 400)
@@ -153,7 +153,7 @@ ax.set_ylabel("U₂ [V] (tensiunea de linie)")
 ax.set_title("Caracteristica externă U₂(β) la U₁ = U₁ₙ")
 ax.legend(loc="lower left")
 virgula(ax)
-salveaza(fig, "f01-6-caracteristica-externa")
+salveaza(fig, "f01-5-caracteristica-externa")
 
 # --- Grupa de conexiuni Dyn11 -------------------------------------------------
 fig, (a1, a2) = plt.subplots(1, 2, figsize=(8.0, 3.8))

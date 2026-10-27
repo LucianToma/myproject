@@ -30,7 +30,7 @@ flowchart LR
 
 Pentru un sistem rotativ cu momentul de inerție $J$ (raportat la arborele motorului), legea a doua a lui Newton pentru rotație este
 
-$$\boxed{J\,\frac{d\Omega}{dt} = M - M_r}$$
+$$\boxed{J\thinspace \frac{d\Omega}{dt} = M - M_r}$$
 
 unde $M$ este cuplul motorului, iar $M_r$ cuplul rezistent al mașinii de lucru (inclusiv frecările). Diferența $M_d = M - M_r$ se numește **cuplu dinamic**:
 
@@ -44,7 +44,7 @@ unde $M$ este cuplul motorului, iar $M_r$ cuplul rezistent al mașinii de lucru 
 
 **Cuplul rezistent** (din conservarea puterii, cu pierderile din transmisie):
 
-$$M_r' = \frac{M_{r}}{i\,\eta_t}\ \ \text{(puterea curge de la motor spre sarcină)}, \qquad M_r' = \frac{M_{r}\,\eta_t}{i}\ \ \text{(puterea curge de la sarcină spre motor)} .$$
+$$M_r' = \frac{M_{r}}{i\thinspace \eta_t}\ \ \text{(puterea curge de la motor spre sarcină)}, \qquad M_r' = \frac{M_{r}\thinspace \eta_t}{i}\ \ \text{(puterea curge de la sarcină spre motor)} .$$
 
 **Momentul de inerție** (din conservarea energiei cinetice, $\tfrac12 J\Omega_{maș}^2 = \tfrac12 J'\Omega_{motor}^2$):
 
@@ -79,9 +79,9 @@ abaterea se amortizează numai dacă paranteza este negativă:
 
 $$\boxed{\frac{dM}{d\Omega} < \frac{dM_r}{d\Omega}}\qquad \text{(criteriul de stabilitate statică)} .$$
 
-![Figura 5.2 – Stabilitatea punctului de funcționare](figuri/f05-3-stabilitate.svg)
+![Figura 5.2 – Stabilitatea punctului de funcționare](figuri/f05-2-stabilitate.svg)
 
-*Figura 5.2 – Motorul M15 și un cuplu rezistent constant de 2·$M_n$: două puncte de intersecție, dintre care doar A este stabil (problema 5.5).*
+*Figura 5.2 – Motorul M15 (model cu colivie dublă, care reproduce datele de catalog) și un cuplu rezistent constant de 2,5·$M_n$: două puncte de intersecție, dintre care doar A este stabil (problema 5.5).*
 
 Pentru motorul asincron, aceasta înseamnă că zona dintre $s = 0$ și $s_k$ este stabilă pentru orice sarcină cu $M_r$ constant sau crescător cu viteza, iar zona dintre $s_k$ și $s = 1$ este, de regulă, instabilă.
 
@@ -89,7 +89,7 @@ Pentru motorul asincron, aceasta înseamnă că zona dintre $s = 0$ și $s_k$ es
 
 Semnele cuplului și ale vitezei definesc patru cadrane (figura 5.3). În cadranele I și III mașina electrică funcționează ca **motor** ($P = M\Omega > 0$); în II și IV ca **frână** (generator, $P < 0$). O acționare care trebuie să lucreze în toate cele patru cadrane (lift, macara, vehicul) are nevoie de un convertor capabil să preia energia de frânare.
 
-![Figura 5.3 – Cadranele de funcționare](figuri/f05-2-cadrane.svg)
+![Figura 5.3 – Cadranele de funcționare](figuri/f05-3-cadrane.svg)
 
 *Figura 5.3 – Cadranele de funcționare, cu exemple pentru un troliu de macara.*
 
@@ -99,22 +99,22 @@ Din ecuația mișcării, timpul în care viteza crește de la $\Omega_a$ la $\Om
 
 $$t = J\int_{\Omega_a}^{\Omega_b}\frac{d\Omega}{M(\Omega) - M_r(\Omega)} .$$
 
-- Dacă **cuplul dinamic este constant** (de exemplu, convertor de frecvență cu limitare de curent și sarcină cu $M_r$ constant): $t = J\,\Delta\Omega/(M - M_r)$.
+- Dacă **cuplul dinamic este constant** (de exemplu, convertor de frecvență cu limitare de curent și sarcină cu $M_r$ constant): $t = J\thinspace \Delta\Omega/(M - M_r)$.
 - Pentru un **ventilator** ($M_r = k\Omega^2$) accelerat cu cuplu constant $M$, integrala are soluție analitică (problema 5.2):
 
-$$t = \frac{J}{\sqrt{Mk}}\,\operatorname{artanh}\left(\Omega\sqrt{\frac kM}\right).$$
+$$t = \frac{J}{\sqrt{Mk}}\thinspace \operatorname{artanh}\left(\Omega\sqrt{\frac kM}\right).$$
 
 - În general (motor alimentat direct de la rețea, cu caracteristica reală), integrala se calculează **numeric** (figura 5.4).
 
-![Figura 5.4 – Pornirea directă](figuri/f05-5-pornire-directa.svg)
+![Figura 5.4 – Pornirea directă](figuri/f05-4-pornire-directa.svg)
 
 *Figura 5.4 – Pornirea directă a motorului M15 cu un ventilator (J total = 1 kg·m²), calculată numeric pe modelul cu colivie dublă. Model cvasistaționar: neglijează fenomenele electromagnetice tranzitorii, care produc în primele perioade vârfuri suplimentare de curent și cuplu.*
 
 **Energia pierdută la pornire.** La pornirea **în gol** a unui motor asincron, energia transformată în căldură în rotor este egală cu energia cinetică finală, **oricare ar fi forma caracteristicii mecanice**:
 
-$$W_{Cu2} = \int s\,P_\delta\,dt = \int s\,M\,\Omega_1\,dt = \int_0^{\Omega_1} s\,\Omega_1\,J\,d\Omega = J\Omega_1^2\int_0^1 s\,ds = \frac12 J\Omega_1^2$$
+$$W_{Cu2} = \int s\thinspace P_\delta\thinspace dt = \int s\thinspace M\thinspace \Omega_1\thinspace dt = \int_0^{\Omega_1} s\thinspace \Omega_1\thinspace J\thinspace d\Omega = J\Omega_1^2\int_0^1 s\thinspace ds = \frac12 J\Omega_1^2$$
 
-(s-au folosit $P_{Cu2} = sP_\delta$, $M = J\,d\Omega/dt$ și $d\Omega = -\Omega_1\,ds$). De aceea numărul de porniri pe oră al unui motor este limitat, mai ales când inerția antrenată este mare (problema 5.7).
+(s-au folosit $P_{Cu2} = sP_\delta$, $M = J\thinspace d\Omega/dt$ și $d\Omega = -\Omega_1\thinspace ds$). De aceea numărul de porniri pe oră al unui motor este limitat, mai ales când inerția antrenată este mare (problema 5.7).
 
 ## 5.8. Alegerea motorului
 
@@ -130,27 +130,35 @@ Etapele alegerii unui motor:
 
 Pentru o sarcină care variază periodic (ciclul $M_k$ pe durata $t_k$), pierderile variabile ale motorului sunt aproximativ proporționale cu $M^2$ (curentul este aproximativ proporțional cu cuplul). Dacă perioada ciclului este mult mai mică decât **constanta termică de timp** a motorului (zeci de minute), motorul se încălzește ca la un cuplu constant egal cu **valoarea pătratică medie**:
 
-$$\boxed{M_{ech} = \sqrt{\frac{\sum_k M_k^2\, t_k}{\sum_k t_k}}}\qquad\text{și se cere}\qquad M_{ech} \le M_n .$$
+$$\boxed{M_{ech} = \sqrt{\frac{\sum_k M_k^2\thinspace t_k}{\sum_k t_k}}}\qquad\text{și se cere}\qquad M_{ech} \le M_n .$$
 
 Media aritmetică a cuplului **subestimează** încălzirea și nu se folosește pentru dimensionare (problema 5.3, figura 5.5).
 
-![Figura 5.5 – Ciclul de sarcină și încălzirea](figuri/f05-6-ciclu-incalzire.svg)
+![Figura 5.5 – Ciclul de sarcină și încălzirea](figuri/f05-5-ciclu-incalzire.svg)
 
 *Figura 5.5 – Ciclul de sarcină din problema 5.3 și încălzirea calculată cu un model termic de ordinul 1: ciclul real încălzește motorul exact cât cuplul echivalent constant.*
+
+### Regimul de scurtă durată (S2)
+
+În regimul **S2** motorul funcționează un timp scurt $t_s$ (de exemplu 10 sau 30 de minute), apoi stă oprit până se răcește complet. Într-un model termic de ordinul 1, supratemperatura crește după legea $\Delta\theta(t) = \Delta\theta_\infty\left(1 - e^{-t/\tau}\right)$, unde $\Delta\theta_\infty$ este proporțională cu pierderile. Motorul nu are timp să ajungă la $\Delta\theta_\infty$, deci poate avea pierderi mai mari decât cele nominale (S1), atât timp cât la sfârșitul intervalului ajunge doar la supratemperatura nominală:
+
+$$\frac{P_{pierderi,S2}}{P_{pierderi,n}} = \frac{1}{1 - e^{-t_s/\tau}} .$$
+
+Problema 5.8 aplică această relație. Valorile admise în practică pentru S2 și S3 sunt indicate de producători (mașinile reale au mai multe constante de timp termice); relația de mai sus explică de ce ele sunt mai mari decât în S1. Cuplul maxim trebuie verificat separat (punctul 3 de mai sus).
 
 ## 5.9. Convertorul de frecvență
 
 Convertorul de frecvență (în engleză *variable speed drive*, VSD, sau *inverter*) alimentează motorul cu tensiune și frecvență reglabile (figura 5.6):
 
 1. **redresorul** (de regulă cu diode) transformă tensiunea alternativă a rețelei în tensiune continuă;
-2. **circuitul intermediar de c.c.** (condensatoare) netezește tensiunea; la rețeaua de 400 V, valoarea medie a tensiunii redresate în punte trifazată este $\frac{3\sqrt2}{\pi}\cdot 400 \approx 540$ V;
+2. **circuitul intermediar de c.c.** (condensatoare) netezește tensiunea; la rețeaua de 400 V, valoarea medie a tensiunii redresate în punte trifazată este $\frac{3\sqrt2}{\pi}\cdot 400 \approx 540$ V, iar în gol condensatoarele se încarcă aproape de valoarea de vârf, $\sqrt2\cdot 400 \approx 565$ V;
 3. **invertorul** cu tranzistoare IGBT comută tensiunea continuă astfel încât valoarea medie pe intervale scurte să urmărească o sinusoidă de frecvența dorită – **modulația în lățime a impulsurilor** (PWM, figura 5.7).
 
-![Figura 5.6 – Structura convertorului de frecvență](figuri/f05-7-convertor-frecventa.svg)
+![Figura 5.6 – Structura convertorului de frecvență](figuri/f05-6-convertor-frecventa.svg)
 
 *Figura 5.6 – Structura unui convertor de frecvență cu circuit intermediar de tensiune continuă.*
 
-![Figura 5.7 – Modulația PWM](figuri/f05-8-pwm.svg)
+![Figura 5.7 – Modulația PWM](figuri/f05-7-pwm.svg)
 
 *Figura 5.7 – Principiul PWM: tranzistoarele comută când referința sinusoidală intersectează purtătoarea triunghiulară. Fundamentala tensiunii de ieșire are amplitudinea $m_a U_d/2$ (verificat numeric: 216 V pentru $m_a$ = 0,8 și $U_d$ = 540 V). Inductivitatea motorului netezește curentul, care rezultă aproape sinusoidal.*
 
@@ -171,7 +179,7 @@ $$\frac{Q_2}{Q_1} = \frac{n_2}{n_1}, \qquad \frac{H_2}{H_1} = \left(\frac{n_2}{n
 
 Reducerea debitului prin **clapetă** sau **vană de laminare** păstrează turația și disipă energia în clapetă; reducerea prin **turație** (convertor de frecvență) reduce puterea aproximativ cu cubul debitului. La 70 % din debit, puterea ideală este doar 34 % din cea nominală (problema 5.4, figura 5.8).
 
-![Figura 5.8 – Ventilator: clapetă vs convertor](figuri/f05-9-ventilator.svg)
+![Figura 5.8 – Ventilator: clapetă vs convertor](figuri/f05-8-ventilator.svg)
 
 *Figura 5.8 – Puterea absorbită de un ventilator la debit redus.*
 
@@ -181,14 +189,14 @@ Reducerea debitului prin **clapetă** sau **vană de laminare** păstrează tura
 
 Figura 5.9 prezintă **circuitul de forță** pentru pornirea directă a unui motor asincron:
 
-![Figura 5.9 – Schema de forță a pornirii directe](figuri/f05-10-schema-pornire-directa.svg)
+![Figura 5.9 – Schema de forță a pornirii directe](figuri/f05-9-schema-pornire-directa.svg)
 
-*Figura 5.9 – Pornirea directă: siguranțe (sau întrerupător automat), separator, contactor, releu termic, motor.*
+*Figura 5.9 – Pornirea directă: separator, siguranțe (sau, în loc de ambele, un întrerupător automat), contactor, releu termic, motor.*
 
 | Aparat | Rol |
 |---|---|
+| **separator** (montat primul, spre rețea) | separarea vizibilă de rețea pentru intervenții, inclusiv pentru schimbarea siguranțelor |
 | **siguranțe fuzibile / întrerupător automat** | protecție la scurtcircuit |
-| **separator** | separarea vizibilă de rețea pentru intervenții |
 | **contactor** | conectarea și deconectarea motorului (comandă de la distanță, multe manevre) |
 | **releu termic** | protecție la suprasarcină (încălzirea motorului) și, la cele moderne, la lipsa unei faze |
 
@@ -223,7 +231,7 @@ Un troliu ridică o masă $m$ = 2000 kg cu un tambur de diametru $D$ = 0,4 m ($J
 
 ### Problema 5.2 – Pornirea unui ventilator cu cuplu constant
 
-Un ventilator ($J$ total = 1,0 kg·m², cuplul $M_r = k\Omega^2$, cu $M_r = 0{,}8\,M_n$ la $\Omega_n$) este pornit de M15 alimentat de la un convertor care menține cuplul motor constant la 1,2·$M_n$ = 117,25 N·m până la turația nominală. Cât durează pornirea?
+Un ventilator ($J$ total = 1,0 kg·m², cuplul $M_r = k\Omega^2$, cu $M_r = 0{,}8\thinspace M_n$ la $\Omega_n$) este pornit de M15 alimentat de la un convertor care menține cuplul motor constant la 1,2·$M_n$ = 117,25 N·m până la turația nominală. Cât durează pornirea?
 
 **Rezolvare.** $k = 0{,}8\cdot 97{,}71/153{,}52^2 = 3{,}32\cdot 10^{-3}$ N·m·s². Cu formula din § 5.7:
 
@@ -233,7 +241,7 @@ $$t = \frac{1}{\sqrt{117{,}25\cdot 0{,}00332}}\ \operatorname{artanh}\left(153{,
 
 Dacă s-ar presupune, greșit, că ventilatorul are tot timpul cuplul de la turația nominală, ar rezulta 3,93 s – o supraestimare de peste două ori.
 
-![Figura 5.10 – Pornirea ventilatorului](figuri/f05-4-accelerare-ventilator.svg)
+![Figura 5.10 – Pornirea ventilatorului](figuri/f05-10-accelerare-ventilator.svg)
 
 *Figura 5.10 – Turația ventilatorului în timpul pornirii: soluția analitică, integrarea numerică și ipoteza greșită a cuplului rezistent constant.*
 
@@ -259,13 +267,16 @@ Un ventilator absoarbe 30 kW la debitul nominal. El funcționează 6000 h/an la 
 
 ### Problema 5.5 – Stabilitatea punctelor de funcționare
 
-M15 (formula lui Kloss cu datele de catalog) antrenează un cuplu rezistent constant $M_r = 2M_n$. Determinați punctele de funcționare și stabilitatea lor.
+M15 este încărcat (pentru scurt timp) cu un cuplu rezistent constant $M_r = 2{,}5M_n = 244{,}3$ N·m. Determinați punctele de funcționare și stabilitatea lor. Se folosește modelul cu colivie dublă din capitolul 2, care reproduce datele de catalog și la turații mici (formula lui Kloss nu este potrivită aici, pentru că subestimează mult cuplul la alunecări mari – problema 2.3).
 
-**Rezolvare.** Ecuația lui Kloss $2M_{max}/(s/s_k + s_k/s) = M_r$ are, cu $\lambda' = M_{max}/M_r = 1{,}55$, soluțiile
+**Rezolvare.** Ecuația $M(s) = M_r$, rezolvată numeric, are două soluții (figura 5.2):
 
-$$s = s_k\left(\lambda' \mp \sqrt{\lambda'^2 - 1}\right):\qquad s_A = 0{,}0500\ (n_A = 1425\ \text{rot/min}), \qquad s_B = 0{,}374\ (n_B = 939\ \text{rot/min}).$$
+- $s_A = 0{,}0737$, $n_A = 1389$ rot/min, unde $dM/d\Omega = -10{,}9$ N·m·s < 0 = $dM_r/d\Omega$ – **stabil**;
+- $s_B = 0{,}775$, $n_B = 338$ rot/min, unde $dM/d\Omega = +0{,}58$ N·m·s > 0 – **instabil**.
 
-Pantele caracteristicii motorului: în A, $dM/d\Omega = -19{,}0$ N·m·s < 0 = $dM_r/d\Omega$ – **stabil**; în B, $dM/d\Omega = +2{,}54$ N·m·s > 0 – **instabil** (figura 5.2). **Verificare:** rezolvarea numerică a ecuației dă aceleași alunecări ✓.
+Observați și că $M_p = 223{,}3$ N·m < $M_r$: cu această sarcină aplicată de la început, motorul **nu poate porni**; punctul A este atins numai dacă sarcina crește după pornire. În plus, 2,5·$M_n$ este o suprasarcină admisibilă doar pentru scurt timp (încălzire).
+
+**Verificare (prin simularea ecuației mișcării, $J$ = 0,3 kg·m²).** Pornind de la $n_A \pm 20$ rot/min, turația revine după cel mult 3 s la 1389 rot/min ✓. Pornind de la $n_B + 10$ rot/min, sistemul accelerează până în A, iar de la $n_B - 10$ rot/min decelerează până la oprire ✓ – exact comportarea prezisă de criteriul de stabilitate.
 
 ### Problema 5.6 – Punctul de funcționare al unui ventilator
 
@@ -278,6 +289,14 @@ Un ventilator cere $0{,}9M_n$ la turația nominală ($M_r = k_v\Omega^2$). La ce
 Câtă căldură se degajă în rotorul lui M15 la o pornire directă în gol ($J$ = 0,1 kg·m²)?
 
 **Rezolvare.** $W_{Cu2} = \tfrac12J\Omega_1^2 = \tfrac12\cdot 0{,}1\cdot 157{,}08^2 = 1234$ J (§ 5.7). **Verificare:** integrarea numerică a pierderilor $sP_\delta$ în timpul pornirii simulate (modelul cu colivie dublă, durata ≈ 0,07 s) dă 1233,7 J ✓. La pornirea cu sarcină, energia pierdută este mai mare; la pornirea cu convertor de frecvență (alunecare mică în tot timpul pornirii), mult mai mică.
+
+### Problema 5.8 – Regimul de scurtă durată S2
+
+Motorul de 11 kW din problema 5.3 are constanta termică de timp $\tau$ = 20 min, pierderi constante de 350 W și pierderi variabile de 700 W la cuplul nominal (supratemperatura nominală 84 K). Ce cuplu poate da în regim S2 de 10 minute, pornind rece?
+
+**Rezolvare.** Pierderile admise: $\dfrac{1050}{1 - e^{-10/20}} = 2669$ W, adică de 2,54 ori cele nominale. Din $350 + 700\thinspace (M/M_n)^2 = 2669$ rezultă $M \approx 1{,}82\thinspace M_n$. Cuplul maxim al motorului ($2{,}8\thinspace M_n$, și $0{,}81\cdot 2{,}8 = 2{,}27\thinspace M_n$ la $0{,}9U_n$) permite această încărcare.
+
+**Verificare (simulare).** Integrând numeric ecuația de încălzire cu pierderile de 2669 W timp de 10 minute, supratemperatura finală este exact 84,0 K ✓.
 
 ---
 
@@ -300,7 +319,7 @@ Câtă căldură se degajă în rotorul lui M15 la o pornire directă în gol ($
 <summary><b>Răspunsuri</b></summary>
 
 1. Rețeaua, convertorul (opțional), motorul, transmisia, mașina de lucru și sistemul de comandă și reglare (§ 5.1).
-2. $J\,d\Omega/dt = M - M_r$; regim staționar dacă $M = M_r$, accelerare dacă $M > M_r$, decelerare dacă $M < M_r$ (§ 5.2).
+2. $J\thinspace d\Omega/dt = M - M_r$; regim staționar dacă $M = M_r$, accelerare dacă $M > M_r$, decelerare dacă $M < M_r$ (§ 5.2).
 3. $J' = J/i^2$ – din conservarea energiei cinetice; masele de după un reductor cu raport mare contează puțin (§ 5.3).
 4. Pentru că pierderile din transmisie sunt acoperite de motor la ridicare (cuplul raportat crește) și de sarcină la coborâre (cuplul raportat scade) (§ 5.3, problema 5.1).
 5. $dM/d\Omega < dM_r/d\Omega$ în punctul de funcționare (§ 5.5).

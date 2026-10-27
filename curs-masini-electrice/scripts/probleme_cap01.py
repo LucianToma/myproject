@@ -132,6 +132,15 @@ beta_opt = np.sqrt(P0 / Psc)
 print(f"  β_opt = {fmt(beta_opt, 3)} → S = {fmt(beta_opt * Sn / 1e3, 1)} kVA;"
       f" η_max(cosφ=0,9) = {fmt(100 * randament_transformator(beta_opt, Sn, cos2, P0, Psc), 3)} %")
 print(f"  η la β=1, cosφ=0,9 = {fmt(100 * randament_transformator(1, Sn, cos2, P0, Psc), 3)} %")
+# Comparație cu limitele Tier 2 ale Reg. (UE) 548/2014 pentru 400 kVA (387 W, 3250 W)
+P0_t2, Psc_t2 = 387.0, 3250.0
+eta_t2 = randament_transformator(beta, Sn, cos2, P0_t2, Psc_t2)
+pierd_t2 = P0_t2 + beta**2 * Psc_t2
+eta_t2_b = beta * Sn * cos2 / (beta * Sn * cos2 + P0_t2 + 3 * (beta * I2n) ** 2 * (100 * Psc_t2 / Sn / 100 * Zb))
+print(f"  cu pierderile Tier 2 (387 W, 3250 W): pierderi = {fmt(pierd_t2, 0)} W, η = {fmt(100 * eta_t2, 3)} %,"
+      f" β_opt = {fmt(np.sqrt(P0_t2 / Psc_t2), 3)}; economie = {fmt(Pierderi - pierd_t2, 0)} W"
+      f" → {fmt((Pierderi - pierd_t2) * 8760 / 1e3, 0)} kWh/an la sarcină constantă")
+verifica("η Tier 2 prin pierderi raportate vs pe fază", eta_t2, eta_t2_b, rtol=1e-9)
 # Curentul de scurtcircuit permanent la bornele JT (rețea de putere infinită)
 Isc_JT = I2n * 100 / usc
 print(f"  curentul de scurtcircuit trifazat la bornele JT ≈ {fmt(Isc_JT / 1e3, 2)} kA")

@@ -27,7 +27,7 @@ Un lanț tipic: generator (la generatoarele mari, de ordinul 10–27 kV) → tra
 
 Primarul, alimentat cu tensiunea alternativă $u_1$, produce în miez un flux alternativ $\Phi$. Acesta străbate ambele înfășurări și induce în ele, conform legii inducției (§ 0.4), tensiunile
 
-$$E_1 = 4{,}44\, f N_1 \Phi_{max}, \qquad E_2 = 4{,}44\, f N_2 \Phi_{max}.$$
+$$E_1 = 4{,}44\thinspace f N_1 \Phi_{max}, \qquad E_2 = 4{,}44\thinspace f N_2 \Phi_{max}.$$
 
 **Transformatorul ideal** are înfășurări fără rezistență, tot fluxul trece prin miez (fără dispersie), iar miezul are permeabilitate infinită și nu are pierderi. Pentru el:
 
@@ -37,7 +37,7 @@ $k$ este **raportul de transformare**. A doua relație rezultă din legea circui
 
 **Transferul impedanței.** O impedanță $\underline{Z}$ legată la secundar este „văzută” din primar ca
 
-$$\underline{Z}' = \frac{U_1}{I_1} = \frac{k U_2}{I_2/k} = k^2\,\underline{Z} .$$
+$$\underline{Z}' = \frac{U_1}{I_1} = \frac{k U_2}{I_2/k} = k^2\thinspace \underline{Z} .$$
 
 > **Observație importantă.** Fluxul nu depinde de sarcină: la tensiune și frecvență constante, $\Phi_{max} = U_1/(4{,}44 f N_1)$ (§ 0.4). Când crește curentul secundar crește și cel primar, dar fluxul rămâne practic același.
 
@@ -54,9 +54,9 @@ Transformatorul real diferă de cel ideal prin:
 
 Pentru a putea lega electric cele două părți, mărimile secundare se **raportează la primar** (se notează cu apostrof): $U_2' = kU_2$, $I_2' = I_2/k$, $R_2' = k^2R_2$, $X_{2\sigma}' = k^2X_{2\sigma}$. Raportarea păstrează puterile și pierderile. Ecuațiile transformatorului devin:
 
-$$\underline{U}_1 = (R_1 + jX_{1\sigma})\,\underline{I}_1 + \underline{E}_1, \qquad \underline{E}_1 = \underline{U}_2' + (R_2' + jX_{2\sigma}')\,\underline{I}_2', \qquad \underline{I}_1 = \underline{I}_0 + \underline{I}_2',$$
+$$\underline{U}_1 = (R_1 + jX_{1\sigma})\thinspace \underline{I}_1 + \underline{E}_1, \qquad \underline{E}_1 = \underline{U}_2' + (R_2' + jX_{2\sigma}')\thinspace \underline{I}_2', \qquad \underline{I}_1 = \underline{I}_0 + \underline{I}_2',$$
 
-cu $\underline{I}_0 = \underline{E}_1/R_{Fe} + \underline{E}_1/(jX_m)$ – **curentul de mers în gol**. Acestor ecuații le corespunde **schema echivalentă în T** (figura 1.2).
+cu $\underline{I}_0 = \underline{E}_1/R_{Fe} + \underline{E}_1/(jX_m)$ – **curentul de mers în gol**. Aici $\underline{E}_1$ este scrisă ca o **tensiune contraelectromotoare** (convenția de receptor pentru primar): ea echilibrează tensiunea aplicată, iar semnul minus din legea inducției (§ 0.4) este inclus în această alegere a sensurilor. Acestor ecuații le corespunde **schema echivalentă în T** (figura 1.2).
 
 ![Figura 1.2 – Schema echivalentă în T](figuri/f01-2-schema-T.svg)
 
@@ -64,7 +64,7 @@ cu $\underline{I}_0 = \underline{E}_1/R_{Fe} + \underline{E}_1/(jX_m)$ – **cur
 
 Curentul de mers în gol este mic (de ordinul unităților de procent din curentul nominal la transformatoarele de putere), iar căderile de tensiune pe $R_1$, $X_{1\sigma}$ sunt și ele mici. De aceea, pentru calculul funcționării în sarcină, se folosește **schema simplificată** (figura 1.3), în care ramura de magnetizare se neglijează și impedanțele longitudinale se adună:
 
-$$R_{sc} = R_1 + R_2', \qquad X_{sc} = X_{1\sigma} + X_{2\sigma}', \qquad \underline{U}_1 = \underline{U}_2' + (R_{sc} + jX_{sc})\,\underline{I}_2' .$$
+$$R_{sc} = R_1 + R_2', \qquad X_{sc} = X_{1\sigma} + X_{2\sigma}', \qquad \underline{U}_1 = \underline{U}_2' + (R_{sc} + jX_{sc})\thinspace \underline{I}_2' .$$
 
 ![Figura 1.3 – Schema simplificată](figuri/f01-3-schema-simplificata.svg)
 
@@ -86,9 +86,11 @@ Ecuația schemei simplificate se reprezintă grafic prin **diagrama fazorială**
 
 **Interpretare.** Curentul $I_0$ este mic, deci pierderile Joule $R_1 I_0^2$ sunt neglijabile, iar tensiunea și fluxul sunt cele nominale. Prin urmare
 
-$$P_0 \approx P_{Fe}, \qquad \cos\varphi_0 = \frac{P_0}{U_0 I_0}, \qquad R_{Fe} = \frac{U_0}{I_0\cos\varphi_0}, \qquad X_m = \frac{U_0}{I_0\sin\varphi_0}, \qquad k \approx \frac{U_{1}}{U_{20}} .$$
+$$P_0 \approx P_{Fe}, \qquad \cos\varphi_0 = \frac{P_0}{U_0 I_0}, \qquad R_{Fe} = \frac{U_0}{I_0\cos\varphi_0}, \qquad X_m = \frac{U_0}{I_0\sin\varphi_0}, \qquad k \approx \frac{U_{\hat{I}T}}{U_{JT}} .$$
 
-Curentul de gol procentual este $i_0 = 100\, I_0/I_n$ [%].
+(raportul de transformare se obține din cele două tensiuni măsurate, ÎT/JT; parametrii $R_{Fe}$, $X_m$ rezultă raportați la înfășurarea alimentată).
+
+Curentul de gol procentual este $i_0 = 100\thinspace I_0/I_n$ [%].
 
 ## 1.6. Încercarea de scurtcircuit
 
@@ -100,12 +102,12 @@ $$P_{sc} \approx P_{Cu,n}, \qquad Z_{sc} = \frac{U_{sc}}{I_{n}}, \qquad R_{sc} =
 
 **Tensiunea de scurtcircuit procentuală** și componentele ei:
 
-$$u_{sc} = 100\frac{U_{sc}}{U_n}\ [\%], \qquad u_R = 100\frac{P_{sc}}{S_n}, \qquad u_X = \sqrt{u_{sc}^2 - u_R^2} .$$
+$$u_{sc} = 100\frac{U_{sc}}{U_n}\ [\text{%}], \qquad u_R = 100\frac{P_{sc}}{S_n}, \qquad u_X = \sqrt{u_{sc}^2 - u_R^2} .$$
 
 $u_{sc}$ este o mărime de catalog foarte importantă: la transformatoarele de distribuție are valori de ordinul 4–6 %. Ea determină
 
 - **căderea de tensiune în sarcină** (§ 1.7);
-- **curentul de scurtcircuit** la bornele secundare (alimentare de la o rețea foarte puternică): $I_{sc,borne} \approx 100\,I_n/u_{sc}$ – de exemplu, 25·$I_n$ pentru $u_{sc} = 4$ %;
+- **curentul de scurtcircuit** la bornele secundare (alimentare de la o rețea foarte puternică): $I_{sc,borne} \approx 100\thinspace I_n/u_{sc}$ – de exemplu, 25·$I_n$ pentru $u_{sc} = 4$ %;
 - **împărțirea sarcinii** între transformatoare în paralel (§ 1.9).
 
 ## 1.7. Funcționarea în sarcină
@@ -114,13 +116,13 @@ $u_{sc}$ este o mărime de catalog foarte importantă: la transformatoarele de d
 
 Definim **factorul de încărcare** $\beta = I_2/I_{2n} \approx S/S_n$. Proiectând ecuația fazorială a schemei simplificate pe direcția lui $\underline{U}_2'$, se obține formula practică
 
-$$\boxed{\Delta U\% \approx \beta\,(u_R\cos\varphi_2 + u_X\sin\varphi_2)}$$
+$$\boxed{\Delta U\text{%} \approx \beta\thinspace (u_R\cos\varphi_2 + u_X\sin\varphi_2)}$$
 
 ($\sin\varphi_2 > 0$ pentru sarcină inductivă, $< 0$ pentru capacitivă). O aproximare mai bună adaugă termenul de ordinul doi $\beta^2(u_X\cos\varphi_2 - u_R\sin\varphi_2)^2/200$; problemele 1.2 și 1.3 arată că, astfel corectată, formula coincide cu soluția exactă a ecuației fazoriale.
 
 **Caracteristica externă** $U_2(\beta)$ la $U_1 = U_{1n}$ (figura 1.5): tensiunea scade cu sarcina inductivă și poate **crește** la sarcină capacitivă (când $u_X\lvert\sin\varphi_2\rvert > u_R\cos\varphi_2$).
 
-![Figura 1.5 – Caracteristica externă](figuri/f01-6-caracteristica-externa.svg)
+![Figura 1.5 – Caracteristica externă](figuri/f01-5-caracteristica-externa.svg)
 
 *Figura 1.5 – Caracteristica externă a transformatorului de 400 kVA, 20/0,4 kV, $u_{sc}$ = 4 % din problema 1.3 (calcul exact cu schema simplificată).*
 
@@ -136,7 +138,7 @@ Derivând în raport cu $\beta$ și egalând cu zero, se obține că **randament
 
 $$\beta^2 P_{sc} = P_0 \quad\Rightarrow\quad \beta_{opt} = \sqrt{\frac{P_0}{P_{sc}}} .$$
 
-![Figura 1.6 – Randamentul în funcție de încărcare](figuri/f01-5-randament.svg)
+![Figura 1.6 – Randamentul în funcție de încărcare](figuri/f01-6-randament.svg)
 
 *Figura 1.6 – Randamentul transformatorului de 400 kVA ($P_0$ = 0,43 kW, $P_{sc}$ = 4,6 kW). Maximul este la $\beta \approx 0{,}31$, indiferent de $\cos\varphi_2$.*
 
@@ -173,7 +175,7 @@ Două sau mai multe transformatoare funcționează în paralel când au legate �
 
 Puterea preluată de transformatorul $i$ este invers proporțională cu impedanța lui (problema 1.4):
 
-$$S_i = S_{total}\, \frac{S_{ni}/u_{sc,i}}{\sum_j S_{nj}/u_{sc,j}} .$$
+$$S_i = S_{total}\thinspace \frac{S_{ni}/u_{sc,i}}{\sum_j S_{nj}/u_{sc,j}} .$$
 
 Transformatorul cu $u_{sc}$ mai mic se încarcă mai mult și limitează puterea totală care poate fi transmisă fără suprasarcină.
 
@@ -212,7 +214,7 @@ Un transformator monofazat 20 kVA, 2400/240 V, 50 Hz a dat la încercări:
 
 Determinați: (a) parametrii schemei echivalente; (b) tensiunea secundară la sarcină nominală cu $\cos\varphi_2 = 0{,}8$ inductiv; (c) randamentul în aceste condiții și randamentul maxim.
 
-**(a) Parametrii.** Curenții nominali: $I_{1n} = 20\,000/2400 = 8{,}333$ A, $I_{2n} = 83{,}33$ A.
+**(a) Parametrii.** Curenții nominali: $I_{1n} = 20\thinspace 000/2400 = 8{,}333$ A, $I_{2n} = 83{,}33$ A.
 
 *Mers în gol (mărimi raportate la JT):* $\cos\varphi_0 = \dfrac{120}{240\cdot 2} = 0{,}25$; $I_a = 0{,}5$ A, $I_\mu = 2\sqrt{1 - 0{,}25^2} = 1{,}936$ A;
 
@@ -224,13 +226,13 @@ Raportate la ÎT (înmulțite cu $k^2 = 100$): $R_{Fe} = 48{,}0$ kΩ, $X_m = 12{
 
 $$Z_{sc} = \frac{96}{8{,}333} = 11{,}52\ \Omega,\qquad R_{sc} = \frac{300}{8{,}333^2} = 4{,}32\ \Omega,\qquad X_{sc} = \sqrt{11{,}52^2 - 4{,}32^2} = 10{,}68\ \Omega .$$
 
-$u_{sc} = 96/2400 = 4$ %, $u_R = 300/20\,000 = 1{,}5$ %, $u_X = \sqrt{4^2 - 1{,}5^2} = 3{,}708$ %. Dacă nu există alte informații, se ia $R_1 \approx R_2' = R_{sc}/2$ și $X_{1\sigma} \approx X_{2\sigma}' = X_{sc}/2$.
+$u_{sc} = 96/2400 = 4$ %, $u_R = 300/20\thinspace 000 = 1{,}5$ %, $u_X = \sqrt{4^2 - 1{,}5^2} = 3{,}708$ %. Dacă nu există alte informații, se ia $R_1 \approx R_2' = R_{sc}/2$ și $X_{1\sigma} \approx X_{2\sigma}' = X_{sc}/2$.
 
 **(b) Tensiunea secundară.** Cu formula aproximativă:
 
-$$\Delta U\% \approx 1\cdot(1{,}5\cdot 0{,}8 + 3{,}708\cdot 0{,}6) = 3{,}425\ \%,$$
+$$\Delta U\text{%} \approx 1\cdot(1{,}5\cdot 0{,}8 + 3{,}708\cdot 0{,}6) = 3{,}425\ \text{%},$$
 
-iar cu termenul de ordinul doi: $3{,}425 + \dfrac{(3{,}708\cdot 0{,}8 - 1{,}5\cdot 0{,}6)^2}{200} = 3{,}446$ %. Deci $U_2 = 240\,(1 - 0{,}03446) = 231{,}7$ V.
+iar cu termenul de ordinul doi: $3{,}425 + \dfrac{(3{,}708\cdot 0{,}8 - 1{,}5\cdot 0{,}6)^2}{200} = 3{,}446$ %. Deci $U_2 = 240\thinspace (1 - 0{,}03446) = 231{,}7$ V.
 
 *Verificare (calea a doua, exactă):* rezolvând ecuația fazorială $\underline{U}_1 = \underline{U}_2' + (R_{sc}+jX_{sc})\underline{I}_2'$ cu $U_1 = 2400$ V: $U_2' = 2317{,}3$ V, adică $U_2 = 231{,}73$ V și $\Delta U = 3{,}446$ % ✓. Recalculând $\underline{U}_1$ din $\underline{U}_2'$ și $\underline{I}_2'$ se obține $2400{,}0\angle 1{,}18°$ V ✓.
 
@@ -238,9 +240,9 @@ iar cu termenul de ordinul doi: $3{,}425 + \dfrac{(3{,}708\cdot 0{,}8 - 1{,}5\cd
 
 **(c) Randamentul.**
 
-$$\eta = \frac{20\,000\cdot 0{,}8}{16\,000 + 120 + 300} = 97{,}44\ \%, \qquad \beta_{opt} = \sqrt{\frac{120}{300}} = 0{,}632, \qquad \eta_{max} = 97{,}68\ \% .$$
+$$\eta = \frac{20\thinspace 000\cdot 0{,}8}{16\thinspace 000 + 120 + 300} = 97{,}44\ \text{%}, \qquad \beta_{opt} = \sqrt{\frac{120}{300}} = 0{,}632, \qquad \eta_{max} = 97{,}68\ \text{%} .$$
 
-*Verificare:* (1) $\beta_{opt}$ și $\eta_{max}$ s-au regăsit prin scanarea numerică a funcției $\eta(\beta)$; (2) schema în T dă pierderi totale de 421,4 W față de $P_0 + P_{sc} = 420$ W (diferență 0,3 %). Randamentul din schema în T, 97,34 %, este ușor mai mic pentru că acolo $P_2$ se calculează la tensiunea reală (231,7 V), nu la cea nominală; folosind aceeași $P_2$ reală în formula cu pierderi, rezultă 97,35 % ✓. Formula cu $P_2 = \beta S_n\cos\varphi_2$ dă **randamentul convențional**, calculat la tensiunea nominală.
+*Verificare:* (1) $\beta_{opt}$ și $\eta_{max}$ s-au regăsit prin scanarea numerică a funcției $\eta(\beta)$; (2) schema în T dă pierderi totale de 421,4 W față de $P_0 + P_{sc} = 420$ W (diferență 0,3 %). Randamentul din schema în T, 97,34 %, este ușor mai mic pentru că acolo $P_2$ se calculează la tensiunea reală (231,6 V), nu la cea nominală; folosind aceeași $P_2$ reală în formula cu pierderi, rezultă 97,35 % ✓. Formula cu $P_2 = \beta S_n\cos\varphi_2$ dă **randamentul convențional**, calculat la tensiunea nominală.
 
 ### Problema 1.3 – Transformatorul de distribuție
 
@@ -248,16 +250,18 @@ Un transformator trifazat 400 kVA, 20/0,4 kV, Dyn11 are $u_{sc} = 4$ %, $P_0 = 0
 
 **Rezolvare.**
 
-- Curenții de linie: $I_{1n} = \dfrac{400\,000}{\sqrt3\cdot 20\,000} = 11{,}55$ A, $I_{2n} = \dfrac{400\,000}{\sqrt3\cdot 400} = 577{,}4$ A. Prin înfășurarea ÎT (triunghi) circulă $11{,}55/\sqrt3 = 6{,}67$ A.
-- Raportul tensiunilor de linie: 50; raportul spirelor (tensiuni de fază): $20\,000/230{,}9 = 86{,}6$.
+- Curenții de linie: $I_{1n} = \dfrac{400\thinspace 000}{\sqrt3\cdot 20\thinspace 000} = 11{,}55$ A, $I_{2n} = \dfrac{400\thinspace 000}{\sqrt3\cdot 400} = 577{,}4$ A. Prin înfășurarea ÎT (triunghi) circulă $11{,}55/\sqrt3 = 6{,}67$ A.
+- Raportul tensiunilor de linie: 50; raportul spirelor (tensiuni de fază): $20\thinspace 000/230{,}9 = 86{,}6$.
 - $u_R = 4{,}6/400 = 1{,}15$ %, $u_X = \sqrt{4^2 - 1{,}15^2} = 3{,}831$ %.
 - Încărcarea: $S = 300/0{,}9 = 333{,}3$ kVA, $\beta = 0{,}8333$.
-- Căderea de tensiune: $\Delta U \approx 0{,}8333\,(1{,}15\cdot 0{,}9 + 3{,}831\cdot 0{,}436) = 2{,}254$ %; cu termenul de ordinul doi, 2,284 %; deci $U_2 = 390{,}9$ V.
-- Pierderile: $P_0 + \beta^2P_{sc} = 430 + 0{,}8333^2\cdot 4600 = 3624$ W; randamentul $\eta = \dfrac{300\,000}{303\,624} = 98{,}81$ %.
-- Încărcarea optimă: $\beta_{opt} = \sqrt{0{,}43/4{,}6} = 0{,}306$, adică 122 kVA; $\eta_{max}(\cos\varphi = 0{,}9) = 99{,}23$ %.
+- Căderea de tensiune: $\Delta U \approx 0{,}8333\thinspace (1{,}15\cdot 0{,}9 + 3{,}831\cdot 0{,}436) = 2{,}254$ %; cu termenul de ordinul doi, 2,284 %; deci $U_2 = 390{,}9$ V.
+- Pierderile: $P_0 + \beta^2P_{sc} = 430 + 0{,}8333^2\cdot 4600 = 3624$ W; randamentul $\eta = \dfrac{300\thinspace 000}{303\thinspace 624} = 98{,}81$ %.
+- Încărcarea optimă: $\beta_{opt} = \sqrt{0{,}43/4{,}6} = 0{,}306$, adică 122 kVA; $\eta_{max}(\cos\varphi = 0{,}9) = 99{,}22$ %.
 - Curentul de scurtcircuit la bornele JT (rețea de alimentare considerată de putere infinită): $I_{sc} \approx 577{,}4\cdot 100/4 = 14{,}4$ kA.
 
 **Verificare.** Pe schema pe fază (stea echivalentă la 0,4 kV: $R_{sc} = 4{,}600$ mΩ, $X_{sc} = 15{,}32$ mΩ): ecuația fazorială exactă dă $\Delta U = 2{,}284$ % ✓, pierderile $3RI^2$ dau același randament ✓, iar $I_{sc} = 230{,}9/\lvert R_{sc}+jX_{sc}\rvert = 14{,}43$ kA ✓.
+
+**Comentariu – eficiența energetică.** Pierderile din enunț (430 W, 4,6 kW) sunt exact limitele **Tier 1** ale Regulamentului (UE) nr. 548/2014 pentru un transformator în ulei de 400 kVA. Din 1 iulie 2021 (**Tier 2**), limitele sunt 387 W și 3250 W [S7]. Cu acestea, la aceeași sarcină, pierderile scad la $387 + 0{,}8333^2\cdot 3250 = 2644$ W ($\eta = 99{,}13$ %), adică cu 981 W – circa 8600 kWh pe an la sarcină constantă.
 
 ### Problema 1.4 – Funcționarea în paralel
 
@@ -265,7 +269,7 @@ Un transformator T1 de 630 kVA cu $u_{sc} = 6$ % și unul T2 de 400 kVA cu $u_{s
 
 **Rezolvare.** $S_{n1}/u_{sc1} = 105$, $S_{n2}/u_{sc2} = 100$ (kVA/%):
 
-$$S_1 = 1000\cdot\frac{105}{205} = 512{,}2\ \text{kVA}\ (81{,}3\ \%), \qquad S_2 = 1000\cdot\frac{100}{205} = 487{,}8\ \text{kVA}\ (\mathbf{122\ \%}) .$$
+$$S_1 = 1000\cdot\frac{105}{205} = 512{,}2\ \text{kVA}\ (81{,}3\ \text{%}), \qquad S_2 = 1000\cdot\frac{100}{205} = 487{,}8\ \text{kVA}\ (\mathbf{122\ \text{%}}) .$$
 
 T2 este suprasolicitat, deși puterea totală instalată (1030 kVA) depășește sarcina. Limita este atinsă când T2 ajunge la 400 kVA: $S_{max} = 400\cdot 205/100 = 820$ kVA, adică doar 79,6 % din puterea instalată.
 
@@ -277,7 +281,7 @@ Un autotransformator 230/200 V alimentează o sarcină de 2 kVA. Ce curent trece
 
 **Rezolvare.** $I_1 = 2000/230 = 8{,}696$ A, $I_2 = 2000/200 = 10$ A. Prin porțiunea comună circulă diferența $I_2 - I_1 = 1{,}304$ A. Puterea transferată electromagnetic este
 
-$$S_{em} = S\left(1 - \frac{U_2}{U_1}\right) = 2000\cdot\frac{30}{230} = 260{,}9\ \text{VA}\ (13\ \%\ \text{din}\ S).$$
+$$S_{em} = S\left(1 - \frac{U_2}{U_1}\right) = 2000\cdot\frac{30}{230} = 260{,}9\ \text{VA}\ (13\ \text{%}\ \text{din}\ S).$$
 
 **Verificare (două căi):** $U_2(I_2 - I_1) = 200\cdot 1{,}304 = 260{,}9$ VA ✓; $(U_1 - U_2)I_1 = 30\cdot 8{,}696 = 260{,}9$ VA ✓. Un transformator cu două înfășurări ar trebui dimensionat pentru 2000 VA; autotransformatorul, practic doar pentru 261 VA.
 
