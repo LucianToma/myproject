@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="ro" data-lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>M04 Protecția direcțională</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..800&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<style>
+.verd{font:600 .78rem var(--f-mono);letter-spacing:.06em;padding:2px 8px;border-radius:99px;border:1.5px solid currentColor;white-space:nowrap}
+.verd.fwd{color:var(--ok)} .verd.rev{color:var(--accent)} .verd.none{color:var(--muted)} .verd.mixed{color:var(--start)}
+.subhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin:8px 0 0}
+.subhead h2{margin:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="mod">
+  <div>
+    <div class="crumbs"><a href="../index.html"><span lang="ro">← Cuprinsul cursului</span><span lang="en">← Course map</span></a><span class="modno">M04</span></div>
+    <h1><span lang="ro">Protecția maximală direcțională</span><span lang="en">Directional overcurrent protection</span></h1>
+    <p class="lede"><span lang="ro">Când defectul poate fi alimentat din ambele părți, releul trebuie să știe și în ce sens circulă curentul. Aici vezi cum decide elementul direcțional, cum se alege unghiul caracteristic și cum se coordonează releele unei bucle închise, cu simularea secvenței de declanșare.</span><span lang="en">When a fault can be fed from both sides, the relay also needs to know which way the current flows. Here you see how the directional element decides, how the characteristic angle is chosen and how the relays of a closed ring are coordinated, with a simulation of the tripping sequence.</span></p>
+    <div class="ansi"><span>67<small>I&gt; →</small></span><span>67N<small>I₀&gt; →</small></span><span>90°</span><span>RCA</span></div>
+  </div>
+  <div class="hdr-tools">
+    <div class="seg" role="group" aria-label="Limba / Language"><button data-langbtn="ro">RO</button><button data-langbtn="en">EN</button></div>
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="lab"><span lang="ro">Laborator</span><span lang="en">Lab</span></button>
+      <button role="tab" data-tab="reglaje"><span lang="ro">Reglaje</span><span lang="en">Settings</span></button>
+      <button role="tab" data-tab="teorie"><span lang="ro">Teorie</span><span lang="en">Theory</span></button>
+      <button role="tab" data-tab="test"><span lang="ro">Test</span><span lang="en">Quiz</span></button>
+    </nav>
+  </div>
+</header>
+
+<!-- ================= LABORATOR ================= -->
+<section class="tab" id="lab">
+  <div class="subhead"><h2><span lang="ro">A · Elementul direcțional</span><span lang="en">A · The directional element</span></h2><span class="note"><span lang="ro">Releul e la capătul A al liniei A–B; linia e alimentată și de la capătul B.</span><span lang="en">The relay is at end A of line A–B; the line is also fed from end B.</span></span></div>
+  <div class="lab" style="margin-top:14px">
+    <aside class="rail">
+      <div class="panel">
+        <div class="label" style="margin-bottom:8px"><span lang="ro">Scenarii</span><span lang="en">Scenarios</span></div>
+        <div class="presets" id="presets"></div>
+      </div>
+      <div class="panel" id="controls"></div>
+    </aside>
+    <div class="bench">
+      <div id="status"></div>
+      <div class="kpis" id="kpis"></div>
+      <div class="figure">
+        <div class="label"><span lang="ro">Diagrama fazorială a elementelor direcționale</span><span lang="en">Phasor diagram of the directional elements</span></div>
+        <div class="scroll"><svg id="phasor" viewBox="0 0 760 330" width="100%" style="min-width:600px" role="img" aria-label="Fazori"></svg></div>
+        <p class="note" style="margin:6px 0 0"><span lang="ro">Zona hașurată e semiplanul „înainte”: ±90° în jurul liniei de cuplu maxim, care e tensiunea de polarizare rotită cu unghiul caracteristic.</span><span lang="en">The shaded area is the “forward” half-plane: ±90° around the maximum torque line, which is the polarising voltage rotated by the characteristic angle.</span></p>
+      </div>
+      <div class="figure">
+        <h3><span lang="ro">Deciziile fiecărui element</span><span lang="en">Decision of each element</span></h3>
+        <div class="scroll"><table class="data" id="elems" style="min-width:620px"></table></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="subhead" style="margin-top:34px"><h2><span lang="ro">B · Bucla închisă</span><span lang="en">B · The closed ring</span></h2><span class="note"><span lang="ro">Barele de 20 kV ale stației (A) alimentează bucla A–B–C–D–A în cablu; câte un releu direcțional la fiecare capăt de linie.</span><span lang="en">The substation 20 kV bus (A) feeds the cable ring A–B–C–D–A; one directional relay at each line end.</span></span></div>
+  <div class="lab" style="margin-top:14px">
+    <aside class="rail">
+      <div class="panel" id="ringctl"></div>
+    </aside>
+    <div class="bench">
+      <div id="ringstatus"></div>
+      <div class="figure">
+        <div class="label"><span lang="ro">Bucla, curenții de defect înainte de prima declanșare și ordinea declanșărilor</span><span lang="en">The ring, fault currents before the first trip, and the tripping order</span></div>
+        <div class="scroll"><svg id="ring" viewBox="0 0 760 380" width="100%" style="min-width:600px" role="img" aria-label="Bucla"></svg></div>
+      </div>
+      <div class="figure">
+        <h3><span lang="ro">Secvența de declanșare</span><span lang="en">Tripping sequence</span></h3>
+        <div class="scroll"><table class="data" id="seq" style="min-width:520px"></table></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= REGLAJE ================= -->
+<section class="tab" id="reglaje" hidden>
+  <div class="sheet">
+    <div class="sheet-hd">
+      <div>
+        <div class="label"><span lang="ro">Fișa de calcul · protecții direcționale</span><span lang="en">Calculation sheet · directional protection</span></div>
+        <h2 style="margin:4px 0 0"><span lang="ro">Unghiurile caracteristice și coordonarea buclei</span><span lang="en">Characteristic angles and ring coordination</span></h2>
+      </div>
+      <div class="note" id="sheet-meta"></div>
+    </div>
+    <div class="steps">
+      <div class="step"><div>
+        <h3><span lang="ro">Unghiul caracteristic al elementelor de fază</span><span lang="en">Characteristic angle of the phase elements</span></h3>
+        <p><span lang="ro">Se calculează cu cât conduce curentul tensiunea de polarizare (conexiunea la 90°) pentru defecte înainte, la începutul, mijlocul și capătul liniei. Unghiul caracteristic se alege dintre valorile standard ale releului, astfel încât cel mai defavorabil defect să rămână cât mai departe de limita zonei (±90°).</span><span lang="en">Compute how much the current leads the polarising voltage (90° connection) for forward faults at the start, middle and end of the line. The characteristic angle is chosen among the relay's standard values so that the worst fault stays as far as possible from the zone boundary (±90°).</span></p>
+        <div class="scroll"><table class="data" id="rg-rca" style="min-width:560px"></table></div>
+        <div class="calc" id="rg-rca-pick"></div>
+      </div></div>
+      <div class="step"><div>
+        <h3><span lang="ro">Unghiul caracteristic al elementului homopolar</span><span lang="en">Characteristic angle of the earth-fault element</span></h3>
+        <p><span lang="ro">La un defect înainte, curentul homopolar de la releu vine din sursa homopolară din spatele lui, deci −3U₀ = Z₀S·3I₀. Curentul conduce −3U₀ cu −arg Z₀S; acesta e unghiul caracteristic potrivit (relația 4 din Teorie).</span><span lang="en">For a forward fault, the zero-sequence current at the relay comes from the zero-sequence source behind it, so −3U₀ = Z₀S·3I₀. The current leads −3U₀ by −arg Z₀S; that is the right characteristic angle (relation 4 in Theory).</span></p>
+        <div class="calc" id="rg-rcan"></div>
+      </div></div>
+      <div class="step"><div>
+        <h3><span lang="ro">Coordonarea buclei: inelul deschis la sursă</span><span lang="en">Ring coordination: ring opened at the source</span></h3>
+        <p><span lang="ro">Metoda clasică: se deschide inelul la sursă și se reglează întâi releele care privesc în sens orar, ca o rețea radială, apoi cele care privesc în sens antiorar. Releul cel mai îndepărtat de sursă din fiecare lanț primește TMS-ul minim.</span><span lang="en">The classical method: open the ring at the source and grade first the relays looking clockwise, as a radial network, then those looking anticlockwise. The relay farthest from the source in each chain gets the minimum TMS.</span></p>
+        <div class="calc" id="rg-pick"></div>
+        <div class="scroll"><table class="data" id="rg-chains" style="min-width:640px"></table></div>
+      </div></div>
+      <div class="step"><div>
+        <h3><span lang="ro">Verificarea în bucla închisă</span><span lang="en">Check in the closed ring</span></h3>
+        <p><span lang="ro">Reglajele sunt verificate cu bucla închisă, pentru defecte la fiecare 5 % din fiecare linie, în regim maxim și minim. După prima declanșare curenții se redistribuie; simularea urmărește asta, integrând timpul fiecărui releu până la izolarea liniei defecte.</span><span lang="en">The settings are checked with the ring closed, for faults at every 5 % of each line, in the maximum and minimum cases. After the first trip the currents redistribute; the simulation follows this, integrating each relay's time until the faulted line is isolated.</span></p>
+        <div class="scroll"><table class="data" id="rg-check" style="min-width:640px"></table></div>
+        <div class="callout ind" id="rg-check-note"></div>
+      </div></div>
+      <div class="step"><div>
+        <h3><span lang="ro">Fișa de reglaje</span><span lang="en">Settings sheet</span></h3>
+        <div class="tools"><span class="label"><span lang="ro">Releele buclei (TC /1 A)</span><span lang="en">Ring relays (CT /1 A)</span></span><button class="btn" id="copy-sheet"><span lang="ro">Copiază pentru Excel</span><span lang="en">Copy for Excel</span></button></div>
+        <div class="scroll"><table class="data" id="rg-sheet" style="min-width:720px"></table></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TEORIE ================= -->
+<section class="tab" id="teorie" hidden>
+  <div class="theory">
+    <nav class="toc">
+      <a href="#t-why"><span lang="ro">De ce direcțional</span><span lang="en">Why directional</span></a>
+      <a href="#t-elem"><span lang="ro">Elementul direcțional</span><span lang="en">The directional element</span></a>
+      <a href="#t-90"><span lang="ro">Conexiunea la 90°</span><span lang="en">The 90° connection</span></a>
+      <a href="#t-mem"><span lang="ro">Memoria de tensiune</span><span lang="en">Voltage memory</span></a>
+      <a href="#t-67n"><span lang="ro">Elementul homopolar</span><span lang="en">The earth-fault element</span></a>
+      <a href="#t-ring"><span lang="ro">Bucla închisă</span><span lang="en">The closed ring</span></a>
+      <a href="#t-par"><span lang="ro">Linii paralele</span><span lang="en">Parallel lines</span></a>
+      <a href="#t-ref"><span lang="ro">Surse</span><span lang="en">Sources</span></a>
+    </nav>
+    <article>
+      <section id="t-why">
+        <h2><span lang="ro">De ce e nevoie de direcție</span><span lang="en">Why direction is needed</span></h2>
+        <p><span lang="ro">Într-o rețea radială cu o singură sursă, curentul de defect curge mereu dinspre sursă, iar selectivitatea se obține prin curent și timp (M03). Când defectul poate fi alimentat din două părți (buclă închisă, linii paralele, rețea cu generare distribuită), un releu nedirecțional nu poate distinge un defect de pe linia lui de unul din spatele lui. Elementul direcțional îi permite să acționeze numai pentru defectele dintr-un sens.</span><span lang="en">In a radial network with a single source, fault current always flows away from the source, and selectivity is obtained by current and time (M03). When a fault can be fed from two sides (closed ring, parallel lines, network with distributed generation), a non-directional relay cannot tell a fault on its line from one behind it. The directional element lets it operate only for faults in one direction.</span></p>
+      </section>
+      <section id="t-elem">
+        <h2><span lang="ro">Elementul direcțional</span><span lang="en">The directional element</span></h2>
+        <p><span lang="ro">Elementul compară faza curentului de operare I cu faza unei tensiuni de polarizare U<sub>pol</sub>. Echivalentul numeric al vechiului cuplu electromecanic este:</span><span lang="en">The element compares the phase of the operating current I with the phase of a polarising voltage U<sub>pol</sub>. The numerical equivalent of the old electromechanical torque is:</span></p>
+        <div class="eqn"><span data-tex="T = |I|\,|U_{pol}|\cos(\varphi - \theta_c) > 0,\qquad \varphi = \arg I - \arg U_{pol}"></span><span class="no">(1)</span></div>
+        <p><span lang="ro">θ<sub>c</sub> este unghiul caracteristic (RCA): cuplul e maxim când curentul conduce tensiunea de polarizare cu θ<sub>c</sub>. Zona „înainte” se întinde pe ±90° în jurul acestei direcții.</span><span lang="en">θ<sub>c</sub> is the characteristic angle (RCA): torque is maximum when the current leads the polarising voltage by θ<sub>c</sub>. The “forward” zone spans ±90° around this direction.</span></p>
+      </section>
+      <section id="t-90">
+        <h2><span lang="ro">Conexiunea la 90° (în cuadratură)</span><span lang="en">The 90° (quadrature) connection</span></h2>
+        <div class="eqn"><span data-tex="I_{L1}\leftrightarrow U_{23},\qquad I_{L2}\leftrightarrow U_{31},\qquad I_{L3}\leftrightarrow U_{12}"></span><span class="no">(2)</span></div>
+        <p><span lang="ro">Fiecare curent de fază se polarizează cu tensiunea dintre celelalte două faze, care rămâne mare la defectele ce implică faza respectivă. Pentru un defect cu unghiul buclei θ, curentul I<sub>L1</sub> rămâne în urma lui U<sub>1</sub> cu θ, iar U<sub>23</sub> rămâne în urma lui U<sub>1</sub> cu 90°, deci I<sub>L1</sub> conduce U<sub>23</sub> cu 90° − θ. De aici valorile uzuale θ<sub>c</sub> = 30° sau 45° (curentul conduce). Conexiunea la 90° a înlocuit conexiunile la 30° și 60°, pentru că se comportă mai bine.</span><span lang="en">Each phase current is polarised with the voltage between the other two phases, which stays large for faults involving that phase. For a fault with loop angle θ, I<sub>L1</sub> lags U<sub>1</sub> by θ, and U<sub>23</sub> lags U<sub>1</sub> by 90°, so I<sub>L1</sub> leads U<sub>23</sub> by 90° − θ. Hence the usual values θ<sub>c</sub> = 30° or 45° (current leading). The 90° connection replaced the 30° and 60° connections because it performs better.</span></p>
+        <div class="eqn"><span><span data-tex="\varphi_{F} = \arg I_{L1}-\arg U_{23} = 90^\circ-\theta"></span> <span class="note"><span lang="ro">F = defect înainte</span><span lang="en">F = forward fault</span></span></span><span class="no">(3)</span></div>
+        <p><span lang="ro">În laborator, defectul în cablu la mijlocul liniei dă un curent care conduce U<sub>23</sub> cu circa 54° (unghiul cablului e de circa 36°), iar defectul aproape de bare, unde tensiunea se prăbușește și releul folosește memoria, dă circa 4°. Ambele cad în zona „înainte” pentru θ<sub>c</sub> = 30° sau 45°; fișa de reglaje alege valoarea care lasă marja cea mai mare.</span><span lang="en">In the lab, a cable fault at mid-line gives a current leading U<sub>23</sub> by about 54° (the cable angle is about 36°), while a fault near the busbar, where the voltage collapses and the relay uses memory, gives about 4°. Both fall in the forward zone for θ<sub>c</sub> = 30° or 45°; the settings sheet picks the value that leaves the largest margin.</span></p>
+      </section>
+      <section id="t-mem">
+        <h2><span lang="ro">Memoria de tensiune</span><span lang="en">Voltage memory</span></h2>
+        <p><span lang="ro">La un defect trifazat foarte aproape de releu, toate tensiunile scad aproape de zero și nu mai pot polariza elementul. Releele numerice folosesc atunci tensiunea memorată dinainte de defect, câteva perioade sau zeci de perioade; dacă memoria expiră, elementul fie se blochează, fie trece pe o decizie nedirecțională, după reglaj. În laborator memoria intră sub 5 % din tensiune.</span><span lang="en">For a three-phase fault very close to the relay, all voltages drop near zero and can no longer polarise the element. Numerical relays then use the voltage memorised before the fault, for a few cycles to tens of cycles; if the memory expires, the element either blocks or falls back to a non-directional decision, depending on its setting. In the lab, memory takes over below 5 % of the voltage.</span></p>
+      </section>
+      <section id="t-67n">
+        <h2><span lang="ro">Elementul homopolar (67N)</span><span lang="en">The earth-fault element (67N)</span></h2>
+        <div class="eqn"><span><span data-tex="I_{op}=3I_0,\quad U_{pol}=-3U_0,\qquad -3U_0 = Z_{0S}\cdot 3I_0\ \Rightarrow\ \theta_{cN} = -\arg Z_{0S}"></span> <span class="note"><span lang="ro">Z<sub>0S</sub> = impedanța homopolară din spatele releului</span><span lang="en">Z<sub>0S</sub> = zero-sequence impedance behind the relay</span></span></span><span class="no">(4)</span></div>
+        <p><span lang="ro">Pentru un defect înainte, curentul homopolar vine numai din sursa homopolară aflată în spatele releului. Unghiul caracteristic depinde deci de tratarea neutrului: aproape 0° pentru neutrul tratat prin rezistor (aici −arg Z₀ ≈ 8°), un unghi mare de întârziere pentru neutrul legat direct, unde Z₀ e inductivă. Rețelele cu neutru izolat sau compensat cer alte principii (wattmetric, admitanță), în M05. Convențiile de semn diferă între producători, deci valoarea se citește în manualul releului.</span><span lang="en">For a forward fault, the zero-sequence current comes only from the zero-sequence source behind the relay. The characteristic angle therefore depends on the neutral earthing: close to 0° for a resistor-earthed neutral (here −arg Z₀ ≈ 8°), a large lagging angle for a solidly earthed neutral, where Z₀ is inductive. Isolated or compensated networks need other principles (wattmetric, admittance), in M05. Sign conventions differ between manufacturers, so the value is read in the relay manual.</span></p>
+        <div class="callout"><b class="k"><span lang="ro">Elementele de fază la punerile la pământ</span><span lang="en">Phase elements during earth faults</span></b><span lang="ro">La un defect monofazat, curenții fazelor sănătoase pot avea orice sens, iar elementele de fază pot da decizii contradictorii. Laboratorul le marchează „mixt”. De aceea punerile la pământ se tratează cu elementul homopolar.</span><span lang="en">For a single-phase fault, the healthy-phase currents can point either way, and the phase elements can give contradictory decisions. The lab marks them “mixed”. This is why earth faults are handled by the earth-fault element.</span></div>
+      </section>
+      <section id="t-ring">
+        <h2><span lang="ro">Bucla închisă cu o singură sursă</span><span lang="en">The closed ring with a single source</span></h2>
+        <p><span lang="ro">Fiecare linie are un releu direcțional la fiecare capăt, care privește spre linie. Reglajul se face deschizând inelul la sursă și coordonând separat lanțul care privește în sens orar și cel care privește în sens antiorar, fiecare ca o rețea radială (M03). Releele de pe barele sursei pot fi nedirecționale, pentru că acolo curentul iese mereu din bare. Prețul metodei: releele de lângă sursă au cele mai mari TMS și elimină lent defectele apropiate de ele, de aceea buclele importante folosesc protecții diferențiale sau scheme cu comunicație (M08).</span><span lang="en">Each line has a directional relay at each end, looking into the line. Grading is done by opening the ring at the source and coordinating separately the chain looking clockwise and the chain looking anticlockwise, each as a radial network (M03). Relays on the source bus can be non-directional, since current always leaves that bus. The cost of the method: relays near the source have the largest TMS and clear nearby faults slowly, which is why important rings use differential protection or communication-aided schemes (M08).</span></p>
+      </section>
+      <section id="t-par">
+        <h2><span lang="ro">Linii și transformatoare în paralel</span><span lang="en">Parallel lines and transformers</span></h2>
+        <p><span lang="ro">Pe două linii paralele, un defect pe una dintre ele e alimentat și prin cealaltă, prin barele de la capătul receptor. Releele de la capătul receptor se fac direcționale, privind spre linie, și primesc temporizări mici; releele de la capătul de alimentare rămân nedirecționale, coordonate cu ele. Același principiu se aplică la celulele de sosire ale transformatoarelor care funcționează în paralel.</span><span lang="en">On two parallel lines, a fault on one of them is also fed through the other, via the receiving-end busbar. The receiving-end relays are made directional, looking into the line, with short delays; the sending-end relays stay non-directional and are coordinated with them. The same principle applies to the incomers of transformers operating in parallel.</span></p>
+      </section>
+      <section id="t-ref">
+        <h2><span lang="ro">Surse</span><span lang="en">Sources</span></h2>
+        <ol class="refs">
+          <li><span lang="ro">Materialele de aplicație ale <i>Network Protection &amp; Automation Guide</i> (conexiunea la 90°, θ<sub>c</sub> = 30° și 45°, renunțarea la conexiunile la 30° și 60°; metoda inelului deschis).</span><span lang="en">Application material of the <i>Network Protection &amp; Automation Guide</i> (90° connection, θ<sub>c</sub> = 30° and 45°, 30° and 60° connections abandoned; open-ring method).</span> <a href="https://www.scribd.com/document/44678609/03-Presentation-Directional-Protection" rel="noopener">scribd.com</a></li>
+          <li><span lang="ro">Note de curs despre protecția direcțională a buclelor (releele de la sursă pot fi nedirecționale).</span><span lang="en">Lecture notes on directional ring protection (source relays may be non-directional).</span> <a href="https://pdfcoffee.com/03-directional-overcurrent-pdf-free.html" rel="noopener">pdfcoffee.com</a>, <a href="https://electrical-engineering-portal.com/directional-overcurrent-protection" rel="noopener">electrical-engineering-portal.com</a></li>
+          <li>GE Vernova D60, <i>Instruction manual</i> (GET-8406): <span lang="ro">polarizarea în cuadratură și memoria de tensiune a elementului direcțional de fază.</span><span lang="en">quadrature polarisation and voltage memory of the phase directional element.</span> <a href="https://store.gegridsolutions.com/faq/Documents/D60/GET-8406.pdf" rel="noopener">gegridsolutions.com</a></li>
+          <li><span lang="ro">Brevetul US 5 790 418 (SEL), „Adaptive polarizing memory voltage time constant”: constante de timp ale memoriei de 1,5–4 perioade.</span><span lang="en">US patent 5,790,418 (SEL), “Adaptive polarizing memory voltage time constant”: memory time constants of 1.5–4 cycles.</span> <a href="https://patents.google.com/patent/US5790418" rel="noopener">patents.google.com</a></li>
+        </ol>
+      </section>
+    </article>
+  </div>
+</section>
+
+<!-- ================= TEST ================= -->
+<section class="tab" id="test" hidden>
+  <div class="quiz">
+    <div class="score"><h2 style="margin:0"><span lang="ro">Verifică-ți înțelegerea</span><span lang="en">Check your understanding</span></h2><div><span class="label"><span lang="ro">Scor</span><span lang="en">Score</span></span> <span class="mono" id="score">0 / 0</span> <button class="btn" id="q-reset"><span lang="ro">Test nou</span><span lang="en">New quiz</span></button></div></div>
+    <div id="qlist" class="quiz"></div>
+  </div>
+</section>
+
+<footer class="mod"><span><span lang="ro">Protecții în rețelele electrice · Modulul 04</span><span lang="en">Power system protection · Module 04</span></span><span><span lang="ro">Rezultatele motorului sunt verificate în verify/m04_verify.py</span><span lang="en">Engine results are checked in verify/m04_verify.py</span></span></footer>
+</div>
+
+<script src="../assets/cx.js"></script>
+<script src="../assets/course.js"></script>
+<script src="../m01/engine.js"></script>
+<script src="../m03/engine.js"></script>
+<script src="engine.js"></script>
+<script src="page.js"></script>
+</body>
+</html>

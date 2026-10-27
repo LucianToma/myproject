@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="ro" data-lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>M02 Transformatoare de curent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..800&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+</head>
+<body>
+<div class="wrap">
+<header class="mod">
+  <div>
+    <div class="crumbs"><a href="../index.html"><span lang="ro">← Cuprinsul cursului</span><span lang="en">← Course map</span></a><span class="modno">M02</span></div>
+    <h1><span lang="ro">Transformatoare de curent pentru protecții</span><span lang="en">Current transformers for protection</span></h1>
+    <p class="lede"><span lang="ro">Releul vede defectul numai prin transformatorul de curent. Aici dimensionezi TC-ul plecării F1 pentru reglajele din M03 și urmărești, în timp, ce se întâmplă când curentul de defect cu componentă aperiodică îl saturează.</span><span lang="en">The relay sees the fault only through the current transformer. Here you size the CT of feeder F1 for the M03 settings and follow, in time, what happens when a fault current with a DC component saturates it.</span></p>
+    <div class="ansi"><span>IEC 61869-2</span><span>5P · 10P · PX</span><span>F<sub>a</sub> · E<sub>al</sub> · t<sub>sat</sub></span></div>
+  </div>
+  <div class="hdr-tools">
+    <div class="seg" role="group" aria-label="Limba / Language"><button data-langbtn="ro">RO</button><button data-langbtn="en">EN</button></div>
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="lab"><span lang="ro">Laborator</span><span lang="en">Lab</span></button>
+      <button role="tab" data-tab="reglaje"><span lang="ro">Reglaje</span><span lang="en">Settings</span></button>
+      <button role="tab" data-tab="teorie"><span lang="ro">Teorie</span><span lang="en">Theory</span></button>
+      <button role="tab" data-tab="test"><span lang="ro">Test</span><span lang="en">Quiz</span></button>
+    </nav>
+  </div>
+</header>
+
+<!-- ================= LABORATOR ================= -->
+<section class="tab" id="lab">
+  <div class="lab">
+    <aside class="rail">
+      <div class="panel">
+        <div class="label" style="margin-bottom:8px"><span lang="ro">Scenarii</span><span lang="en">Scenarios</span></div>
+        <div class="presets" id="presets"></div>
+      </div>
+      <div class="panel" id="controls"></div>
+    </aside>
+    <div class="bench">
+      <div id="status"></div>
+      <div class="kpis" id="kpis"></div>
+      <div class="figure">
+        <div class="label"><span lang="ro">Curentul secundar în timpul defectului</span><span lang="en">Secondary current during the fault</span></div>
+        <div class="scroll"><svg id="wave" viewBox="0 0 760 300" width="100%" style="min-width:600px" role="img" aria-label="Forma de undă"></svg></div>
+      </div>
+      <div class="figure">
+        <div class="label"><span lang="ro">Ce măsoară releul (filtru Fourier pe o perioadă, 20 de eșantioane)</span><span lang="en">What the relay measures (one-cycle Fourier filter, 20 samples)</span></div>
+        <div class="scroll"><svg id="meas" viewBox="0 0 760 280" width="100%" style="min-width:600px" role="img" aria-label="Măsura releului"></svg></div>
+      </div>
+      <div class="figure">
+        <div class="label"><span lang="ro">Caracteristica de magnetizare a modelului</span><span lang="en">Model excitation characteristic</span></div>
+        <div class="scroll"><svg id="excit" viewBox="0 0 760 300" width="100%" style="min-width:600px" role="img" aria-label="Caracteristica de magnetizare"></svg></div>
+      </div>
+      <div class="figure">
+        <h3><span lang="ro">Calcul pas cu pas</span><span lang="en">Step-by-step calculation</span></h3>
+        <div class="scroll"><table class="data" id="steps" style="min-width:600px"></table></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= REGLAJE ================= -->
+<section class="tab" id="reglaje" hidden>
+  <div class="sheet">
+    <div class="sheet-hd">
+      <div>
+        <div class="label"><span lang="ro">Fișa de calcul · verificarea TC</span><span lang="en">Calculation sheet · CT check</span></div>
+        <h2 style="margin:4px 0 0"><span lang="ro">TC-ul protecției maximale</span><span lang="en">The overcurrent protection CT</span></h2>
+      </div>
+      <div class="note" id="sheet-meta"></div>
+    </div>
+    <div class="steps">
+      <div class="step"><div>
+        <h3><span lang="ro">Datele de intrare</span><span lang="en">Input data</span></h3>
+        <p><span lang="ro">Datele TC-ului vin de pe plăcuță sau din fișa producătorului (R<sub>ct</sub> din buletinul de încercări). Curentul de defect și raportul X/R vin din M01, reglajele I&gt; și I&gt;&gt; din fișa de reglaje M03. Le schimbi în laborator.</span><span lang="en">CT data come from the nameplate or the manufacturer's sheet (R<sub>ct</sub> from the test report). Fault current and X/R come from M01, the I&gt; and I&gt;&gt; settings from the M03 settings sheet. Change them in the lab.</span></p>
+        <div class="scroll"><table class="data" id="rg-in" style="min-width:520px"></table></div>
+      </div></div>
+      <div class="step"><div>
+        <h3><span lang="ro">Sarcina secundară reală</span><span lang="en">Actual secondary burden</span></h3>
+        <p><span lang="ro">Conductoarele de legătură contează o dată la defectul trifazat (curenții de întoarcere se anulează în neutru) și de două ori la defectele nesimetrice, în varianta acoperitoare.</span><span lang="en">The connecting leads count once for a three-phase fault (return currents cancel in the neutral) and twice for unbalanced faults, in the conservative convention.</span></p>
+        <div class="calc" id="rg-burden"></div>
+      </div></div>
+      <div class="step"><div>
+        <h3><span lang="ro">Factorul limită de precizie real</span><span lang="en">Effective accuracy limit factor</span></h3>
+        <p><span lang="ro">T.e.m. pe care TC-ul o poate produce cu eroarea clasei este fixă: E<sub>al</sub> = ALF·I<sub>sn</sub>·(R<sub>ct</sub> + R<sub>bn</sub>). Pe o sarcină mai mică decât cea nominală, aceeași t.e.m. duce un curent mai mare, deci F<sub>a</sub> crește.</span><span lang="en">The EMF the CT can produce within its class error is fixed: E<sub>al</sub> = ALF·I<sub>sn</sub>·(R<sub>ct</sub> + R<sub>bn</sub>). On a burden below rated, the same EMF drives a larger current, so F<sub>a</sub> increases.</span></p>
+        <div class="calc" id="rg-fa"></div>
+      </div></div>
+      <div class="step"><div>
+        <h3><span lang="ro">Verificările pentru releul maximal</span><span lang="en">Checks for the overcurrent relay</span></h3>
+        <div class="scroll"><table class="data" id="rg-checks" style="min-width:640px"></table></div>
+        <div class="callout ind" id="rg-note"></div>
+      </div></div>
+      <div class="step"><div>
+        <h3><span lang="ro">Rezumat pentru fișa de reglaje</span><span lang="en">Summary for the settings sheet</span></h3>
+        <div class="tools"><span class="label" id="rg-cap"></span><button class="btn" id="copy-ct"><span lang="ro">Copiază pentru Excel</span><span lang="en">Copy for Excel</span></button></div>
+        <div class="scroll"><table class="data" id="rg-sum" style="min-width:520px"></table></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TEORIE ================= -->
+<section class="tab" id="teorie" hidden>
+  <div class="theory">
+    <nav class="toc">
+      <a href="#t-eq"><span lang="ro">Schema echivalentă</span><span lang="en">Equivalent circuit</span></a>
+      <a href="#t-cls"><span lang="ro">Clase de precizie</span><span lang="en">Accuracy classes</span></a>
+      <a href="#t-fa"><span lang="ro">F<sub>a</sub> real</span><span lang="en">Effective F<sub>a</sub></span></a>
+      <a href="#t-burden"><span lang="ro">Sarcina</span><span lang="en">Burden</span></a>
+      <a href="#t-dc"><span lang="ro">Saturația tranzitorie</span><span lang="en">Transient saturation</span></a>
+      <a href="#t-relay"><span lang="ro">Cerințele releului</span><span lang="en">Relay requirements</span></a>
+      <a href="#t-model"><span lang="ro">Modelul din laborator</span><span lang="en">The lab model</span></a>
+      <a href="#t-vt"><span lang="ro">Transformatoare de tensiune</span><span lang="en">Voltage transformers</span></a>
+      <a href="#t-ref"><span lang="ro">Surse</span><span lang="en">Sources</span></a>
+    </nav>
+    <article>
+      <section id="t-eq">
+        <h2><span lang="ro">Schema echivalentă și ecuația fluxului</span><span lang="en">Equivalent circuit and flux equation</span></h2>
+        <p><span lang="ro">Raportat la secundar, TC-ul este o sursă de curent i<sub>1</sub>/n din care ramura de magnetizare „fură” curentul i<sub>m</sub>; restul, i<sub>2</sub>, trece prin rezistența înfășurării R<sub>ct</sub> și prin sarcina R<sub>b</sub>. Tensiunea pe ramura de magnetizare este derivata fluxului:</span><span lang="en">Referred to the secondary, the CT is a current source i<sub>1</sub>/n from which the magnetising branch “steals” i<sub>m</sub>; the rest, i<sub>2</sub>, flows through the winding resistance R<sub>ct</sub> and the burden R<sub>b</sub>. The voltage across the magnetising branch is the flux derivative:</span></p>
+        <div class="eqn"><span data-tex="\frac{d\lambda}{dt} = (R_{ct}+R_b)\,i_2,\qquad i_2 = \frac{i_1}{n} - i_m(\lambda)"></span><span class="no">(1)</span></div>
+        <p><span lang="ro">Fluxul necesar crește cu sarcina și cu integrala curentului. Componenta aperiodică are integrala mare (nu-și schimbă semnul), deci cere de 1 + X/R ori mai mult flux decât componenta alternativă.</span><span lang="en">The required flux grows with the burden and with the integral of the current. The DC component has a large integral (it does not change sign), so it demands up to 1 + X/R times more flux than the AC component.</span></p>
+      </section>
+      <section id="t-cls">
+        <h2><span lang="ro">Clasele de precizie pentru protecție</span><span lang="en">Protection accuracy classes</span></h2>
+        <div class="cards">
+          <div class="card"><h3>5P, 10P</h3><p><span lang="ro">Eroarea compusă cel mult 5 %, respectiv 10 %, la curentul limită de precizie ALF·I<sub>pn</sub> pe sarcina nominală. Clasa P nu limitează remanența. Exemplu: 5P20, 10 VA.</span><span lang="en">Composite error at most 5 %, respectively 10 %, at the accuracy limit current ALF·I<sub>pn</sub> on rated burden. Class P sets no remanence limit. Example: 5P20, 10 VA.</span></p></div>
+          <div class="card"><h3>PR</h3><p><span lang="ro">Ca P, dar cu remanența limitată (miez cu întrefier).</span><span lang="en">Like P, but with limited remanence (gapped core).</span></p></div>
+          <div class="card"><h3>PX</h3><p><span lang="ro">Definit prin tensiunea de cot E<sub>k</sub>, curentul de magnetizare la E<sub>k</sub> și R<sub>ct</sub>; se folosește la protecțiile diferențiale (M08, M10, M12).</span><span lang="en">Defined by the knee-point voltage E<sub>k</sub>, the excitation current at E<sub>k</sub> and R<sub>ct</sub>; used for differential protection (M08, M10, M12).</span></p></div>
+          <div class="card"><h3><span lang="ro">Punctul de cot</span><span lang="en">Knee point</span></h3><p><span lang="ro">Tensiunea la care o creștere de 10 % a tensiunii produce o creștere de 50 % a curentului de magnetizare.</span><span lang="en">The voltage at which a 10 % voltage increase gives a 50 % increase of the excitation current.</span></p></div>
+        </div>
+      </section>
+      <section id="t-fa">
+        <h2><span lang="ro">Factorul limită de precizie real</span><span lang="en">Effective accuracy limit factor</span></h2>
+        <div class="eqn"><span data-tex="E_{al} = ALF\cdot I_{sn}\,(R_{ct}+R_{bn}),\qquad R_{bn}=\frac{S_n}{I_{sn}^2}"></span><span class="no">(2)</span></div>
+        <div class="eqn"><span data-tex="F_a = ALF\cdot\frac{R_{ct}+R_{bn}}{R_{ct}+R_b} = ALF\cdot\frac{S_{in}+S_n}{S_{in}+S}"></span><span class="no">(3)</span></div>
+        <p><span lang="ro">A doua formă, cu puteri (S<sub>in</sub> = I<sub>sn</sub>²R<sub>ct</sub>), este cea din ghidul ABB pentru TC-urile protecțiilor maximale. Releele numerice au sarcină foarte mică, deci F<sub>a</sub> poate fi de câteva ori ALF: în exemplul din laborator (5P20, 10 VA, R<sub>ct</sub> = 2 Ω, 50 m de conductor de 2,5 mm², releu de 0,1 VA), F<sub>a</sub> ≈ 98.</span><span lang="en">The second form, with powers (S<sub>in</sub> = I<sub>sn</sub>²R<sub>ct</sub>), is the one in ABB's guide for overcurrent protection CTs. Numerical relays have very low burden, so F<sub>a</sub> can be several times ALF: in the lab example (5P20, 10 VA, R<sub>ct</sub> = 2 Ω, 50 m of 2.5 mm² lead, 0.1 VA relay), F<sub>a</sub> ≈ 98.</span></p>
+      </section>
+      <section id="t-burden">
+        <h2><span lang="ro">Sarcina secundară</span><span lang="en">Secondary burden</span></h2>
+        <div class="eqn"><span data-tex="R_b = k_b\,\frac{\rho\,\ell}{A} + \frac{S_{releu}}{I_{sn}^2},\qquad k_b = 1\ (\text{3F}),\quad k_b = 2\ (\text{1F},\,\text{2F})"></span><span class="no">(4)</span></div>
+        <p><span lang="ro">Cu secundar de 5 A, aceeași lungime de conductor încarcă TC-ul de 25 de ori mai mult în VA decât cu secundar de 1 A; de aceea stațiile noi folosesc 1 A.</span><span lang="en">With a 5 A secondary, the same lead length loads the CT 25 times more in VA than with a 1 A secondary; this is why new substations use 1 A.</span></p>
+      </section>
+      <section id="t-dc">
+        <h2><span lang="ro">Saturația în regim tranzitoriu</span><span lang="en">Transient saturation</span></h2>
+        <p><span lang="ro">Pentru un curent complet asimetric <span data-tex="i_1 = \sqrt2 I\,(e^{-t/T_1}-\cos\omega t)"></span>, fluxul fără magnetizare are anvelopa <span data-tex="\lambda_{ac}\,[1+\tfrac{X}{R}(1-e^{-t/T_1})]"></span>. Cu factorul de saturație K<sub>s</sub> (fluxul disponibil împărțit la cel cerut de curentul simetric), TC-ul nu se saturează niciodată dacă K<sub>s</sub> ≥ 1 + X/R; altfel, după:</span><span lang="en">For a fully offset current <span data-tex="i_1 = \sqrt2 I\,(e^{-t/T_1}-\cos\omega t)"></span>, the flux without magnetising current has the envelope <span data-tex="\lambda_{ac}\,[1+\tfrac{X}{R}(1-e^{-t/T_1})]"></span>. With the saturation factor K<sub>s</sub> (available flux divided by the flux needed by the symmetrical current), the CT never saturates if K<sub>s</sub> ≥ 1 + X/R; otherwise, after:</span></p>
+        <div class="eqn"><span data-tex="t_s = -T_1\ln\!\left(1-\frac{K_s-1}{X/R}\right),\qquad K_s=\frac{F_a}{I''_k/I_{pn}},\qquad T_1=\frac{X/R}{\omega}"></span><span class="no">(5)</span></div>
+        <p><span lang="ro">Anvelopa presupune vârful componentei alternative în fiecare clipă, așa că (5) anticipează saturația. Pentru K<sub>s</sub> între 1,5 și 12 și X/R între 5 și 40, fluxul calculat exact atinge pragul cu 1,8–8,4 ms mai târziu (verify/m02_verify.py). Remanența r reduce fluxul disponibil: K<sub>s</sub> se înlocuiește cu K<sub>s</sub>(1 − r).</span><span lang="en">The envelope assumes the AC peak at every instant, so (5) predicts saturation early. For K<sub>s</sub> between 1.5 and 12 and X/R between 5 and 40, the exactly computed flux reaches the limit 1.8–8.4 ms later (verify/m02_verify.py). Remanence r reduces the available flux: K<sub>s</sub> is replaced by K<sub>s</sub>(1 − r).</span></p>
+      </section>
+      <section id="t-relay">
+        <h2><span lang="ro">Ce cere releul maximal</span><span lang="en">What the overcurrent relay requires</span></h2>
+        <p><span lang="ro">Protecția maximală nedirecțională nu e pretențioasă: clasele 5P și 10P sunt potrivite. Manualul ABB RED615 cere, pentru o treaptă cu caracteristică dependentă fără treaptă rapidă, ca TC-ul să nu se satureze sub 20 de ori pragul de pornire, altfel timpul de acționare crește:</span><span lang="en">Non-directional overcurrent protection is not demanding: classes 5P and 10P are suitable. The ABB RED615 manual requires, for an inverse-time stage without high-set, that the CT does not saturate below 20 times the start current, otherwise the operating time increases:</span></p>
+        <div class="eqn"><span data-tex="F_a > 20\cdot\frac{I_{>}}{I_{pn}}"></span><span class="no">(6)</span></div>
+        <p><span lang="ro">Pentru treapta rapidă, același manual spune că întârzierea datorată saturației e mică atunci când reglajul I&gt;&gt; este vizibil sub F<sub>a</sub>·I<sub>pn</sub>, iar pentru treptele dependente întârzierea trebuie presupusă de ordinul constantei de timp a componentei aperiodice. Laboratorul arată direct această întârziere, pe măsura filtrată a releului.</span><span lang="en">For the high-set stage, the same manual says the saturation delay is small when the I&gt;&gt; setting is clearly below F<sub>a</sub>·I<sub>pn</sub>, and for inverse-time stages the delay should be assumed of the order of the DC time constant. The lab shows this delay directly, on the relay's filtered measurement.</span></p>
+      </section>
+      <section id="t-model">
+        <h2><span lang="ro">Modelul din laborator</span><span lang="en">The lab model</span></h2>
+        <ul>
+          <li><span lang="ro">Curba de magnetizare <span data-tex="i_m = a\lambda + b\,|\lambda|^n\,\mathrm{sgn}\,\lambda"></span>, fără histerezis, calibrată ca eroarea compusă la ALF pe sarcina nominală să fie cea a clasei (5,2 % calculat pentru 5P, 9,6 % pentru 10P).</span><span lang="en">Excitation curve <span data-tex="i_m = a\lambda + b\,|\lambda|^n\,\mathrm{sgn}\,\lambda"></span>, without hysteresis, calibrated so the composite error at ALF on rated burden matches the class (computed 5.2 % for 5P, 9.6 % for 10P).</span></li>
+          <li><span lang="ro">Sarcină pur rezistivă (intrările releelor numerice și conductoarele); remanența ca flux inițial.</span><span lang="en">Purely resistive burden (numerical relay inputs and leads); remanence as initial flux.</span></li>
+          <li><span lang="ro">Ecuația (1) e integrată implicit, cu pas de 50 µs; scipy (Radau) dă același curent secundar cu abatere RMS de 0,23 % din vârf.</span><span lang="en">Equation (1) is integrated implicitly with a 50 µs step; scipy (Radau) gives the same secondary current within 0.23 % RMS of the peak.</span></li>
+          <li><span lang="ro">Releul e modelat cu filtrul Fourier pe o perioadă, cu 20 de eșantioane pe perioadă.</span><span lang="en">The relay is modelled with a one-cycle Fourier filter at 20 samples per cycle.</span></li>
+        </ul>
+      </section>
+      <section id="t-vt">
+        <h2><span lang="ro">Transformatoarele de tensiune, pe scurt</span><span lang="en">Voltage transformers, briefly</span></h2>
+        <p><span lang="ro">Protecțiile direcționale (M04), de distanță (M07) și de tensiune au nevoie de tensiuni. Tensiunea homopolară 3U<sub>0</sub> se obține fie din înfășurarea în triunghi deschis a celor trei TT fază–pământ, fie calculată de releu din cele trei tensiuni de fază. Pentru protecție se folosesc clasele 3P și 6P (IEC 61869-3).</span><span lang="en">Directional (M04), distance (M07) and voltage protections need voltages. The residual voltage 3U<sub>0</sub> comes either from the open-delta winding of three phase-to-earth VTs, or is computed by the relay from the three phase voltages. Protection uses classes 3P and 6P (IEC 61869-3).</span></p>
+      </section>
+      <section id="t-ref">
+        <h2><span lang="ro">Surse</span><span lang="en">Sources</span></h2>
+        <ol class="refs">
+          <li>IEC 61869-2:2012, <i>Instrument transformers — Part 2: Additional requirements for current transformers</i>; IEC TR 61869-100:2017 (<span lang="ro">ghid de aplicare pentru TC de protecție</span><span lang="en">application guide for protection CTs</span>).</li>
+          <li>ABB, <span lang="ro">„Current transformer requirements for non-directional overcurrent protection” (5P/10P potrivite; F<sub>a</sub> în funcție de sarcină)</span><span lang="en">“Current transformer requirements for non-directional overcurrent protection” (5P/10P suitable; F<sub>a</sub> vs burden)</span>. <a href="https://library.e.abb.com/public/eb71e99b34df40fac2256f230034b639/applicationCTreqENa.pdf" rel="noopener">library.e.abb.com</a></li>
+          <li>ABB RED615, <i>Technical manual</i>, <span lang="ro">secțiunea despre saturația TC și reglaje (F<sub>a</sub> &gt; 20·I<sub>start</sub>/I<sub>1n</sub>).</span><span lang="en">section on CT saturation and settings (F<sub>a</sub> &gt; 20·I<sub>start</sub>/I<sub>1n</sub>).</span> <a href="https://mans.io/files/viewer/1253031/1169" rel="noopener">mans.io</a></li>
+          <li>IEEE C37.110, <i>Guide for the Application of Current Transformers Used for Protective Relaying Purposes</i>; <span lang="ro">criteriul de nesaturare și timpul până la saturație, prezentate în lucrările SEL.</span><span lang="en">non-saturation criterion and time to saturation, as presented in SEL papers.</span> <a href="https://selinc.com/api/download/129027" rel="noopener">selinc.com</a></li>
+          <li><span lang="ro">Factorul de buclă al conductoarelor (1 la 3F, 2 la defectele nesimetrice): ghiduri de aplicație și materiale de pregătire.</span><span lang="en">Lead loop factor (1 for 3F, 2 for unbalanced faults): application guides and training material.</span> <a href="https://open-exam-prep.com/study-guides/pe-electrical-power/measurement-instrumentation/ct-pt-burdens-saturation" rel="noopener">open-exam-prep.com</a></li>
+          <li>IEC 61869-3, <i>Additional requirements for inductive voltage transformers</i> (<span lang="ro">clasele 3P, 6P</span><span lang="en">classes 3P, 6P</span>).</li>
+        </ol>
+      </section>
+    </article>
+  </div>
+</section>
+
+<!-- ================= TEST ================= -->
+<section class="tab" id="test" hidden>
+  <div class="quiz">
+    <div class="score"><h2 style="margin:0"><span lang="ro">Verifică-ți înțelegerea</span><span lang="en">Check your understanding</span></h2><div><span class="label"><span lang="ro">Scor</span><span lang="en">Score</span></span> <span class="mono" id="score">0 / 0</span> <button class="btn" id="q-reset"><span lang="ro">Test nou</span><span lang="en">New quiz</span></button></div></div>
+    <div id="qlist" class="quiz"></div>
+  </div>
+</section>
+
+<footer class="mod"><span><span lang="ro">Protecții în rețelele electrice · Modulul 02</span><span lang="en">Power system protection · Module 02</span></span><span><span lang="ro">Rezultatele motorului sunt verificate în verify/m02_verify.py</span><span lang="en">Engine results are checked in verify/m02_verify.py</span></span></footer>
+</div>
+
+<script src="../assets/cx.js"></script>
+<script src="../assets/course.js"></script>
+<script src="../m01/engine.js"></script>
+<script src="../m03/engine.js"></script>
+<script src="engine.js"></script>
+<script src="page.js"></script>
+</body>
+</html>

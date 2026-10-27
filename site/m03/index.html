@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="ro" data-lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>M03 Protecția maximală de curent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..800&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<style>
+.relay-chip{display:inline-flex;align-items:center;gap:6px;font:600 .82rem var(--f-mono)}
+.relay-chip i{width:12px;height:3px;border-radius:2px;display:inline-block}
+.first{background:var(--trip-bg)}
+.inputs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin-top:6px}
+.inputs-grid .panel{padding:10px 12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="mod">
+  <div>
+    <div class="crumbs"><a href="../index.html"><span lang="ro">← Cuprinsul cursului</span><span lang="en">← Course map</span></a><span class="modno">M03</span></div>
+    <h1><span lang="ro">Protecția maximală de curent: reglaje și coordonare</span><span lang="en">Overcurrent protection: settings and coordination</span></h1>
+    <p class="lede"><span lang="ro">Patru relee în cascadă, de la punctul de secționare de pe linie până la protecția de 110 kV a transformatorului. Calculezi pragurile, factorii de timp și treptele rapide după regulile din practică, apoi verifici pe caracteristica timp–curent că fiecare defect e eliminat de releul potrivit, cu marja cerută.</span><span lang="en">Four relays in cascade, from the line sectionalising point up to the transformer 110 kV protection. You compute pickups, time multipliers and high-set stages with the rules used in practice, then check on the time–current plot that every fault is cleared by the right relay, with the required margin.</span></p>
+    <div class="ansi"><span>50<small>I&gt;&gt;</small></span><span>51<small>I&gt;</small></span><span>IEC 60255-151</span><span>IEEE C37.112</span></div>
+  </div>
+  <div class="hdr-tools">
+    <div class="seg" role="group" aria-label="Limba / Language"><button data-langbtn="ro">RO</button><button data-langbtn="en">EN</button></div>
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="lab"><span lang="ro">Laborator</span><span lang="en">Lab</span></button>
+      <button role="tab" data-tab="reglaje"><span lang="ro">Reglaje</span><span lang="en">Settings</span></button>
+      <button role="tab" data-tab="teorie"><span lang="ro">Teorie</span><span lang="en">Theory</span></button>
+      <button role="tab" data-tab="test"><span lang="ro">Test</span><span lang="en">Quiz</span></button>
+    </nav>
+  </div>
+</header>
+
+<!-- ================= LABORATOR ================= -->
+<section class="tab" id="lab">
+  <div class="lab">
+    <aside class="rail">
+      <div class="panel">
+        <div class="label" style="margin-bottom:8px"><span lang="ro">Scenarii</span><span lang="en">Scenarios</span></div>
+        <div class="presets" id="presets"></div>
+      </div>
+      <div class="panel">
+        <div class="label" style="margin-bottom:8px"><span lang="ro">Defect de probă</span><span lang="en">Probe fault</span></div>
+        <div class="presets" id="ftype"></div>
+        <div class="presets" id="fcase" style="margin-top:8px"></div>
+        <div id="fknobs" style="margin-top:6px"></div>
+      </div>
+      <div class="panel" id="controls"></div>
+    </aside>
+    <div class="bench">
+      <div id="status"></div>
+      <div class="kpis" id="kpis"></div>
+      <div class="figure">
+        <div class="label"><span lang="ro">Caracteristicile timp–curent, raportate la 20 kV</span><span lang="en">Time–current characteristics, referred to 20 kV</span></div>
+        <div class="scroll"><svg id="tcc" viewBox="0 0 760 512" width="100%" style="min-width:600px" role="img" aria-label="Caracteristici timp-curent"></svg></div>
+        <p class="note" style="margin:6px 0 0"><span lang="ro">Linia continuă a lui R1 arată cum îl vede un defect trifazat pe 20 kV; cea punctată, un defect bifazat, pentru care R1 primește un curent relativ cu 15 % mai mare (raportul 1 : 1 : 2 din M01). Punctele marchează timpii pentru defectul de probă.</span><span lang="en">R1's solid line shows how it sees a three-phase fault on 20 kV; the dashed one, a phase-to-phase fault, for which R1 receives a current 15 % higher in relative terms (the 1 : 1 : 2 ratio from M01). Dots mark the times for the probe fault.</span></p>
+      </div>
+      <div class="figure">
+        <h3><span lang="ro">Cine elimină defectul de probă</span><span lang="en">Who clears the probe fault</span></h3>
+        <div class="scroll"><table class="data" id="who" style="min-width:560px"></table></div>
+      </div>
+      <div class="figure">
+        <h3><span lang="ro">Reglajele din laborator</span><span lang="en">Lab settings</span></h3>
+        <div class="scroll"><table class="data" id="settab" style="min-width:640px"></table></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= REGLAJE ================= -->
+<section class="tab" id="reglaje" hidden>
+  <div class="sheet">
+    <div class="sheet-hd">
+      <div>
+        <div class="label"><span lang="ro">Fișa de calcul · studiu de coordonare</span><span lang="en">Calculation sheet · coordination study</span></div>
+        <h2 style="margin:4px 0 0"><span lang="ro">Reglajele protecțiilor maximale R1–R4</span><span lang="en">Overcurrent settings R1–R4</span></h2>
+      </div>
+      <div class="note" id="sheet-meta"></div>
+    </div>
+    <div class="steps">
+      <div class="step"><div>
+        <h3><span lang="ro">Datele de intrare</span><span lang="en">Input data</span></h3>
+        <p><span lang="ro">Curenții de sarcină, rapoartele TC și curbele alese. Curenții de defect vin din M01 (aceeași rețea). Pentru R1 și R2, curentul de sarcină implicit e curentul nominal al lui T1.</span><span lang="en">Load currents, CT ratios and chosen curves. Fault currents come from M01 (same network). For R1 and R2 the default load current is T1's rated current.</span></p>
+        <div class="inputs-grid" id="rg-inputs"></div>
+        <div class="scroll" style="margin-top:10px"><table class="data" id="rg-faults" style="min-width:560px"></table></div>
+      </div></div>
+      <div class="step"><div>
+        <h3><span lang="ro">Curentul de pornire I&gt;</span><span lang="en">Pickup current I&gt;</span></h3>
+        <p><span lang="ro">Releul trebuie să revină după un defect eliminat în aval, chiar dacă prin el trece curentul maxim de sarcină. De aici regula: pragul de pornire depășește curentul de sarcină înmulțit cu coeficientul de siguranță, împărțit la coeficientul de revenire. Apoi pragurile se eșalonează: pragul din amonte, raportat, nu poate fi sub cel din aval.</span><span lang="en">The relay must reset after a downstream fault is cleared, even with maximum load current flowing. Hence the rule: the pickup exceeds the load current times the safety factor, divided by the reset ratio. Then pickups are graded: the upstream pickup, referred, cannot be below the downstream one.</span></p>
+        <div class="eqn"><span data-tex="I_{>} \ge \frac{k_{sig}\,k_p}{k_{rev}}\,I_{s\,max},\qquad \frac{I_{>,R_{j+1}}}{r} \ge I_{>,R_j}"></span><span class="no">(3), (5)</span></div>
+        <div class="calc" id="rg-pickup"></div>
+      </div></div>
+      <div class="step"><div>
+        <h3><span lang="ro">Sensibilitatea</span><span lang="en">Sensitivity</span></h3>
+        <p><span lang="ro">Coeficientul de sensibilitate se calculează cu curentul bifazat minim la capătul zonei: ≥ 1,5 pentru zona de bază, ≥ 1,2 pentru zona de rezervă.</span><span lang="en">The sensitivity factor uses the minimum phase-to-phase current at the end of the zone: ≥ 1.5 for the main zone, ≥ 1.2 for the backup zone.</span></p>
+        <div class="scroll"><table class="data" id="rg-sens" style="min-width:600px"></table></div>
+        <div class="callout ind" id="rg-sens-note"></div>
+      </div></div>
+      <div class="step"><div>
+        <h3><span lang="ro">Treptele rapide I&gt;&gt;</span><span lang="en">High-set stages I&gt;&gt;</span></h3>
+        <p><span lang="ro">O treaptă instantanee nu are temporizare cu care să se coordoneze, deci se face selectivă prin curent: pragul ei depășește cu k<sub>d</sub> = 1,2–1,3 curentul maxim de la capătul zonei, ca să nu vadă defectele din zona următoare.</span><span lang="en">An instantaneous stage has no delay to coordinate with, so it is made selective by current: its pickup exceeds the maximum current at the end of the zone by k<sub>d</sub> = 1.2–1.3, so it does not see faults in the next zone.</span></p>
+        <div class="calc" id="rg-high"></div>
+        <div class="callout ind" id="rg-inrush"></div>
+      </div></div>
+      <div class="step"><div>
+        <h3><span lang="ro">Factorii de timp și marja de coordonare</span><span lang="en">Time multipliers and coordination margin</span></h3>
+        <p><span lang="ro">Se pornește de la releul cel mai din aval, cu TMS minim. Pentru fiecare releu din amonte se caută cel mai mic TMS care păstrează marja CTI față de releul din aval la orice curent pe care îl văd amândouă.</span><span lang="en">Start from the most downstream relay, at minimum TMS. For each upstream relay, find the smallest TMS that keeps the CTI margin over the downstream relay at every current both of them see.</span></p>
+        <div class="eqn"><span data-tex="TMS_{j+1} = \max_{I}\ \frac{t_{j}(I) + \Delta t}{f_{j+1}(I)}"></span><span class="no">(8)</span></div>
+        <div class="panel" style="margin:8px 0" id="cti-calc"></div>
+        <div class="calc" id="rg-tms"></div>
+      </div></div>
+      <div class="step"><div>
+        <h3><span lang="ro">Fișa de reglaje</span><span lang="en">Settings sheet</span></h3>
+        <div class="tools"><span class="label"><span lang="ro">Valori de introdus în relee (secundar pentru TC cu I<sub>n</sub> = 1 A)</span><span lang="en">Values to enter in the relays (secondary for CTs with I<sub>n</sub> = 1 A)</span></span><span style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="copy-sheet"><span lang="ro">Copiază pentru Excel</span><span lang="en">Copy for Excel</span></button><button class="btn primary" id="apply-lab"><span lang="ro">Aplică în laborator</span><span lang="en">Apply in the lab</span></button></span></div>
+        <div class="scroll"><table class="data" id="rg-sheet" style="min-width:820px"></table></div>
+        <div id="rg-verdict" style="margin-top:10px"></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TEORIE ================= -->
+<section class="tab" id="teorie" hidden>
+  <div class="theory">
+    <nav class="toc">
+      <a href="#t-sel"><span lang="ro">Selectivitatea</span><span lang="en">Selectivity</span></a>
+      <a href="#t-curves"><span lang="ro">Caracteristicile</span><span lang="en">Characteristics</span></a>
+      <a href="#t-pickup"><span lang="ro">Curentul de pornire</span><span lang="en">Pickup current</span></a>
+      <a href="#t-sens"><span lang="ro">Sensibilitatea</span><span lang="en">Sensitivity</span></a>
+      <a href="#t-high"><span lang="ro">Treapta rapidă</span><span lang="en">High-set stage</span></a>
+      <a href="#t-cti"><span lang="ro">Marja de coordonare</span><span lang="en">Coordination margin</span></a>
+      <a href="#t-trafo"><span lang="ro">Prin transformator</span><span lang="en">Across the transformer</span></a>
+      <a href="#t-choice"><span lang="ro">Alegerea curbei</span><span lang="en">Choosing the curve</span></a>
+      <a href="#t-ref"><span lang="ro">Surse</span><span lang="en">Sources</span></a>
+    </nav>
+    <article>
+      <section id="t-sel">
+        <h2><span lang="ro">Selectivitatea în rețeaua radială</span><span lang="en">Selectivity in a radial network</span></h2>
+        <p><span lang="ro">Un defect trebuie eliminat de releul cel mai apropiat din amonte; releele de deasupra lui sunt rezervă și așteaptă. Sunt trei feluri de a obține asta: prin timp (fiecare releu din amonte are o temporizare mai mare), prin curent (releul din amonte nu „vede” defectele de după releul următor) și prin caracteristici dependente, care combină cele două: cu cât defectul e mai aproape de sursă, cu atât curentul e mai mare și acționarea mai rapidă.</span><span lang="en">A fault must be cleared by the nearest upstream relay; the relays above it are backup and wait. There are three ways to get this: by time (each upstream relay has a longer delay), by current (the upstream relay does not “see” faults beyond the next relay) and by inverse characteristics, which combine both: the closer the fault to the source, the higher the current and the faster the operation.</span></p>
+      </section>
+      <section id="t-curves">
+        <h2><span lang="ro">Caracteristicile dependente</span><span lang="en">Inverse-time characteristics</span></h2>
+        <div class="eqn"><span data-tex="\text{IEC 60255-151:}\quad t = TMS\cdot\frac{k}{M^{\alpha}-1},\qquad M = \frac{I}{I_{>}}"></span><span class="no">(1)</span></div>
+        <div class="eqn"><span data-tex="\text{IEEE C37.112:}\quad t = TD\cdot\left(\frac{A}{M^{p}-1}+B\right)"></span><span class="no">(2)</span></div>
+        <div class="scroll"><table class="data" style="min-width:520px">
+          <tr><th><span lang="ro">Curba</span><span lang="en">Curve</span></th><th class="n">k / A</th><th class="n">α / p</th><th class="n">B</th><th class="n"><span lang="ro">t la 10·I&gt;, TMS = 1</span><span lang="en">t at 10·I&gt;, TMS = 1</span></th></tr>
+          <tr><td>IEC SI</td><td class="n">0,14</td><td class="n">0,02</td><td class="n">—</td><td class="n">2,97 s</td></tr>
+          <tr><td>IEC VI</td><td class="n">13,5</td><td class="n">1</td><td class="n">—</td><td class="n">1,50 s</td></tr>
+          <tr><td>IEC EI</td><td class="n">80</td><td class="n">2</td><td class="n">—</td><td class="n">0,808 s</td></tr>
+          <tr><td>IEC LTI</td><td class="n">120</td><td class="n">1</td><td class="n">—</td><td class="n">13,3 s</td></tr>
+          <tr><td>IEEE MI</td><td class="n">0,0515</td><td class="n">0,02</td><td class="n">0,114</td><td class="n">1,21 s</td></tr>
+          <tr><td>IEEE VI</td><td class="n">19,61</td><td class="n">2</td><td class="n">0,491</td><td class="n">0,689 s</td></tr>
+          <tr><td>IEEE EI</td><td class="n">28,2</td><td class="n">2</td><td class="n">0,1217</td><td class="n">0,407 s</td></tr>
+        </table></div>
+        <p><span lang="ro">Caracteristica dependentă e garantată peste G<sub>T</sub> = 1,1·I&gt;, iar peste G<sub>D</sub> = 20·I&gt; timpul rămâne cel de la 20·I&gt;. Constantele IEC apar identic în biblioteca pandapower; cele IEEE, în tabelul SEL pentru IEEE C37.112. Unii producători scalează altfel factorul de timp al curbelor IEEE, deci ecuația exactă se ia din manualul releului.</span><span lang="en">The inverse characteristic is guaranteed above G<sub>T</sub> = 1.1·I&gt;, and above G<sub>D</sub> = 20·I&gt; the time stays at its 20·I&gt; value. The IEC constants appear identically in the pandapower library; the IEEE ones, in SEL's table for IEEE C37.112. Some manufacturers scale the IEEE time dial differently, so the exact equation comes from the relay manual.</span></p>
+      </section>
+      <section id="t-pickup">
+        <h2><span lang="ro">Curentul de pornire</span><span lang="en">Pickup current</span></h2>
+        <div class="eqn"><span data-tex="I_{>} \ge \frac{k_{sig}\,k_p}{k_{rev}}\,I_{s\,max}"></span><span class="no">(3)</span></div>
+        <p><span lang="ro">k<sub>sig</sub> = 1,1–1,2 este coeficientul de siguranță; k<sub>rev</sub> este coeficientul de revenire al releului (0,85 la releele electromecanice, aproape de 1 la cele numerice; valoarea exactă e în fișa tehnică); k<sub>p</sub> ≥ 1 acoperă autopornirea motoarelor și reconectarea sarcinii reci. Cu k<sub>sig</sub> = 1,2 și k<sub>rev</sub> = 0,95 rezultă I&gt; ≈ 1,26·I<sub>s max</sub>, la capătul de jos al intervalului 1,25–1,5·I<sub>s max</sub> folosit în literatura de aplicație; pandapower folosește implicit 1,2 × 1,25 = 1,5 față de curentul admisibil al liniei.</span><span lang="en">k<sub>sig</sub> = 1.1–1.2 is the safety factor; k<sub>rev</sub> is the relay reset ratio (0.85 for electromechanical relays, close to 1 for numerical ones; the exact value is in the data sheet); k<sub>p</sub> ≥ 1 covers motor self-starting and cold-load pickup. With k<sub>sig</sub> = 1.2 and k<sub>rev</sub> = 0.95, I&gt; ≈ 1.26·I<sub>load max</sub>, at the low end of the 1.25–1.5·I<sub>load max</sub> range used in application literature; pandapower uses 1.2 × 1.25 = 1.5 times the line rating by default.</span></p>
+        <p><span lang="ro">Pragurile trebuie și eșalonate: pragul releului din amonte, raportat la curentul pe care îl vede releul din aval, nu poate fi sub pragul acestuia. Altfel, un defect slab din aval (de exemplu prin rezistență) ar fi eliminat de releul din amonte, iar releul din aval nici n-ar porni.</span><span lang="en">Pickups must also be graded: the upstream pickup, referred to the current the downstream relay sees, cannot be below the downstream pickup. Otherwise a weak downstream fault (through resistance, for example) would be cleared by the upstream relay while the downstream relay would not even start.</span></p>
+        <div class="eqn"><span><span data-tex="\frac{I_{>,R_{j+1}}}{r} \ge I_{>,R_j},\qquad r = \max\frac{I_{R_{j+1}}}{I_{R_j}}"></span> <span class="note"><span lang="ro">R<sub>j+1</sub> e releul din amonte lui R<sub>j</sub>; r = 1 pe aceeași tensiune, r = (U<sub>rLV</sub>/U<sub>rHV</sub>)·2/√3 pentru R1–R2</span><span lang="en">R<sub>j+1</sub> is upstream of R<sub>j</sub>; r = 1 at the same voltage, r = (U<sub>rLV</sub>/U<sub>rHV</sub>)·2/√3 for R1–R2</span></span></span><span class="no">(5)</span></div>
+      </section>
+      <section id="t-sens">
+        <h2><span lang="ro">Sensibilitatea</span><span lang="en">Sensitivity</span></h2>
+        <div class="eqn"><span><span data-tex="k_{sens} = \frac{I''_{k2\,min}(x_z)}{I_{>}} \ \ge\ 1{,}5\ \ /\ \ 1{,}2"></span> <span class="note"><span lang="ro">x<sub>z</sub> = capătul zonei; 1,5 pentru zona de bază, 1,2 pentru rezervă</span><span lang="en">x<sub>z</sub> = end of the zone; 1.5 for the main zone, 1.2 for backup</span></span></span><span class="no">(4)</span></div>
+        <p><span lang="ro">Rezerva de la distanță are o limită naturală: o celulă de sosire reglată peste curentul nominal al transformatorului nu poate „vedea” capătul unei linii lungi. Atunci rezerva se asigură local: protecția de la capătul plecării are două trepte, iar refuzul întrerupătorului e acoperit de DRRI (M09).</span><span lang="en">Remote backup has a natural limit: an incomer set above the transformer rated current cannot “see” the end of a long feeder. Backup is then provided locally: the feeder protection has two stages, and breaker failure is covered by the breaker-failure protection (M09).</span></p>
+      </section>
+      <section id="t-high">
+        <h2><span lang="ro">Treapta rapidă I&gt;&gt;</span><span lang="en">High-set stage I&gt;&gt;</span></h2>
+        <div class="eqn"><span data-tex="I_{>>} \ge k_d\, I''_{k3\,max}(x_z),\qquad k_d = 1{,}2\ldots1{,}3"></span><span class="no">(6)</span></div>
+        <p><span lang="ro">Coeficientul k<sub>d</sub> acoperă erorile TC și ale releului, incertitudinea curentului de defect și tendința de suprapătrundere tranzitorie din componenta aperiodică. Treapta rapidă a releului de pe 110 kV se reglează peste curentul maxim pe care îl trimite transformatorul la un defect pe 20 kV; așa elimină instantaneu defectele de pe partea de 110 kV, fără să afecteze selectivitatea. Fiind de ordinul a 10·I<sub>rT</sub>, se apropie de curentul de magnetizare la conectare (6–10·I<sub>rT</sub> și peste, după momentul conectării), de aceea se folosește blocarea la armonica a 2-a sau o mică temporizare.</span><span lang="en">The factor k<sub>d</sub> covers CT and relay errors, fault current uncertainty and transient overreach from the DC component. The high-set stage of the 110 kV relay is set above the maximum current the transformer passes for a 20 kV fault; it then clears 110 kV-side faults instantaneously without affecting selectivity. Being of the order of 10·I<sub>rT</sub>, it comes close to the magnetising inrush current (6–10·I<sub>rT</sub> and more, depending on the switching instant), which is why second-harmonic blocking or a short delay is used.</span></p>
+      </section>
+      <section id="t-cti">
+        <h2><span lang="ro">Marja de coordonare Δt (CTI)</span><span lang="en">Coordination time interval Δt (CTI)</span></h2>
+        <div class="eqn"><span data-tex="\Delta t = \frac{(2E_R+E_{CT})\,t}{100} + t_{CB} + t_o + t_s"></span><span class="no">(7)</span></div>
+        <p><span lang="ro">E<sub>R</sub> este eroarea de timp a releului (%), E<sub>CT</sub> eroarea TC (%), t timpul releului din aval, t<sub>CB</sub> timpul de rupere al întrerupătorului, t<sub>o</sub> depășirea (timpul în care releul din amonte mai continuă după dispariția curentului), t<sub>s</sub> o rezervă de siguranță. Pentru relee numerice cu întrerupătoare în vid rezultă în jur de 0,25 s; în practică se folosesc 0,3 s, iar notele românești dau 0,3–0,6 s, valorile mari fiind pentru relee electromecanice.</span><span lang="en">E<sub>R</sub> is the relay timing error (%), E<sub>CT</sub> the CT error (%), t the downstream relay time, t<sub>CB</sub> the breaker interrupting time, t<sub>o</sub> the overshoot (how long the upstream relay keeps timing after the current disappears), t<sub>s</sub> a safety margin. For numerical relays with vacuum breakers this gives about 0.25 s; 0.3 s is common in practice, and Romanian course notes give 0.3–0.6 s, the high values being for electromechanical relays.</span></p>
+        <p><span lang="ro">Factorul de timp al releului din amonte se alege cel mai mic care păstrează marja la orice curent comun, cu f(I) = timpul curbei la TMS = 1:</span><span lang="en">The upstream time multiplier is the smallest that keeps the margin at every common current, with f(I) = the curve time at TMS = 1:</span></p>
+        <div class="eqn"><span data-tex="TMS_{j+1} = \max_{I}\ \frac{t_{j}(I) + \Delta t}{f_{j+1}(I)}"></span><span class="no">(8)</span></div>
+      </section>
+      <section id="t-trafo">
+        <h2><span lang="ro">Coordonarea prin transformator</span><span lang="en">Coordination across the transformer</span></h2>
+        <p><span lang="ro">Curenții se raportează la aceeași tensiune (aici 20 kV) cu raportul U<sub>rHV</sub>/U<sub>rLV</sub>. Pentru defectul trifazat raportul e simplu. Pentru defectul bifazat pe 20 kV, R2 vede √3/2 din curentul trifazat, dar R1 vede pe o fază tot curentul trifazat raportat (1 : 1 : 2, M01). Raportat la curentul lui R2, R1 primește deci 2/√3 ≈ 1,155 mai mult, iar caracteristica lui se deplasează spre stânga cu 13,4 % în diagrama raportată la 20 kV. Coordonarea se verifică pentru ambele tipuri de defect.</span><span lang="en">Currents are referred to the same voltage (20 kV here) with the ratio U<sub>rHV</sub>/U<sub>rLV</sub>. For a three-phase fault the ratio is simple. For a phase-to-phase fault on 20 kV, R2 sees √3/2 of the three-phase current, but R1 sees the full referred three-phase current on one phase (1 : 1 : 2, M01). Relative to R2's current, R1 therefore receives 2/√3 ≈ 1.155 times more, and its characteristic shifts left by 13.4 % on the 20 kV-referred plot. Coordination is checked for both fault types.</span></p>
+      </section>
+      <section id="t-choice">
+        <h2><span lang="ro">Alegerea curbei</span><span lang="en">Choosing the curve</span></h2>
+        <p><span lang="ro">Caracteristicile dependente se potrivesc acolo unde curentul de defect scade mult de la începutul la capătul rețelei. Curbele foarte și extrem de inverse dau acționări rapide la defecte apropiate, iar EI se coordonează mai ușor cu siguranțele fuzibile; în schimb, rezerva pentru defectele de la capătul liniei poate deveni foarte lentă. Releele succesive se coordonează cel mai ușor cu aceeași familie de curbe. Laboratorul pornește cu IEC VI la toate releele; încearcă scenariile SI și EI și urmărește marjele.</span><span lang="en">Inverse characteristics suit networks where fault current falls a lot from the start to the end. Very and extremely inverse curves give fast operation for close faults, and EI coordinates more easily with fuses; on the other hand, backup for faults at the line end can become very slow. Successive relays coordinate most easily with the same curve family. The lab starts with IEC VI on all relays; try the SI and EI scenarios and watch the margins.</span></p>
+      </section>
+      <section id="t-ref">
+        <h2><span lang="ro">Surse</span><span lang="en">Sources</span></h2>
+        <ol class="refs">
+          <li>IEC 60255-151:2009, <i>Measuring relays and protection equipment — Part 151: Functional requirements for over/under current protection</i>. <span lang="ro">Constantele și pragurile G<sub>T</sub> = 1,1·G<sub>S</sub>, G<sub>D</sub> = 20·G<sub>S</sub>, așa cum le reproduce documentația Protecta pentru funcția TOC51.</span><span lang="en">Constants and thresholds G<sub>T</sub> = 1.1·G<sub>S</sub>, G<sub>D</sub> = 20·G<sub>S</sub>, as reproduced in Protecta's TOC51 function documentation.</span> <a href="https://www.protecta.hu/files/files/41666/toc51_v3.1.pdf" rel="noopener">protecta.hu</a></li>
+          <li>IEEE C37.112-2018, <i>Standard for Inverse-Time Characteristics Equations for Overcurrent Relays</i>; <span lang="ro">constantele din tabelul I al unei lucrări SEL.</span><span lang="en">constants from Table I of an SEL technical paper.</span> <a href="https://selinc.com/api/download/102555/" rel="noopener">selinc.com</a></li>
+          <li>pandapower, <span lang="ro">modulul</span><span lang="en">module</span> <code>protection/protection_devices/ocrelay.py</code> (v3.x): <span lang="ro">aceleași constante IEC; factori impliciți 1,2 și 1,25.</span><span lang="en">same IEC constants; default factors 1.2 and 1.25.</span></li>
+          <li><span lang="ro">Formula marjei de coordonare (7) și exemplele de 0,375 s (electromecanic, întrerupător cu ulei) și 0,24 s (static, în vid): materialele de aplicație ale <i>Network Protection &amp; Automation Guide</i>, cap. „Overcurrent protection”.</span><span lang="en">Coordination margin formula (7) and the examples of 0.375 s (electromechanical, oil breaker) and 0.24 s (static, vacuum): application material of the <i>Network Protection &amp; Automation Guide</i>, chapter “Overcurrent protection”.</span> <a href="https://www.slideshare.net/slideshow/03nondir-overcurrentppt/252840118" rel="noopener">slideshare.net</a></li>
+          <li><span lang="ro">O. Beniugă, „Protecția prin relee”, note de curs, TU Iași; cursuri românești de protecții (coeficientul de revenire 0,85 la releele electromecanice, k<sub>sens</sub> ≥ 1,5, Δt = 0,3–0,6 s).</span><span lang="en">O. Beniugă, “Protecția prin relee”, course notes, TU Iași; Romanian protection courses (reset ratio 0.85 for electromechanical relays, k<sub>sens</sub> ≥ 1.5, Δt = 0.3–0.6 s).</span> <a href="http://oana-beniuga.ieeia.tuiasi.ro/fisiere/Note%20curs%20PR.pdf" rel="noopener">ieeia.tuiasi.ro</a></li>
+          <li><span lang="ro">Ghiduri de studiu pentru examenele PE și NETA: I&gt; ≈ 1,25–1,5·I<sub>s max</sub>, I&gt;&gt; ≈ 1,2–1,3·I″<sub>k max</sub> la dispozitivul următor.</span><span lang="en">PE and NETA exam study guides: I&gt; ≈ 1.25–1.5·I<sub>load max</sub>, I&gt;&gt; ≈ 1.2–1.3·I″<sub>k max</sub> at the next device.</span> <a href="https://open-exam-prep.com/study-guides/pe-electrical-power/protection-systems-device-coordination/overcurrent-protection-tcc-curves" rel="noopener">open-exam-prep.com</a></li>
+          <li><span lang="ro">Universidad Carlos III de Madrid, studiu comparativ al curbelor SI, VI, EI în coordonare (rezerva lentă la capătul liniei pentru EI).</span><span lang="en">Universidad Carlos III de Madrid, comparative study of SI, VI, EI curves in coordination (slow backup at the line end for EI).</span> <a href="https://researchportal.uc3m.es/display/act528745" rel="noopener">researchportal.uc3m.es</a></li>
+          <li><span lang="ro">Curentul de magnetizare la conectare: 6–10·I<sub>r</sub> și mai mult, dependent de momentul conectării; blocarea la armonica a 2-a (nota de aplicație SEL).</span><span lang="en">Magnetising inrush: 6–10·I<sub>r</sub> and more, depending on the switching instant; second-harmonic blocking (SEL application note).</span> <a href="https://selinc.com/api/download/21474836652" rel="noopener">selinc.com</a></li>
+        </ol>
+      </section>
+    </article>
+  </div>
+</section>
+
+<!-- ================= TEST ================= -->
+<section class="tab" id="test" hidden>
+  <div class="quiz">
+    <div class="score"><h2 style="margin:0"><span lang="ro">Verifică-ți înțelegerea</span><span lang="en">Check your understanding</span></h2><div><span class="label"><span lang="ro">Scor</span><span lang="en">Score</span></span> <span class="mono" id="score">0 / 0</span> <button class="btn" id="q-reset"><span lang="ro">Test nou</span><span lang="en">New quiz</span></button></div></div>
+    <div id="qlist" class="quiz"></div>
+  </div>
+</section>
+
+<footer class="mod"><span><span lang="ro">Protecții în rețelele electrice · Modulul 03</span><span lang="en">Power system protection · Module 03</span></span><span><span lang="ro">Rezultatele motorului sunt verificate în verify/m03_verify.py</span><span lang="en">Engine results are checked in verify/m03_verify.py</span></span></footer>
+</div>
+
+<script src="../assets/cx.js"></script>
+<script src="../assets/course.js"></script>
+<script src="../m01/engine.js"></script>
+<script src="engine.js"></script>
+<script src="page.js"></script>
+</body>
+</html>

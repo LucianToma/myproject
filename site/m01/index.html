@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="ro" data-lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>M01 Curenți de defect</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..800&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+</head>
+<body>
+<div class="wrap">
+<header class="mod">
+  <div>
+    <div class="crumbs"><a href="../index.html"><span lang="ro">← Cuprinsul cursului</span><span lang="en">← Course map</span></a><span class="modno">M01</span></div>
+    <h1><span lang="ro">Curenții de defect pentru reglaje</span><span lang="en">Fault currents for protection settings</span></h1>
+    <p class="lede"><span lang="ro">Orice reglaj pornește de la doi curenți: cel maxim, pentru selectivitate și pentru verificarea echipamentelor, și cel minim, pentru sensibilitate. Aici îi calculezi pe o plecare de 20 kV, cu componente simetrice și cu metoda IEC 60909-0, pentru toate tipurile de defect și toate tratările neutrului.</span><span lang="en">Every setting starts from two currents: the maximum, for selectivity and equipment checks, and the minimum, for sensitivity. Here you compute both on a 20 kV feeder, with symmetrical components and the IEC 60909-0 method, for every fault type and every neutral earthing.</span></p>
+    <div class="ansi"><span>IEC 60909-0</span><span>3F · 2F · 1F · 2F-E</span><span>I″<sub>k max</sub> / I″<sub>k min</sub></span></div>
+  </div>
+  <div class="hdr-tools">
+    <div class="seg" role="group" aria-label="Limba / Language"><button data-langbtn="ro">RO</button><button data-langbtn="en">EN</button></div>
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="lab"><span lang="ro">Laborator</span><span lang="en">Lab</span></button>
+      <button role="tab" data-tab="reglaje"><span lang="ro">Reglaje</span><span lang="en">Settings</span></button>
+      <button role="tab" data-tab="teorie"><span lang="ro">Teorie</span><span lang="en">Theory</span></button>
+      <button role="tab" data-tab="test"><span lang="ro">Test</span><span lang="en">Quiz</span></button>
+    </nav>
+  </div>
+</header>
+
+<!-- ================= LABORATOR ================= -->
+<section class="tab" id="lab">
+  <div class="lab">
+    <aside class="rail">
+      <div class="panel">
+        <div class="label" style="margin-bottom:8px"><span lang="ro">Scenarii</span><span lang="en">Scenarios</span></div>
+        <div class="presets" id="presets"></div>
+      </div>
+      <div class="panel">
+        <div class="label" style="margin-bottom:8px"><span lang="ro">Defectul</span><span lang="en">The fault</span></div>
+        <div class="presets" id="ftype" role="group" aria-label="Tip defect"></div>
+        <div class="presets" id="fcase" role="group" aria-label="Regim" style="margin-top:8px"></div>
+        <div id="fknobs" style="margin-top:6px"></div>
+      </div>
+      <div class="panel" id="controls"></div>
+    </aside>
+    <div class="bench">
+      <div id="status"></div>
+      <div class="kpis" id="kpis"></div>
+      <div class="figure">
+        <div class="label"><span lang="ro">Schema monofilară a plecării</span><span lang="en">Feeder single-line diagram</span></div>
+        <div class="scroll"><svg id="sld" viewBox="0 0 760 200" width="100%" style="min-width:600px" role="img" aria-label="Schema monofilară"></svg></div>
+      </div>
+      <div class="figure">
+        <div class="label"><span lang="ro">Conectarea rețelelor de secvență pentru defectul ales</span><span lang="en">Sequence network connection for the chosen fault</span></div>
+        <div class="scroll"><svg id="seqnet" viewBox="0 0 760 230" width="100%" style="min-width:600px" role="img" aria-label="Rețele de secvență"></svg></div>
+      </div>
+      <div class="figure">
+        <div class="label"><span lang="ro">Fazorii la locul defectului</span><span lang="en">Phasors at the fault location</span></div>
+        <div class="scroll"><svg id="phasors" viewBox="0 0 760 300" width="100%" style="min-width:600px" role="img" aria-label="Fazori"></svg></div>
+        <p class="note" style="margin:6px 0 0"><span lang="ro">Culorile fazelor urmează IEC 60445: L1 maro, L2 negru, L3 gri. Curenții sunt scalați la cel mai mare; tensiunile sunt în unități relative față de tensiunea de fază dinainte de defect (cercul punctat = 1).</span><span lang="en">Phase colours follow IEC 60445: L1 brown, L2 black, L3 grey. Currents are scaled to the largest; voltages are per unit of the pre-fault phase voltage (dashed circle = 1).</span></p>
+      </div>
+      <div class="figure">
+        <div class="label"><span lang="ro">Curentul de defect de-a lungul liniei (scară logaritmică)</span><span lang="en">Fault current along the line (log scale)</span></div>
+        <div class="scroll"><svg id="profile" viewBox="0 0 760 300" width="100%" style="min-width:600px" role="img" aria-label="Profil curent"></svg></div>
+      </div>
+      <div class="figure">
+        <h3><span lang="ro">Calcul pas cu pas</span><span lang="en">Step-by-step calculation</span></h3>
+        <p class="note" style="margin-top:0"><span lang="ro">Toate impedanțele sunt raportate la 20 kV. Coloana din mijloc arată relația folosită, numerotată ca în tab-ul Teorie.</span><span lang="en">All impedances are referred to 20 kV. The middle column shows the relation used, numbered as in the Theory tab.</span></p>
+        <div class="scroll"><table class="data" id="steps" style="min-width:600px"></table></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= REGLAJE ================= -->
+<section class="tab" id="reglaje" hidden>
+  <div class="sheet">
+    <div class="sheet-hd">
+      <div>
+        <div class="label"><span lang="ro">Fișa de calcul · date de intrare pentru studiul de reglaje</span><span lang="en">Calculation sheet · input data for the settings study</span></div>
+        <h2 style="margin:4px 0 0"><span lang="ro">Curenții de defect ai plecării de 20 kV</span><span lang="en">Fault currents of the 20 kV feeder</span></h2>
+      </div>
+      <div class="note" id="sheet-meta"></div>
+    </div>
+    <div class="steps">
+      <div class="step"><div>
+        <h3><span lang="ro">Regimul maxim: pentru selectivitate și echipamente</span><span lang="en">Maximum case: for selectivity and equipment</span></h3>
+        <p><span lang="ro">Se ia puterea de scurtcircuit maximă a rețelei de 110 kV, factorul de tensiune c<sub>max</sub> = 1,1, corecția K<sub>T</sub> a transformatorului și rezistențele liniilor la 20 °C. Rezultatele servesc la reglajul treptelor instantanee (care nu trebuie să vadă defecte din aval), la timpii de coordonare evaluați la curentul maxim, la verificarea saturației transformatoarelor de curent și la capacitatea de rupere.</span><span lang="en">Use the maximum short-circuit power of the 110 kV grid, voltage factor c<sub>max</sub> = 1.1, the transformer correction K<sub>T</sub> and line resistances at 20 °C. The results set the instantaneous stages (which must not see downstream faults), the coordination margins evaluated at maximum current, the CT saturation check and the breaking duty.</span></p>
+        <div class="calc" id="calc-max"></div>
+      </div></div>
+      <div class="step"><div>
+        <h3><span lang="ro">Regimul minim: pentru sensibilitate</span><span lang="en">Minimum case: for sensitivity</span></h3>
+        <p><span lang="ro">Se ia puterea de scurtcircuit minimă (configurația cea mai slabă a rețelei), c<sub>min</sub> = 1,0, fără K<sub>T</sub>, rezistențele liniilor la temperatura de la sfârșitul defectului θ<sub>e</sub> și, pentru punerile la pământ, rezistența de defect pe care protecția trebuie să o mai vadă. Defectul de referință este cel bifazat la capătul zonei protejate, iar pentru protecția homopolară, cel monofazat prin R<sub>f</sub>.</span><span lang="en">Use the minimum short-circuit power (weakest grid configuration), c<sub>min</sub> = 1.0, no K<sub>T</sub>, line resistances at the end-of-fault temperature θ<sub>e</sub> and, for earth faults, the fault resistance the protection must still detect. The reference fault is phase-to-phase at the end of the protected zone; for earth-fault protection, single-phase through R<sub>f</sub>.</span></p>
+        <div class="calc" id="calc-min"></div>
+      </div></div>
+      <div class="step"><div>
+        <h3><span lang="ro">Tabelul curenților de defect</span><span lang="en">Fault current table</span></h3>
+        <p><span lang="ro">Punctele de calcul sunt barele și sferturile liniei. Copiază tabelul și lipește-l direct în Excel sau în fișa de reglaje.</span><span lang="en">Calculation points are the busbar and the quarter points of the line. Copy the table and paste it straight into Excel or the settings sheet.</span></p>
+        <div class="tools"><span class="label" id="tbl-cap"></span><button class="btn" id="copy-tbl"><span lang="ro">Copiază pentru Excel</span><span lang="en">Copy for Excel</span></button></div>
+        <div class="scroll"><table class="data" id="sc-table" style="min-width:720px"></table></div>
+      </div></div>
+      <div class="step"><div>
+        <h3><span lang="ro">Unde se folosește fiecare valoare</span><span lang="en">Where each value is used</span></h3>
+        <div class="scroll"><table class="data" id="use-table" style="min-width:640px"></table></div>
+        <div class="callout ind"><b class="k"><span lang="ro">Practică industrială</span><span lang="en">Industrial practice</span></b><span lang="ro">Coeficientul de sensibilitate se verifică la curentul minim din capătul zonei: k<sub>sens</sub> = I″<sub>k min</sub>/I<sub>pp</sub>. Notele de curs românești cer k<sub>sens</sub> ≥ 1,5 pentru protecția de bază; pentru rezervă se acceptă de regulă o valoare mai mică, în jur de 1,2. Valorile exacte le dă procedura operatorului de rețea; modulul M03 le aplică pe această plecare.</span><span lang="en">The sensitivity factor is checked at the minimum current at the end of the zone: k<sub>sens</sub> = I″<sub>k min</sub>/I<sub>pickup</sub>. Romanian course notes require k<sub>sens</sub> ≥ 1.5 for main protection; for backup a lower value, around 1.2, is usually accepted. The exact values come from the network operator's procedure; module M03 applies them to this feeder.</span></div>
+      </div></div>
+      <div class="step"><div>
+        <h3><span lang="ro">Ce vede protecția de pe 110 kV</span><span lang="en">What the 110 kV protection sees</span></h3>
+        <p><span lang="ro">Un defect bifazat pe 20 kV, trecut prin transformatorul YNd11, apare pe 110 kV cu curenți în raportul 1 : 1 : 2. Faza cea mai încărcată poartă exact curentul defectului trifazat raportat la 110 kV, deși pe 20 kV curentul bifazat e doar 0,866 din cel trifazat. Un defect monofazat pe 20 kV apare pe 110 kV ca 1 : 1 : 0, fără componentă homopolară. De aceea treapta temporizată a protecției de pe 110 kV se coordonează cu cea de pe 20 kV folosind coloana „ÎT” din tabel.</span><span lang="en">A phase-to-phase fault on 20 kV, seen through the YNd11 transformer, appears on 110 kV with currents in the ratio 1 : 1 : 2. The most loaded phase carries exactly the three-phase fault current referred to 110 kV, although on 20 kV the phase-to-phase current is only 0.866 of the three-phase one. A single-phase fault on 20 kV appears on 110 kV as 1 : 1 : 0, with no zero-sequence component. This is why the time-delayed stage on 110 kV is coordinated with the 20 kV one using the “HV” column of the table.</span></p>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TEORIE ================= -->
+<section class="tab" id="teorie" hidden>
+  <div class="theory">
+    <nav class="toc">
+      <a href="#t-why"><span lang="ro">Două calcule, două roluri</span><span lang="en">Two calculations, two roles</span></a>
+      <a href="#t-sym"><span lang="ro">Componente simetrice</span><span lang="en">Symmetrical components</span></a>
+      <a href="#t-conn"><span lang="ro">Tipuri de defect</span><span lang="en">Fault types</span></a>
+      <a href="#t-iec"><span lang="ro">Metoda IEC 60909-0</span><span lang="en">The IEC 60909-0 method</span></a>
+      <a href="#t-zero"><span lang="ro">Secvența zero</span><span lang="en">Zero sequence</span></a>
+      <a href="#t-neutral"><span lang="ro">Tratarea neutrului</span><span lang="en">Neutral earthing</span></a>
+      <a href="#t-dy"><span lang="ro">Prin transformatorul YNd</span><span lang="en">Through the YNd transformer</span></a>
+      <a href="#t-model"><span lang="ro">Ipotezele modelului</span><span lang="en">Model assumptions</span></a>
+      <a href="#t-ref"><span lang="ro">Surse</span><span lang="en">Sources</span></a>
+    </nav>
+    <article>
+      <section id="t-why">
+        <h2><span lang="ro">Două calcule, două roluri</span><span lang="en">Two calculations, two roles</span></h2>
+        <p><span lang="ro">O protecție de curent trebuie să îndeplinească simultan două condiții. Să nu acționeze pentru defecte din afara zonei ei, la cel mai mare curent posibil (selectivitate). Și să acționeze sigur pentru cel mai mic defect din zonă (sensibilitate). Prima condiție se verifică în regimul maxim, a doua în regimul minim. IEC 60909-0 definește ambele regimuri prin factorul de tensiune c, prin configurația rețelei și prin temperatura conductoarelor.</span><span lang="en">A current-based protection must satisfy two conditions at once. It must not operate for faults outside its zone at the highest possible current (selectivity). And it must operate reliably for the smallest fault inside its zone (sensitivity). The first is checked in the maximum case, the second in the minimum case. IEC 60909-0 defines both cases through the voltage factor c, the network configuration and the conductor temperature.</span></p>
+        <div class="cards">
+          <div class="card"><h3><span lang="ro">Regim maxim</span><span lang="en">Maximum case</span></h3><p class="mono">c<sub>max</sub> = 1,1 · S″<sub>kQ max</sub> · K<sub>T</sub> · θ = 20 °C</p><p><span lang="ro">treapta instantanee, timpi de coordonare, TC, aparataj</span><span lang="en">instantaneous stage, coordination margins, CTs, switchgear</span></p></div>
+          <div class="card"><h3><span lang="ro">Regim minim</span><span lang="en">Minimum case</span></h3><p class="mono">c<sub>min</sub> = 1,0 · S″<sub>kQ min</sub> · θ<sub>e</sub> · R<sub>f</sub></p><p><span lang="ro">curentul de pornire, coeficientul de sensibilitate, protecția homopolară</span><span lang="en">pickup current, sensitivity factor, earth-fault protection</span></p></div>
+        </div>
+      </section>
+      <section id="t-sym">
+        <h2><span lang="ro">Componente simetrice</span><span lang="en">Symmetrical components</span></h2>
+        <p><span lang="ro">Fortescue (1918) a arătat că orice set de trei fazori se descompune în trei seturi simetrice: direct (1), invers (2) și homopolar (0). Cu operatorul <span data-tex="a = e^{j120^\circ}"></span>:</span><span lang="en">Fortescue (1918) showed that any set of three phasors splits into three symmetrical sets: positive (1), negative (2) and zero (0) sequence. With the operator <span data-tex="a = e^{j120^\circ}"></span>:</span></p>
+        <div class="eqn"><span data-tex="\begin{bmatrix}I_{L1}\\I_{L2}\\I_{L3}\end{bmatrix}=\begin{bmatrix}1&1&1\\1&a^2&a\\1&a&a^2\end{bmatrix}\begin{bmatrix}I_0\\I_1\\I_2\end{bmatrix},\qquad \begin{bmatrix}I_0\\I_1\\I_2\end{bmatrix}=\tfrac13\begin{bmatrix}1&1&1\\1&a&a^2\\1&a^2&a\end{bmatrix}\begin{bmatrix}I_{L1}\\I_{L2}\\I_{L3}\end{bmatrix}" class="d"></span><span class="no">(1)</span></div>
+        <p><span lang="ro">Într-o rețea simetrică cele trei secvențe sunt decuplate: fiecare are propria rețea, cu impedanțele Z<sub>1</sub>, Z<sub>2</sub>, Z<sub>0</sub> văzute din locul defectului. Defectul nesimetric doar le leagă între ele, într-un mod care depinde de tipul lui. Releele măsoară direct aceste mărimi: 3I<sub>0</sub> (curentul rezidual) pentru protecția homopolară, I<sub>2</sub> pentru protecția de secvență inversă.</span><span lang="en">In a symmetrical network the three sequences are decoupled: each has its own network, with impedances Z<sub>1</sub>, Z<sub>2</sub>, Z<sub>0</sub> seen from the fault. An unbalanced fault only ties them together, in a way that depends on the fault type. Relays measure these quantities directly: 3I<sub>0</sub> (residual current) for earth-fault protection, I<sub>2</sub> for negative-sequence protection.</span></p>
+      </section>
+      <section id="t-conn">
+        <h2><span lang="ro">Tipuri de defect și conectarea rețelelor de secvență</span><span lang="en">Fault types and sequence network connections</span></h2>
+        <p><span lang="ro">Cu sursa echivalentă <span data-tex="E = cU_n/\sqrt3"></span> la locul defectului și rezistența de defect R<sub>f</sub>:</span><span lang="en">With the equivalent source <span data-tex="E = cU_n/\sqrt3"></span> at the fault location and fault resistance R<sub>f</sub>:</span></p>
+        <div class="eqn"><span data-tex="\text{3F: } I''_{k3} = \frac{cU_n}{\sqrt3\,|Z_1 + R_f|}"></span><span class="no">(2)</span></div>
+        <div class="eqn"><span data-tex="\text{2F (L2–L3): } I_1 = -I_2 = \frac{E}{Z_1+Z_2+R_f},\quad I''_{k2} = \frac{cU_n}{|Z_1+Z_2+R_f|} = \frac{\sqrt3}{2}I''_{k3}\ \ (R_f=0,\ Z_2=Z_1)"></span><span class="no">(3)</span></div>
+        <div class="eqn"><span data-tex="\text{1F (L1–E): } I_0=I_1=I_2=\frac{E}{Z_1+Z_2+Z_0+3R_f},\quad I''_{k1} = 3|I_0| = \frac{\sqrt3\,cU_n}{|Z_1+Z_2+Z_0+3R_f|}"></span><span class="no">(4)</span></div>
+        <div class="eqn"><span data-tex="\text{2F-E: } I_1=\frac{E}{Z_1+Z_2\parallel(Z_0+3R_f)},\quad I''_{kE2E}=3|I_0|=\frac{\sqrt3\,cU_n}{|Z_1+2Z_0|}\ \ (R_f=0,\ Z_2=Z_1)"></span><span class="no">(5)</span></div>
+        <p><span lang="ro">Tensiunile la locul defectului rezultă din <span data-tex="U_1=E-Z_1I_1,\ U_2=-Z_2I_2,\ U_0=-Z_0I_0"></span>, apoi trecute în faze cu (1). Raportul dintre cea mai mare tensiune a unei faze sănătoase și tensiunea de fază fără defect este factorul de punere la pământ (IEV 195-05-14). El arată cât de mult cresc tensiunile pe fazele sănătoase și deci ce trebuie să suporte izolația și descărcătoarele.</span><span lang="en">Voltages at the fault follow from <span data-tex="U_1=E-Z_1I_1,\ U_2=-Z_2I_2,\ U_0=-Z_0I_0"></span>, then back to phases with (1). The ratio of the highest healthy-phase voltage to the phase voltage without the fault is the earth fault factor (IEV 195-05-14). It shows how much the healthy-phase voltages rise and therefore what insulation and surge arresters must withstand.</span></p>
+      </section>
+      <section id="t-iec">
+        <h2><span lang="ro">Metoda sursei echivalente (IEC 60909-0)</span><span lang="en">The equivalent voltage source method (IEC 60909-0)</span></h2>
+        <p><span lang="ro">Toate sursele reale se scurtcircuitează și se înlocuiesc cu impedanțele lor interne. La locul defectului se aplică o singură sursă <span data-tex="cU_n/\sqrt3"></span>. Sarcinile și capacitățile liniilor se neglijează în secvențele directă și inversă.</span><span lang="en">All real sources are short-circuited and replaced by their internal impedances. A single source <span data-tex="cU_n/\sqrt3"></span> is applied at the fault. Loads and line capacitances are neglected in the positive and negative sequences.</span></p>
+        <div class="eqn"><span data-tex="Z_Q=\frac{c\,U_{nQ}^2}{S''_{kQ}},\qquad R_Q = 0{,}1\,X_Q,\qquad Z_{Qt}=\frac{Z_Q}{t_r^2}"></span><span class="no">(6)</span></div>
+        <div class="eqn"><span data-tex="Z_T=\frac{u_{kr}}{100}\frac{U_{rT}^2}{S_{rT}},\quad R_T=\frac{P_{krT}\,U_{rT}^2}{S_{rT}^2},\quad X_T=\sqrt{Z_T^2-R_T^2}"></span><span class="no">(7)</span></div>
+        <div class="eqn"><span><span data-tex="K_T = 0{,}95\,\frac{c_{max}}{1+0{,}6\,x_T},\qquad x_T=\frac{X_T}{U_{rT}^2/S_{rT}}"></span> <span class="note"><span lang="ro">numai în regimul maxim</span><span lang="en">maximum case only</span></span></span><span class="no">(8)</span></div>
+        <div class="eqn"><span><span data-tex="R_L(\theta_e)=\left[1+\frac{0{,}004}{{}^{\circ}\mathrm{C}}\,(\theta_e-20\,{}^{\circ}\mathrm{C})\right]R_{L20}"></span> <span class="note"><span lang="ro">numai în regimul minim</span><span lang="en">minimum case only</span></span></span><span class="no">(9)</span></div>
+        <div class="eqn"><span data-tex="\kappa = 1{,}02+0{,}98\,e^{-3R/X},\qquad i_p=\kappa\sqrt2\,I''_k"></span><span class="no">(10)</span></div>
+        <table class="data" style="margin-top:8px">
+          <tr><th><span lang="ro">Tensiunea nominală</span><span lang="en">Nominal voltage</span></th><th class="n">c<sub>max</sub></th><th class="n">c<sub>min</sub></th></tr>
+          <tr><td><span lang="ro">joasă tensiune, toleranță +6 % / +10 %</span><span lang="en">low voltage, tolerance +6 % / +10 %</span></td><td class="n">1,05 / 1,10</td><td class="n">0,95</td></tr>
+          <tr><td><span lang="ro">medie și înaltă tensiune (&gt; 1 kV)</span><span lang="en">medium and high voltage (&gt; 1 kV)</span></td><td class="n">1,10</td><td class="n">1,00</td></tr>
+        </table>
+        <p class="cite"><span lang="ro">Valorile c și relația (8) sunt cele din IEC 60909-0:2016; le aplică la fel și implementarea pandapower (aceleași valori implicite, K<sub>T</sub> doar în regimul maxim, α = 0,004/°C în (9)), cu care sunt verificate rezultatele acestui modul.</span><span lang="en">The c values and relation (8) are those of IEC 60909-0:2016; the pandapower implementation applies them the same way (same defaults, K<sub>T</sub> only in the maximum case, α = 0.004/°C in (9)), and this module's results are checked against it.</span></p>
+      </section>
+      <section id="t-zero">
+        <h2><span lang="ro">Impedanțele de secvență zero</span><span lang="en">Zero-sequence impedances</span></h2>
+        <p><span lang="ro">Curentul homopolar se întoarce prin pământ (și prin conductoarele de protecție sau ecranele cablurilor, dacă există). Pentru o linie aeriană fără conductor de protecție, formulele lui Carson (1926) dau:</span><span lang="en">Zero-sequence current returns through earth (and through shield wires or cable screens, where present). For an overhead line without shield wire, Carson's formulas (1926) give:</span></p>
+        <div class="eqn"><span data-tex="R_0 = R_1 + 3R_e,\quad R_e=\frac{\omega\mu_0}{8}=\pi^2 f\cdot10^{-4}\ \Omega/\mathrm{km} = 0{,}0493\ \Omega/\mathrm{km}"></span><span class="no">(11)</span></div>
+        <div class="eqn"><span data-tex="X_0 = X_1 + 3\,\omega\,\frac{\mu_0}{2\pi}\ln\frac{D_e}{D_m},\qquad D_e = 658{,}5\sqrt{\rho/f}\ \mathrm{m}"></span><span class="no">(12)</span></div>
+        <p><span lang="ro">Cu ρ = 100 Ω·m rezultă D<sub>e</sub> = 931 m. Pentru LEA Ol-Al 70/12, distanța medie geometrică D<sub>m</sub> = 1,46 m reproduce X<sub>1</sub> = 0,36 Ω/km din biblioteca pandapower, iar (11)–(12) dau R<sub>0</sub> = 0,561 Ω/km și X<sub>0</sub> = 1,578 Ω/km, deci X<sub>0</sub> ≈ 4,4·X<sub>1</sub>. Integrala completă a lui Carson, evaluată numeric pentru aceeași geometrie, diferă cu sub 1 % (verify/m01_line_params.py). Pentru cablu, curentul homopolar revine prin ecrane: R<sub>0</sub> ≈ R<sub>1</sub> + R<sub>ecran</sub> și X<sub>0</sub> ≈ X<sub>1</sub>, o estimare pe care fișa producătorului o înlocuiește în calculul real.</span><span lang="en">With ρ = 100 Ω·m, D<sub>e</sub> = 931 m. For the ACSR 70/12 line, the geometric mean distance D<sub>m</sub> = 1.46 m reproduces X<sub>1</sub> = 0.36 Ω/km from the pandapower library, and (11)–(12) give R<sub>0</sub> = 0.561 Ω/km and X<sub>0</sub> = 1.578 Ω/km, so X<sub>0</sub> ≈ 4.4·X<sub>1</sub>. The full Carson integral, evaluated numerically for the same geometry, differs by less than 1 % (verify/m01_line_params.py). For a cable, zero-sequence current returns through the screens: R<sub>0</sub> ≈ R<sub>1</sub> + R<sub>screen</sub> and X<sub>0</sub> ≈ X<sub>1</sub>, an estimate that the manufacturer's data sheet replaces in a real study.</span></p>
+        <p><span lang="ro">Transformatorul YNd11 nu lasă secvența zero să treacă între 110 kV și 20 kV (înfășurarea în triunghi o închide în interior). Pe 20 kV neutrul se creează artificial, cu o bobină de punere la pământ (BPN, conexiune zig-zag), care are impedanță mare la secvența directă și mică la cea homopolară, Z<sub>0,BPN</sub>.</span><span lang="en">The YNd11 transformer blocks zero sequence between 110 kV and 20 kV (the delta winding circulates it internally). On 20 kV the neutral is created artificially with an earthing transformer (zig-zag), which has a high positive-sequence and a low zero-sequence impedance, Z<sub>0,ET</sub>.</span></p>
+      </section>
+      <section id="t-neutral">
+        <h2><span lang="ro">Tratarea neutrului și curentul de punere la pământ</span><span lang="en">Neutral earthing and the earth-fault current</span></h2>
+        <p><span lang="ro">Pe barele de 20 kV, impedanța homopolară este echipamentul de neutru în paralel cu capacitățile homopolare ale întregii rețele galvanic legate. Acestea se exprimă prin curentul capacitiv de punere la pământ I<sub>C</sub>:</span><span lang="en">At the 20 kV busbar, the zero-sequence impedance is the neutral equipment in parallel with the zero-sequence capacitances of the whole galvanically connected network. These are expressed through the capacitive earth-fault current I<sub>C</sub>:</span></p>
+        <div class="eqn"><span data-tex="I_C = 3\,\omega C_0\,U_f,\qquad \frac{1}{Z_{0,bare}} = \frac{1}{Z_{0N}} + j\omega C_0"></span><span class="no">(13)</span></div>
+        <div class="cards">
+          <div class="card"><h3><span lang="ro">Rezistor</span><span lang="en">Resistor</span></h3><p class="mono">Z<sub>0N</sub> = Z<sub>0,BPN</sub> + 3R<sub>N</sub>, R<sub>N</sub> = U<sub>f</sub>/I<sub>lim</sub></p><p><span lang="ro">Curentul de defect e limitat la sute de amperi (în practica românească, între 300 și 1000 A, după Hățegan); protecția homopolară îl detectează ușor.</span><span lang="en">The fault current is limited to hundreds of amperes (300 to 1000 A in Romanian practice, per Hățegan); earth-fault protection detects it easily.</span></p></div>
+          <div class="card"><h3><span lang="ro">Bobină de stingere</span><span lang="en">Arc suppression coil</span></h3><p class="mono">I<sub>L</sub> = I<sub>C</sub>(1+v), I<sub>rest</sub> ≈ I<sub>C</sub>√(v² + d²)</p><p><span lang="ro">Bobina compensează curentul capacitiv; rămâne un curent mic, care permite stingerea arcului. Detecția cere protecții speciale (M05).</span><span lang="en">The coil cancels the capacitive current; a small residual remains, which lets the arc self-extinguish. Detection needs special protection (M05).</span></p></div>
+          <div class="card"><h3><span lang="ro">Neutru izolat</span><span lang="en">Isolated neutral</span></h3><p class="mono">I<sub>f</sub> ≈ I<sub>C</sub></p><p><span lang="ro">Curentul de defect e pur capacitiv; fazele sănătoase urcă la tensiunea de linie (factor √3).</span><span lang="en">The fault current is purely capacitive; healthy phases rise to line voltage (factor √3).</span></p></div>
+          <div class="card"><h3><span lang="ro">Legat direct</span><span lang="en">Solidly earthed</span></h3><p class="mono">Z<sub>0N</sub> = Z<sub>0,BPN</sub></p><p><span lang="ro">Curent de defect de ordinul kiloamperilor, comparabil cu scurtcircuitul trifazat.</span><span lang="en">Fault current of the order of kiloamperes, comparable to the three-phase fault.</span></p></div>
+        </div>
+        <div class="callout"><b class="k"><span lang="ro">Atenție la domeniul standardului</span><span lang="en">Mind the scope of the standard</span></b><span lang="ro">IEC 60909-0 nu tratează punerea la pământ simplă în rețelele cu neutru izolat sau compensat: acolo nu e un scurtcircuit, iar curentul depinde de capacitățile rețelei. Laboratorul o calculează cu același model de secvență, care rămâne valabil, dar valorile nu sunt „curenți IEC 60909”.</span><span lang="en">IEC 60909-0 does not cover the single earth fault in isolated or resonance-earthed networks: there it is not a short circuit and the current depends on the network capacitances. The lab computes it with the same sequence model, which remains valid, but the values are not “IEC 60909 currents”.</span></div>
+      </section>
+      <section id="t-dy">
+        <h2><span lang="ro">Curenții văzuți prin transformatorul YNd11</span><span lang="en">Currents seen through the YNd11 transformer</span></h2>
+        <p><span lang="ro">La trecerea prin transformator, secvența directă se rotește cu +30°·h, secvența inversă cu −30°·h (h = cifra grupei de conexiuni), iar secvența zero nu trece. Amplitudinile se raportează cu U<sub>rLV</sub>/U<sub>rHV</sub>:</span><span lang="en">Through the transformer, the positive sequence rotates by +30°·h, the negative sequence by −30°·h (h = clock number), and zero sequence does not pass. Magnitudes scale by U<sub>rLV</sub>/U<sub>rHV</sub>:</span></p>
+        <div class="eqn"><span data-tex="I_{1,HV}=\frac{U_{rLV}}{U_{rHV}}\,I_{1,LV}\,e^{\,j30^\circ h},\qquad I_{2,HV}=\frac{U_{rLV}}{U_{rHV}}\,I_{2,LV}\,e^{-j30^\circ h},\qquad I_{0,HV}=0"></span><span class="no">(14)</span></div>
+        <p><span lang="ro">Rezultatul practic: bifazat pe 20 kV → 1 : 1 : 2 pe 110 kV, cu faza maximă egală cu curentul trifazat raportat; monofazat pe 20 kV → 1 : 1 : 0 pe 110 kV. Ambele tipare sunt verificate numeric în verify/m01_verify.py.</span><span lang="en">The practical result: phase-to-phase on 20 kV → 1 : 1 : 2 on 110 kV, with the largest phase equal to the referred three-phase current; single-phase on 20 kV → 1 : 1 : 0 on 110 kV. Both patterns are checked numerically in verify/m01_verify.py.</span></p>
+      </section>
+      <section id="t-model">
+        <h2><span lang="ro">Ipotezele modelului din laborator</span><span lang="en">Lab model assumptions</span></h2>
+        <ul>
+          <li><span lang="ro">Rețea radială, o singură sursă (rețeaua de 110 kV prin T1), fără generare distribuită (aceasta apare în M06).</span><span lang="en">Radial network, single source (110 kV grid through T1), no distributed generation (covered in M06).</span></li>
+          <li><span lang="ro">Z<sub>2</sub> = Z<sub>1</sub> (rețea fără mașini rotative), sarcinile neglijate, curentul de defect egal cu cel din protecția de la capul plecării.</span><span lang="en">Z<sub>2</sub> = Z<sub>1</sub> (no rotating machines), loads neglected, fault current equal to the current at the feeder-head relay.</span></li>
+          <li><span lang="ro">Capacitățile rețelei apar numai în secvența zero, concentrate la bare. Incluse și în secvența directă, ar schimba curenții de defect cu cel mult 0,38 % în cazurile verificate.</span><span lang="en">Network capacitances appear only in the zero sequence, lumped at the busbar. Including them in the positive sequence as well would change the fault currents by at most 0.38 % in the checked cases.</span></li>
+          <li><span lang="ro">Corecția de temperatură (9) se aplică și lui R<sub>0</sub>, deși acesta conține și rezistența pământului; pentru regimul minim, alegerea e acoperitoare.</span><span lang="en">The temperature correction (9) is also applied to R<sub>0</sub>, although it includes the earth resistance; for the minimum case this is on the safe side.</span></li>
+          <li><span lang="ro">Datele rețelei-exemplu: transformatorul și conductoarele sunt tipurile standard din pandapower; puterile de scurtcircuit, Z<sub>0,BPN</sub>, I<sub>C</sub>, v și d sunt valori de exemplu, de înlocuit cu datele operatorului.</span><span lang="en">Example network data: the transformer and conductors are pandapower standard types; short-circuit powers, Z<sub>0,ET</sub>, I<sub>C</sub>, v and d are example values, to be replaced with the operator's data.</span></li>
+        </ul>
+      </section>
+      <section id="t-ref">
+        <h2><span lang="ro">Surse</span><span lang="en">Sources</span></h2>
+        <ol class="refs">
+          <li>IEC 60909-0:2016, <i>Short-circuit currents in three-phase a.c. systems — Part 0: Calculation of currents</i>. <span lang="ro">Factorul c, K<sub>T</sub>, metoda sursei echivalente, domeniul de aplicare.</span><span lang="en">Factor c, K<sub>T</sub>, equivalent source method, scope.</span></li>
+          <li>L. Thurner et al., „pandapower — An Open-Source Python Tool for Convenient Modeling, Analysis, and Optimization of Electric Power Systems”, <i>IEEE Trans. Power Systems</i>, 33(6), 2018, pp. 6510–6521. <span lang="ro">Implementarea IEC 60909 și biblioteca de tipuri standard folosite la verificare.</span><span lang="en">IEC 60909 implementation and standard type library used for checking.</span></li>
+          <li>C. L. Fortescue, „Method of symmetrical co-ordinates applied to the solution of polyphase networks”, <i>Trans. AIEE</i>, 37(2), 1918, pp. 1027–1140.</li>
+          <li>J. R. Carson, „Wave propagation in overhead wires with ground return”, <i>Bell System Technical Journal</i>, 5(4), 1926, pp. 539–554.</li>
+          <li>IEC 60050-195 (IEV 195-05-14), <span lang="ro">definiția factorului de punere la pământ.</span><span lang="en">definition of the earth fault factor.</span></li>
+          <li>IEC 60445, <span lang="ro">culorile conductoarelor (L1 maro, L2 negru, L3 gri).</span><span lang="en">conductor colours (L1 brown, L2 black, L3 grey).</span></li>
+          <li>I. D. Hățegan, <span lang="ro">teză de doctorat, Universitatea Politehnica Timișoara: limitarea curentului de punere la pământ în rețelele MT tratate prin rezistență, uzual 300–1000 A.</span><span lang="en">PhD thesis, Politehnica University of Timișoara: earth-fault current limitation in resistance-earthed MV networks, usually 300–1000 A.</span> <a href="https://dspace.upt.ro/xmlui/bitstream/handle/123456789/4664/BUPT_TD_Hategan%20Ioan%20Dorin.pdf" rel="noopener">dspace.upt.ro</a></li>
+          <li><span lang="ro">Note de curs „Protecția prin relee” (O. Beniugă, TU Iași) și alte cursuri românești: k<sub>sens</sub> ≥ 1,5 pentru protecția de bază.</span><span lang="en">Course notes “Protecția prin relee” (O. Beniugă, TU Iași) and other Romanian courses: k<sub>sens</sub> ≥ 1.5 for main protection.</span> <a href="http://oana-beniuga.ieeia.tuiasi.ro/fisiere/Note%20curs%20PR.pdf" rel="noopener">ieeia.tuiasi.ro</a></li>
+        </ol>
+      </section>
+    </article>
+  </div>
+</section>
+
+<!-- ================= TEST ================= -->
+<section class="tab" id="test" hidden>
+  <div class="quiz">
+    <div class="score"><h2 style="margin:0"><span lang="ro">Verifică-ți înțelegerea</span><span lang="en">Check your understanding</span></h2><div><span class="label"><span lang="ro">Scor</span><span lang="en">Score</span></span> <span class="mono" id="score">0 / 0</span> <button class="btn" id="q-reset"><span lang="ro">Test nou</span><span lang="en">New quiz</span></button></div></div>
+    <div id="qlist" class="quiz"></div>
+  </div>
+</section>
+
+<footer class="mod"><span><span lang="ro">Protecții în rețelele electrice · Modulul 01</span><span lang="en">Power system protection · Module 01</span></span><span><span lang="ro">Rezultatele motorului sunt verificate în verify/m01_verify.py</span><span lang="en">Engine results are checked in verify/m01_verify.py</span></span></footer>
+</div>
+
+<script src="../assets/cx.js"></script>
+<script src="../assets/course.js"></script>
+<script src="engine.js"></script>
+<script src="page.js"></script>
+</body>
+</html>

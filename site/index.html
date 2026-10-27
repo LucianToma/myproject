@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ro" data-lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Protecții în rețelele electrice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..800&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap">
+<link rel="stylesheet" href="assets/course.css">
+<style>
+.hero{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:24px 40px;align-items:end;padding-block:28px 18px;border-bottom:2px solid var(--ink)}
+@media (max-width:860px){.hero{grid-template-columns:minmax(0,1fr)}}
+.hero h1{font-size:clamp(2rem,1.4rem + 2.6vw,3.2rem);font-stretch:80%;letter-spacing:-.005em}
+.hero .lede{font-size:1.04rem;max-width:62ch}
+.hero-tools{display:flex;justify-content:flex-end;align-items:flex-start;gap:10px;flex-wrap:wrap}
+@media (max-width:860px){.hero-tools{justify-content:flex-start}}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:6px;overflow:hidden;margin-top:14px}
+.facts>div{background:var(--surface);padding:10px 12px;min-width:0}
+.facts b{display:block;font:600 1.3rem/1.1 var(--f-mono)}
+.facts span{font-size:.82rem;color:var(--muted)}
+.part{padding-block:26px 6px}
+.part-hd{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin-bottom:12px}
+.part-hd .label{color:var(--accent)}
+.mods{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.mod-card{display:flex;flex-direction:column;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px;text-decoration:none;color:inherit;min-width:0;position:relative}
+a.mod-card:hover{border-color:var(--accent)}
+.mod-card .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.mod-card .no{font:700 .82rem var(--f-mono);letter-spacing:.06em;color:var(--muted)}
+.mod-card h3{font-size:1.12rem;margin:0}
+.mod-card p{margin:0;font-size:.9rem;color:var(--muted)}
+.mod-card .ansi{margin-top:auto}
+.state{font:600 .7rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:99px;border:1.5px solid currentColor}
+.state.ready{color:var(--ok)}
+.state.plan{color:var(--muted)}
+.mod-card.plan{background:transparent;border-style:dashed}
+.how{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:12px}
+@media (max-width:900px){.how{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.how{grid-template-columns:minmax(0,1fr)}}
+.how>div{border-top:3px solid var(--ink);padding-top:8px;min-width:0}
+.how h3{font-size:1rem;text-transform:uppercase;letter-spacing:.05em}
+.how p{margin:4px 0 0;font-size:.9rem;color:var(--muted)}
+.block{padding-block:28px 4px}
+.net{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px;margin-top:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+  <div>
+    <div class="label"><span lang="ro">Curs de master · aplicații industriale</span><span lang="en">Master's course · industrial applications</span></div>
+    <h1><span lang="ro">Protecții în rețelele electrice</span><span lang="en">Power system protection</span></h1>
+    <p class="lede"><span lang="ro">De la curentul de defect la fișa de reglaje. Fiecare modul calculează reglajele unei funcții de protecție așa cum se face într-un studiu real: date de intrare, reguli de reglaj justificate din standarde și ghiduri de aplicație, verificări de selectivitate și sensibilitate, tabel gata de copiat.</span><span lang="en">From fault current to settings sheet. Each module computes the settings of a protection function the way a real study does: input data, setting rules justified from standards and application guides, selectivity and sensitivity checks, a table ready to copy.</span></p>
+  </div>
+  <div>
+    <div class="hero-tools"><div class="seg" role="group" aria-label="Limba / Language"><button data-langbtn="ro">RO</button><button data-langbtn="en">EN</button></div></div>
+    <div class="facts">
+      <div><b>14</b><span><span lang="ro">module în 5 părți</span><span lang="en">modules in 5 parts</span></span></div>
+      <div><b>4</b><span><span lang="ro">gata acum (partea I)</span><span lang="en">ready now (part I)</span></span></div>
+      <div><b>RO · EN</b><span><span lang="ro">fiecare pagină</span><span lang="en">every page</span></span></div>
+    </div>
+  </div>
+</header>
+
+<section class="block">
+  <h2><span lang="ro">Cum e construit un modul</span><span lang="en">How a module is built</span></h2>
+  <div class="how">
+    <div><h3><span lang="ro">Laborator</span><span lang="en">Lab</span></h3><p><span lang="ro">Un simulator al rețelei-exemplu: schimbi date și vezi curenți, fazori, caracteristici, cu calculul pas cu pas.</span><span lang="en">A simulator of the example network: change data and see currents, phasors, characteristics, with the step-by-step calculation.</span></p></div>
+    <div><h3><span lang="ro">Reglaje</span><span lang="en">Settings</span></h3><p><span lang="ro">Fișa de calcul industrială: regula de reglaj, sursa ei, valoarea calculată și verificarea, apoi tabelul de reglaje pentru Excel.</span><span lang="en">The industrial calculation sheet: setting rule, its source, computed value and check, then the settings table for Excel.</span></p></div>
+    <div><h3><span lang="ro">Teorie</span><span lang="en">Theory</span></h3><p><span lang="ro">Relațiile numerotate folosite în laborator, ipotezele modelului și sursele, de la standarde la articole.</span><span lang="en">The numbered relations used in the lab, the model assumptions and the sources, from standards to papers.</span></p></div>
+    <div><h3><span lang="ro">Test</span><span lang="en">Quiz</span></h3><p><span lang="ro">Grile cu explicații și probleme numerice cu alte valori la fiecare încercare.</span><span lang="en">Multiple-choice questions with explanations and numerical problems with new values on every attempt.</span></p></div>
+  </div>
+</section>
+
+<section class="block">
+  <h2><span lang="ro">Rețeaua-exemplu a cursului</span><span lang="en">The course example network</span></h2>
+  <p class="note" style="max-width:76ch"><span lang="ro">Toate modulele lucrează pe aceeași stație 110/20 kV, ca reglajele să se lege între ele: curenții din M01 intră în dimensionarea TC din M02 și în coordonarea din M03. Transformatorul și conductoarele sunt tipuri standard din biblioteca pandapower; puterile de scurtcircuit și datele neutrului sunt valori de exemplu, pe care le înlocuiești cu cele ale operatorului de rețea.</span><span lang="en">All modules work on the same 110/20 kV substation, so the settings connect: the currents from M01 feed the CT sizing in M02 and the coordination in M03. The transformer and conductors are pandapower standard types; short-circuit powers and neutral data are example values, to be replaced with the network operator's data.</span></p>
+  <div class="net scroll"><svg viewBox="0 0 930 190" width="100%" style="min-width:680px" role="img" aria-label="Rețeaua-exemplu">
+    <g font-family="IBM Plex Mono, monospace" font-size="12" transform="translate(30,0)">
+      <circle cx="40" cy="80" r="18" fill="var(--surface)" stroke="var(--ink)" stroke-width="1.5"/><path d="M30 80 q5 -8 10 0 t10 0" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+      <text x="40" y="50" text-anchor="middle" fill="var(--ink)">110 kV</text><text x="40" y="118" text-anchor="middle" fill="var(--muted)">3000 MVA</text><text x="40" y="132" text-anchor="middle" fill="var(--muted)">1500 MVA</text>
+      <line x1="58" y1="80" x2="120" y2="80" stroke="var(--ink)" stroke-width="1.5"/>
+      <rect x="84" y="66" width="12" height="12" fill="var(--surface)" stroke="var(--ink)"/><text x="90" y="58" text-anchor="middle" fill="var(--accent)" font-weight="600">R1</text>
+      <circle cx="135" cy="80" r="15" fill="none" stroke="var(--ink)" stroke-width="1.5"/><circle cx="155" cy="80" r="15" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+      <text x="145" y="52" text-anchor="middle" fill="var(--ink)">T1</text><text x="145" y="114" text-anchor="middle" fill="var(--muted)">25 MVA · 12 %</text><text x="145" y="128" text-anchor="middle" fill="var(--muted)">YNd11</text>
+      <line x1="170" y1="80" x2="240" y2="80" stroke="var(--ink)" stroke-width="1.5"/>
+      <rect x="200" y="74" width="12" height="12" fill="var(--surface)" stroke="var(--ink)"/><text x="206" y="66" text-anchor="middle" fill="var(--accent)" font-weight="600">R2</text>
+      <line x1="240" y1="30" x2="240" y2="150" stroke="var(--ink)" stroke-width="5"/><text x="248" y="30" fill="var(--ink)">20 kV</text>
+      <line x1="240" y1="150" x2="240" y2="158" stroke="var(--ink)"/><rect x="228" y="158" width="24" height="16" fill="var(--surface)" stroke="var(--ink)"/><text x="258" y="171" fill="var(--muted)">BPN + R_N 300 A</text>
+      <line x1="240" y1="80" x2="860" y2="80" stroke="var(--c3)" stroke-width="2.5"/>
+      <rect x="262" y="74" width="12" height="12" fill="var(--surface)" stroke="var(--ink)"/><text x="268" y="66" text-anchor="middle" fill="var(--accent)" font-weight="600">R3</text>
+      <rect x="544" y="74" width="12" height="12" fill="var(--surface)" stroke="var(--ink)"/><text x="550" y="66" text-anchor="middle" fill="var(--accent)" font-weight="600">R4</text>
+      <text x="550" y="104" text-anchor="middle" fill="var(--muted)">km 10</text>
+      <text x="860" y="104" text-anchor="end" fill="var(--muted)">km 20</text>
+      <text x="560" y="134" text-anchor="middle" fill="var(--muted)">LEA Ol-Al 70/12 mm² · 20 km</text>
+      <line x1="240" y1="120" x2="300" y2="120" stroke="var(--c6)" stroke-width="2"/><text x="306" y="124" fill="var(--muted)">F2…F6</text>
+    </g>
+  </svg>
+  <p class="note" style="margin:8px 0 0"><span lang="ro">R1: protecția de pe 110 kV a transformatorului; R2: celula de sosire 20 kV; R3: plecarea F1; R4: punct de secționare cu releu pe linie, la km 10.</span><span lang="en">R1: transformer 110 kV protection; R2: 20 kV incomer; R3: feeder F1; R4: line sectionalising point with relay, at km 10.</span></p>
+  </div>
+</section>
+
+<div id="parts"></div>
+
+<section class="block">
+  <h2><span lang="ro">Cum sunt verificate calculele</span><span lang="en">How the calculations are checked</span></h2>
+  <p style="max-width:76ch"><span lang="ro">Motorul de calcul al fiecărui modul e un fișier separat (engine.js), care rulează și în pagină, și în teste. Scripturile din verify/ îl compară cu un calcul scris independent, pe altă cale: pandapower (IEC 60909-0), analiză nodală în coordonate de fază, integrarea numerică a ecuațiilor TC, recalcularea timpilor de coordonare. Un modul e marcat „gata” doar când toate verificările lui trec.</span><span lang="en">Each module's calculation engine is a separate file (engine.js) that runs both in the page and in the tests. The scripts in verify/ compare it with a calculation written independently, by another route: pandapower (IEC 60909-0), phase-domain nodal analysis, numerical integration of the CT equations, recomputation of coordination margins. A module is marked “ready” only when all its checks pass.</span></p>
+</section>
+
+<footer class="mod"><span><span lang="ro">Protecții în rețelele electrice · curs de master</span><span lang="en">Power system protection · master's course</span></span><span><span lang="ro">Partea I gata · părțile II–V urmează</span><span lang="en">Part I ready · parts II–V to follow</span></span></footer>
+</div>
+
+<script src="assets/course.js"></script>
+<script>
+(function () {
+  const PR = window.PR;
+  const PARTS = [
+    { ro: "Partea I · Bazele reglajelor", en: "Part I · Setting fundamentals", mods: [
+      ["M01", "m01/index.html", true, { ro: "Curenții de defect pentru reglaje", en: "Fault currents for protection settings" }, { ro: "IEC 60909-0, componente simetrice, regim maxim și minim, tratarea neutrului MT.", en: "IEC 60909-0, symmetrical components, maximum and minimum cases, MV neutral earthing." }, ["IEC 60909", "3F · 2F · 1F"]],
+      ["M02", "m02/index.html", true, { ro: "Transformatoare de curent pentru protecții", en: "Current transformers for protection" }, { ro: "Saturația în regim tranzitoriu, factorul limită de precizie real, dimensionarea TC pentru releu.", en: "Transient saturation, effective accuracy limit factor, CT sizing for the relay." }, ["IEC 61869-2", "5P · PX"]],
+      ["M03", "m03/index.html", true, { ro: "Protecția maximală de curent: reglaje și coordonare", en: "Overcurrent protection: settings and coordination" }, { ro: "Curbe IEC și IEEE, curent de pornire, TMS, treapta rapidă, selectivitate pe patru trepte.", en: "IEC and IEEE curves, pickup, TMS, high-set stage, four-stage selectivity." }, ["50", "51", "IEC 60255-151"]],
+      ["M04", "m04/index.html", true, { ro: "Protecția maximală direcțională", en: "Directional overcurrent protection" }, { ro: "Polarizare, unghiul caracteristic, rețele buclate și linii paralele.", en: "Polarisation, characteristic angle, ring networks and parallel lines." }, ["67", "67N"]],
+    ] },
+    { ro: "Partea II · Rețele de distribuție", en: "Part II · Distribution networks", mods: [
+      ["M05", "", false, { ro: "Punerea la pământ în rețelele MT", en: "Earth faults in MV networks" }, { ro: "Neutru izolat, compensat, prin rezistor; protecții homopolare, wattmetrice și de admitanță.", en: "Isolated, compensated and resistor-earthed neutral; zero-sequence, wattmetric and admittance protection." }, ["51N", "67N", "59N"]],
+      ["M06", "", false, { ro: "Rețele cu generare distribuită", en: "Networks with distributed generation" }, { ro: "Orbirea protecției, declanșări simpatice, protecția de interfață, trecerea prin gol de tensiune.", en: "Protection blinding, sympathetic tripping, interface protection, fault ride-through." }, ["27/59", "81", "RoCoF"]],
+    ] },
+    { ro: "Partea III · Rețele de transport", en: "Part III · Transmission networks", mods: [
+      ["M07", "", false, { ro: "Protecția de distanță", en: "Distance protection" }, { ro: "Impedanța văzută, zone, rezistența de defect, alimentarea intermediară, pendulații.", en: "Apparent impedance, zones, fault resistance, infeed, power swings." }, ["21", "21N", "68"]],
+      ["M08", "", false, { ro: "Teleprotecție și diferențiala de linie", en: "Teleprotection and line differential" }, { ro: "Scheme POTT, PUTT, cu blocare; diferențiala procentuală de linie.", en: "POTT, PUTT and blocking schemes; percentage line differential." }, ["85", "87L"]],
+      ["M09", "", false, { ro: "Automatizări de sistem", en: "System automation" }, { ro: "RAR, AAR, DRRI și descărcarea automată la scăderea frecvenței.", en: "Autoreclosing, automatic transfer, breaker failure and underfrequency load shedding." }, ["79", "50BF", "81U"]],
+    ] },
+    { ro: "Partea IV · Echipamente", en: "Part IV · Equipment", mods: [
+      ["M10", "", false, { ro: "Protecția transformatoarelor", en: "Transformer protection" }, { ro: "Diferențiala cu pantă dublă, curentul de magnetizare, REF, protecția de gaze.", en: "Dual-slope differential, inrush, REF, gas protection." }, ["87T", "64REF", "49"]],
+      ["M11", "", false, { ro: "Protecția generatoarelor", en: "Generator protection" }, { ro: "Pierderea excitației, secvența inversă, puterea inversă, statorul 100 %.", en: "Loss of excitation, negative sequence, reverse power, 100 % stator earth fault." }, ["87G", "40", "46", "32"]],
+      ["M12", "", false, { ro: "Bare și motoare", en: "Busbars and motors" }, { ro: "Diferențiala de bare, DRRI, protecția termică și la pornire a motoarelor.", en: "Busbar differential, breaker failure, motor thermal and starting protection." }, ["87B", "49M", "51LR"]],
+    ] },
+    { ro: "Partea V · Relee numerice și proiect", en: "Part V · Numerical relays and project", mods: [
+      ["M13", "", false, { ro: "Releul numeric și IEC 61850", en: "The numerical relay and IEC 61850" }, { ro: "Eșantionare, filtrul Fourier, înregistrări COMTRADE, mesaje GOOSE.", en: "Sampling, Fourier filter, COMTRADE records, GOOSE messages." }, ["DFT", "61850"]],
+      ["M14", "", false, { ro: "Proiect: studiul de reglaje al stației", en: "Project: the substation settings study" }, { ro: "Toate funcțiile pe stația 110/20 kV, cu fișa de reglaje completă.", en: "All functions on the 110/20 kV substation, with the complete settings sheet." }, ["50…87"]],
+    ] },
+  ];
+  const host = document.getElementById("parts");
+  host.innerHTML = PARTS.map((p) => `<section class="part"><div class="part-hd"><h2>${PR.bi(p)}</h2></div><div class="mods">${p.mods.map(([no, href, ready, title, desc, ansi]) => {
+    const tag = ready ? "a" : "div";
+    return `<${tag} class="mod-card ${ready ? "" : "plan"}" ${ready ? `href="${href}"` : ""}><div class="top"><span class="no">${no}</span><span class="state ${ready ? "ready" : "plan"}">${ready ? PR.bi("gata", "ready") : PR.bi("urmează", "planned")}</span></div><h3>${PR.bi(title)}</h3><p>${PR.bi(desc)}</p><div class="ansi">${ansi.map((a) => `<span>${a}</span>`).join("")}</div></${tag}>`;
+  }).join("")}</div></section>`).join("");
+})();
+</script>
+</body>
+</html>
