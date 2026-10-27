@@ -3601,7 +3601,7 @@ L 618.021094 254.626281
 " style="fill: none; stroke: #52514e; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
    <g id="text_14">
-    <!--  FCR activat complet -->
+    <!--  FCR activată complet -->
     <g style="fill: #0b0b0b" transform="translate(363.388497 36.955813) scale(0.085 -0.085)">
      <defs>
       <path id="DejaVuSans-29" d="M 628 4666 
@@ -3689,14 +3689,15 @@ z
      <use xlink:href="#DejaVuSans-59" transform="translate(443.640625 0)"/>
      <use xlink:href="#DejaVuSans-44" transform="translate(502.828125 0)"/>
      <use xlink:href="#DejaVuSans-57" transform="translate(564.109375 0)"/>
-     <use xlink:href="#DejaVuSans-3" transform="translate(603.3125 0)"/>
-     <use xlink:href="#DejaVuSans-46" transform="translate(635.09375 0)"/>
-     <use xlink:href="#DejaVuSans-52" transform="translate(690.078125 0)"/>
-     <use xlink:href="#DejaVuSans-50" transform="translate(751.265625 0)"/>
-     <use xlink:href="#DejaVuSans-53" transform="translate(848.671875 0)"/>
-     <use xlink:href="#DejaVuSans-4f" transform="translate(912.15625 0)"/>
-     <use xlink:href="#DejaVuSans-48" transform="translate(939.9375 0)"/>
-     <use xlink:href="#DejaVuSans-57" transform="translate(1001.46875 0)"/>
+     <use xlink:href="#DejaVuSans-c5" transform="translate(603.3125 0)"/>
+     <use xlink:href="#DejaVuSans-3" transform="translate(664.59375 0)"/>
+     <use xlink:href="#DejaVuSans-46" transform="translate(696.375 0)"/>
+     <use xlink:href="#DejaVuSans-52" transform="translate(751.359375 0)"/>
+     <use xlink:href="#DejaVuSans-50" transform="translate(812.546875 0)"/>
+     <use xlink:href="#DejaVuSans-53" transform="translate(909.953125 0)"/>
+     <use xlink:href="#DejaVuSans-4f" transform="translate(973.4375 0)"/>
+     <use xlink:href="#DejaVuSans-48" transform="translate(1001.21875 0)"/>
+     <use xlink:href="#DejaVuSans-57" transform="translate(1062.75 0)"/>
     </g>
     <!--  în 30 s (SOGL) -->
     <g style="fill: #0b0b0b" transform="translate(363.388497 47.498137) scale(0.085 -0.085)">
