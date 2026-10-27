@@ -450,7 +450,8 @@ for Ub_ref in (21.0e3, 21.2e3, 21.4e3, 21.6e3, 21.8e3, 22.0e3):
     _, Us_x, _, _, nc_x = zi(Uref=Ub_ref, Zl=Zl)
     proc = np.mean(np.abs(Us_x - U_ref) <= banda)
     print(f"    fără LDC, consemnul barei {fmt(Ub_ref / 1e3, 1)} kV: tensiunea în centrul de sarcină în bandă "
-          f"{fmt(100 * proc, 1)} % din timp ({fmt(Us_x.min() / 1e3, 3)} … {fmt(Us_x.max() / 1e3, 3)} kV, {nc_x} comutări)")
+          f"{fmt(100 * proc, 1)} % din timp ({fmt(Us_x.min() / 1e3, 3)} … {fmt(Us_x.max() / 1e3, 3)} kV, plaja "
+          f"{fmt((Us_x.max() - Us_x.min()) / 1e3, 2)} kV, {nc_x} comutări)")
     if cel_mai_bun is None or proc > cel_mai_bun[1]:
         cel_mai_bun = (Ub_ref, proc)
 print(f"  cel mai bun consemn fără LDC: {fmt(cel_mai_bun[0] / 1e3, 1)} kV, cu {fmt(100 * cel_mai_bun[1], 1)} % din timp în bandă")

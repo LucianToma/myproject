@@ -241,13 +241,13 @@ Factorul de compensare homopolară: $\underline{k}_0$ = 0,655 ∠ 4,02° (sau, d
 
 1. Rulați `python probleme_cap08.py` din directorul `scripts/` și regăsiți în rezultate valorile din problemele 8.1 și 8.3.
 2. **Inerția.** Cu datele problemei 8.1, simulați pierderea a 100 MW pentru $H$ = 2, 3, 5 și 8 s (de exemplu, într-un fișier nou care importă `izolat_ode` și `M_inertie`). Notați în tabelul 1 RoCoF inițial (din primul pas al simulării), nadirul și momentul lui, abaterea staționară. Comparați RoCoF cu $-\Delta P/M$.
-3. **Statismul.** Cu $H$ = 5 s, repetați pentru statismul de 3 %, 5 % și 8 %. Comparați abaterea staționară cu $-\Delta P/(K + D)$.
+3. **Statismul.** Cu $H$ = 5 s, repetați pentru statismul de 3 %, 5 % și 8 %. Comparați abaterea staționară cu $-\Delta P/(K_\text{reg} + D)$.
 4. **DASF.** Cu datele problemei 8.3 (insulă de 600 MW, deficit de 180 MW, rezervă 80 MW), simulați: (a) fără DASF; (b) cu schema de 9 trepte × 5 %; (c) cu schema de 6 trepte la 0,2 Hz de 10/8/8/8/8/3 %; (d) cu schema (b) și întârzierea mărită de la 0,15 s la 0,5 s. Completați tabelul 2.
-5. Pentru fiecare schemă (inclusiv varianta c', cu 6 trepte egale de 7,5 %), verificați programatic condițiile NC ER: prima treaptă la 49,0 Hz cu 5 %, 45 % cumulat la 48,0 Hz, cel puțin 6 trepte, cel mult 10 % pe treaptă și banda de ±7 % (interpretarea din § 8.5).
+5. Pentru fiecare schemă (inclusiv varianta c', cu 6 trepte egale de 7,5 %), verificați programatic condițiile NC ER: prima treaptă la 49,0 Hz (cu 5 % ± 7 %), 45 % cumulat la 48,0 Hz, cel puțin 6 trepte, cel mult 10 % pe treaptă și banda de ±7 % (interpretarea din § 8.5).
 
 **Tabelul 1 – Sistem izolat, pierderea a 100 MW**
 
-| $H$ [s] | statism | RoCoF simulat [Hz/s] | $-\Delta P/M$ [Hz/s] | nadir [mHz] | $t_{nadir}$ [s] | $\Delta f_{st}$ simulat [mHz] | $-\Delta P/(K+D)$ [mHz] |
+| $H$ [s] | statism | RoCoF simulat [Hz/s] | $-\Delta P/M$ [Hz/s] | nadir [mHz] | $t_{nadir}$ [s] | $\Delta f_{st}$ simulat [mHz] | $-\Delta P/(K_\text{reg}+D)$ [mHz] |
 |---|---|---|---|---|---|---|---|
 | 2 | 5 % | | | | | | |
 | 5 | 5 % | | | | | | |
