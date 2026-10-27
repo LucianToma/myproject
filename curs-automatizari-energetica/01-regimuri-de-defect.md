@@ -134,7 +134,7 @@ Să se calculeze, în unități relative, impedanțele rețelei de referință �
 
 Bara B este alimentată din două părți: $z_B = (z_{QA} + z_{L1}) \parallel (z_{QC} + z_{L2})$ = 0,0201 + j0,0852. Apoi se adună în serie:
 
-| Bara | $z_k$ [u.r.] | $I''_{k3} = c\thinspace I_b/|z_k|$ |
+| Bara | $z_k$ [u.r.] | $I''_{k3} = c\thinspace I_b/\vert z_k\vert$ |
 |---|---|---|
 | B (110 kV) | 0,0201 + j0,0852 | **6,592 kA** |
 | B2 (20 kV) | 0,0393 + j0,5248 | **6,034 kA** |

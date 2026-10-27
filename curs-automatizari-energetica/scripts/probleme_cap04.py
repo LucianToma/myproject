@@ -262,3 +262,12 @@ for b in (1.0, 2.0, 4.0, 6.0):
     print(f"  20 kV {fmt(b * IN_JT / TC_JT, 3)} A ({fmt(b, 1)}·In) → acționare la 110 kV {fmt(a * IN_IT / TC_IT, 3)} A "
           f"({fmt(a, 3)}·In): Ib = {fmt(Ibp[0], 3)}·In, Id = {fmt(Idp[0], 3)}·In")
     verifica(f"punctul de acționare pentru b = {b:g}: Id = pragul la Ib", Idp[0], float(prag_diferential(Ibp[0])), rtol=1e-6)
+# (4) încercarea de stabilitate cu defazajul greșit (20 kV la 180°, fără cei 30° ai grupei)
+Idg, _, _, _ = marimi_releu(I_IT_t, sistem_direct(IN_JT) * np.exp(1j * np.pi))
+print(f"  stabilitate cu defazaj greșit (∠180° pe 20 kV): Id = {fmt(Idg[0], 4)}·In (teoria: 2·sin 15° = {fmt(2 * np.sin(np.radians(15)), 4)})")
+verifica("Id la defazaj greșit de 30° = 2·sin 15°", Idg[0], 2 * np.sin(np.radians(15)))
+# (5) treapta nefrânată: 12·In trifazat pe 20 kV
+I12 = 12 * IN_JT / TC_JT
+Idn, _, _, _ = marimi_releu(np.zeros(3), sistem_direct(12 * IN_JT))
+print(f"  treapta nefrânată: 12·In pe 20 kV = {fmt(I12, 3)} A secundar → Id = {fmt(Idn[0], 2)}·In > {fmt(IDIFF_NEFRANAT, 0)}·In")
+verifica_adevarat("12·In depășește treapta nefrânată", Idn[0] > IDIFF_NEFRANAT)
