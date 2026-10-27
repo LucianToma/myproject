@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import schemdraw
 import schemdraw.elements as elm
-from comun import C1, C2, C3, C4, TEXT, TEXT2, GRILA, FUNDAL, FIGURI, salveaza, virgula, sageata
+from comun import C1, C2, C3, C4, TEXT, TEXT2, GRILA, FUNDAL, FIGURI, salveaza, virgula, sageata, salveaza_schema
 from modele import SQRT3, tensiune_secundar_exacta, randament_transformator
 
 schemdraw.use("matplotlib")
@@ -75,8 +75,7 @@ with schemdraw.Drawing(show=False) as d:
     d.add(elm.Dot().at((xn, -H)))
     d.add(elm.Label().at((xn + 0.15, -0.35)).label("$\\underline{I}_0$ ↓", loc="right", halign="left"))
     borne(d, 0, xd, H, "$\\underline{U}_1$", "$\\underline{U}'_2$")
-    d.save(str(FIGURI / "f01-2-schema-T.svg"))
-print("  figura f01-2-schema-T.svg")
+    salveaza_schema(d, "f01-2-schema-T")
 
 # --- Schema simplificată ---------------------------------------------------
 H = 3.5
@@ -88,8 +87,7 @@ with schemdraw.Drawing(show=False) as d:
     d.add(elm.Line().right(0.8))
     t2 = d.add(elm.Dot(open=True))
     borne(d, 0, t2.center.x, H, "$\\underline{U}_1$", "$\\underline{U}'_2$")
-    d.save(str(FIGURI / "f01-3-schema-simplificata.svg"))
-print("  figura f01-3-schema-simplificata.svg")
+    salveaza_schema(d, "f01-3-schema-simplificata")
 
 # --- Diagrama fazorială (transformatorul de 20 kVA, sarcină inductivă) -------
 Rsc, Xsc, I = 4.32, 10.679, 8.333

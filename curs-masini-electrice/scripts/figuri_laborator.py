@@ -4,7 +4,7 @@ import schemdraw
 import schemdraw.elements as elm
 from schemdraw.elements.sources import Source
 from schemdraw.segments import SegmentText, SegmentCircle
-from comun import FUNDAL, FIGURI, TEXT2
+from comun import FUNDAL, FIGURI, TEXT2, salveaza_schema
 
 schemdraw.use("matplotlib")
 schemdraw.config(fontsize=12, bgcolor=FUNDAL, lw=1.6)
@@ -60,8 +60,7 @@ with schemdraw.Drawing(show=False) as d:
     d.add(elm.MeterV().at((10.5, 2.3)).down(1.6).label("$U_{20}$", loc="bottom", ofst=0.15))
     d.add(elm.Label().at((5.0, -0.9)).label("Secundarul este în gol (doar voltmetrul $V_2$, de impedanță mare).",
                                           fontsize=10, color=TEXT2))
-    d.save(str(FIGURI / "fL-1-incercare-gol.svg"))
-print("  figura fL-1-incercare-gol.svg")
+    salveaza_schema(d, "fL-1-incercare-gol")
 
 # --- L1: încercarea de scurtcircuit ---------------------------------------------
 with schemdraw.Drawing(show=False) as d:
@@ -74,8 +73,7 @@ with schemdraw.Drawing(show=False) as d:
     d.add(elm.MeterA().at((10.5, 2.3)).down(1.6).label("$I_{2sc}$", loc="bottom", ofst=0.15))
     d.add(elm.Label().at((5.0, -0.9)).label("Secundarul este scurtcircuitat prin ampermetru; se pornește de la U = 0!",
                                           fontsize=10, color=TEXT2))
-    d.save(str(FIGURI / "fL-2-incercare-scurtcircuit.svg"))
-print("  figura fL-2-incercare-scurtcircuit.svg")
+    salveaza_schema(d, "fL-2-incercare-scurtcircuit")
 
 # --- Metoda celor două wattmetre (Aron) pentru motorul trifazat --------------------
 with schemdraw.Drawing(show=False) as d:
@@ -102,5 +100,4 @@ with schemdraw.Drawing(show=False) as d:
     d.add(elm.Label().at((11.0, 2.5)).label("M\n3~"))
     d.add(elm.Label().at((5.0, -0.9)).label("P = P$_{W1}$ + P$_{W2}$ (rețea cu trei conductoare, orice sarcină)",
                                           fontsize=10, color=TEXT2))
-    d.save(str(FIGURI / "fL-3-metoda-aron.svg"))
-print("  figura fL-3-metoda-aron.svg")
+    salveaza_schema(d, "fL-3-metoda-aron")

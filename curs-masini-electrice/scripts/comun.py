@@ -61,6 +61,17 @@ def salveaza(fig, nume):
     return cale
 
 
+def salveaza_schema(d, nume):
+    """Salvează un desen schemdraw fără data generării (fișier reproductibil)."""
+    import re
+    cale = FIGURI / f"{nume}.svg"
+    d.save(str(cale))
+    text = re.sub(r"\s*<dc:date>[^<]*</dc:date>", "", cale.read_text(encoding="utf-8"))
+    cale.write_text(text, encoding="utf-8")
+    print(f"  figura {cale.name}")
+    return cale
+
+
 def sageata(ax, z0, z1, culoare, eticheta=None, offset=(0, 0), lw=2.0, ha="left", va="bottom", fs=10, t=0.5):
     """Desenează un fazor de la z0 la z1 (numere complexe) cu etichetă opțională."""
     ax.annotate("", xy=(z1.real, z1.imag), xytext=(z0.real, z0.imag),

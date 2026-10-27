@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from scipy.optimize import brentq
 import schemdraw
 import schemdraw.elements as elm
-from comun import C1, C2, C3, C4, C5, TEXT, TEXT2, GRILA, FUNDAL, FIGURI, salveaza, virgula
+from comun import C1, C2, C3, C4, C5, TEXT, TEXT2, GRILA, FUNDAL, FIGURI, salveaza, virgula, salveaza_schema
 from modele import motor_M15, kloss, sk_din_catalog, verifica
 
 schemdraw.use("matplotlib")
@@ -87,8 +87,7 @@ with schemdraw.Drawing(show=False) as d:
     d.add(elm.Gap().at((0, 0)).to((0, -H)).label(["+", "$\\underline{U}_1$", "–"]))
     d.add(elm.Label().at((colt[0] + 1.6, -H / 2 - 0.9)).label("rezistența\nde sarcină\n(putere mecanică)",
                                                              fontsize=10, color=TEXT2))
-    d.save(str(FIGURI / "f02-3-schema-echivalenta.svg"))
-print("  figura f02-3-schema-echivalenta.svg")
+    salveaza_schema(d, "f02-3-schema-echivalenta")
 
 # --- Bilanțul puterilor (punctul din problema 2.2) ---------------------------
 s = (1500 - 1466) / 1500

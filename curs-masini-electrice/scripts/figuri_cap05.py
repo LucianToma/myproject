@@ -7,7 +7,7 @@ from scipy.optimize import brentq
 import schemdraw
 import schemdraw.elements as elm
 from schemdraw.segments import SegmentCircle
-from comun import C1, C2, C3, C4, C5, TEXT, TEXT2, GRILA, FUNDAL, FIGURI, salveaza, virgula
+from comun import C1, C2, C3, C4, C5, TEXT, TEXT2, GRILA, FUNDAL, FIGURI, salveaza, virgula, salveaza_schema
 from modele import kloss, sk_din_catalog, motor_M15, verifica
 
 schemdraw.use("matplotlib")
@@ -284,5 +284,4 @@ with schemdraw.Drawing(show=False) as d:
         d.add(elm.Label().at((x - 0.25, 1.85)).label(b, fontsize=10))
     d.add(Cerc().at((1.2, 0.3)))
     d.add(elm.Label().at((1.2, 0.3)).label("M\n3~"))
-    d.save(str(FIGURI / "f05-9-schema-pornire-directa.svg"))
-print("  figura f05-9-schema-pornire-directa.svg")
+    salveaza_schema(d, "f05-9-schema-pornire-directa")

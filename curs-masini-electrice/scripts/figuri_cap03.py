@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import schemdraw
 import schemdraw.elements as elm
-from comun import C1, C2, C3, C4, TEXT, TEXT2, GRILA, FUNDAL, FIGURI, salveaza, virgula, sageata
+from comun import C1, C2, C3, C4, TEXT, TEXT2, GRILA, FUNDAL, FIGURI, salveaza, virgula, sageata, salveaza_schema
 from modele import SQRT3, generator_E0
 
 schemdraw.use("matplotlib")
@@ -107,8 +107,7 @@ with schemdraw.Drawing(show=False) as d:
     d.add(elm.Dot(open=True))
     d.add(elm.Line().left(x))
     d.add(elm.Gap().at((x, 4)).to((x, 0)).label(["+", "$\\underline{U}$", "–"]))
-    d.save(str(FIGURI / "f03-3-schema-echivalenta.svg"))
-print("  figura f03-3-schema-echivalenta.svg")
+    salveaza_schema(d, "f03-3-schema-echivalenta")
 
 # --- Diagrame fazoriale pentru trei tipuri de sarcină (I = Iₙ, U = Uₙ) ---------
 fig, axs = plt.subplots(1, 3, figsize=(11, 4.0))
