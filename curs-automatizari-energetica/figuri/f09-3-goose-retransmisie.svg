@@ -1425,43 +1425,63 @@ z
    <g id="matplotlib.axis_4"/>
    <g id="line2d_47">
     <path d="M 25.092175 300.147656 
-L 25.092175 213.545016 
+L 25.092175 221.664014 
 " clip-path="url(#p77d52d341e)" style="fill: none; stroke: #2a78d6; stroke-width: 1.8; stroke-linecap: round"/>
    </g>
    <g id="line2d_48">
     <path d="M 29.565219 300.147656 
-L 29.565219 213.545016 
+L 29.565219 221.664014 
 " clip-path="url(#p77d52d341e)" style="fill: none; stroke: #2a78d6; stroke-width: 1.8; stroke-linecap: round"/>
    </g>
    <g id="line2d_49">
-    <path d="M 38.511307 300.147656 
-L 38.511307 213.545016 
-" clip-path="url(#p77d52d341e)" style="fill: none; stroke: #2a78d6; stroke-width: 1.8; stroke-linecap: round"/>
+    <path d="M 29.565219 221.664014 
+L 29.565219 199.688594 
+" clip-path="url(#p77d52d341e)" style="fill: none; stroke: #e4e3df; stroke-width: 0.8; stroke-linecap: round"/>
    </g>
    <g id="line2d_50">
-    <path d="M 56.403482 300.147656 
-L 56.403482 213.545016 
+    <path d="M 38.511307 300.147656 
+L 38.511307 221.664014 
 " clip-path="url(#p77d52d341e)" style="fill: none; stroke: #2a78d6; stroke-width: 1.8; stroke-linecap: round"/>
    </g>
    <g id="line2d_51">
-    <path d="M 92.187833 300.147656 
-L 92.187833 213.545016 
+    <path d="M 56.403482 300.147656 
+L 56.403482 221.664014 
 " clip-path="url(#p77d52d341e)" style="fill: none; stroke: #2a78d6; stroke-width: 1.8; stroke-linecap: round"/>
    </g>
    <g id="line2d_52">
-    <path d="M 163.756534 300.147656 
-L 163.756534 213.545016 
-" clip-path="url(#p77d52d341e)" style="fill: none; stroke: #2a78d6; stroke-width: 1.8; stroke-linecap: round"/>
+    <path d="M 56.403482 221.664014 
+L 56.403482 199.688594 
+" clip-path="url(#p77d52d341e)" style="fill: none; stroke: #e4e3df; stroke-width: 0.8; stroke-linecap: round"/>
    </g>
    <g id="line2d_53">
-    <path d="M 306.893937 300.147656 
-L 306.893937 213.545016 
+    <path d="M 92.187833 300.147656 
+L 92.187833 221.664014 
 " clip-path="url(#p77d52d341e)" style="fill: none; stroke: #2a78d6; stroke-width: 1.8; stroke-linecap: round"/>
    </g>
    <g id="line2d_54">
-    <path d="M 593.168742 300.147656 
-L 593.168742 213.545016 
+    <path d="M 163.756534 300.147656 
+L 163.756534 221.664014 
 " clip-path="url(#p77d52d341e)" style="fill: none; stroke: #2a78d6; stroke-width: 1.8; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_55">
+    <path d="M 163.756534 221.664014 
+L 163.756534 199.688594 
+" clip-path="url(#p77d52d341e)" style="fill: none; stroke: #e4e3df; stroke-width: 0.8; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_56">
+    <path d="M 306.893937 300.147656 
+L 306.893937 221.664014 
+" clip-path="url(#p77d52d341e)" style="fill: none; stroke: #2a78d6; stroke-width: 1.8; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_57">
+    <path d="M 593.168742 300.147656 
+L 593.168742 221.664014 
+" clip-path="url(#p77d52d341e)" style="fill: none; stroke: #2a78d6; stroke-width: 1.8; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_58">
+    <path d="M 593.168742 221.664014 
+L 593.168742 199.688594 
+" clip-path="url(#p77d52d341e)" style="fill: none; stroke: #e4e3df; stroke-width: 0.8; stroke-linecap: round"/>
    </g>
    <g id="patch_6">
     <path d="M 7.2 300.147656 
@@ -1475,19 +1495,19 @@ L 696.04875 300.147656
    </g>
    <g id="text_20">
     <!-- 0 -->
-    <g style="fill: #0b0b0b" transform="translate(16.647392 207.293009) scale(0.08 -0.08)">
+    <g style="fill: #0b0b0b" transform="translate(22.547175 215.817957) scale(0.08 -0.08)">
      <use xlink:href="#DejaVuSans-13"/>
     </g>
    </g>
    <g id="text_21">
     <!-- 2 -->
-    <g style="fill: #0b0b0b" transform="translate(32.920002 207.293009) scale(0.08 -0.08)">
+    <g style="fill: #0b0b0b" transform="translate(27.020219 196.197046) scale(0.08 -0.08)">
      <use xlink:href="#DejaVuSans-15"/>
     </g>
    </g>
    <g id="text_22">
     <!-- 6 -->
-    <g style="fill: #0b0b0b" transform="translate(35.966307 207.293009) scale(0.08 -0.08)">
+    <g style="fill: #0b0b0b" transform="translate(35.966307 215.817957) scale(0.08 -0.08)">
      <defs>
       <path id="DejaVuSans-19" d="M 2113 2584 
 Q 1688 2584 1439 2293 
@@ -1525,28 +1545,28 @@ z
    </g>
    <g id="text_23">
     <!-- 14 -->
-    <g style="fill: #0b0b0b" transform="translate(51.313482 207.293009) scale(0.08 -0.08)">
+    <g style="fill: #0b0b0b" transform="translate(51.313482 196.197046) scale(0.08 -0.08)">
      <use xlink:href="#DejaVuSans-14"/>
      <use xlink:href="#DejaVuSans-17" transform="translate(63.625 0)"/>
     </g>
    </g>
    <g id="text_24">
     <!-- 30 -->
-    <g style="fill: #0b0b0b" transform="translate(87.097833 207.293009) scale(0.08 -0.08)">
+    <g style="fill: #0b0b0b" transform="translate(87.097833 215.817957) scale(0.08 -0.08)">
      <use xlink:href="#DejaVuSans-16"/>
      <use xlink:href="#DejaVuSans-13" transform="translate(63.625 0)"/>
     </g>
    </g>
    <g id="text_25">
     <!-- 62 -->
-    <g style="fill: #0b0b0b" transform="translate(158.666534 207.293009) scale(0.08 -0.08)">
+    <g style="fill: #0b0b0b" transform="translate(158.666534 196.197046) scale(0.08 -0.08)">
      <use xlink:href="#DejaVuSans-19"/>
      <use xlink:href="#DejaVuSans-15" transform="translate(63.625 0)"/>
     </g>
    </g>
    <g id="text_26">
     <!-- 126 -->
-    <g style="fill: #0b0b0b" transform="translate(299.258937 207.293009) scale(0.08 -0.08)">
+    <g style="fill: #0b0b0b" transform="translate(299.258937 215.817957) scale(0.08 -0.08)">
      <use xlink:href="#DejaVuSans-14"/>
      <use xlink:href="#DejaVuSans-15" transform="translate(63.625 0)"/>
      <use xlink:href="#DejaVuSans-19" transform="translate(127.25 0)"/>
@@ -1554,7 +1574,7 @@ z
    </g>
    <g id="text_27">
     <!-- 254 -->
-    <g style="fill: #0b0b0b" transform="translate(585.533742 207.293009) scale(0.08 -0.08)">
+    <g style="fill: #0b0b0b" transform="translate(585.533742 196.197046) scale(0.08 -0.08)">
      <use xlink:href="#DejaVuSans-15"/>
      <use xlink:href="#DejaVuSans-18" transform="translate(63.625 0)"/>
      <use xlink:href="#DejaVuSans-17" transform="translate(127.25 0)"/>

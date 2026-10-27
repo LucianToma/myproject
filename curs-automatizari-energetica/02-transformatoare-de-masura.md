@@ -44,7 +44,7 @@ $$\boxed{ALF_{ef} = ALF\thinspace\frac{R_{ct} + R_n}{R_{ct} + R_b}}$$
 
 La releele numerice, cu consum foarte mic, sarcina este dată mai ales de conductoarele de legătură, iar factorul limită efectiv poate fi de câteva ori mai mare decât cel nominal (problema 2.1).
 
-Pentru aplicațiile în care contează comportarea tranzitorie (protecții diferențiale, protecții de distanță rapide), IEC 61869-2 definește și clase specificate altfel decât prin ALF, de exemplu clasa PX (specificată prin tensiunea de cot a curbei de magnetizare și rezistența înfășurării) și clasa PR (cu remanență limitată). Cartea lui Ziegler [3] tratează pe larg dimensionarea TC pentru protecția diferențială.
+Pentru aplicațiile în care contează comportarea tranzitorie (protecții diferențiale, protecții de distanță rapide), IEC 61869-2 definește și alte clase: clasa PR este o clasă P cu **remanență limitată** (tot specificată prin ALF), clasele PX și PXR se specifică prin tensiunea de cot a curbei de magnetizare, curentul de magnetizare corespunzător și rezistența înfășurării, iar clasele TPX, TPY și TPZ sunt clase pentru **regim tranzitoriu**, dimensionate pentru componenta aperiodică. Cartea lui Ziegler [3] tratează pe larg dimensionarea TC pentru protecția diferențială.
 
 **Regulă de securitate.** Secundarul unui TC aflat sub curent nu se deschide niciodată. Fără sarcină, tot curentul primar devine curent de magnetizare, miezul intră adânc în saturație, iar la fiecare trecere a fluxului prin zero apar vârfuri de tensiune foarte mari, periculoase pentru oameni și pentru izolație. Înainte de a scoate un releu din circuit, secundarul TC se **scurtcircuitează** (cu cleme speciale de încercare).
 
@@ -108,7 +108,7 @@ Reglajele releelor se dau fie în ohmi secundari, fie în ohmi primari (releele 
 
 ## 2.7. Transformatoare de măsură cu ieșire digitală
 
-În stațiile digitale (capitolul 9), mărimile analogice sunt eșantionate lângă echipamentul primar de **unități de achiziție** (*merging units*) și transmise releelor prin rețeaua Ethernet a procesului, ca **valori eșantionate**. IEC 61869-9 [S9] prevede frecvențe de eșantionare preferate de 4800 de eșantioane pe secundă (pentru măsură și protecție) și 14 400 de eșantioane pe secundă (pentru calitatea energiei). Profilul mai vechi IEC 61850-9-2LE folosea 80 de eșantioane pe perioadă, adică 4000 pe secundă la 50 Hz. Senzorii pot fi transformatoare clasice sau senzori neconvenționali (bobine Rogowski, divizoare rezistive sau capacitive, senzori optici), fără problemele de saturație ale miezului de fier.
+În stațiile digitale (capitolul 9), mărimile analogice sunt eșantionate lângă echipamentul primar de **unități de îmbinare** (*merging units*) și transmise releelor prin rețeaua Ethernet a procesului, ca **valori eșantionate**. IEC 61869-9 [S9] prevede frecvențe de eșantionare preferate de 4800 de eșantioane pe secundă (pentru măsură și protecție) și 14 400 de eșantioane pe secundă (pentru calitatea energiei). Profilul mai vechi IEC 61850-9-2LE folosea 80 de eșantioane pe perioadă, adică 4000 pe secundă la 50 Hz. Senzorii pot fi transformatoare clasice sau senzori neconvenționali (bobine Rogowski, divizoare rezistive sau capacitive, senzori optici), fără problemele de saturație ale miezului de fier.
 
 ---
 
@@ -116,22 +116,22 @@ Reglajele releelor se dau fie în ohmi secundari, fie în ohmi primari (releele 
 
 ### Problema 2.1 – Verificarea TC al fiderului F1
 
-Releul R1 al fiderului F1 (capitolul 3) este alimentat de TC 400/1 A, 5P20, 5 VA, cu $R_{ct}$ = 1,5 Ω. Conductoarele de legătură au 10 m (dus) și 2,5 mm² Cu, iar releul numeric consumă 0,1 VA la 1 A. Se saturează TC la curentul maxim de scurtcircuit al barei B2?
+Releul R1 al fiderului F1 (capitolul 3) este alimentat de TC 400/1 A, 5P20, 5 VA, cu $R_{ct}$ = 1,5 Ω. Conductoarele de legătură au 10 m (dus) și 2,5 mm² Cu, iar releul numeric consumă 0,1 VA la 1 A. Se saturează TC la curentul maxim de scurtcircuit de la începutul fiderului (practic egal cu cel al barei B2)?
 
 **Rezolvare.**
 
 - Sarcina nominală: $R_n$ = 5 VA / (1 A)² = 5 Ω.
-- Sarcina reală, la un defect între faze (curentul parcurge conductorul dus și întors): $R_{cond}$ = 0,0178 · 20 / 2,5 = 0,142 Ω; $R_{releu}$ = 0,1 Ω; $R_b$ = **0,242 Ω**.
+- Sarcina reală: $R_{cond}$ = 0,0178 · 20 / 2,5 = 0,142 Ω (bucla dus–întors, acoperitor), $R_{releu}$ = 0,1 Ω, deci $R_b$ = **0,242 Ω**. Cu TC legate în stea, bucla dus–întors apare la defectul monofazat (curentul revine prin conductorul neutru comun); la defectele între faze fiecare TC vede practic un singur conductor (0,071 Ω), deci sarcina reală ar fi mai mică. Calculul cu bucla întreagă este acoperitor.
 - $ALF_{ef}$ = 20 · (1,5 + 5)/(1,5 + 0,242) = **74,6**.
-- Curentul maxim la B2 este 6034 A, adică 15,08 · $I_n$.
+- Curentul maxim (defect trifazat la începutul fiderului) este 6034 A, adică 15,08 · $I_n$.
 
 Cum 74,6 > 15,08, TC rămâne în clasa 5P la curentul simetric maxim, cu o rezervă de 4,95 ori.
 
-**Verificare.** Pe calea tensiunilor electromotoare: la limita de precizie, cu sarcina nominală, miezul dezvoltă $E_{ALF} = 20 \cdot 1 \cdot (1{,}5 + 5)$ = 130,0 V. La defect, cu sarcina reală, este necesară $E = 15{,}08 \cdot 1 \cdot (1{,}5 + 0{,}242)$ = 26,28 V. Raportul 130,0/26,28 = 4,95 coincide cu $ALF_{ef}/(I_k/I_n)$.
+**Verificare.** Pe calea tensiunilor electromotoare: la limita de precizie, cu sarcina nominală, miezul dezvoltă $E_{ALF} = 20 \cdot 1 \cdot (1{,}5 + 5)$ = 130,0 V. La defect, cu sarcina reală, este necesară $E = 15{,}08 \cdot 1 \cdot (1{,}5 + 0{,}242)$ = 26,28 V. Raportul 130,0/26,28 = 4,95 coincide cu $ALF_{ef}/(I_k/I_n)$. Aceasta este o verificare de consistență (aceeași relație scrisă altfel), nu o cale independentă; o verificare independentă este măsurarea din lucrarea de laborator L2.
 
 ### Problema 2.2 – Saturația sub componenta aperiodică
 
-Același TC alimentează un releu aflat la 100 m (conductoare de 2,5 mm²). Defectul de la B2 are componenta aperiodică maximă ($T_1$ = X/(ωR) = 42,5 ms). Se consideră, aproximativ, că miezul se saturează la fluxul corespunzător tensiunii electromotoare de la limita de precizie. După cât timp se saturează TC?
+Același TC alimentează un releu aflat la 100 m (conductoare de 2,5 mm², bucla dus–întors, ca în problema 2.1). Defectul de la începutul fiderului are componenta aperiodică maximă ($T_1$ = X/(ωR) = 42,5 ms). Se consideră, aproximativ, că miezul se saturează la fluxul corespunzător tensiunii electromotoare de la limita de precizie. După cât timp se saturează TC?
 
 **Rezolvare.**
 
@@ -143,7 +143,7 @@ Același TC alimentează un releu aflat la 100 m (conductoare de 2,5 mm²). Defe
 
 Pentru a nu se satura deloc, sarcina totală ar trebui să fie sub 0,601 Ω, ceea ce nu se poate obține cu rezistența proprie de 1,5 Ω. Soluțiile sunt cele din § 2.3: conductoare mai scurte sau mai groase, un TC dimensionat pentru regimul tranzitoriu, sau un releu care decide în primele 10 ms.
 
-**Verificare.** (a) Integrarea numerică a tensiunii $R_2\thinspace i_2(t)$, cu pasul de 1 µs, atinge fluxul de saturație la 10,09 ms, ca soluția analitică. (b) Un model neliniar al TC (curba de magnetizare liniară pe porțiuni, rezolvat pas cu pas) arată că abaterea curentului secundar față de cel ideal depășește 10 % din valoarea de vârf la 10,20 ms (figura 2.2), la 0,1 ms după momentul calculat analitic.
+**Verificare.** (a) Integrarea numerică a tensiunii $R_2\thinspace i_2(t)$, cu pasul de 1 µs, atinge fluxul de saturație la 10,09 ms, ca soluția analitică; aceasta verifică rezolvarea ecuației, nu modelul fizic. (b) Calea independentă: Un model neliniar al TC (curba de magnetizare liniară pe porțiuni, rezolvat pas cu pas) arată că abaterea curentului secundar față de cel ideal depășește 10 % din valoarea de vârf la 10,20 ms (figura 2.2), la 0,1 ms după momentul calculat analitic.
 
 ### Problema 2.3 – Tensiunea la triunghiul deschis
 
@@ -167,7 +167,7 @@ Protecția de distanță din A (linia L1) este alimentată de TC 600/1 A și TT 
 
 **Rezolvare.** $Z_{L1}$ = 40 · (0,12 + j0,40) = 4,8 + j16 Ω = 16,70 ∠ 73,30° Ω primari. Factorul de conversie este $n_{TC}/n_{TT}$ = 600/1100 = 0,5455, deci $Z_{L1,sec}$ = **9,112 ∠ 73,30° Ω**.
 
-**Verificare.** Scriptul simulează un scurtcircuit trifazat metalic la bara B și calculează tensiunea și curentul secundar în A: $U$ = 50,33 V, $I$ = 5,524 A, iar raportul lor este 9,112 ∠ 73,30° Ω, aceeași valoare.
+**Verificare.** Scriptul simulează un scurtcircuit trifazat metalic la bara B și calculează tensiunea și curentul secundar în A: $U$ = 50,33 V, $I$ = 5,524 A, iar raportul lor este 9,112 ∠ 73,30° Ω, aceeași valoare. Verificarea confirmă conversia și convenția de semn (legea lui Ohm pe linie), nu este o cale fizic independentă.
 
 ---
 
@@ -184,7 +184,7 @@ Protecția de distanță din A (linia L1) este alimentată de TC 600/1 A și TT 
 5. De ce se folosesc TC cu secundar de 1 A la distanțe mari între TC și releu?
    <details><summary>Răspuns</summary>Puterea pierdută în conductoarele de legătură este $R I^2$. La 1 A, ea este de 25 de ori mai mică decât la 5 A pentru același conductor. Sarcina mai mică înseamnă un factor limită efectiv mai mare și un timp până la saturație mai lung.</details>
 6. Ce avantaj are un TC toroidal față de montajul rezidual al celor trei TC de fază pentru protecția homopolară?
-   <details><summary>Răspuns</summary>În montajul rezidual, curentul $3I_0$ este diferența mică dintre curenți de fază mari, iar erorile diferite ale celor trei TC (mai ales la saturație sau la pornirea motoarelor) produc un curent rezidual fals. TC toroidal măsoară direct suma fluxurilor celor trei faze, deci curentul homopolar real, și permite reglaje de câțiva amperi.</details>
+   <details><summary>Răspuns</summary>În montajul rezidual, curentul $3I_0$ este diferența mică dintre curenți de fază mari, iar erorile diferite ale celor trei TC (mai ales la saturație sau la pornirea motoarelor) produc un curent rezidual fals. TC toroidal înconjoară toate cele trei faze și măsoară direct suma curenților lor (solenația totală), deci curentul homopolar real, și permite reglaje de câțiva amperi.</details>
 
 ## Bibliografie
 

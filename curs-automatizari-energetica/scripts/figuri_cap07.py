@@ -5,8 +5,9 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Circle, Rectangle
 from comun import C1, C2, C3, C4, C5, TEXT, TEXT2, GRILA, FUNDAL, ZONA, salveaza, bloc, legatura, virgula
 from modele import F0, unghi_critic, timp_critic
+from scipy.optimize import brentq
 from calcul_cap07 import (XD_T, XT, XL, XS, H, P0, punct_functionare, pmax, simuleaza, remanenta_analitic,
-                          diferenta_tensiune, T0_REM)
+                          diferenta_tensiune, T0_REM, reglaje_R1, momente_aar, U_PRAG)
 
 op = punct_functionare()
 d0 = op["delta0"]
@@ -117,15 +118,16 @@ fig.tight_layout()
 salveaza(fig, "f07-2-arii-egale")
 
 # --- Figura 7.3: ciclul de RAR pe fiderul F1 (defect permanent, cu accelerare) ---
-t_r, t_cb, t_inch, t_acc = 0.674, 0.06, 0.08, 0.04
+t_r = reglaje_R1()["t_r"]                   # timpul treptei temporizate a lui R1 (din capitolul 3)
+t_cb, t_inch, t_acc = 0.06, 0.08, 0.04
 ev = [0.0]
 ev.append(t_r + t_cb)                       # deschis
 ev.append(ev[-1] + 0.5 + t_inch)            # închis (RAR 1)
 ev.append(ev[-1] + t_acc + t_cb)            # deschis
 ev.append(ev[-1] + 15.0 + t_inch)           # închis (RAR 2)
 ev.append(ev[-1] + t_acc + t_cb)            # deschis definitiv
-fig, axs = plt.subplots(1, 2, figsize=(10.5, 3.6), sharey=True, gridspec_kw=dict(width_ratios=[2.2, 1], wspace=0.06))
-randuri = [("curent de defect", C2), ("întrerupător închis", C1), ("pauză RAR", C4), ("blocare (lockout)", C5)]
+fig, axs = plt.subplots(1, 2, figsize=(10.5, 3.8), sharey=True, gridspec_kw=dict(width_ratios=[2.2, 1], wspace=0.08))
+randuri = [("curent de defect", C2), ("întrerupător închis", C1), ("pauză de tensiune", C4), ("blocare (lockout)", C5)]
 for ax, (xa, xb) in zip(axs, ((-0.1, 2.0), (16.3, 17.2))):
     for i, (nume, c) in enumerate(randuri):
         yb = 3 - i
@@ -140,7 +142,6 @@ for ax, (xa, xb) in zip(axs, ((-0.1, 2.0), (16.3, 17.2))):
         for s0, s1 in seg:
             ax.add_patch(Rectangle((s0, yb - 0.3), s1 - s0, 0.6, fc=c, ec="none", alpha=0.75))
     ax.set_xlim(xa, xb)
-    ax.set_ylim(-0.6, 3.6)
     ax.grid(axis="y", visible=False)
     virgula(ax, "x")
     ax.set_xlabel("t [s]")
@@ -151,12 +152,18 @@ for ax, sel in ((axs[0], ev[1:4]), (axs[1], ev[4:])):
                 color=TEXT2)
 axs[0].set_ylim(-0.6, 4.2)
 axs[0].set_yticks([3, 2, 1, 0], [r[0] for r in randuri])
-axs[0].text(0.367, 3, "treapta temporizată 0,674 s\n+ întrerupătorul 0,06 s", ha="center", va="center", fontsize=7.5)
-axs[0].text(1.024, 1, "pauza 1: 0,5 s\n+ închiderea 0,08 s", ha="center", va="center", fontsize=7.5)
-axs[0].text(1.364, 2.45, "accelerare:\n0,04 + 0,06 s", ha="left", va="bottom", fontsize=7.5)
-axs[1].text(16.4, 1, "pauza 2:\n15 s", ha="center", va="center", fontsize=7.5)
+axs[0].text((ev[0] + ev[1]) / 2, 3, f"treapta temporizată {t_r:.3f} s\n+ întrerupătorul 0,06 s".replace(".", ","),
+            ha="center", va="center", fontsize=7.5)
+axs[0].text((ev[1] + ev[2]) / 2, 1, "pauza reglată 0,5 s\n+ închiderea 0,08 s", ha="center", va="center", fontsize=7.5)
+axs[0].text(ev[3] + 0.03, 2.45, "accelerare:\n0,04 + 0,06 s", ha="left", va="bottom", fontsize=7.5)
+axs[1].text(16.39, 1, "pauza reglată 15 s\n+ închiderea 0,08 s", ha="center", va="center", fontsize=6.5)
 axs[1].spines["left"].set_visible(False)
 axs[1].tick_params(left=False)
+# semne de întrerupere a axei timpului
+for ax, xs_ in ((axs[0], 1.0), (axs[1], 0.0)):
+    kw = dict(transform=ax.transAxes, color=TEXT2, clip_on=False, lw=1.0)
+    for dx in (-0.012, 0.012):
+        ax.plot([xs_ + dx - 0.008, xs_ + dx + 0.008], [-0.03, 0.03], **kw)
 fig.suptitle("Ciclul RAR cu două reanclanșări pe un defect permanent (cu accelerare după reanclanșare)",
              fontsize=11, fontweight="bold")
 salveaza(fig, "f07-3-ciclu-rar")
@@ -175,21 +182,22 @@ a1.set_ylim(-20, 250)
 a1.set_xlim(0, 3)
 a1.set_xlabel("t [s]")
 a1.set_ylabel("δ [°]")
-a1.set_title("Unghiul rotorului lui G1")
+a1.set_title("Unghiul rotorului lui G1 (model clasic, fără amortizare)")
 a1.legend(loc="upper left", fontsize=8)
 virgula(a1)
-tms = np.arange(0.2, 1.61, 0.02)
+tms = np.round(np.arange(0.2, 1.801, 0.02), 2)
 dm = []
 for tm in tms:
-    t, d, _, _ = simuleaza([(t_c, 0.0), (tm, Pmax1), (t_c2, 0.0), (5.0, Pmax1)], d0, t_final=5.0)
-    dm.append(np.degrees(d.max()) if d.max() < np.pi else np.nan)
+    t, d, _, start = simuleaza([(t_c, 0.0), (tm, Pmax1), (t_c2, 0.0), (5.0, Pmax1)], d0, t_final=5.0)
+    tr = start[2][0]
+    dm.append(np.degrees(d[t >= tr].max()) if d.max() < np.pi else np.nan)
 dm = np.array(dm)
 a2.plot(tms, dm, color=C1, marker="o", ms=3, lw=1.2)
 inst = np.isnan(dm)
 a2.plot(tms[inst], np.full(inst.sum(), 175), "x", color=C2, ms=6, label="instabil")
 a2.axhline(180, color=C2, lw=0.8, ls=":")
-a2.set_xlabel("pauza RAR [s]")
-a2.set_ylabel("δmax [°]")
+a2.set_xlabel("pauza de tensiune [s]")
+a2.set_ylabel("δmax după reanclanșare [°]")
 a2.set_title("Reanclanșare pe defect permanent")
 a2.set_ylim(0, 190)
 a2.legend(loc="lower right", fontsize=8)
@@ -219,13 +227,14 @@ a2.axvline(5.0, color=C3, lw=1.0, ls="--")
 a2.axhline(-alfa, color=C2, lw=0.8, ls=":")
 a2.annotate("", xy=(5.0, -alfa - 0.6), xytext=(tc_cmd, -alfa - 0.6),
             arrowprops=dict(arrowstyle="<->", color=TEXT2, lw=1))
-a2.text((tc_cmd + 5.0) / 2, -alfa - 1.0, f"t_î = {t_close * 1e3:.0f} ms", ha="center", va="top", fontsize=8.5)
-a2.text(4.81, -alfa + 0.4, f"comanda la φ = −α = −{alfa:.2f}°".replace(".", ","), ha="left", va="bottom",
+a2.text((tc_cmd + 5.0) / 2, -alfa - 1.0, r"$t_{\mathrm{î}}$" + f" = {t_close * 1e3:.0f} ms", ha="center", va="top",
+        fontsize=8.5)
+a2.text(4.805, -alfa + 0.4, f"comanda la φ = −α = −{alfa:.2f}°".replace(".", ","), ha="left", va="bottom",
         fontsize=8.5, color=C2)
-a2.text(4.995, 0.6, "contactele se închid la φ = 0", ha="right", va="bottom", fontsize=8.5, color=C3)
+a2.text(5.01, -6.5, "contactele se închid\nla φ = 0", ha="left", va="bottom", fontsize=8.5, color=C3)
 a2.set_xlabel("t [s]")
 a2.set_ylabel("φ [°]")
-a2.set_title("Unghiul de avans α = 360°·Δf·t_î")
+a2.set_title(r"Unghiul de avans α = 360°·Δf·$t_{\mathrm{î}}$")
 a2.set_ylim(-8, 4)
 virgula(a2)
 fig.tight_layout()
@@ -235,70 +244,87 @@ salveaza(fig, "f07-5-sincronizare")
 tt = np.linspace(0, 1.5, 3001)
 w, U, th = remanenta_analitic(tt)
 dU = diferenta_tensiune(U, th)
-fig, (a1, a2) = plt.subplots(1, 2, figsize=(11, 4.0))
-a1.plot(tt, U, color=C1, label="tensiunea remanentă U")
+fig, (a1, a2) = plt.subplots(1, 2, figsize=(11, 4.2))
+a1.plot(tt, U, color=C1, label="tensiunea remanentă Ur")
 a1.plot(tt, w, color=C3, label="turația (frecvența) n/n0")
-a1.axhline(0.25, color=C2, lw=0.8, ls=":")
-a1.text(1.48, 0.27, "prag 0,25 u.r.", ha="right", va="bottom", fontsize=8.5, color=C2)
-a1.set_xlabel("t [s]")
+a1.axhline(U_PRAG, color=C2, lw=0.8, ls=":")
+a1.text(1.48, U_PRAG + 0.02, f"prag {U_PRAG:.2f} u.r.".replace(".", ","), ha="right", va="bottom", fontsize=8.5,
+        color=C2)
+a1.set_xlabel("t [s] (t = 0: bara rămâne fără alimentare)")
 a1.set_ylabel("[u.r.]")
 a1.set_ylim(0, 1.05)
 a1.set_title("Bara de motoare după pierderea alimentării")
 a1.legend(loc="lower left", fontsize=8.5)
 virgula(a1)
-a2.plot(tt, dU, color=C5, label="|ΔU| = |1 − U·e^(−jθ)|")
+a2.plot(tt, dU, color=C5)
 a2.axhline(1.0, color=TEXT2, lw=0.8, ls=":")
 i_f = np.argmax(dU >= 1.0)
 a2.axvspan(0, tt[i_f], color=C3, alpha=0.15)
-a2.text(tt[i_f] / 2, 1.85, "fereastra\nrapidă", ha="center", va="top", fontsize=8.5)
-from scipy.optimize import brentq  # noqa: E402
-t_rem = brentq(lambda x: remanenta_analitic(x)[1] - 0.25, 0.01, 5)
+a2.text(tt[i_f] / 2, 1.97, "fereastra\nrapidă", ha="center", va="top", fontsize=8)
+t_rem = brentq(lambda x: remanenta_analitic(x)[1] - U_PRAG, 0.01, 5)
 a2.axvspan(t_rem, 1.5, color=C4, alpha=0.15)
-a2.text((t_rem + 1.5) / 2, 1.85, "transfer la tensiune\nremanentă (U ≤ 0,25)", ha="center", va="top", fontsize=8.5)
-for tp, nume, c in ((0.03, "simultan", C3), (0.14, "secvențial", C2)):
+a2.text((t_rem + 1.5) / 2, 1.97, f"Ur ≤ {U_PRAG:.2f} u.r.:\n|ΔU| ≤ {1 + U_PRAG:.2f} u.r.".replace(".", ","),
+        ha="center", va="top", fontsize=8)
+etich = {("a", "simultan"): ("a, simultan", (0.10, 0.10)), ("a", "secvențial"): ("a, secvențial", (0.20, 0.35)),
+         ("b", "simultan"): ("b, simultan", (0.25, 0.05)), ("b", "secvențial"): ("b, secvențial", (0.22, 1.30))}
+culori = {"a": C3, "b": C2}
+for (pornire, mod), tp in momente_aar().items():
+    if pornire == "c":
+        continue
     _, Up, thp = remanenta_analitic(np.array(tp))
-    a2.plot(tp, diferenta_tensiune(Up, thp), "o", color=c, ms=7, mec=FUNDAL, mew=1.5)
-    a2.annotate(f"{nume}\n{tp * 1e3:.0f} ms", xy=(tp, diferenta_tensiune(Up, thp)),
-                xytext=(tp + 0.12, diferenta_tensiune(Up, thp) + 0.15), fontsize=8.5,
-                arrowprops=dict(arrowstyle="-", color=TEXT2, lw=0.8))
+    y = diferenta_tensiune(Up, thp)
+    a2.plot(tp, y, "o" if mod == "simultan" else "s", color=culori[pornire], ms=6, mec=FUNDAL, mew=1.2)
+    txt, (xt, yt) = etich[(pornire, mod)]
+    a2.annotate(f"{txt}, {tp * 1e3:.0f} ms", xy=(tp, y), xytext=(xt, yt), fontsize=7.5,
+                arrowprops=dict(arrowstyle="-", color=TEXT2, lw=0.7))
+tc_min = momente_aar()[("c", "secvențial")]
+a2.axvline(tc_min, color=TEXT2, lw=0.8, ls="--")
+a2.text(tc_min + 0.01, 0.12, f"c: minimă tensiune,\ncel mai devreme {tc_min * 1e3:.0f} ms", fontsize=7.5, color=TEXT2)
 a2.set_xlabel("t [s]")
 a2.set_ylabel("|ΔU| [u.r.]")
 a2.set_ylim(0, 2.0)
-a2.set_title("Tensiunea pe întrerupătorul de rezervă")
+a2.set_title("Tensiunea pe întrerupătorul de rezervă |1 − Ur·e^(−jθ)|")
 virgula(a2)
 fig.tight_layout()
 salveaza(fig, "f07-6-aar")
 
 # --- Figura 7.7: protecția la refuzul întrerupătorului – logica și timpii ----------
-fig, (a1, a2) = plt.subplots(1, 2, figsize=(11.5, 4.0), gridspec_kw=dict(width_ratios=[1.25, 1]))
+fig, (a1, a2) = plt.subplots(1, 2, figsize=(12, 4.4), gridspec_kw=dict(width_ratios=[1.3, 1]))
 a1.axis("off")
 a1.set_xlim(-0.2, 10.1)
-a1.set_ylim(0, 6)
-bloc(a1, 0.0, 4.2, 2.8, 0.9, "comandă de declanșare\nde la protecții", C1, fs=8.5)
-bloc(a1, 0.0, 2.4, 2.8, 0.9, "I > I_BF\n(curentul nu a dispărut)", C1, fs=8.5)
+a1.set_ylim(-0.3, 6.3)
+bloc(a1, 0.0, 4.2, 2.8, 0.9, "comandă de declanșare\nde la protecții", C1, fs=8)
+bloc(a1, 0.0, 2.4, 2.8, 0.9, r"$I > I_{\mathrm{BF}}$" + "\n(curentul nu a dispărut)", C1, fs=8)
 bloc(a1, 3.3, 3.3, 0.9, 0.9, "ȘI", C5)
-bloc(a1, 4.7, 3.3, 1.6, 0.9, "temporizare\nt_BF", C4, fs=8.5)
-bloc(a1, 6.8, 3.05, 3.15, 1.4, "declanșarea\nîntrerupătoarelor vecine\n(prin protecția barelor\nsau GOOSE)", C2, fs=8)
-bloc(a1, 4.7, 4.95, 3.0, 0.7, "redeclanșare (bobina a 2-a)", C3, fs=8.5)
-bloc(a1, 6.8, 1.0, 3.15, 1.2, "declanșare la distanță\n(capătul opus al liniei)\nprin teleprotecție", C2, fs=8)
+bloc(a1, 4.7, 3.3, 1.6, 0.9, "temporizare\n" + r"$t_{\mathrm{BF}}$", C4, fs=8.5)
+bloc(a1, 6.8, 3.05, 3.2, 1.4, "declanșarea\nîntrerupătoarelor vecine\n(prin protecția barelor\nsau GOOSE)", C2, fs=8)
+bloc(a1, 4.7, 4.95, 3.6, 0.8, "redeclanșare imediată\n(bobina a 2-a)", C3, fs=8)
+bloc(a1, 6.8, 1.25, 3.2, 1.2, "declanșare la distanță\n(capătul opus al liniei)\nprin teleprotecție", C2, fs=8)
+bloc(a1, 3.0, 0.0, 3.3, 0.95, "blocarea reanclanșării\n(releul de blocare 86)", C5, fs=8)
 legatura(a1, (2.8, 4.65), (3.3, 3.95))
 legatura(a1, (2.8, 2.85), (3.3, 3.55))
 legatura(a1, (4.2, 3.75), (4.7, 3.75))
 legatura(a1, (6.3, 3.75), (6.8, 3.75))
-legatura(a1, (2.8, 4.95), (4.7, 5.3))
-legatura(a1, (8.375, 3.05), (8.375, 2.2))
-a1.text(5.0, 0.5, "logica de principiu (ANSI 50BF)", ha="center", fontsize=9, color=TEXT2)
-t_prot, t_BF, t_aux = 0.03, 0.12, 0.01
-bare = [("protecția de bază\n+ întrerupătorul", [(0, t_prot, C1), (t_prot, 0.06, C3)]),
+legatura(a1, (2.8, 4.95), (4.7, 5.35))
+legatura(a1, (8.4, 3.05), (8.4, 2.45))
+legatura(a1, (5.5, 3.3), (5.0, 0.95))
+a1.text(1.4, 0.45, "logica de principiu\n(ANSI 50BF)", ha="center", va="center", fontsize=8.5, color=TEXT2)
+t_prot, t_BF, t_aux, t_cbr, t_z2 = 0.03, 0.12, 0.01, 0.06, 0.30
+bare = [("protecția de bază\n+ întrerupătorul", [(0, t_prot, C1), (t_prot, t_cbr, C3)]),
         ("refuz → 50BF\n+ întrerupătoarele vecine", [(0, t_prot, C1), (t_prot, t_BF, C4), (t_prot + t_BF, t_aux, C5),
-                                                    (t_prot + t_BF + t_aux, 0.06, C3)]),
-        ("refuz → rezerva\nde la distanță", [(0, 0.35, C2), (0.35, 0.06, C3)])]
+                                                    (t_prot + t_BF + t_aux, t_cbr, C3)]),
+        ("refuz → rezerva\nde la distanță", [(0, t_prot, C1), (t_prot, t_z2, C2), (t_prot + t_z2, t_cbr, C3)])]
 for i, (nume, seg) in enumerate(bare):
     for s0, ds, c in seg:
         a2.barh(2 - i, ds, left=s0, color=c, height=0.5, edgecolor=FUNDAL)
     a2.text(sum(seg[-1][:2]) + 0.01, 2 - i, f"{sum(seg[-1][:2]) * 1e3:.0f} ms", va="center", fontsize=8.5)
 a2.axvline(tcr, color=C2, lw=1.4, ls="--")
 a2.text(tcr + 0.005, 2.55, f"tcr = {tcr * 1e3:.0f} ms", fontsize=8.5, color=C2)
+from matplotlib.patches import Patch  # noqa: E402
+a2.legend(handles=[Patch(color=C1, label="măsurarea protecției"), Patch(color=C4, label=r"temporizarea $t_{\mathrm{BF}}$"),
+                   Patch(color=C5, label="relee intermediare"), Patch(color=C2, label="treapta a 2-a (capătul opus)"),
+                   Patch(color=C3, label="întreruperea curentului")],
+          loc="upper center", bbox_to_anchor=(0.45, -0.18), ncol=3, fontsize=7.5)
 a2.set_yticks([2, 1, 0], [b[0] for b in bare], fontsize=8.5)
 a2.set_xlim(0, 0.52)
 a2.set_ylim(-0.6, 2.9)

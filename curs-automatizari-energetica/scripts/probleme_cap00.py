@@ -31,6 +31,26 @@ for t in (0.1, 0.5, 1.0, 2.0, tmax):
         # cu k rotunjit în jos (94 < 94,55), la t_max conductorul rămâne puțin sub 250 °C
         verifica_adevarat("la t_max temperatura finală este între 245 și 250 °C", 245 < theta_f <= 250)
 verifica_adevarat("eliminarea în 1 s este admisibilă", tmax > 1.0)
+# Componenta aperiodică (deplasare maximă) adaugă energia ∫(√2·I·e^{−t/T})² dt = I²·T·(1 − e^{−2t/T})
+from scipy.optimize import brentq  # noqa: E402
+from modele import W0  # noqa: E402
+Z1 = r.scurtcircuit_secvente("B2", "3f")["Zth"][1]
+T = Z1.imag / (W0 * Z1.real)
+for t in (0.1, 0.5, 1.0):
+    frac = T * (1 - np.exp(-2 * t / T)) / t
+    print(f"  la t = {fmt(t, 1)} s, componenta aperiodică adaugă {fmt(100 * frac, 1)} % la I²t (T = {fmt(T * 1e3, 1)} ms)")
+tmax_dc = brentq(lambda t: t + T * (1 - np.exp(-2 * t / T)) - tmax, 0.1, tmax)
+# calea a doua: integrarea numerică a pătratului curentului real (cu deplasarea maximă)
+phi = np.arctan2(Z1.imag, Z1.real)
+al = phi - np.pi / 2
+dt = 2e-5
+tt = np.arange(0, tmax + 0.1, dt)
+i = np.sqrt(2) * Ik * (np.sin(W0 * tt + al - phi) - np.sin(al - phi) * np.exp(-tt / T))
+I2t = np.cumsum(i**2) * dt
+tmax_num = tt[np.argmax(I2t >= (k_tabel * S) ** 2)]
+print(f"  cu componenta aperiodică maximă: t_max = {fmt(tmax_dc, 3)} s (integrare numerică a lui i²: {fmt(tmax_num, 3)} s)")
+# diferența rămasă (sub 5 ms) vine din termenii oscilanți ai lui i², care formula îi neglijează
+verifica("t_max cu componenta aperiodică: formulă vs integrarea lui i²(t)", tmax_dc, tmax_num, rtol=0, atol=5e-3)
 
 print("\nProblema 0.2 – redundanța protecțiilor: 1 din 2, 2 din 2, 2 din 3")
 pf = 0.02    # probabilitatea ca o protecție să NU acționeze la un defect (refuz)

@@ -57,7 +57,7 @@ a2.set_xlabel("t [ms]")
 a2.legend(loc="lower right", fontsize=8.5)
 for ax in (a1, a2):
     virgula(ax)
-a1.set_title(f"TC 400/1 A, 5P20 – defect la B2 (I\"k = {Ik / 1e3:.2f} kA), sarcină R₂ = {R2:.2f} Ω, "
+a1.set_title(f"TC 400/1 A, 5P20 – defect la începutul fiderului F1 (I\"k = {Ik / 1e3:.2f} kA), sarcină R₂ = {R2:.2f} Ω, "
              f"T₁ = {T1 * 1e3:.1f} ms".replace(".", ","), fontsize=10)
 salveaza(fig, "f02-2-saturatie")
 
@@ -77,7 +77,7 @@ for ax, Vt, tit in ((axe[0], normal * rot / n_td, "Regim normal: suma este nulă
             sageata(ax, cap, cap + Vt[k], c, f"u{'abc'[k]}", offset=(5, 0), t=0.5)
         cap = cap + Vt[k]
     if abs(cap) > 1:
-        sageata(ax, 0j, cap, TEXT, f"3u₀ = {abs(cap):.1f} V".replace(".", ","), offset=(0, 6), t=0.5, lw=2.4,
+        sageata(ax, 0j, cap, TEXT, f"3U₀ = {abs(cap):.1f} V".replace(".", ","), offset=(0, 6), t=0.5, lw=2.4,
                 ha="center")
     ax.plot([0], [0], "o", color=TEXT2, ms=4)
     ax.set_xlim(-110, 60)
@@ -99,7 +99,7 @@ for nume, net, c in (("neutru izolat", ri, C2), ("rezistor de neutru (300 A)", r
     ax.plot(Rf, u, color=c, label=nume)
 ax.set_xscale("log")
 ax.set_xlabel("rezistența de defect Rf [Ω]")
-ax.set_ylabel("3u₀ la triunghiul deschis [V]")
+ax.set_ylabel("3U₀ la triunghiul deschis [V]")
 ax.set_ylim(0, 110)
 ax.legend(loc="upper right")
 ax.set_title("Punere la pământ la bara B2: tensiunea homopolară scade cu rezistența de defect", fontsize=10)

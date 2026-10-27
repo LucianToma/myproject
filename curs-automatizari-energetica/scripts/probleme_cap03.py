@@ -2,7 +2,7 @@
 
 import numpy as np
 from scipy.optimize import brentq
-from modele import (SQRT3, W0, C_MIN, DATE, fmt, verifica, verifica_adevarat, retea_referinta, defect_faze,
+from modele import (SQRT3, W0, C_MAX, C_MIN, DATE, z_fider, retea_cu_bara_pe_F1, retea_fara, fmt, verifica, verifica_adevarat, retea_referinta, defect_faze,
                     timp_invers, TMS_necesar, timp_integrator, CURBE, polar)
 
 d = DATE
@@ -34,11 +34,24 @@ for curba in ("MI-IEEE", "VI-IEEE", "EI-IEEE"):
 
 print("\nProblema 3.2 – coordonarea protecțiilor maximale pe fiderul F1")
 r = retea_referinta(cu_capacitati=False)
-r_min = retea_referinta(c=C_MIN, cu_capacitati=False, kR20=1 + 0.004 * (80 - 20))
+KR80 = 1 + 0.004 * (80 - 20)
+r_min = retea_referinta(c=C_MIN, cu_capacitati=False, kR20=KR80)
 I3 = {b: abs(r.scurtcircuit_secvente(b, "3f")["I_faza"][0]) for b in ("B2", "P1", "P2")}
-I2min = {b: abs(r_min.scurtcircuit_secvente(b, "2f")["I_faza"][1]) for b in ("B2", "P1", "P2")}
+# Curentul minim: configurația normală și configurațiile cu o linie de 110 kV scoasă din funcțiune
+configuratii = {"normală": r_min,
+                "fără L1": retea_fara(["L1"], c=C_MIN, cu_capacitati=False, kR20=KR80),
+                "fără L2": retea_fara(["L2"], c=C_MIN, cu_capacitati=False, kR20=KR80)}
+I2min_conf = {k: {b: abs(rc.scurtcircuit_secvente(b, "2f")["I_faza"][1]) for b in ("B2", "P1", "P2")}
+              for k, rc in configuratii.items()}
+I2min = {b: min(I2min_conf[k][b] for k in configuratii) for b in ("B2", "P1", "P2")}
 for b in I3:
-    print(f"  {b}: I\"k3max = {fmt(I3[b], 0)} A; I\"k2min = {fmt(I2min[b], 0)} A")
+    detalii = "; ".join(f"{k}: {fmt(I2min_conf[k][b], 0)} A" for k in configuratii)
+    print(f"  {b}: I\"k2min = {fmt(I2min[b], 0)} A ({detalii}); I\"k3max = {fmt(I3[b], 0)} A")
+    # verificare: curentul minim în configurația cea mai slabă, calculat și în coordonate de fază
+    k_slab = min(configuratii, key=lambda k: I2min_conf[k][b])
+    rc = configuratii[k_slab]
+    pf = rc.rezolva_faze(defect_faze(b, "2f"))
+    verifica(f"I\"k2min({b}), configurația {k_slab}: secvențe vs fază", I2min[b], abs(rc.curent_defect_faze(pf)[0]))
 # Datele releelor: nume, sarcina maximă [A], raportul TC, curentul de pornire ales [A]
 IT1n = d["ST"] / (SQRT3 * d["U20"])
 relee = {
@@ -110,23 +123,30 @@ for b, protejat_de in (("P2", "R3"), ("P1", "R2"), ("B2", "R1")):
     verifica_adevarat(f"defect în {b}: acționează întâi {protejat_de}", ordine[0] == protejat_de)
     verifica_adevarat(f"defect în {b}: marja față de următorul ≥ {DT_TREAPTA} s",
                       timpi[ordine[1]] - timpi[ordine[0]] >= DT_TREAPTA - 1e-3)
-# Acoperirea treptei instantanee a lui R1 pe tronsonul B2–P1 (la curentul maxim, defect trifazat)
+# Acoperirea treptei instantanee a lui R1 pe tronsonul B2–P1. Traseul are 3 km de cablu și 7 km de LEA,
+# cu impedanțe pe km diferite, deci distanța se calculează cu impedanța reală a traseului.
+L_F1a = d["l_cablu_F1"] + d["l_lea_F1a"]
 Zsrc = r.scurtcircuit_secvente("B2", "3f")["Zth"][1]
-ZF1a = r.element("F1a")["Z1"]
-x_inst = brentq(lambda x: 1.1 * d["U20"] / SQRT3 / abs(Zsrc + x * ZF1a) - I_inst_R1, 0, 1)
-x_inst_min = brentq(lambda x: 1.0 * d["U20"] / SQRT3 / abs(Zsrc + x * ZF1a) * SQRT3 / 2 - I_inst_R1, 0, 1)
-print(f"  treapta instantanee a lui R1 acoperă {fmt(100 * x_inst, 0)} % din B2–P1 la defect trifazat maxim"
-      f" și {fmt(100 * x_inst_min, 0)} % la defect bifazat minim")
-# verificare: curentul de defect calculat cu rețeaua (bară intermediară) la distanța x_inst
-from modele import Retea  # noqa: E402
-rr = retea_referinta(cu_capacitati=False)
-e = rr.element("F1a")
-rr.elemente.remove(e)
-rr.bara("X", d["U20"])
-rr.linie("F1a1", "B2", "X", e["Z1"] * x_inst, e["Z0"] * x_inst)
-rr.linie("F1a2", "X", "P1", e["Z1"] * (1 - x_inst), e["Z0"] * (1 - x_inst))
-I_x = abs(rr.scurtcircuit_secvente("X", "3f")["I_faza"][0])
-verifica("curentul la limita treptei instantanee = I>> (rețea cu bară intermediară)", I_x, I_inst_R1)
+Zsrc_min = r_min.scurtcircuit_secvente("B2", "3f")["Zth"][1]
+x_inst = brentq(lambda x: C_MAX * d["U20"] / SQRT3 / abs(Zsrc + z_fider(x)) - I_inst_R1, 0.0, L_F1a)
+x_inst_min = brentq(lambda x: C_MIN * d["U20"] / 2 / abs(Zsrc_min + z_fider(x, KR80)) - I_inst_R1, 0.0, L_F1a)
+print(f"  treapta instantanee a lui R1 acoperă {fmt(x_inst, 2)} km ({fmt(100 * x_inst / L_F1a, 0)} %) din B2–P1 la "
+      f"defect trifazat maxim și {fmt(x_inst_min, 2)} km ({fmt(100 * x_inst_min / L_F1a, 0)} %) la defect bifazat minim"
+      f" (R la 80 °C)")
+# verificare: rețeaua cu o bară intermediară pusă la distanța găsită, rezolvată în componente simetrice și în fază
+for x, kw, tip, k_faza in ((x_inst, dict(cu_capacitati=False), "3f", 0),
+                           (x_inst_min, dict(c=C_MIN, cu_capacitati=False, kR20=KR80), "2f", 1)):
+    rx = retea_cu_bara_pe_F1(x, **kw)
+    I_s = abs(rx.scurtcircuit_secvente("X", tip)["I_faza"][k_faza])
+    I_p = abs(rx.curent_defect_faze(rx.rezolva_faze(defect_faze("X", tip)))[0])
+    verifica(f"curentul la limita treptei instantanee ({tip}, bară la {x:.2f} km) = I>> (secvențe)", I_s, I_inst_R1)
+    verifica(f"curentul la limita treptei instantanee ({tip}): secvențe vs fază", I_s, I_p)
+# cu o linie de 110 kV scoasă din funcțiune, acoperirea la defect bifazat minim scade
+Zsrc_slab = min((configuratii[k].scurtcircuit_secvente("B2", "3f")["Zth"][1] for k in configuratii), key=lambda z: -abs(z))
+x_inst_slab = brentq(lambda x: C_MIN * d["U20"] / 2 / abs(Zsrc_slab + z_fider(x, KR80)) - I_inst_R1, 0.0, L_F1a)
+print(f"  în configurația cea mai slabă (o linie de 110 kV scoasă), la defect bifazat minim: {fmt(x_inst_slab, 2)} km "
+      f"({fmt(100 * x_inst_slab / L_F1a, 0)} %)")
+verifica_adevarat("acoperirea scade de la regimul maxim la cel minim", x_inst > x_inst_min >= x_inst_slab)
 TMS_R = {k: v["TMS"] for k, v in relee.items()}
 print("  reglaje finale:", "; ".join(f"{k}: Is = {fmt(v['Is'], 0)} A, TMS = {fmt(v['TMS'], 2)}" for k, v in relee.items()))
 
@@ -178,35 +198,34 @@ Rf_mana = Uf / I0_set - Uf / d["IN_rezistor"]
 print(f"  estimare de mână Uf/(RN + Rf) = 3I0> → Rf ≈ {fmt(Rf_mana, 0)} Ω")
 verifica("estimarea de mână vs calculul exact (abatere sub 5 %)", Rf_mana, Rf_max, rtol=5e-2)
 
-print("\nProblema 3.5 – direcția curentului homopolar: fider defect vs fider sănătos (neutru izolat)")
-ri = retea_referinta("izolat", c=1.0)
-for loc, descriere in (("P1", "defect pe F1 (interior)"), ("B2", "defect pe bară/alt fider (exterior)")):
-    pp = ri.rezolva_faze(defect_faze(loc, "1f"))
-    I3I0 = np.sum(ri.curenti_ramura_faze(pp, "F1a", 1))    # curentul rezidual care intră în F1 de la bară
-    U0 = np.mean(ri.tensiuni_faze(pp, "B2"))
-    unghi = np.degrees(np.angle(I3I0 / U0))
-    print(f"  {descriere}: 3I0 = {fmt(abs(I3I0), 1)} A, unghiul 3I0 față de U0 = {fmt(unghi, 1)}°")
-    if loc == "B2":
-        verifica("fider sănătos: 3I0 înaintea lui U0 cu 90° (capacitiv)", unghi, 90.0, atol=2.0, rtol=0)
-    else:
-        verifica("fider defect: 3I0 în urma lui U0 cu 90°", unghi, -90.0, atol=2.0, rtol=0)
-        # mărimea: curentul capacitiv al restului rețelei (formula de manual)
-        C0_rest = d["c_cablu"] * d["l_cablu_rest"] + d["c0_lea20"] * d["l_lea_rest"]
-        I_rest = 3 * W0 * C0_rest * abs(U0)
-        verifica("fider defect: |3I0| ≈ 3ωC0(rest)·U0 (abatere sub 5 %)", abs(I3I0), I_rest, rtol=5e-2)
-# Aceeași comparație în rețeaua tratată prin rezistor: fiderul defect vede curentul rezistorului
-# și curentul capacitiv al restului rețelei, cu semn schimbat
-rr = retea_referinta("rezistor", c=1.0)
-pp = rr.rezolva_faze(defect_faze("P1", "1f"))
-I3I0 = np.sum(rr.curenti_ramura_faze(pp, "F1a", 1))
-U0 = np.mean(rr.tensiuni_faze(pp, "B2"))
-unghi = np.degrees(np.angle(I3I0 / U0))
+print("\nProblema 3.5 – direcția curentului homopolar: fider defect vs fider sănătos")
 C0_rest = d["c_cablu"] * d["l_cablu_rest"] + d["c0_lea20"] * d["l_lea_rest"]
 RN = Uf / d["IN_rezistor"]
-I_teorie = -(U0 / RN + 1j * 3 * W0 * C0_rest * U0)     # curentul care intră în fiderul defect de la bară
-unghi_teorie = np.degrees(np.angle(I_teorie / U0))
-print(f"  neutru prin rezistor, defect pe F1: 3I0 = {fmt(abs(I3I0), 1)} A, unghiul față de U0 = {fmt(unghi, 1)}°"
-      f" (estimare: −(U0/RN + j·3ωC0,rest·U0) → {fmt(unghi_teorie, 1)}°)")
-verifica("unghiul 3I0 al fiderului defect (rezistor): simulare vs estimare", unghi, unghi_teorie, atol=1.0, rtol=0)
-verifica("modulul 3I0 al fiderului defect (rezistor): simulare vs estimare (abatere sub 3 %)", abs(I3I0),
-         abs(I_teorie), rtol=3e-2)
+for neutru in ("izolat", "rezistor"):
+    net = retea_referinta(neutru, c=1.0)
+    for loc, descriere in (("P1", "defect pe F1 (interior)"), ("B2", "defect pe bară/alt fider (exterior)")):
+        # calea 1: coordonate de fază
+        pp = net.rezolva_faze(defect_faze(loc, "1f"))
+        I3I0 = np.sum(net.curenti_ramura_faze(pp, "F1a", 1))    # curentul rezidual care intră în F1 de la bară
+        U0 = np.mean(net.tensiuni_faze(pp, "B2"))
+        unghi = np.degrees(np.angle(I3I0 / U0))
+        # calea 2: componente simetrice (curentul homopolar al ramurii, din tensiunile de secvență)
+        sq = net.scurtcircuit_secvente(loc, "1f")
+        I3I0_s = np.sum(net.curenti_ramura_secvente(sq, "F1a", 1))
+        U0_s = sq["V_seq"][0][sq["idx"]["B2"]]
+        print(f"  neutru {neutru}, {descriere}: 3I0 = {fmt(abs(I3I0), 1)} A, unghiul față de U0 = {fmt(unghi, 1)}°, "
+              f"|U0| = {fmt(abs(U0) / Uf, 3)}·Uf")
+        verifica(f"3I0 ({neutru}, defect în {loc}): fază vs secvențe", I3I0, I3I0_s, rtol=1e-3, atol=1e-3)
+        verifica(f"U0 ({neutru}, defect în {loc}): fază vs secvențe", U0, U0_s, rtol=1e-3)
+        if loc == "B2":
+            verifica_adevarat(f"fider sănătos ({neutru}): 3I0 înaintea lui U0 cu 90° ± 1°", abs(unghi - 90.0) < 1.0)
+        elif neutru == "izolat":
+            verifica_adevarat("fider defect (izolat): 3I0 în urma lui U0 cu 90° ± 1°", abs(unghi + 90.0) < 1.0)
+            # bilanțul de curenți la bara B2 (verificare de consistență): fiderul defect conduce curentul
+            # capacitiv al restului rețelei, cu U0 real (mai mare decât Uf)
+            print(f"     formula de manual cu U0 = Uf: 3ωC0,rest·Uf = {fmt(3 * W0 * C0_rest * Uf, 1)} A; "
+                  f"cu U0 simulat: {fmt(3 * W0 * C0_rest * abs(U0), 1)} A")
+            verifica("bilanț la bara B2: |3I0| = 3ωC0,rest·|U0|", abs(I3I0), 3 * W0 * C0_rest * abs(U0), rtol=5e-3)
+        else:
+            I_bilant = -(U0 / RN + 1j * 3 * W0 * C0_rest * U0)
+            verifica("bilanț la bara B2 (rezistor): 3I0 = −(U0/RN + j3ωC0,rest·U0)", I3I0, I_bilant, rtol=5e-3)

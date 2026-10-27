@@ -19,46 +19,66 @@ with contextlib.redirect_stdout(io.StringIO()):
 
 
 # --- Figura 4.1: principiul curenților circulanți (Merz–Price) ----------------------------------
+def sursa_curent(ax, x, y, sus, c):
+    """Simbolul unei surse de curent (secundarul unui TC) cu săgeata în sus (sus=True) sau în jos."""
+    ax.add_patch(Circle((x, y), 0.3, fc=FUNDAL, ec=c, lw=1.6, zorder=3))
+    dy = 0.18 if sus else -0.18
+    ax.annotate("", xy=(x, y + dy), xytext=(x, y - dy),
+                arrowprops=dict(arrowstyle="-|>", color=c, lw=1.4, mutation_scale=11), zorder=4)
+
+
 def schema_principiu(ax, interior):
     ax.set_xlim(0, 10)
     ax.set_ylim(0, 6)
     ax.axis("off")
     # conductorul primar și obiectul protejat
-    ax.plot([0.3, 9.7], [4.6, 4.6], color=TEXT, lw=2.4)
-    ax.add_patch(Rectangle((3.6, 4.15), 2.8, 0.9, fc="#d9d8d3", ec=TEXT2, lw=1.2, zorder=3))
-    ax.text(5.0, 4.6, "obiect protejat", ha="center", va="center", fontsize=8.5, color=TEXT, zorder=4)
-    # transformatoarele de curent
+    ax.plot([0.3, 9.7], [4.9, 4.9], color=TEXT, lw=2.4)
+    ax.add_patch(Rectangle((3.6, 4.45), 2.8, 0.9, fc="#d9d8d3", ec=TEXT2, lw=1.2, zorder=3))
+    ax.text(5.0, 4.9, "obiect protejat", ha="center", va="center", fontsize=8.5, color=TEXT, zorder=4)
+    yt, yb, ys = 3.3, 0.9, 2.1         # conductorul pilot de sus, cel de jos, poziția surselor
     for x in (2.4, 7.6):
-        ax.add_patch(Circle((x, 4.6), 0.32, fc="none", ec=C1, lw=1.8, zorder=3))
-        ax.text(x, 5.15, "TC", ha="center", fontsize=8.5, color=C1)
-    # circuitele secundare
-    ax.plot([2.4, 2.4, 7.6, 7.6], [4.28, 2.6, 2.6, 4.28], color=C1, lw=1.4)
-    ax.plot([2.4, 2.4, 7.6, 7.6], [4.28, 1.0, 1.0, 4.28], color=C1, lw=1.4)
-    ax.plot([5.0, 5.0], [2.6, 1.0], color=C1, lw=1.4)
-    ax.add_patch(Rectangle((4.6, 1.45), 0.8, 0.7, fc=FUNDAL, ec=C2, lw=1.6, zorder=3))
-    ax.text(5.0, 1.8, "R", ha="center", va="center", fontsize=10, color=C2, fontweight="bold", zorder=4)
+        ax.add_patch(Circle((x, 4.9), 0.32, fc="none", ec=C1, lw=1.8, zorder=3))
+        ax.text(x, 5.45, "TC", ha="center", fontsize=8.5, color=C1)
+        ax.plot([x, x], [4.55, ys + 0.35], color=C1, lw=0.8, ls=":")      # cuplajul magnetic (simbolic)
+        ax.plot([x, x], [yt, ys + 0.3], color=C1, lw=1.4)
+        ax.plot([x, x], [ys - 0.3, yb], color=C1, lw=1.4)
+    ax.plot([2.4, 7.6], [yt, yt], color=C1, lw=1.4)
+    ax.plot([2.4, 7.6], [yb, yb], color=C1, lw=1.4)
+    ax.plot([5.0, 5.0], [yt, yb], color=C2, lw=1.4)
+    ax.add_patch(Rectangle((4.6, ys - 0.35), 0.8, 0.7, fc=FUNDAL, ec=C2, lw=1.6, zorder=3))
+    ax.text(5.0, ys, "R", ha="center", va="center", fontsize=10, color=C2, fontweight="bold", zorder=4)
+    ax.text(1.15, ys, "secundarul\nTC (sursă\nde curent)", ha="center", va="center", fontsize=7.5, color=C1)
     if interior:
-        ax.annotate("", xy=(5.0, 3.55), xytext=(5.0, 4.15), arrowprops=dict(arrowstyle="-|>", color=C2, lw=1.6))
-        ax.text(5.15, 3.75, "defect", fontsize=8.5, color=C2)
-        sageti = [((0.6, 4.85), (1.6, 4.85), "I₁"), ((9.4, 4.85), (8.4, 4.85), "I₂")]
-        ax.annotate("", xy=(4.75, 2.25), xytext=(4.75, 2.55), arrowprops=dict(arrowstyle="-|>", color=C2, lw=1.4))
-        ax.text(5.6, 2.15, "i₁ + i₂ → acționează", fontsize=8.5, color=C2)
+        sursa_curent(ax, 2.4, ys, True, C1)
+        sursa_curent(ax, 7.6, ys, True, C1)
+        ax.annotate("", xy=(5.0, 3.95), xytext=(5.0, 4.45), arrowprops=dict(arrowstyle="-|>", color=C2, lw=1.6))
+        ax.text(5.15, 4.05, "defect", fontsize=8.5, color=C2)
+        sageti = [((0.6, 5.15), (1.6, 5.15), "I₁"), ((9.4, 5.15), (8.4, 5.15), "I₂")]
+        for x0, x1 in ((3.0, 4.2), (7.0, 5.8)):
+            ax.annotate("", xy=(x1, yt + 0.15), xytext=(x0, yt + 0.15), arrowprops=dict(arrowstyle="-|>", color=C1, lw=1.2))
+        ax.annotate("", xy=(5.25, ys - 0.45), xytext=(5.25, yt - 0.1), arrowprops=dict(arrowstyle="-|>", color=C2, lw=1.2))
+        ax.text(5.6, 0.35, "prin releu trece i₁ + i₂ → acționează", fontsize=8.5, color=C2, ha="center")
         titlu = "Defect interior: curenții secundari se adună în releu"
     else:
-        ax.annotate("", xy=(9.7, 3.9), xytext=(9.7, 4.5), arrowprops=dict(arrowstyle="-|>", color=C2, lw=1.6))
-        ax.text(9.4, 3.6, "defect\nexterior", fontsize=8.5, color=C2, ha="center")
-        sageti = [((0.6, 4.85), (1.6, 4.85), "I"), ((8.4, 4.85), (9.4, 4.85), "I")]
-        ax.annotate("", xy=(4.1, 2.75), xytext=(3.1, 2.75), arrowprops=dict(arrowstyle="-|>", color=C1, lw=1.3))
-        ax.annotate("", xy=(6.9, 2.75), xytext=(5.9, 2.75), arrowprops=dict(arrowstyle="-|>", color=C1, lw=1.3))
-        ax.text(5.6, 2.15, "i − i = 0 → nu acționează", fontsize=8.5, color=C1)
-        titlu = "Defect exterior: curentul circulă prin secundare, nu prin releu"
+        sursa_curent(ax, 2.4, ys, True, C1)
+        sursa_curent(ax, 7.6, ys, False, C1)
+        ax.annotate("", xy=(9.7, 4.2), xytext=(9.7, 4.8), arrowprops=dict(arrowstyle="-|>", color=C2, lw=1.6))
+        ax.text(9.4, 3.85, "defect\nexterior", fontsize=8.5, color=C2, ha="center")
+        sageti = [((0.6, 5.15), (1.6, 5.15), "I"), ((8.4, 5.15), (9.4, 5.15), "I")]
+        ax.annotate("", xy=(4.2, yt + 0.15), xytext=(3.0, yt + 0.15), arrowprops=dict(arrowstyle="-|>", color=C1, lw=1.2))
+        ax.annotate("", xy=(7.0, yt + 0.15), xytext=(5.8, yt + 0.15), arrowprops=dict(arrowstyle="-|>", color=C1, lw=1.2))
+        ax.annotate("", xy=(3.0, yb - 0.15), xytext=(4.2, yb - 0.15), arrowprops=dict(arrowstyle="-|>", color=C1, lw=1.2))
+        ax.annotate("", xy=(5.8, yb - 0.15), xytext=(7.0, yb - 0.15), arrowprops=dict(arrowstyle="-|>", color=C1, lw=1.2))
+        ax.text(5.6, 0.25, "curentul circulă prin conductoarele pilot; prin releu: i − i = 0", fontsize=8.5,
+                color=C1, ha="center")
+        titlu = "Defect exterior: curentul secundar circulă, releul nu este parcurs"
     for (p0, p1, et) in sageti:
         ax.annotate("", xy=p1, xytext=p0, arrowprops=dict(arrowstyle="-|>", color=TEXT, lw=1.4))
-        ax.text((p0[0] + p1[0]) / 2, 5.0, et, ha="center", fontsize=9, color=TEXT)
+        ax.text((p0[0] + p1[0]) / 2, 5.3, et, ha="center", fontsize=9, color=TEXT)
     ax.set_title(titlu, fontsize=9.5)
 
 
-fig, (a1, a2) = plt.subplots(1, 2, figsize=(11, 3.9))
+fig, (a1, a2) = plt.subplots(1, 2, figsize=(11.5, 4.2))
 schema_principiu(a1, False)
 schema_principiu(a2, True)
 salveaza(fig, "f04-1-principiu")
@@ -85,8 +105,10 @@ Idf, Ibf, _, _ = marimi_releu(I_IT, I_JT, elimina_I0=False)
 ax.plot(Ibf[0], Idf[0], "X", color=C2, ms=9, mec=FUNDAL, mew=1.0,
         label="defect pe bara de 110 kV, fără eliminarea I0 (4.1)")
 ax.plot(P["Ib"][0], P["Id"][0], "D", color=C1, ms=8, mec=FUNDAL, mew=1.5, label="defect interior la bornele de 20 kV (4.3)")
-ax.annotate("defect interior la 110 kV:\nId = 50·In (treapta nefrânată)", xy=(9.8, 10.8), xytext=(6.8, 9.2),
-            fontsize=8.5, color=TEXT, arrowprops=dict(arrowstyle="-|>", color=TEXT2, lw=0.8))
+Id_b, Ib_b = P["Id_b"][0], P["Ib_b"][0]
+ax.annotate("", xy=(9.85, 11.45), xytext=(9.3, 10.0), arrowprops=dict(arrowstyle="-|>", color=C1, lw=1.4))
+ax.text(9.2, 9.7, f"defect interior la 110 kV, în afara graficului:\nIb = {Ib_b:.1f}·In, Id = {Id_b:.1f}·In "
+        f"(treapta nefrânată)".replace(".", ","), fontsize=8.3, color=TEXT, ha="right", va="top")
 ax.set_xlim(0, 10)
 ax.set_ylim(0, 11.5)
 ax.set_xlabel("curentul de frânare Ib = (|I₁| + |I₂|)/2  [multipli de In]")
@@ -150,31 +172,44 @@ for ax in (a1, a2):
 salveaza(fig, "f04-4-inrush")
 
 # --- Figura 4.5: protecția de bare de impedanță mare cu un TC saturat ---------------------------------
-fig, ax = plt.subplots(figsize=(10, 4.2))
-ax.set_xlim(0, 10)
-ax.set_ylim(0, 5)
+fig, ax = plt.subplots(figsize=(11, 4.6))
+ax.set_xlim(0, 12)
+ax.set_ylim(0, 5.2)
 ax.axis("off")
-# barele secundare (punctele comune)
-ax.plot([1.0, 9.0], [3.6, 3.6], color=TEXT2, lw=1.4)
-ax.plot([1.0, 9.0], [0.8, 0.8], color=TEXT2, lw=1.4)
-for x, et in ((1.8, "TC L1\n(sursă de curent\nideală)"), (4.2, "TC L2\n(saturat: rămâne\nnumai Rct)"), (8.2, "releu +\nrezistor de\nstabilizare")):
-    ax.text(x + 0.45, 2.2, et, fontsize=8.3, color=TEXT, va="center")
-# TC ideal
-ax.plot([1.8, 1.8], [3.6, 2.6], color=C1, lw=1.4)
-ax.plot([1.8, 1.8], [1.8, 0.8], color=C1, lw=1.4)
-ax.add_patch(Circle((1.8, 2.2), 0.38, fc=FUNDAL, ec=C1, lw=1.6))
-ax.annotate("", xy=(1.8, 2.5), xytext=(1.8, 1.9), arrowprops=dict(arrowstyle="-|>", color=C1, lw=1.4))
-# TC saturat: Rct + 2RL
-ax.plot([4.2, 4.2], [3.6, 3.15], color=C2, lw=1.4)
-ax.add_patch(Rectangle((3.95, 2.35), 0.5, 0.8, fc=FUNDAL, ec=C2, lw=1.6))
-ax.plot([4.2, 4.2], [2.35, 0.8], color=C2, lw=1.4)
-ax.text(3.85, 2.75, "Rct + 2RL", ha="right", fontsize=8.5, color=C2)
-# releul
-ax.plot([8.2, 8.2], [3.6, 3.15], color=C5, lw=1.4)
-ax.add_patch(Rectangle((7.95, 2.35), 0.5, 0.8, fc=FUNDAL, ec=C5, lw=1.6))
-ax.plot([8.2, 8.2], [2.35, 0.8], color=C5, lw=1.4)
-ax.text(5.0, 4.3, f"Defect exterior pe L2: curentul {P['I_sec']:.2f} A (secundar) se închide prin TC saturat".replace(".", ","),
-        ha="center", fontsize=9.5, color=TEXT)
-ax.text(5.0, 0.25, f"tensiunea pe releu ≤ I·(Rct + 2RL) = {P['Vs_min']:.1f} V  <  Vs = {P['Vs']:.0f} V  → releul rămâne stabil".replace(".", ","),
-        ha="center", fontsize=9.5, color=TEXT)
+yt, yb = 3.7, 0.9
+ax.plot([0.8, 11.4], [yt, yt], color=TEXT2, lw=1.4)
+ax.plot([0.8, 11.4], [yb, yb], color=TEXT2, lw=1.4)
+ym = (yt + yb) / 2
+# TC sănătoase: surse de curent ideale
+for x, et in ((1.1, "TC L1\n(sursă de curent)"), (3.7, "TC L2\n(sursă de curent)")):
+    ax.plot([x, x], [yt, ym + 0.38], color=C1, lw=1.4)
+    ax.plot([x, x], [ym - 0.38, yb], color=C1, lw=1.4)
+    ax.add_patch(Circle((x, ym), 0.38, fc=FUNDAL, ec=C1, lw=1.6))
+    ax.annotate("", xy=(x, ym + 0.25), xytext=(x, ym - 0.25), arrowprops=dict(arrowstyle="-|>", color=C1, lw=1.4))
+    ax.text(x + 0.48, ym, et, fontsize=8.2, color=TEXT, va="center")
+# TC saturat (celula T1): numai Rct, în serie cu conductoarele de legătură
+x = 6.6
+ax.plot([x, x], [yt, 3.25], color=C2, lw=1.4)
+ax.add_patch(Rectangle((x - 0.25, 2.55), 0.5, 0.7, fc=FUNDAL, ec=C2, lw=1.6))
+ax.plot([x, x], [2.55, 2.1], color=C2, lw=1.4)
+ax.add_patch(Rectangle((x - 0.25, 1.4), 0.5, 0.7, fc=FUNDAL, ec=C2, lw=1.6))
+ax.plot([x, x], [1.4, yb], color=C2, lw=1.4)
+ax.text(x + 0.4, 2.9, "Rct (TC T1 saturat)", fontsize=8.2, color=C2, va="center")
+ax.text(x + 0.4, 1.75, "2RL (conductoare)", fontsize=8.2, color=C2, va="center")
+# releul cu rezistorul de stabilizare și limitatorul neliniar în paralel
+x = 9.0
+ax.plot([x, x], [yt, 3.0], color=C5, lw=1.4)
+ax.add_patch(Rectangle((x - 0.25, 1.6), 0.5, 1.4, fc=FUNDAL, ec=C5, lw=1.6))
+ax.plot([x, x], [1.6, yb], color=C5, lw=1.4)
+ax.text(x - 0.4, 2.3, "releu +\nrezistor de\nstabilizare", fontsize=8.2, color=TEXT, va="center", ha="right")
+x = 10.6
+ax.plot([x, x], [yt, 2.85], color=C4, lw=1.4)
+ax.add_patch(Rectangle((x - 0.22, 1.75), 0.44, 1.1, fc=FUNDAL, ec=C4, lw=1.6))
+ax.plot([x - 0.35, x + 0.35], [1.85, 2.75], color=C4, lw=1.2)
+ax.plot([x, x], [1.75, yb], color=C4, lw=1.4)
+ax.text(x + 0.35, 1.45, "limitator\nneliniar", fontsize=8.2, color=TEXT, va="top")
+ax.text(6.0, 4.6, f"Defect exterior după TC al celulei T1: curentul {P['I_sec']:.2f} A (secundar) al TC L1 și L2 se închide "
+        f"prin TC T1 saturat".replace(".", ","), ha="center", fontsize=9.5, color=TEXT)
+ax.text(6.0, 0.3, f"tensiunea pe releu ≤ I·(Rct + 2RL) = {P['Vs_min']:.2f} V  <  Vs = {P['Vs']:.0f} V  → releul rămâne stabil"
+        .replace(".", ","), ha="center", fontsize=9.5, color=TEXT)
 salveaza(fig, "f04-5-bare-impedanta-mare")

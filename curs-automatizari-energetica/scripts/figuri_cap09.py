@@ -27,7 +27,7 @@ ax.text(8.9, 5.85, "teleprotecție", ha="left", va="center", fontsize=8, color=T
 # stația
 bloc(ax, 1.6, 4.3, 2.0, 1.0, "Calculatorul\nstației (HMI)", C5)
 bloc(ax, 3.9, 4.3, 1.8, 1.0, "Poarta de\ncomunicație\n(gateway)", C5)
-bloc(ax, 6.0, 4.3, 1.7, 1.0, "Ceas de timp\n(GNSS)\nPTP / IRIG-B", C4)
+bloc(ax, 6.0, 4.3, 1.7, 1.0, "Sursa de timp\n(GNSS)\nPTP / IRIG-B", C4)
 bloc(ax, 8.0, 4.3, 2.6, 1.0, "Teleprotecție, înregistrare\nde perturbații, acces la\ndistanță (prin firewall)", C5)
 ax.plot([1.6, 10.6], [4.05, 4.05], color=C1, lw=3)
 ax.text(10.6, 3.83, "magistrala stației (Ethernet): MMS, GOOSE", ha="right", va="top", fontsize=8.5, color=C1,
@@ -132,10 +132,13 @@ virgula(a1, "x")
 # a2: primele 300 ms
 for i, t in enumerate(emis[emis < 0.3]):
     a2.plot([t * 1e3, t * 1e3], [0, 1], color=C1, lw=1.8)
-    a2.text(t * 1e3 + (-1.5 if i == 0 else 1.5 if i == 1 else 0), 1.05, f"{t * 1e3:.0f}",
-            ha="right" if i == 0 else "left" if i == 1 else "center", va="bottom", fontsize=8, color=TEXT)
+    # etichetele primelor mesaje sunt așezate pe două rânduri, ca să nu se suprapună
+    a2.text(t * 1e3, 1.05 if i % 2 == 0 else 1.3, f"{t * 1e3:.0f}", ha="center", va="bottom", fontsize=8,
+            color=TEXT)
+    if i % 2 == 1:
+        a2.plot([t * 1e3, t * 1e3], [1.0, 1.28], color=GRILA, lw=0.8)
 a2.set_xlim(-8, 300)
-a2.set_ylim(0, 1.45)
+a2.set_ylim(0, 1.6)
 a2.set_yticks([])
 a2.set_xlabel("timp după eveniment [ms] – mesaje la 2 ms, apoi intervalul se dublează")
 a2.grid(axis="y", visible=False)
@@ -164,7 +167,7 @@ salveaza(fig, "f09-5-eroare-timp")
 t_porn, t_pub, t_sub, t_ciclu = 20.0, 1.0, 1.0, 1.0
 t_retea = (3 * (150 + SUPLIMENT_FIR) * 8 / 100e6 + 2 * 5e-6) * 1e3
 etape = [("pornirea releului R1", t_porn, C1), ("publicator", t_pub, C5), ("rețea", t_retea, C3),
-         ("abonat", t_sub, C5), ("ciclul logicii R0", t_ciclu, C4)]
+         ("abonat", t_sub, TEXT2), ("ciclul logicii R0", t_ciclu, C4)]
 fig, ax = plt.subplots(figsize=(10, 3.2))
 x = 0.0
 for nume, d_, c in etape:

@@ -1858,20 +1858,21 @@ z
     </g>
    </g>
    <g id="text_11">
-    <!-- Ceas de timp -->
-    <g style="fill: #0b0b0b" transform="translate(359.676562 138.984701) scale(0.09 -0.09)">
-     <use xlink:href="#DejaVuSans-26"/>
-     <use xlink:href="#DejaVuSans-48" transform="translate(69.828125 0)"/>
-     <use xlink:href="#DejaVuSans-44" transform="translate(131.359375 0)"/>
-     <use xlink:href="#DejaVuSans-56" transform="translate(192.640625 0)"/>
-     <use xlink:href="#DejaVuSans-3" transform="translate(244.734375 0)"/>
-     <use xlink:href="#DejaVuSans-47" transform="translate(276.515625 0)"/>
-     <use xlink:href="#DejaVuSans-48" transform="translate(340 0)"/>
-     <use xlink:href="#DejaVuSans-3" transform="translate(401.53125 0)"/>
-     <use xlink:href="#DejaVuSans-57" transform="translate(433.3125 0)"/>
-     <use xlink:href="#DejaVuSans-4c" transform="translate(472.515625 0)"/>
-     <use xlink:href="#DejaVuSans-50" transform="translate(500.296875 0)"/>
-     <use xlink:href="#DejaVuSans-53" transform="translate(597.703125 0)"/>
+    <!-- Sursa de timp -->
+    <g style="fill: #0b0b0b" transform="translate(358.029141 138.984701) scale(0.09 -0.09)">
+     <use xlink:href="#DejaVuSans-36"/>
+     <use xlink:href="#DejaVuSans-58" transform="translate(63.484375 0)"/>
+     <use xlink:href="#DejaVuSans-55" transform="translate(126.859375 0)"/>
+     <use xlink:href="#DejaVuSans-56" transform="translate(167.96875 0)"/>
+     <use xlink:href="#DejaVuSans-44" transform="translate(220.0625 0)"/>
+     <use xlink:href="#DejaVuSans-3" transform="translate(281.34375 0)"/>
+     <use xlink:href="#DejaVuSans-47" transform="translate(313.125 0)"/>
+     <use xlink:href="#DejaVuSans-48" transform="translate(376.609375 0)"/>
+     <use xlink:href="#DejaVuSans-3" transform="translate(438.140625 0)"/>
+     <use xlink:href="#DejaVuSans-57" transform="translate(469.921875 0)"/>
+     <use xlink:href="#DejaVuSans-4c" transform="translate(509.125 0)"/>
+     <use xlink:href="#DejaVuSans-50" transform="translate(536.90625 0)"/>
+     <use xlink:href="#DejaVuSans-53" transform="translate(634.3125 0)"/>
     </g>
     <!-- (GNSS) -->
     <g style="fill: #0b0b0b" transform="translate(373.351641 149.786458) scale(0.09 -0.09)">

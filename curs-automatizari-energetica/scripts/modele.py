@@ -124,7 +124,7 @@ class Retea:
         Zt_mod = uk * UIT**2 / Sn
         Rt = Pk * UIT**2 / Sn**2
         Zt = Rt + 1j * np.sqrt(Zt_mod**2 - Rt**2)
-        ora = int(conexiune[3:]) if conexiune.startswith("YN") else int(conexiune[3:])
+        ora = int(conexiune[3:])
         self.elemente.append(dict(tip="trafo", nume=nume, b1=bIT, b2=bJT, Zt=Zt, U1=UIT, U2=UJT,
                                   conexiune=conexiune[:3], ora=ora, Zn=Zn, Sn=Sn))
 
@@ -523,6 +523,54 @@ def retea_referinta(neutru20="rezistor", c=C_MAX, cu_capacitati=True, Zn_bobina=
         r.bobina_neutru("BPN", "B2", 3j * Zn_bobina)
     elif neutru20 != "izolat":
         raise ValueError(neutru20)
+    return r
+
+
+def retea_fara(elemente, **kw):
+    """Rețeaua de referință din care lipsesc elementele date (de exemplu o linie scoasă din funcțiune)."""
+    r = retea_referinta(**kw)
+    for nume in elemente:
+        r.elemente.remove(r.element(nume))
+    return r
+
+
+def z_fider(x_km, kR=1.0, secventa=1):
+    """Impedanța fiderului F1 de la bara B2 până la distanța x (km), ținând seama că primii
+    3 km sunt cablu și restul linie aeriană. kR multiplică rezistențele (conductoare încălzite)."""
+    d = DATE
+    zc = d["z1_cablu"] if secventa == 1 else d["z0_cablu"]
+    zl = d["z1_lea20"] if secventa == 1 else d["z0_lea20"]
+    zc = kR * zc.real + 1j * zc.imag
+    zl = kR * zl.real + 1j * zl.imag
+    lc = d["l_cablu_F1"]
+    return zc * x_km if x_km <= lc else zc * lc + zl * (x_km - lc)
+
+
+def retea_cu_bara_pe_F1(x_km, **kw):
+    """Rețeaua de referință cu o bară intermediară X pe tronsonul B2–P1, la x km de B2
+    (tronsoanele B2–X și X–P1 au impedanțele și capacitățile porțiunilor reale de cablu și LEA)."""
+    d = DATE
+    r = retea_referinta(**kw)
+    e = r.element("F1a")
+    r.elemente.remove(e)
+    r.bara("X", d["U20"])
+    lc, la = d["l_cablu_F1"], d["l_lea_F1a"]
+    kR = kw.get("kR20", 1.0)
+    cu_c = kw.get("cu_capacitati", True)
+    L = lc + la
+
+    def parte(a, b):
+        """Impedanțele și capacitățile porțiunii de traseu dintre a și b km."""
+        Z1 = z_fider(b, kR, 1) - z_fider(a, kR, 1)
+        Z0 = z_fider(b, kR, 0) - z_fider(a, kR, 0)
+        lcab = max(0.0, min(b, lc) - min(a, lc))
+        llea = (b - a) - lcab
+        C1 = (d["c_cablu"] * lcab + d["c1_lea20"] * llea) if cu_c else 0.0
+        C0 = (d["c_cablu"] * lcab + d["c0_lea20"] * llea) if cu_c else 0.0
+        return Z1, Z0, C1, C0
+
+    r.linie("F1a1", "B2", "X", *parte(0.0, x_km))
+    r.linie("F1a2", "X", "P1", *parte(x_km, L))
     return r
 
 

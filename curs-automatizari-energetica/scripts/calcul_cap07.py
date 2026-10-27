@@ -115,11 +115,49 @@ def energie(delta, dw, Pmax_k, Pm=P0, H=H):
     return H / W0 * dw**2 - Pm * delta - Pmax_k * np.cos(delta)
 
 
+# --- RAR pe fiderul F1: reglajele releului R1 din capitolul 3 -------------------------
+
+def reglaje_R1():
+    """Reglajele lui R1 (problema 3.2), citite din rezolvarea capitolului 3 (aceeași sursă
+    de adevăr), și timpul de acționare la defectul trifazat maxim de la capătul tronsonului B2–P1."""
+    import contextlib
+    import io
+    import runpy
+    from pathlib import Path
+    from modele import retea_referinta, timp_invers
+    with contextlib.redirect_stdout(io.StringIO()):
+        P3 = runpy.run_path(str(Path(__file__).with_name("probleme_cap03.py")))
+    Is, TMS = P3["relee"]["R1"]["Is"], P3["relee"]["R1"]["TMS"]
+    I_inst, t_inst = P3["I_inst_R1"], P3["T_INST"]
+    r = retea_referinta(cu_capacitati=False)
+    I_def = abs(r.scurtcircuit_secvente("P1", "3f")["I_faza"][0])
+    t_r = float(timp_invers(I_def, Is, TMS)) if I_def < I_inst else t_inst
+    return dict(Is=Is, TMS=TMS, I_inst=I_inst, t_inst=t_inst, I_def=I_def, t_r=t_r)
+
+
 # --- AAR: tensiunea remanentă a barei de motoare --------------------------------------
 S_MOT = 5.0e6       # puterea aparentă nominală totală a motoarelor de pe bară [VA] (date de problemă)
-P_SARC = 0.70       # puterea mecanică cerută la turația nominală, în u.r. din S_MOT
+P_SARC = 0.70       # puterea mecanică cerută la turația nominală, în u.r. pe baza S_MOT
 T0_REM = 0.60       # constanta de timp a scăderii fluxului motoarelor după deconectare [s]
-H_MOT = MOTOR["H"]  # constanta de inerție a grupului de motoare [s]
+H_MOT = MOTOR["H"]  # constanta de inerție a grupului de motoare [s], pe baza S_MOT
+T_DESC, T_AUX, T_INCH_R = 0.05, 0.01, 0.08   # deschiderea întrerupătorului de lucru, confirmarea, închiderea rezervei
+T_MINU = 0.50       # temporizarea pornirii AAR de la protecția de minimă tensiune [s] (dată de problemă)
+U_PRAG = 0.10       # pragul tensiunii remanente pentru transferul fără măsurarea unghiului [u.r.]
+
+
+def momente_aar():
+    """Momentul închiderii sursei de rezervă, măsurat de la t = 0 = momentul în care bara
+    rămâne fără alimentare, pentru trei moduri de pornire a AAR:
+    (a) comanda de declanșare a întrerupătorului de lucru (bara rămâne alimentată până la deschiderea lui);
+    (b) pierderea alimentării în amonte la t = 0, cu semnal de pornire primit imediat;
+    (c) pornirea de la protecția de minimă tensiune, cu temporizarea T_MINU."""
+    return {
+        ("a", "simultan"): T_INCH_R - T_DESC,
+        ("a", "secvențial"): T_AUX + T_INCH_R,
+        ("b", "simultan"): T_INCH_R,
+        ("b", "secvențial"): T_DESC + T_AUX + T_INCH_R,
+        ("c", "secvențial"): T_MINU + T_DESC + T_AUX + T_INCH_R,
+    }
 
 
 def remanenta_analitic(t, p=P_SARC, Hm=H_MOT, T0=T0_REM, f0=F0):

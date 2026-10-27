@@ -37,6 +37,23 @@ def termic_rk4(I_de_t, tau, IB, k, theta0=0.0, dt=0.01, tmax=4000.0):
     return np.inf, np.array(ts), np.array(ths)
 
 
+def termic_pas_exact(I, IB, k, tau, Ip=0.0, dt=0.01, tmax=1e5):
+    """Cale de verificare: avansează starea termică pas cu pas cu soluția exactă pe pas,
+    θ ← θ∞ + (θ − θ∞)·e^(−Δt/τ), pentru curent constant; momentul atingerii lui θ = 1 se obține
+    prin interpolare liniară în ultimul pas (fără formula timpului de declanșare)."""
+    th = (Ip / (k * IB))**2
+    th_inf = (I / (k * IB))**2
+    q = np.exp(-dt / tau)
+    t = 0.0
+    while t < tmax:
+        th_nou = th_inf + (th - th_inf) * q
+        if th_nou >= 1.0 > th:
+            return t + dt * (1.0 - th) / (th_nou - th)
+        th = th_nou
+        t += dt
+    return np.inf
+
+
 # ---------------------------------------------------------------------------
 # Generatorul G1
 # ---------------------------------------------------------------------------

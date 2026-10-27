@@ -62,30 +62,70 @@ def nadir(t, df):
 # Incidentul de referință în Europa continentală: FCR cu limită de viteză
 # ---------------------------------------------------------------------------
 
-def ce_simulare(dP, M, D, lam, P_fcr_max, viteza, t_end, dt=1e-3):
-    """Simulare cu pas fix (RK4 pentru Δf; puterea FCR urmează ținta min(λ·|Δf|, Pmax)
-    cu viteza de creștere limitată la `viteza` [MW/s]). Întoarce t, Δf, P_FCR."""
+def profil_liniar(t):
+    """Activarea FCR care atinge exact minimul cerut de SOGL: liniar, 50 % la 15 s și 100 % la 30 s."""
+    return min(t / 30.0, 1.0)
+
+
+def profil_patratic(t):
+    """Un profil mai lent, dar tot conform: crește pătratic până la 50 % la 15 s, apoi liniar până la 100 % la 30 s."""
+    if t <= 15.0:
+        return 0.5 * (t / 15.0) ** 2
+    return min(0.5 + 0.5 * (t - 15.0) / 15.0, 1.0)
+
+
+def profil_intarziat(t):
+    """Cazul limită: nimic până la 15 s, apoi 50 % și creștere liniară până la 100 % la 30 s."""
+    if t < 15.0:
+        return 0.0
+    return min(0.5 + 0.5 * (t - 15.0) / 15.0, 1.0)
+
+
+def ce_derivata(dP, M, D, lam, P_fcr_max, profil):
+    """M·dΔf/dt = P_FCR − ΔP − D·Δf, cu P_FCR = min(λ_FCR·|Δf|, Pmax·profil(t)):
+    puterea FCR este cea cerută de caracteristica statică, dar nu mai mult decât permite profilul de activare."""
+    def P_fcr(t, x):
+        return min(lam * max(-x, 0.0), P_fcr_max * profil(t))
+
+    def g(t, x):
+        return (P_fcr(t, x) - dP - D * x) / M
+    return g, P_fcr
+
+
+def ce_simulare(dP, M, D, lam, P_fcr_max, profil, t_end, dt=1e-3):
+    """Calea 1: simulare cu pas fix (Runge–Kutta de ordinul 4). Întoarce t, Δf, P_FCR."""
+    g, P_fcr = ce_derivata(dP, M, D, lam, P_fcr_max, profil)
     N = int(round(t_end / dt)) + 1
     t = np.arange(N) * dt
     df = np.zeros(N)
-    P = np.zeros(N)
     for k in range(N - 1):
-        tinta = min(lam * max(-df[k], 0.0), P_fcr_max)
-        dPk = np.clip(tinta - P[k], -viteza * dt, viteza * dt)
-        Pk, Pn = P[k], P[k] + dPk
-        Pm = 0.5 * (Pk + Pn)
-
-        def g(x, p):
-            return (p - dP - D * x) / M
-
-        x = df[k]
-        k1 = g(x, Pk)
-        k2 = g(x + dt / 2 * k1, Pm)
-        k3 = g(x + dt / 2 * k2, Pm)
-        k4 = g(x + dt * k3, Pn)
+        x, tk = df[k], t[k]
+        k1 = g(tk, x)
+        k2 = g(tk + dt / 2, x + dt / 2 * k1)
+        k3 = g(tk + dt / 2, x + dt / 2 * k2)
+        k4 = g(tk + dt, x + dt * k3)
         df[k + 1] = x + dt / 6 * (k1 + 2 * k2 + 2 * k3 + k4)
-        P[k + 1] = Pn
+    P = np.array([P_fcr(tk, x) for tk, x in zip(t, df)])
     return t, df, P
+
+
+def ce_ivp(dP, M, D, lam, P_fcr_max, profil, t_end, t_eval):
+    """Calea 2: solve_ivp (pas variabil), integrat pe intervalele dintre discontinuitățile profilului (15 s, 30 s)."""
+    g, _ = ce_derivata(dP, M, D, lam, P_fcr_max, profil)
+    bucati = [0.0, 15.0, 30.0, t_end]
+    x0 = 0.0
+    rez = []
+    for a, b in zip(bucati[:-1], bucati[1:]):
+        te = t_eval[(t_eval >= a) & (t_eval <= b)]
+        sol = solve_ivp(lambda t, y: [g(t, y[0])], (a, b), [x0], t_eval=te, rtol=1e-11, atol=1e-13,
+                        max_step=0.05, first_step=1e-4)
+        rez.append((sol.t, sol.y[0]))
+        x0 = solve_ivp(lambda t, y: [g(t, y[0])], (a, b), [x0], rtol=1e-11, atol=1e-13, max_step=0.05,
+                       first_step=1e-4).y[0, -1]
+    t = np.concatenate([r[0] for r in rez])
+    x = np.concatenate([r[1] for r in rez])
+    _, idx = np.unique(t, return_index=True)
+    return t[idx], x[idx]
 
 
 def ce_nadir_analitic(dP, M, D, viteza):
@@ -103,10 +143,11 @@ def ce_nadir_analitic(dP, M, D, viteza):
 # Insulă cu deficit mare de putere și descărcare automată a sarcinii (DASF)
 # ---------------------------------------------------------------------------
 
-def dasf_simulare(dP, M, D, K, Tg, Tt, rezerva, trepte, t_intarziere, t_end, dt=1e-3, f0=F0):
+def dasf_simulare(dP, M, D, K, Tg, Tt, rezerva, trepte, t_intarziere, t_end, dt=1e-3, f0=F0, PL0=None):
     """Simulare cu pas fix (RK4) a insulei. trepte: listă de (frecvența de pornire [Hz], MW deconectați).
     O treaptă pornește când f scade sub prag și deconectează sarcina după t_intarziere
     (releu + întrerupător). Puterea suplimentară a turbinelor este limitată la `rezerva`.
+    Dacă PL0 este dat, autoreglarea sarcinii scade proporțional cu sarcina rămasă: D·(1 − desc/PL0).
     Întoarce t, f, ΔPm, puterea deconectată cumulată, lista momentelor de deconectare."""
     N = int(round(t_end / dt)) + 1
     t = np.arange(N) * dt
@@ -121,7 +162,8 @@ def dasf_simulare(dP, M, D, K, Tg, Tt, rezerva, trepte, t_intarziere, t_end, dt=
     def deriv(y, shed):
         df, x, P = y
         x_tinta = min(-K * df, rezerva)        # limita de rezervă a regulatoarelor
-        return np.array([(P - dP + shed - D * df) / M, (x_tinta - x) / Tg, (x - P) / Tt])
+        De = D * (1 - shed / PL0) if PL0 else D
+        return np.array([(P - dP + shed - De * df) / M, (x_tinta - x) / Tg, (x - P) / Tt])
 
     for k in range(N - 1):
         fk = f0 + y[0]
@@ -141,6 +183,72 @@ def dasf_simulare(dP, M, D, K, Tg, Tt, rezerva, trepte, t_intarziere, t_end, dt=
         Pm[k + 1] = y[2]
         desc[k + 1] = shed
     return t, f, Pm, desc, actionari
+
+
+def dasf_ivp(dP, M, D, K, Tg, Tt, rezerva, trepte, t_intarziere, t_end, f0=F0, praguri_obs=()):
+    """Calea de verificare: solve_ivp cu detectarea evenimentelor. Trecerea frecvenței sub pragul unei
+    trepte este un eveniment care programează deconectarea după t_intarziere; minimul frecvenței este
+    evenimentul dΔf/dt = 0 (cu dΔf/dt crescătoare). praguri_obs: frecvențe ale căror treceri se raportează.
+    Întoarce dict(actionari=[(i, t_deconectare)], minim=(t, f), treceri={prag: t})."""
+    def deriv(t, y, shed):
+        df, x, P = y
+        x_tinta = min(-K * df, rezerva)
+        return [(P - dP + shed - D * df) / M, (x_tinta - x) / Tg, (x - P) / Tt]
+
+    y = np.zeros(3)
+    t0 = 0.0
+    shed = 0.0
+    pornite = [None] * len(trepte)
+    facute = set()
+    actionari = []
+    minim = (0.0, f0)
+    treceri = {}
+    while t0 < t_end - 1e-12:
+        programate = [pornite[i] for i in range(len(trepte)) if pornite[i] is not None and i not in facute]
+        t1 = min(programate + [t_end])
+        ev, cine = [], []
+        for i, (fp, _) in enumerate(trepte):
+            if pornite[i] is None:
+                e = (lambda fp_: (lambda t, y, *a: f0 + y[0] - fp_))(fp)
+                e.terminal, e.direction = True, -1
+                ev.append(e)
+                cine.append(("treapta", i))
+        for fo in praguri_obs:
+            if fo not in treceri:
+                e = (lambda fo_: (lambda t, y, *a: f0 + y[0] - fo_))(fo)
+                e.terminal, e.direction = True, -1
+                ev.append(e)
+                cine.append(("obs", fo))
+        e = (lambda t, y, *a: deriv(t, y, shed)[0])
+        e.terminal, e.direction = False, 1
+        ev.append(e)
+        cine.append(("minim", None))
+        sol = solve_ivp(deriv, (t0, t1), y, args=(shed,), events=ev, rtol=1e-10, atol=1e-12, max_step=2e-3)
+        for k, (tip, val) in enumerate(cine):
+            if tip == "minim":
+                for te, ye in zip(sol.t_events[k], sol.y_events[k]):
+                    if f0 + ye[0] < minim[1]:
+                        minim = (te, f0 + ye[0])
+        if sol.status == 1:
+            for k, (tip, val) in enumerate(cine):
+                if tip != "minim" and len(sol.t_events[k]):
+                    te = sol.t_events[k][0]
+                    if tip == "treapta":
+                        pornite[val] = te + t_intarziere
+                    else:
+                        treceri[val] = te
+            t0, y = sol.t[-1], sol.y[:, -1]
+            # pornește din nou ușor după eveniment, ca să nu fie detectat a doua oară
+            continue
+        t0, y = sol.t[-1], sol.y[:, -1]
+        for i in range(len(trepte)):
+            if pornite[i] is not None and i not in facute and pornite[i] <= t0 + 1e-12:
+                facute.add(i)
+                shed += trepte[i][1]
+                actionari.append((i, pornite[i]))
+        if f0 + y[0] < minim[1]:
+            minim = (t0, f0 + y[0])
+    return dict(actionari=actionari, minim=minim, treceri=treceri, f_final=f0 + y[0])
 
 
 # ---------------------------------------------------------------------------

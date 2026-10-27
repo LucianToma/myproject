@@ -18,7 +18,7 @@ Funcțiile de automatizare se grupează, după locul în care sunt executate, pe
 |---|---|---|
 | **Proces** | aparatajul primar (întrerupătoare, separatoare, transformatoare de măsură); în stațiile digitale: unități de îmbinare (*merging units*, MU) și unități de interfață ale întrerupătoarelor | măsurarea curenților și tensiunilor, citirea pozițiilor, executarea comenzilor |
 | **Celulă** (în engleză *bay*) | IED-urile de protecție, unitatea de comandă a celulei (*bay controller*) | protecția (cap. 3–6), automatizările locale (cap. 7), comenzile și interblocările celulei, măsurări, înregistrări |
-| **Stație** | calculatorul stației cu interfața operator (HMI), poarta de comunicație (*gateway*), ceasul de timp, echipamentele de teleprotecție | imaginea stației, alarme, jurnalul de evenimente, interblocări între celule, comunicația cu dispecerul |
+| **Stație** | calculatorul stației cu interfața operator (HMI), poarta de comunicație (*gateway*), sursa de timp, echipamentele de teleprotecție | imaginea stației, alarme, jurnalul de evenimente, interblocări între celule, comunicația cu dispecerul |
 | **Dispecer** | SCADA, EMS, DMS | supravegherea și comanda de la distanță a mai multor stații, aplicațiile de rețea (cap. 8) |
 
 Termenii folosiți în continuare:
@@ -52,7 +52,7 @@ Informațiile transmise sunt de câteva tipuri:
 - **valori măsurate**;
 - **comenzi**.
 
-Fiecare informație poate avea o marcă de timp. Parametrii de temporizare ai legăturii (timpii de așteptare, numărul de mesaje trimise fără confirmare) se stabilesc la configurare și trebuie să fie identici la cele două capete.
+Fiecare informație poate avea o marcă de timp. Parametrii de temporizare ai legăturii (timpii de așteptare, numărul de mesaje trimise fără confirmare) se stabilesc la configurare și trebuie să fie compatibili și coordonați între cele două capete ale legăturii.
 
 În forma de bază, IEC 60870-5-104 nu autentifică mesajele și nu le criptează: datele circulă în clar. Măsurile de securitate pentru profilurile TCP/IP sunt definite în seria IEC 62351 (§ 9.12).
 
@@ -106,7 +106,7 @@ Un nume complet, de exemplu `IED_F1PROT/PTOC1.Op.general`, se citește: în disp
 
 IEC 61850 folosește trei mecanisme de comunicație, cu cerințe de timp foarte diferite.
 
-**MMS (client–server, „vertical”).** Calculatorul stației și poarta de comunicație sunt clienți ai IED-urilor (servere). Ei citesc date, primesc rapoarte la schimbarea valorilor, transmit comenzi și descarcă fișiere, de exemplu înregistrările de perturbații. Serviciile abstracte ale standardului sunt transpuse pe protocolul MMS în IEC 61850-8-1. Comunicația folosește TCP/IP, deci este sigură (cu confirmări), dar nu este concepută pentru semnale de ordinul milisecundelor.
+**MMS (client–server, „vertical”).** Calculatorul stației și poarta de comunicație sunt clienți ai IED-urilor (servere). Ele citesc date, primesc rapoarte la schimbarea valorilor, transmit comenzi și descarcă fișiere, de exemplu înregistrările de perturbații. Serviciile abstracte ale standardului sunt transpuse pe protocolul MMS în IEC 61850-8-1. Comunicația folosește TCP/IP, deci este fiabilă (cu confirmări și retransmisii), dar nu este concepută pentru semnale de ordinul milisecundelor.
 
 **GOOSE (publicare–abonare, „orizontal”).** Un IED (publicatorul) trimite un set de date ca **cadru Ethernet multicast**, direct, fără TCP/IP. Orice IED abonat îl primește. Mesajele GOOSE înlocuiesc firele dintre relee: declanșări, blocări (problema 9.3), pornirea protecției la refuzul întrerupătorului (capitolul 7) și pozițiile folosite în interblocări (§ 9.8).
 
@@ -127,7 +127,7 @@ Valorile intervalelor depind de producător și de configurare. În acest capito
 - profilul de implementare **IEC 61850-9-2LE**: 80 de eșantioane pe ciclu la 50 Hz, adică 4000 de eșantioane pe secundă;
 - standardul de produs **IEC 61869-9** [S9]: rata preferată de 4800 eșantioane/s pentru protecție și măsurări generale și de 14 400 eșantioane/s pentru măsurarea calității energiei. Ambele rate sunt transmise cu 2400 de cadre pe secundă, deci cu mai multe eșantioane într-un cadru.
 
-**Performanța.** IEC 61850-5 definește **timpul de transfer**: durata de la momentul în care funcția emițătoare predă informația stivei sale de comunicație până la momentul în care funcția receptoare o primește. Timpul include deci prelucrarea în cele două IED-uri și traversarea rețelei. Pentru declanșări și blocări se cere clasa **TT6: cel mult 3 ms**; clasa TT5 înseamnă cel mult 10 ms. Tabelul complet, așa cum îl reproduce un document ABB după ediția a 2-a a IEC 61850-5, este dat mai jos. L-am găsit într-o singură sursă; numai valorile pentru TT5 și TT6 au fost confirmate independent.
+**Performanța.** IEC 61850-5 definește **timpul de transfer**: durata de la momentul în care funcția emițătoare predă informația stivei sale de comunicație până la momentul în care funcția receptoare o primește. Timpul include deci prelucrarea în stivele de comunicație ale celor două IED-uri și traversarea rețelei; timpii proprii ai funcțiilor (de exemplu pornirea protecției sau ciclul logicii abonatului) nu fac parte din el. Pentru declanșări și blocări se cere clasa **TT6: cel mult 3 ms**; clasa TT5 înseamnă cel mult 10 ms. Tabelul complet de mai jos reproduce un document ABB care citează ediția a 2-a a IEC 61850-5; valorile claselor TT0–TT4 provin dintr-o singură sursă publicată, iar cele pentru TT5 și TT6 sunt confirmate și de alte surse.
 
 | Clasa | TT0 | TT1 | TT2 | TT3 | TT4 | TT5 | TT6 |
 |---|---|---|---|---|---|---|---|
@@ -281,7 +281,7 @@ O unitate de îmbinare eșantionează o mărime de 50 Hz, iar ceasul ei are eroa
 | eroarea de fază | 0,018° | 0,18° | 1,8° | 18° |
 | TVE | 0,0314 % | 0,314 % | 3,14 % | 31,29 % |
 
-(b) $2\sin(\theta/2) = 0{,}01 \Rightarrow \theta = 0{,}573°$, deci $\Delta t = \theta/(2\pi f) = $ **31,83 µs**.
+(b) $2\sin(\theta/2) = 0{,}01 \Rightarrow \theta = 0{,}573°$, deci $\Delta t = \theta/(2\pi f)$ = **31,83 µs**.
 
 (c) $I_d = 2I\sin(\pi f\Delta t)$: 3,14 A (0,314 %) la 10 µs, 31,41 A (3,14 %) la 100 µs și 312,87 A (31,3 %) la 1 ms. Pentru $I_d \le 0{,}02\thinspace I$: $\sin(\pi f\Delta t) \le 0{,}01$, deci $\Delta t \le$ **63,7 µs**.
 
@@ -310,15 +310,15 @@ Lungimile cadrelor sunt date de problemă; în realitate depind, de exemplu, de 
 | întârzierea maximă în coadă (fluxuri sincrone) | 96,0 µs | 147,2 µs |
 | numărul maxim de fluxuri la încărcare ≤ 50 % | 10 | 11 |
 
-Unitățile de îmbinare sunt sincronizate (§ 9.9), deci eșantionează în același moment și cadrele lor ajung simultan la comutator. Ultimul cadru așteaptă ca celelalte șapte să fie transmise. Întârzierea maximă este $N$ ori durata unui cadru: 96,0 µs, respectiv 147,2 µs. Ea rămâne mai mică decât pasul de eșantionare, deci coada se golește înainte de setul următor de cadre. Pentru comparație, cu fluxuri decalate aleator întârzierea maximă simulată este de doar 23,6 µs, respectiv 29,8 µs.
+Unitățile de îmbinare sunt sincronizate (§ 9.9), deci eșantionează în același moment și cadrele lor ajung simultan la comutator. Ultimul cadru așteaptă ca celelalte șapte să fie transmise. Întârzierea maximă în coadă – măsurată de la sosirea cadrului la comutator până la sfârșitul transmisiei lui, deci inclusiv durata propriului cadru – este $N$ ori durata unui cadru: 96,0 µs, respectiv 147,2 µs. Ea rămâne mai mică decât intervalul dintre două cadre ale aceluiași flux (250,0 µs la 4000 cadre/s, respectiv 416,7 µs la 2400 cadre/s), deci coada se golește înainte de setul următor de cadre. Pentru comparație, cu fluxuri decalate aleator întârzierea maximă simulată este de doar 23,6 µs, respectiv 29,8 µs.
 
-**Verificare.** Pe a doua cale, debitul se obține numărând biții (preambul, cadru, pauză) cadru cu cadru pe o secundă ✓. Simularea pe evenimente a cozii FIFO a portului, pe o secundă, dă aceeași încărcare (38,4 % și 35,3 %) ✓ și o întârziere maximă egală cu $N$ ori durata unui cadru ✓.
+**Verificare.** Ca verificare aritmetică, debitul se obține și numărând biții (preambul, cadru, pauză) cadru cu cadru pe o secundă ✓. Calea a doua, independentă, este simularea pe evenimente a cozii FIFO a portului, pe o secundă: ea dă aceeași încărcare (38,4 % și 35,3 %) ✓ și o întârziere maximă egală cu $N$ ori durata unui cadru ✓.
 
 ### Problema 9.3 – Blocarea protecției barelor de 20 kV prin GOOSE
 
 În schema din § 3.6, treapta rapidă a releului R0 (intrarea transformatorului T1) ar comanda declanșarea la 100 ms după apariția defectului, dacă nu este blocată. Blocarea vine de la releul fiderului afectat: la un defect pe fiderul F1, R1 pornește la 20 ms și publică un mesaj GOOSE spre R0. Datele lanțului sunt:
 
-- prelucrarea în publicator: 1 ms; prelucrarea în abonat: 1 ms;
+- prelucrarea în stiva de comunicație a publicatorului: 1 ms; prelucrarea în stiva de comunicație a abonatului: 1 ms;
 - ciclul logicii lui R0 (întârzierea maximă până la aplicarea blocării): 1 ms;
 - cadrul GOOSE are 150 de octeți și trece prin două comutatoare cu memorare și retransmitere, fiecare cu o latență internă de 5 µs, pe legături de 100 Mbit/s;
 - repetările urmează programul din figura 9.3 (2 ms, apoi dublare până la $T_0$ = 1 s), iar timpul de valabilitate în repaus este TAL = 2 s.
@@ -335,7 +335,7 @@ Se cer:
 1. **Timpul de transfer** este $1 + 0{,}0508 + 1$ = **2,051 ms**, sub limita clasei TT6 (3 ms). Blocarea devine efectivă la $20 + 2{,}051 + 1$ = **23,05 ms** (figura 9.6), cu o rezervă de **76,95 ms** față de momentul în care ar declanșa R0.
 2. **Mesajele pierdute.** Mesajele sunt emise la 0, 2, 6, 14, 30, 62, 126 … ms după pornire, adică al $(k+1)$-lea la $T_{min}(2^k - 1)$. Dacă se pierd primele $k$ mesaje, blocarea întârzie cu $T_{min}(2^k - 1)$, care trebuie să rămână sub 76,95 ms. Rezultă $2^k \le 1 + 76{,}95/2$, adică **$k \le 5$**: chiar dacă se pierd cinci mesaje consecutive, al șaselea aduce blocarea la 85,05 ms, înainte de 100 ms.
 3. **Probabilitatea unei blocări întârziate** este probabilitatea ca primele șase mesaje să se piardă, $p^6$:
-   - pentru o rețea foarte perturbată, cu $p$ = 0,3, rezultă $7{,}29\cdot 10^{-4}$, iar momentul mediu al blocării este 24,544 ms;
+   - pentru o rețea foarte perturbată, cu $p$ = 0,3, rezultă $7{,}29\cdot 10^{-4}$; momentul mediu al blocării, calculat numai pentru cazurile în care blocarea sosește la timp, este 24,390 ms (media pe toate cazurile, inclusiv sosirile după declanșarea lui R0, este 24,544 ms);
    - pentru $p = 10^{-3}$, rezultă $10^{-18}$, deci pierderile izolate de mesaje nu sunt o problemă.
 4. **Căderea legăturii.** Pericolul real este căderea completă a legăturii. În repaus, mesajele vin la fiecare $T_0$ = 1 s, așa că R0 constată lipsa lor după un timp cuprins între $TAL - T_0$ = 1 s și $TAL$ = 2 s (în medie 1,5 s) de la cădere. Logica lui R0 trebuie să precizeze ce face atunci:
    - dacă păstrează treapta rapidă, un defect pe un fider din această perioadă ar deconecta toată bara (acționare neselectivă);
@@ -347,7 +347,7 @@ Se cer:
 
 *Figura 9.6 – Momentul în care blocarea devine efectivă (bara colorată) și momentele de sosire dacă se pierd primele 0 … 6 mesaje (triunghiuri). Al șaptelea mesaj (6 pierdute) ar sosi după declanșarea lui R0.*
 
-**Verificare.** Pe a doua cale, o simulare pe evenimente a lanțului defect → pornire → emisie → recepție → aplicarea blocării dă același moment, 23,05 ms ✓. Numărul maxim de mesaje pierdute găsit căutând în programul de emisie coincide cu formula $\lfloor\log_2(1 + \text{rezervă}/T_{min})\rfloor = 5$ ✓. O simulare Monte Carlo cu un milion de încercări și $p$ = 0,3 dă probabilitatea $7{,}39\cdot 10^{-4}$ (teorie $7{,}29\cdot 10^{-4}$) ✓ și momentul mediu 24,548 ms (teorie 24,544 ms) ✓. Întârzierea detecției calculată cu formula coincide cu simularea explicită a mesajelor ✓, iar media ei pe 200 000 de momente aleatoare ale căderii este 1,500 s ✓.
+**Verificare.** Pe a doua cale, o simulare pe evenimente a lanțului defect → pornire → emisie → recepție → aplicarea blocării dă același moment, 23,05 ms ✓. Numărul maxim de mesaje pierdute găsit căutând în programul de emisie coincide cu formula $\lfloor\log_2(1 + \text{rezervă}/T_{min})\rfloor = 5$ ✓. O simulare Monte Carlo cu un milion de încercări și $p$ = 0,3 dă probabilitatea $7{,}39\cdot 10^{-4}$ (teorie $7{,}29\cdot 10^{-4}$) ✓ și momentul mediu 24,548 ms (teorie 24,544 ms) ✓, respectiv 24,391 ms (teorie 24,390 ms) pentru sosirile la timp ✓. Întârzierea detecției calculată cu formula coincide cu simularea explicită a mesajelor ✓, iar media ei pe 200 000 de momente aleatoare ale căderii este 1,500 s ✓.
 
 ### Problema 9.4 – Disponibilitatea unei căi de comunicație simple și a uneia dublate
 
@@ -363,7 +363,7 @@ O cale de comunicație între două IED-uri (comutator, fibre, porturi) are un t
 
 Dublarea căii reduce indisponibilitatea de aproximativ 1800 de ori ($1/U$), dar numai dacă cele două căi sunt cu adevărat independente. Sursa comună, deși mult mai fiabilă decât o cale, mărește indisponibilitatea sistemului dublat de aproximativ 100 de ori: cauza comună domină. Concluzia practică: cele două rețele trebuie să aibă alimentări, trasee și echipamente separate.
 
-**Verificare.** Pe a doua cale, o simulare Monte Carlo pe $5\cdot 10^6$ ani modelează fiecare element ca un proces alternant de funcționare și reparare, cu timpi exponențiali, și calculează suprapunerile intervalelor de defect. Rezultatele sunt $5{,}493\cdot 10^{-4}$ (a) ✓, $3{,}102\cdot 10^{-7}$ (b, din 553 de suprapuneri de defecte; abaterea de 3 % este în limita erorii statistice) ✓ și $3{,}067\cdot 10^{-5}$ (c) ✓.
+**Verificare.** Pe a doua cale, o simulare Monte Carlo pe $5\cdot 10^6$ ani modelează fiecare element ca un proces alternant de funcționare și reparare, cu timpi exponențiali, și calculează suprapunerile intervalelor de defect. Rezultatele sunt $5{,}493\cdot 10^{-4}$ (a) ✓, $3{,}102\cdot 10^{-7}$ (b, din 553 de suprapuneri de defecte; abaterea de 3,4 % este în limita erorii statistice) ✓ și $3{,}067\cdot 10^{-5}$ (c) ✓.
 
 ---
 
@@ -386,7 +386,7 @@ Dublarea căii reduce indisponibilitatea de aproximativ 1800 de ori ($1/U$), dar
 <details>
 <summary><b>Răspunsuri</b></summary>
 
-1. Procesul (aparatajul primar, unitățile de îmbinare și de interfață), celula (IED-urile de protecție și comandă), stația (calculatorul stației, poarta de comunicație, ceasul, teleprotecția) și dispecerul (SCADA, EMS, DMS) (§ 9.1, figura 9.1).
+1. Procesul (aparatajul primar, unitățile de îmbinare și de interfață), celula (IED-urile de protecție și comandă), stația (calculatorul stației, poarta de comunicație, sursa de timp, teleprotecția) și dispecerul (SCADA, EMS, DMS) (§ 9.1, figura 9.1).
 2. RTU culege semnalele prin contacte și traductoare, cu fire. Poarta de comunicație primește datele deja prelucrate de la IED-uri prin rețea și le transmite dispecerului în protocolul cerut (§ 9.1).
 3. Mesajele pot ajunge la dispecer cu întârzieri diferite. Numai marca de timp pusă în momentul evenimentului permite reconstituirea ordinii reale (§ 9.2).
 4. Stația controlată, din stația electrică, este server TCP și ascultă pe portul 2404. Stația de comandă, dispecerul, este clientul care deschide conexiunea (§ 9.3).

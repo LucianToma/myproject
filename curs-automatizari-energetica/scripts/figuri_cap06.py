@@ -56,8 +56,6 @@ for x, y, w, et, c, (xa, ya) in functii:
     bloc(ax, x, y, w, h, et, culoare=c, fs=8.2)
     yb = y if y > ya else y + h
     ax.plot([x + w / 2, xa], [yb, ya], color=c, lw=0.9, ls="--")
-ax.text(9.0, 0.9, "Codurile funcțiilor sunt cele din IEEE C37.2;\n40 = pierderea excitației (denumirea exactă\n"
-        "din standard nu a fost verificată).", fontsize=8, color=TEXT2)
 salveaza(fig, "f06-1-schema-protectii")
 
 # --- Figura 6.2: protecția termică și protecția de rotor blocat a motorului M1 -----------------------
@@ -101,12 +99,14 @@ for nume, Pp, Qp in P["puncte"]:
     Z = 1.0 / np.conj(Pp + 1j * Qp)
     ax.plot(Z.real, Z.imag, "o", color=C3, ms=7, mec=FUNDAL)
 ax.plot([], [], "o", color=C3, ms=7, label="regimuri normale (problema 6.5)")
-# traiectoria la scăderea excitației (P = 0,85) până la limita de stabilitate
-Es = np.linspace(2.0, P["E_lim"], 60)
-Zt = np.array([impedanta_borne(E, np.arcsin(0.85 * (G["xd"] + xe) / E), G["xd"], xe)[0] for E in Es])
-ax.plot(Zt.real, Zt.imag, color=C1, lw=2, label="excitația scade (P = 0,85), până la δ = 90°")
+# traiectoria la scăderea excitației (P = 0,85), din regimul nominal până la limita de stabilitate
+V = P["V_ret"]
+Es = np.linspace(abs(P["E_init"]), P["E_lim"], 80)
+Zt = np.array([impedanta_borne(E, np.arcsin(np.clip(0.85 * (G["xd"] + xe) / (E * V), -1, 1)), G["xd"], xe, V)[0]
+               for E in Es])
+ax.plot(Zt.real, Zt.imag, color=C1, lw=2, label="excitația scade (P = 0,85), din regimul nominal până la δ = 90°")
 deltas = np.radians(np.linspace(90, 360, 600))
-Zs = np.array([impedanta_borne(P["E_lim"], dd, G["xd"], xe)[0] for dd in deltas])
+Zs = np.array([impedanta_borne(P["E_lim"], dd, G["xd"], xe, V)[0] for dd in deltas])
 ok = np.abs(Zs) < 3
 ax.plot(Zs.real[ok], Zs.imag[ok], color=C2, lw=1.6, ls="--", label="alunecarea polilor (δ = 90° … 360°)")
 ax.plot([0], [-G["xd"]], "D", color=C5, ms=8, mec=FUNDAL, label="excitație pierdută complet: Z = −j·xd")
@@ -134,7 +134,7 @@ ax.text(6, 86, "zona neacoperită de 59N\n(primii 5 % de la neutru)\n→ metode 
 ax.set_xlim(0, 100)
 ax.set_ylim(0, 105)
 ax.set_xlabel("poziția defectului în înfășurare, de la neutru [%]")
-ax.set_ylabel("tensiunea neutrului U_N [% din Uf]")
+ax.set_ylabel("tensiunea neutrului $U_N$ [% din $U_f$]")
 ax.legend(loc="center right", fontsize=8.5)
 virgula(ax)
 salveaza(fig, "f06-4-pamant-stator")

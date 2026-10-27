@@ -5,8 +5,9 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Circle, Polygon, Wedge
 from comun import C1, C2, C3, C4, C5, TEXT, TEXT2, GRILA, FUNDAL, ZONA, salveaza, virgula, bloc, legatura
 from modele import SQRT3, DATE, defect_faze
-from calcul_cap05 import (ZL1, ZL2, K0, FI_L, K1, Z_ZONE, R_ZONE, T_ZONE, poligon, retea_cu_bara_pe_linie, bucle,
-                          masuratori_faze, z_pendulatie, impedante_pendulatie, mho_interior)
+from calcul_cap05 import (ZL1, ZL2, K0, FI_L, K1, Z_ZONE, R_ZONE, T_ZONE, DELTA_MAX, R_BANDA_EXT, R_BANDA_INT,
+                          poligon, retea_cu_bara_pe_linie, bucle, masuratori_faze, z_pendulatie, impedante_pendulatie,
+                          mho_interior, inclinare_latura_sus)
 
 d = DATE
 POL = [poligon(Z.imag, R) for Z, R in zip(Z_ZONE, R_ZONE)]
@@ -22,12 +23,12 @@ def pol(ax, V, culoare, eticheta=None, lw=1.6, ls="-", umplere=False):
                          ec=culoare, lw=lw, ls=ls, label=eticheta, alpha=1.0))
 
 
-def linia(ax):
+def linia(ax, offB=(-12, 2)):
     ax.plot([0, ZL1.real], [0, ZL1.imag], color=TEXT, lw=2.6, solid_capstyle="round", label="linia L1")
     ax.plot([ZL1.real, (ZL1 + ZL2).real], [ZL1.imag, (ZL1 + ZL2).imag], color=TEXT2, lw=2.6, ls=(0, (4, 2)),
             label="linia L2")
     ax.plot([ZL1.real], [ZL1.imag], "o", color=TEXT, ms=5)
-    ax.annotate("B", (ZL1.real, ZL1.imag), xytext=(-12, 2), textcoords="offset points", fontsize=9, fontweight="bold")
+    ax.annotate("B", (ZL1.real, ZL1.imag), xytext=offB, textcoords="offset points", fontsize=9, fontweight="bold")
     ax.annotate("C", ((ZL1 + ZL2).real, (ZL1 + ZL2).imag), xytext=(-12, 2), textcoords="offset points", fontsize=9,
                 fontweight="bold")
 
@@ -61,12 +62,13 @@ for ax, tip, titlu in ((axe[0], "1f", "Defect a–pământ la 70 % din L1"), (ax
     if tip == "1f":
         zf = V[0] / I[0]
         ax.plot([zf.real], [zf.imag], "s", color=C4, ms=7, mec=FUNDAL, mew=1.2)
-        ax.annotate("a–p fără k0", (zf.real, zf.imag), xytext=(6, -10), textcoords="offset points", fontsize=9)
+        ax.annotate("a–p fără k0", (zf.real, zf.imag), xytext=(-95, 22), textcoords="offset points", fontsize=9,
+                    arrowprops=dict(arrowstyle="-", color=TEXT2, lw=0.8))
     ax.set_title(titlu)
     plan_rx(ax, (-45, 50), (-40, 40))
-axe[0].legend(loc="upper left", fontsize=8.5)
+axe[0].legend(loc="lower left", fontsize=8.5)
 fig.text(0.5, -0.01, "Buclele care nu apar au impedanța în afara desenului (curentul buclei este mic sau nul). "
-         "La defectul b–c, buclele b–p și c–p cad în poligon, dar 3I0 ≈ 0, deci selecția fazelor nu le eliberează.",
+         "La defectul b–c, bucla b–p cade în poligon, dar 3I₀ ≈ 0, deci selecția fazelor nu o eliberează.",
          ha="center", fontsize=8.5, color=TEXT2, wrap=True)
 salveaza(fig, "f05-1-bucle")
 
@@ -100,7 +102,7 @@ trepte(LA, +1, [abs(z) for z in Z_ZONE], T_ZONE, C1, "releul din A (spre B, pe L
 trepte(LB, +1, [K1 * abs(ZL2), 1.2 * abs(ZL2)], T_ZONE[:2], C3, "releul din B (spre C, pe L2)")
 trepte(LB, -1, [K1 * abs(ZL1), 1.2 * abs(ZL1)], T_ZONE[:2], C2, "releul din B (spre A, pe L1)", semn=-1)
 trepte(LC, -1, [K1 * abs(ZL2), 1.2 * abs(ZL2)], T_ZONE[:2], C5, "releul din C (spre B, pe L2)", semn=-1)
-ax.set_xlim(-12, 100)
+ax.set_xlim(-12, 106)
 ax.set_ylim(-0.95, 1.0)
 ax.set_yticks([-0.65, -0.35, -0.05, 0.05, 0.35, 0.65])
 ax.set_yticklabels(["0,6", "0,3", "0", "0", "0,3", "0,6"])
@@ -123,25 +125,25 @@ for ax in (a1, a2):
     linia(ax)
     w = Wedge((0, 0), 140, -30, 30, width=140 - Zs_min, fc=ZONA, ec=TEXT2, lw=0.8)
     ax.add_patch(w)
-    w2 = Wedge((0, 0), 140, 150, 210, width=140 - Zs_min, fc=ZONA, ec=TEXT2, lw=0.8)
-    ax.add_patch(w2)
-    ax.text(Zs_min + 6, 3, "domeniul\nde sarcină", fontsize=8.5, color=TEXT2, va="bottom")
+    ax.text(99, 24, "domeniul\nde sarcină", fontsize=8.5, color=TEXT2, va="bottom")
 a1.set_title("Caracteristici mho (prin origine)")
 a2.set_title("Caracteristici poligonale")
 plan_rx(a1, (-30, 110), (-25, 45))
 plan_rx(a2, (-30, 110), (-25, 45))
-a1.legend(loc="upper right", fontsize=8.5)
-a2.legend(loc="upper right", fontsize=8.5)
+a1.legend(loc="lower center", fontsize=8.5, ncol=2)
+a2.legend(loc="lower center", fontsize=8.5, ncol=2)
 salveaza(fig, "f05-3-caracteristici")
 
 # --- Figura 5.4: rezistența de defect și alimentarea de la celălalt capăt -------
 fig, ax = plt.subplots(figsize=(8.6, 6.2))
 pol(ax, POL[0], C1, "zona 1 (latura de sus orizontală)", umplere=True)
-POL1i = poligon(Z_ZONE[0].imag, R_ZONE[0], inclinare=np.radians(13))
-pol(ax, POL1i, C2, "zona 1 cu latura de sus înclinată cu 13°", ls="--")
+_, INCL = inclinare_latura_sus()
+POL1i = poligon(Z_ZONE[0].imag, R_ZONE[0], inclinare=np.radians(INCL))
+pol(ax, POL1i, C2, f"zona 1 cu latura de sus înclinată cu {INCL:.0f}°", ls="--")
 linia(ax)
 Rf = np.linspace(0, 15, 31)
-stil = {-15.0: (C3, "δ = −15° (A importă)"), 0.0: (TEXT2, "δ = 0° (fără transfer)"), 15.0: (C5, "δ = +15° (A exportă)")}
+stil = {-DELTA_MAX: (C3, f"δ = −{DELTA_MAX:.0f}° (A importă)"), 0.0: (TEXT2, "δ = 0° (fără transfer)"),
+        DELTA_MAX: (C5, f"δ = +{DELTA_MAX:.0f}° (A exportă)")}
 for x, mk in ((0.7, "-"), (0.999, ":")):
     for dC, (cul, et) in stil.items():
         zs = []
@@ -159,7 +161,7 @@ ax.annotate("defect la bara B (linie punctată)", (ZL1.real, ZL1.imag), xytext=(
             textcoords="offset points", fontsize=8.5, arrowprops=dict(arrowstyle="-", color=TEXT2, lw=0.8))
 ax.set_title("Impedanța buclei a–p pentru Rf = 0…15 Ω (punctele: Rf = 10 Ω)")
 plan_rx(ax, (-8, 32), (-6, 22))
-ax.legend(loc="lower right", fontsize=8.3)
+ax.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), fontsize=8.3)
 salveaza(fig, "f05-4-rezistenta-defect")
 
 # --- Figura 5.5: alimentarea intermediară homopolară (T1) ------------------------
@@ -200,7 +202,7 @@ ZSA, ZSC, ZT = impedante_pendulatie()
 fig, ax = plt.subplots(figsize=(9, 6.6))
 for k in range(3):
     mho(ax, Z_ZONE[k], CUL_Z[k], f"zona {k + 1}")
-linia(ax)
+linia(ax, offB=(-20, -4))
 ax.plot([-ZSA.real, 0], [-ZSA.imag, 0], color=TEXT2, lw=2.0)
 ax.plot([(ZL1 + ZL2).real, (ZL1 + ZL2 + ZSC).real], [(ZL1 + ZL2).imag, (ZL1 + ZL2 + ZSC).imag], color=TEXT2, lw=2.0)
 ax.annotate("ZSA", (-ZSA.real / 2, -ZSA.imag / 2), xytext=(5, -4), textcoords="offset points", fontsize=8.5)
@@ -213,11 +215,14 @@ for raport, cul, et in ((1.0, C5, "|EA| = |EC|"), (0.85, C2, "|EC| = 0,85·|EA|"
 for dd in (60, 90, 120, 150, 180, 210, 240, 270, 300):
     z = z_pendulatie(np.radians(dd))
     ax.plot([z.real], [z.imag], "o", color=C5, ms=4)
-    ax.annotate(f"{dd}°", (z.real, z.imag), xytext=(4, 3), textcoords="offset points", fontsize=8, color=TEXT2)
-for R0, ls in ((45.0, "--"), (35.0, ":"), (-45.0, "--"), (-35.0, ":")):
+    if dd == 210:
+        continue
+    off = {180: (6, 6), 150: (6, 2)}.get(dd, (4, 3))
+    ax.annotate(f"{dd}°", (z.real, z.imag), xytext=off, textcoords="offset points", fontsize=8, color=TEXT2)
+for R0, ls in ((R_BANDA_EXT, "--"), (R_BANDA_INT, ":"), (-R_BANDA_EXT, "--"), (-R_BANDA_INT, ":")):
     t = np.linspace(-40, 80, 2)
     ax.plot(R0 + t * np.cos(FI_L), t * np.sin(FI_L), color=TEXT2, lw=1.1, ls=ls)
-ax.text(46, -14, "benzile de detecție\n(R = ±35 Ω și ±45 Ω)", fontsize=8.5, color=TEXT2)
+ax.text(46, -14, f"benzile de detecție\n(R = ±{R_BANDA_INT:.0f} Ω și ±{R_BANDA_EXT:.0f} Ω)", fontsize=8.5, color=TEXT2)
 ax.set_title("Locul impedanței văzute din A la pendulații")
 plan_rx(ax, (-60, 80), (-30, 55))
 ax.legend(loc="lower left", fontsize=8)
@@ -242,11 +247,11 @@ legatura(axl, (2.9, 6.85), (4.2, 7.3))
 legatura(axl, (5.4, 7.45), (6.7, 7.45))
 # PUTT
 axl.text(0.2, 5.3, "PUTT – teledeclanșare permisivă cu subacoperire", fontsize=9, fontweight="bold", color=TEXT)
-bloc(axl, 0.3, 4.1, 2.6, 0.9, "zona 1 a lui B\n(trimite semnal)", C1)
+bloc(axl, 0.3, 4.1, 3.4, 0.9, "semnal permisiv primit de la B\n(trimis de zona 1 a lui B)", C3, fs=7.5)
 bloc(axl, 4.2, 4.1, 1.2, 0.9, "ȘI", C5)
 bloc(axl, 0.3, 2.9, 2.6, 0.9, "zona extinsă\nînainte (A)", C1)
 bloc(axl, 6.7, 4.1, 2.6, 0.9, "declanșare A", C2)
-legatura(axl, (2.9, 4.55), (4.2, 4.7))
+legatura(axl, (3.7, 4.55), (4.2, 4.7))
 legatura(axl, (2.9, 3.35), (4.2, 4.3))
 legatura(axl, (5.4, 4.55), (6.7, 4.55))
 # Blocare

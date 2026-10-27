@@ -82,7 +82,7 @@ for ax, caz in zip(axe, ("defect pe fiderul F1 (în aval de R1)", "defect pe bar
     puls(ax, 4, 0.0, 0.10 if "fider" in caz else 0.16, C2)
     if "fider" in caz:
         puls(ax, 3, 0.02, 0.11, C1)
-        puls(ax, 2, 0.025, 0.12, C1)
+        puls(ax, 2, 0.023, 0.12, C1)   # blocarea ajunge la R0 după 23 ms (problema 9.3)
         ax.text(0.14, 1.3, "R0 rămâne blocat cât timp R1 este pornit (nu ajunge la 0,10 s)", fontsize=8.5,
                 color=TEXT2)
         puls(ax, 0, 0.04, 0.10, C3)

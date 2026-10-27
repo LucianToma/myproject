@@ -18,8 +18,9 @@ FI_L = np.angle(ZL1)                                          # unghiul liniei [
 N_TC, N_TT = 600 / 1, 110e3 / 100
 K_SEC = N_TC / N_TT                                           # Zsec = Zprim·nTC/nTT
 
-# Bugetul de erori (date de problemă): datele liniei, TT, TC, releul
-ERORI = dict(linie=0.05, TT=0.03, TC=0.01, releu=0.05)
+# Bugetul de erori: datele liniei și releul – date de problemă; TT – clasa 3P (±3 %);
+# TC – clasa 5P: singura garanție la curenții de defect este eroarea compusă de 5 % la ALF·In
+ERORI = dict(linie=0.05, TT=0.03, TC=0.05, releu=0.05)
 
 
 def factor_supraacoperire(e=ERORI):
@@ -34,15 +35,21 @@ def factor_subacoperire(e=ERORI):
 
 
 # Reglajele zonelor releului din A (impedanțe primare, la unghiul liniei)
-K1 = 0.85                    # zona 1: fracțiunea din ZL1
-K2 = 1.20                    # zona 2: fracțiunea din ZL1
-Z3_MOD = 38.0                # zona 3 [Ω primar]: rezultă din problema 5.1 (defect monofazat la capătul L2,
-                             # mărit de alimentarea homopolară prin neutrul lui T1, înmulțit cu factorul de subacoperire)
+K1 = 0.82                    # zona 1: fracțiunea din ZL1 (≤ 1/f_sup = 0,836, problema 5.1)
+K2 = 1.20                    # zona 2: fracțiunea din ZL1 (≥ f_sub = 1,198)
+Z3_MOD = 41.5                # zona 3 [Ω primar]: rezultă din problema 5.1 (defect monofazat la capătul L2 cu sursa C
+                             # deconectată, mărit de alimentarea homopolară prin neutrul lui T1, înmulțit cu f_sub)
 T_ZONE = (0.0, 0.3, 0.6)     # temporizările zonelor [s] (date de problemă, treapta de 0,3 s din cap. 3)
 Z_ZONE = (K1 * ZL1, K2 * ZL1, Z3_MOD * np.exp(1j * np.angle(ZL1)))
 R_ZONE = (15.0, 20.0, 30.0)  # acoperirea rezistivă a poligoanelor (date de problemă) [Ω primar]
-UNGHI_DIR = np.radians(-15.0)    # dreapta direcțională (cadranul IV)
-UNGHI_STG = np.radians(115.0)    # limita stângă (cadranul II)
+UNGHI_DIR = np.radians(-15.0)    # dreapta direcțională (cadranul IV) – dată de problemă
+UNGHI_STG = np.radians(115.0)    # limita stângă (cadranul II) – dată de problemă
+
+# Problema 5.3: unghiul maxim de transfer înainte de defect și rezistența de defect (date de problemă)
+DELTA_MAX = 20.0             # [grade] – curentul de sarcină rămâne sub 600 A (problema 5.6)
+RF_53 = 10.0                 # [Ω]
+# Blocarea la pendulații (date de problemă): benzile paralele cu linia și temporizarea de detecție
+R_BANDA_EXT, R_BANDA_INT, T_PSB = 45.0, 35.0, 0.030
 
 
 # ---------------------------------------------------------------------------
@@ -167,3 +174,18 @@ def z_pendulatie(delta, raport_E=1.0):
     EA = 1.0
     EC = raport_E * np.exp(-1j * delta)
     return EA * ZT / (EA - EC) - ZSA
+
+
+def beta_rf(x, delta_C, Rf=RF_53):
+    """Unghiul β = arg(IF/IA,comp) pentru un defect a–p prin Rf la distanța x pe L1 [grade]."""
+    r = retea_cu_bara_pe_linie("L1", x, delta_C)
+    _, I, s = masuratori_secvente(r, "F", "1f", Rf)
+    IF = s["I_faza"][0]
+    return np.degrees(np.angle(IF / (I[0] + K0 * np.sum(I))))
+
+
+def inclinare_latura_sus(delta_max=DELTA_MAX, rezerva=2.0):
+    """Înclinarea laturii de sus a poligonului zonei 1: |β| maxim la capătul care exportă
+    (defect la 70 % și la bara B), rotunjit în sus la grad, plus rezerva. Întoarce (|β|max, înclinarea) în grade."""
+    beta_max = max(-beta_rf(x, delta_max) for x in (0.7, 0.999))
+    return beta_max, np.ceil(beta_max) + rezerva

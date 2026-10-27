@@ -4,7 +4,7 @@ import numpy as np
 from scipy.optimize import brentq
 from modele import (SQRT3, W0, GEN, MOTOR, fmt, polar, verifica, verifica_adevarat, timp_termic, timp_termic_ode,
                     retea_referinta, seq_la_faza, faza_la_seq, sistem_direct)
-from calcul_cap06 import (IN_M, K_TERMIC, IB_M, termic_rk4, IN_G, ZB_G, TC_G, TT_G, K_SEC_G,
+from calcul_cap06 import (IN_M, K_TERMIC, IB_M, termic_rk4, termic_pas_exact, IN_G, ZB_G, TC_G, TT_G, K_SEC_G,
                           cerc_pierdere_excitatie, in_cerc_geometric, in_cerc_comparator, impedanta_borne,
                           tensiune_neutru, tensiune_neutru_mna)
 
@@ -13,18 +13,22 @@ tau = M["tau"]
 
 print("Problema 6.1 – modelul termic al motorului M1")
 print(f"  In = Pn/(√3·Un·η·cos φ) = {fmt(IN_M, 2)} A; IB = In; k = {fmt(K_TERMIC, 2)}; τ = {fmt(tau, 0)} s")
+timpi_61 = {}
 for mult in (1.2, 1.5, 2.0, M["Ip_In"]):
     I = mult * IN_M
     rez = []
     for nume, Ip in (("rece", 0.0), ("caldă", IN_M)):
         t_f = timp_termic(I, IB_M, K_TERMIC, tau, Ip)
+        t_e = termic_pas_exact(I, IB_M, K_TERMIC, tau, Ip, dt=0.01)
         t_o = timp_termic_ode(I, IB_M, K_TERMIC, tau, Ip, dt=0.01)
-        t_r, _, _ = termic_rk4(lambda t: I, tau, IB_M, K_TERMIC, theta0=(Ip / (K_TERMIC * IB_M))**2,
-                               dt=min(0.5, t_f / 200))
-        verifica(f"I = {mult:g}·In, {nume}: formula vs pas exact", t_f, t_o, rtol=1e-6)
-        verifica(f"I = {mult:g}·In, {nume}: formula vs Runge–Kutta", t_f, t_r, rtol=1e-4)
+        verifica(f"I = {mult:g}·In, {nume}: formula vs soluția exactă pe pas", t_f, t_e, rtol=1e-6)
+        verifica(f"I = {mult:g}·In, {nume}: formula vs Runge–Kutta 4 (modele.timp_termic_ode)", t_f, t_o, rtol=1e-6)
+        timpi_61[(mult, nume)] = t_f
         rez.append(f"din starea {nume} {fmt(t_f, 1)} s")
     print(f"  I = {fmt(mult, 1)}·In: " + "; ".join(rez))
+for mult in (1.2, M["Ip_In"]):
+    print(f"  la {fmt(mult, 1)}·In: diferența rece − caldă = {fmt(timpi_61[(mult, 'rece')] - timpi_61[(mult, 'caldă')], 1)} s,"
+          f" raportul rece/caldă = {fmt(timpi_61[(mult, 'rece')] / timpi_61[(mult, 'caldă')], 2)}")
 
 print("\nProblema 6.2 – pornirea motorului și blocarea repornirii")
 Ip = M["Ip_In"] * IN_M
@@ -65,7 +69,8 @@ I_supr_max = 1.5 * IN_M
 print(f"  reglaj: I> = 3·In = {fmt(I_set, 1)} A, t = {fmt(t_set, 0)} s")
 verifica_adevarat("I> sub curentul de pornire și peste suprasarcinile lăsate protecției termice",
                   I_supr_max < I_set < Ip)
-verifica_adevarat("t > 1,5·t_pornire și t ≤ 0,75·t_blocat_cald", t_set >= 1.5 * tp and t_set <= 0.75 * M["t_blocat_cald"])
+# rezervele 1,5·t_pornire și 0,75·t_blocat_cald sunt alegeri ale cursului
+verifica_adevarat("t ≥ 1,5·t_pornire și t ≤ 0,75·t_blocat_cald", t_set >= 1.5 * tp and t_set <= 0.75 * M["t_blocat_cald"])
 t_rotor_rece = timp_termic(Ip, IB_M, K_TERMIC, tau, 0.0)
 print(f"  cu rotorul blocat din stare rece, modelul termic ar declanșa după {fmt(t_rotor_rece, 1)} s > "
       f"{fmt(M['t_blocat_rece'], 0)} s admis → este necesară protecția separată de rotor blocat")
@@ -119,7 +124,7 @@ Vs_, Is_ = sistem_direct(Uf / TT_G), sistem_direct(I_f / TC_G)
 P_mas = np.sum((Vs_ * np.conj(Is_)).real)
 print(f"  regim de motor cu Q = 0,3·Sn: P secundar măsurat = {fmt(P_mas, 3)} W (= −P_motor/(nTC·nTT) = "
       f"{fmt(-P_mot / (TC_G * TT_G), 3)} W) → acționează (|P| > {fmt(P_sec, 3)} W)")
-verifica("P secundar: fazori simulați vs conversie", P_mas, -P_mot / (TC_G * TT_G))
+verifica("consistență: P secundar din fazorii pe faze = conversia cu nTC·nTT", P_mas, -P_mot / (TC_G * TT_G))
 # Eroarea de unghi admisă: ΔP ≈ Q·ε trebuie să rămână sub 50 % din reglaj
 eps_aprox = 0.5 * P_set / Q
 eps_exact = brentq(lambda e: abs(S) * np.cos(np.angle(S) - e) - S.real - 0.5 * P_set, 0, 0.1)
@@ -148,29 +153,58 @@ xs = G["Sn"] / Sk_C
 xe = G["ukT"] + xs
 print(f"  rețeaua văzută din C: S\"k = {fmt(Sk_C / 1e6, 0)} MVA → xs = Sn/S\"k = {fmt(xs, 4)} u.r.; xe = xT + xs = {fmt(xe, 4)} u.r.")
 P = 0.85
-E_lim = P * (G["xd"] + xe)
-Z90, _, _ = impedanta_borne(E_lim, np.pi / 2, G["xd"], xe)
+# Regimul inițial: punctul nominal la borne (Ub = 1, P = 0,85, Q = 0,527). Din el rezultă tensiunea rețelei
+# de putere infinită din spatele lui xe și t.e.m. inițială (model cu poli înecați).
+S_n = P + 1j * np.sqrt(1 - P**2)
+I_n = np.conj(S_n)
+V_inf = 1.0 - 1j * xe * I_n
+E_init = 1.0 + 1j * G["xd"] * I_n
+V_ret = abs(V_inf)
+print(f"  regimul inițial (nominal la borne): |U rețea| = {fmt(V_ret, 4)} u.r., E = {fmt(abs(E_init), 4)} u.r., "
+      f"δ = {fmt(np.degrees(np.angle(E_init / V_inf)), 2)}°")
+Z_init, Ub_init, _ = impedanta_borne(abs(E_init), np.angle(E_init / V_inf), G["xd"], xe, V_ret)
+verifica("consistență: modelul reproduce punctul nominal la borne", Z_init, 1 / np.conj(S_n), rtol=1e-9)
+E_lim = P * (G["xd"] + xe) / V_ret
+Z90, Ub90, _ = impedanta_borne(E_lim, np.pi / 2, G["xd"], xe, V_ret)
 print(f"  excitația scade la P = {fmt(P, 2)}: limita de stabilitate (δ = 90°) la E = {fmt(E_lim, 4)}, unde "
       f"Z = {fmt(Z90.real, 3)} − j{fmt(-Z90.imag, 3)} u.r. → {'în cerc' if in_cerc_geometric(Z90, sus, jos) else 'încă în afara cercului'}")
 verifica_adevarat("la limita de stabilitate impedanța nu a intrat încă în cerc",
                   not in_cerc_geometric(Z90, sus, jos) and not in_cerc_comparator(Z90, sus, jos))
 # regim asincron (alunecarea polilor) cu E = E_lim: δ parcurge 90°…270°
 deltas = np.radians(np.linspace(90, 270, 3601))
-Zs = np.array([impedanta_borne(E_lim, dd, G["xd"], xe)[0] for dd in deltas])
+Zs = np.array([impedanta_borne(E_lim, dd, G["xd"], xe, V_ret)[0] for dd in deltas])
 ing = in_cerc_geometric(Zs, sus, jos)
 inc = in_cerc_comparator(Zs, sus, jos)
 verifica_adevarat("alunecarea polilor: cele două metode coincid în toate punctele", np.all(ing == inc))
 d_in = np.degrees(deltas[ing])
 print(f"  la alunecarea polilor impedanța este în cerc pentru δ între {fmt(d_in.min(), 1)}° și {fmt(d_in.max(), 1)}°")
-Z180, _, _ = impedanta_borne(E_lim, np.pi, G["xd"], xe)
-Z180_teorie = 1j * xe - 1j * (G["xd"] + xe) * 1 / (E_lim + 1)       # Ub/I la δ = 180° (calcul direct)
+Z180, _, _ = impedanta_borne(E_lim, np.pi, G["xd"], xe, V_ret)
+Z180_teorie = 1j * xe - 1j * (G["xd"] + xe) * V_ret / (E_lim + V_ret)       # Ub/I la δ = 180° (calcul direct)
+print(f"  la δ = 180°: Z = −j{fmt(-Z180.imag, 3)} u.r.")
 verifica("Z la δ = 180°: funcția generală vs calcul de mână", Z180, Z180_teorie, rtol=1e-9)
-# excitația complet pierdută: E = 0 → Z = −j·xd
-Z0, _, _ = impedanta_borne(0.0, 0.0, G["xd"], xe)
+# excitația complet pierdută: E = 0 → Z = −j·xd (modelul cu poli înecați)
+Z0, _, _ = impedanta_borne(0.0, 0.0, G["xd"], xe, V_ret)
 print(f"  E = 0: Z = {fmt(Z0.real, 3)} − j{fmt(-Z0.imag, 3)} u.r. (teoria: −j·xd) → în cerc")
 verifica("E = 0: Z = −j·xd", Z0, -1j * G["xd"], rtol=1e-9)
 verifica_adevarat("E = 0: punctul este în caracteristică (ambele metode)",
                   in_cerc_geometric(Z0, sus, jos) and in_cerc_comparator(Z0, sus, jos))
+# G1 are poli aparenți: cu E = 0, impedanța văzută oscilează între −j·xq și −j·xd după poziția rotorului
+Zq = -1j * G["xq"]
+print(f"  cu poli aparenți (xq = {fmt(G['xq'], 2)}), la E = 0 impedanța este între −j{fmt(G['xq'], 2)} și −j{fmt(G['xd'], 2)} u.r.")
+verifica_adevarat("și punctul −j·xq este în caracteristică (ambele metode)",
+                  in_cerc_geometric(Zq, sus, jos) and in_cerc_comparator(Zq, sus, jos))
+# Aproximație: S"k(C) include și aportul lui G1 (sursa echivalentă QC); fără el:
+Sk_G1 = G["Sn"] / (G["xd_s"] + G["ukT"])
+xs2 = G["Sn"] / (Sk_C - Sk_G1)
+xe2 = G["ukT"] + xs2
+V2 = abs(1.0 - 1j * xe2 * I_n)
+E_lim2 = P * (G["xd"] + xe2) / V2
+Z90_2, _, _ = impedanta_borne(E_lim2, np.pi / 2, G["xd"], xe2, V2)
+print(f"  fără aportul lui G1 ({fmt(Sk_G1 / 1e6, 1)} MVA): xs = {fmt(xs2, 4)} în loc de {fmt(xs, 4)}; "
+      f"la δ = 90°: Z = {fmt(Z90_2.real, 3)} − j{fmt(-Z90_2.imag, 3)} u.r.")
+verifica_adevarat("concluzia nu se schimbă (la δ = 90° impedanța este tot în afara cercului)",
+                  not in_cerc_geometric(Z90_2, sus, jos))
+verifica("efectul aproximării asupra lui Z la δ = 90° este sub 2 %", abs(Z90_2), abs(Z90), rtol=2e-2)
 
 print("\nProblema 6.6 – sarcina nesimetrică (46): consumul capabilității (I2/In)²·t = K")
 K2, I2c = G["K2"], G["I2_cont"]
@@ -208,13 +242,31 @@ I2_rest = 0.15
 t_rest = (K2 - cons) / I2_rest**2
 print(f"  dacă după defect rămâne I2 = {fmt(I2_rest, 2)} u.r. (> I2 admis permanent = {fmt(I2c, 2)}), "
       f"capabilitatea se epuizează după încă {fmt(t_rest, 0)} s")
-# Calea 2: integrare numerică a lui (I2)² pe profilul de timp
-dt = 0.01
-tt = np.arange(0, t_def + t_rest + 50, dt)
-i2 = np.where(tt < t_def, I2g, I2_rest)
-cum = np.cumsum(i2**2) * dt
-t_epuizare = tt[np.argmax(cum >= K2)]
-verifica("momentul epuizării: calcul analitic vs integrare numerică", t_def + t_rest, t_epuizare, atol=2 * dt, rtol=0)
+t_rest_alt = (K2 - (I2g**2 - I2c**2) * t_def) / (I2_rest**2 - I2c**2)
+print(f"  forma folosită în curs: se integrează (I2/In)² numai cât timp I2 > I2,adm; varianta care integrează "
+      f"(I2² − I2,adm²) ar da încă {fmt(t_rest_alt, 0)} s")
+# Verificare de consistență: integratorul releului (cu prag) simulat pe profilul de timp
+def integrator_46(profil, dt=0.01, tmax=5000.0):
+    acc, t = 0.0, 0.0
+    while t < tmax:
+        i2 = profil(t)
+        if i2 > I2c:
+            acc += i2**2 * dt
+        else:
+            acc = max(0.0, acc - K2 / 300.0 * dt)       # răcire liniară (timp de răcire 300 s, reglaj al cursului)
+        t += dt
+        if acc >= K2:
+            return t
+    return np.inf
+
+
+t_epuizare = integrator_46(lambda t: I2g if t < t_def else I2_rest)
+print(f"  integratorul simulat: declanșare la {fmt(t_epuizare, 1)} s de la defect")
+verifica("momentul epuizării: calcul analitic vs integratorul simulat", t_def + t_rest, t_epuizare, atol=0.02, rtol=0)
+t_adm = integrator_46(lambda t: 0.07, tmax=20000.0)
+verifica_adevarat("o nesimetrie admisă permanent (I2 = 0,07 < 0,08) nu produce declanșare", t_adm == np.inf)
+I2g2 = abs(-(1.0 / (z1g * 1j * xs2 / (z1g + 1j * xs2) + z2g * 1j * xs2 / (z2g + 1j * xs2))) * 1j * xs2 / (z2g + 1j * xs2))
+print(f"  fără aportul lui G1 în rețeaua echivalentă: I2 = {fmt(I2g2, 3)} u.r. (față de {fmt(I2g, 3)})")
 
 print("\nProblema 6.7 – protecția la punere la pământ a statorului (59N, 95 %)")
 Ef = G["Un"] / SQRT3
@@ -239,5 +291,4 @@ for x in (1.0, 0.5):
     Rf_num = brentq(lambda R: abs(tensiune_neutru_mna(x, R, RN, C, Ef)) / Ef - UN_set, 1.0, 1e7)
     print(f"  la x = {fmt(100 * x, 0)} %: rezistența de defect maximă detectată = {fmt(Rf_an / 1e3, 2)} kΩ")
     verifica(f"Rf maxim la x = {x:g}: ecuația de gradul 2 vs analiza nodală", Rf_an, Rf_num, rtol=1e-6)
-n_TN = Ef / 240
 print(f"  cu transformatorul de neutru {fmt(Ef, 0)}/240 V, reglajul în secundar = 0,05·240 = {fmt(0.05 * 240, 1)} V")

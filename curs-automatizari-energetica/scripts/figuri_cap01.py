@@ -36,9 +36,9 @@ axe[0].set_xlabel(f"|Va| = {abs(V[0]):.3f}, |Vb| = {abs(V[1]):.3f}, |Vc| = {abs(
 axe[1].set_xlabel(f"|V1| = {abs(V1):.3f}".replace(".", ","), fontsize=8.5, color=TEXT2)
 axe[2].set_xlabel(f"|V2| = {abs(V2):.3f}".replace(".", ","), fontsize=8.5, color=TEXT2)
 axe[3].set_xlabel(f"|V0| = {abs(V0):.3f} (aceeași pe toate fazele)".replace(".", ","), fontsize=8.5, color=TEXT2)
-salveaza(fig, "f01-1-componente-simetrice")
+salveaza(fig, "f01-3-componente-simetrice")
 
-# --- Figura 1.2: conectarea rețelelor de secvență pentru defectele nesimetrice ---
+# --- Figura 1.4: conectarea rețelelor de secvență pentru defectele nesimetrice ---
 fig, axe = plt.subplots(1, 3, figsize=(12, 3.9))
 for ax in axe:
     ax.set_xlim(0, 4)
@@ -46,39 +46,64 @@ for ax in axe:
     ax.axis("off")
 
 
-def retea(ax, x, y, txt, c, w=1.5):
-    bloc(ax, x, y, w, 0.7, txt, c, fs=8.5)
+def retea(ax, x, y, txt, c, w=1.5, h=0.7):
+    """Rețea de secvență ca dreptunghi cu bornele F (sus, la mijloc) și N (jos, la mijloc)."""
+    bloc(ax, x, y, w, h, txt, c, fs=8.5)
+    xm = x + w / 2
+    ax.text(xm + 0.06, y + h + 0.03, "F", fontsize=7.5, color=TEXT2, va="bottom")
+    ax.text(xm + 0.06, y - 0.03, "N", fontsize=7.5, color=TEXT2, va="top")
+    return xm, y + h, y          # x-ul bornelor, borna F, borna N
 
 
+def fir(ax, xs, ys):
+    ax.plot(xs, ys, color=TEXT2, lw=1.2)
+
+
+def impedanta(ax, xc, yc, et, vertical=True):
+    w, h = (0.16, 0.42) if vertical else (0.42, 0.16)
+    ax.add_patch(plt.Rectangle((xc - w / 2, yc - h / 2), w, h, fc=FUNDAL, ec=TEXT, lw=1.2, zorder=3))
+    ax.text(xc + (0.15 if vertical else 0), yc + (0 if vertical else 0.15), et, fontsize=10, color=TEXT,
+            ha="left" if vertical else "center", va="center" if vertical else "bottom")
+
+
+# monofazat: rețelele în serie, închise prin 3Zf
 ax = axe[0]
 ax.set_title("monofazat (faza a – pământ)", fontsize=10)
-retea(ax, 1.2, 3.3, "directă\nE, Z₁", C1)
-retea(ax, 1.2, 2.1, "inversă\nZ₂", C2)
-retea(ax, 1.2, 0.9, "homopolară\nZ₀", C3)
-for y0, y1 in ((3.3, 2.8), (2.1, 1.6)):
-    legatura(ax, (2.7, y0 + 0.2), (2.7, y1), sageata_la_capat=False)
-ax.plot([2.7, 3.3, 3.3, 2.7], [3.5, 3.5, 1.1, 1.1], color=TEXT2, lw=1.2)
-ax.text(3.4, 2.3, r"$3Z_f$", fontsize=10, color=TEXT2, va="center")
-ax.text(2.0, 0.35, "I₁ = I₂ = I₀ (în serie)", ha="center", fontsize=9, color=TEXT)
+x1, F1, N1 = retea(ax, 0.8, 3.2, "directă\nE, Z₁", C1)
+x2, F2, N2 = retea(ax, 0.8, 2.0, "inversă\nZ₂", C2)
+x0, F0, N0 = retea(ax, 0.8, 0.8, "homopolară\nZ₀", C3)
+fir(ax, [x1, x2], [N1, F2])
+fir(ax, [x2, x0], [N2, F0])
+fir(ax, [x0, x0, 3.1, 3.1], [N0, 0.5, 0.5, 2.2])
+fir(ax, [3.1, 3.1, x1, x1], [2.5, 4.2, 4.2, F1])
+impedanta(ax, 3.1, 2.35, r"$3Z_f$")
+ax.annotate("", xy=(3.1, 3.6), xytext=(3.1, 3.2), arrowprops=dict(arrowstyle="-|>", color=C2, lw=1.2))
+ax.text(3.25, 3.4, "I₁ = I₂ = I₀", fontsize=8.5, color=C2, va="center")
+ax.text(2.0, 0.12, "în serie: același curent prin toate", ha="center", fontsize=9, color=TEXT)
+# bifazat: directă și inversă în paralel, bornele F legate prin Zf
 ax = axe[1]
 ax.set_title("bifazat (fazele b – c)", fontsize=10)
-retea(ax, 0.4, 2.4, "directă\nE, Z₁", C1)
-retea(ax, 2.2, 2.4, "inversă\nZ₂", C2)
-ax.plot([1.15, 1.15, 2.95, 2.95], [3.1, 3.6, 3.6, 3.1], color=TEXT2, lw=1.2)
-ax.plot([1.15, 1.15, 2.95, 2.95], [2.4, 1.9, 1.9, 2.4], color=TEXT2, lw=1.2)
-ax.text(2.0, 3.7, r"$Z_f$", ha="center", fontsize=10, color=TEXT2)
-ax.text(2.0, 1.2, "I₁ = −I₂, I₀ = 0\n(rețelele în paralel)", ha="center", fontsize=9, color=TEXT)
+x1, F1, N1 = retea(ax, 0.3, 2.1, "directă\nE, Z₁", C1)
+x2, F2, N2 = retea(ax, 2.2, 2.1, "inversă\nZ₂", C2)
+fir(ax, [x1, x1, 1.75], [F1, 3.5, 3.5])
+fir(ax, [2.15, x2, x2], [3.5, 3.5, F2])
+impedanta(ax, 1.95, 3.5, r"$Z_f$", vertical=False)
+fir(ax, [x1, x1, x2, x2], [N1, 1.6, 1.6, N2])
+ax.text(2.0, 0.9, "I₁ = −I₂, I₀ = 0\n(rețelele în paralel)", ha="center", fontsize=9, color=TEXT)
+# bifazat cu pământ: toate trei în paralel (homopolara prin 3Zf)
 ax = axe[2]
 ax.set_title("bifazat cu pământ (b – c – pământ)", fontsize=10)
-retea(ax, 0.05, 2.4, "directă\nE, Z₁", C1, w=1.1)
-retea(ax, 1.45, 2.4, "inversă\nZ₂", C2, w=1.1)
-retea(ax, 2.85, 2.4, "homopolară\nZ₀", C3, w=1.1)
-ax.plot([0.6, 0.6, 3.4, 3.4], [3.1, 3.6, 3.6, 3.1], color=TEXT2, lw=1.2)
-ax.plot([2.0, 2.0], [3.1, 3.6], color=TEXT2, lw=1.2)
-ax.plot([0.6, 0.6, 3.4, 3.4], [2.4, 1.9, 1.9, 2.4], color=TEXT2, lw=1.2)
-ax.plot([2.0, 2.0], [2.4, 1.9], color=TEXT2, lw=1.2)
-ax.text(2.0, 1.2, "I₁ + I₂ + I₀ = 0\n(toate trei în paralel)", ha="center", fontsize=9, color=TEXT)
-salveaza(fig, "f01-2-conectare-secvente")
+x1, F1, N1 = retea(ax, 0.05, 2.1, "directă\nE, Z₁", C1, w=1.1)
+x2, F2, N2 = retea(ax, 1.45, 2.1, "inversă\nZ₂", C2, w=1.1)
+x0, F0, N0 = retea(ax, 2.85, 2.1, "homopolară\nZ₀", C3, w=1.1)
+fir(ax, [x1, x1, x0, x0], [F1, 3.7, 3.7, 3.45])
+fir(ax, [x2, x2], [F2, 3.7])
+fir(ax, [x0, x0], [3.05, F0])
+impedanta(ax, x0, 3.25, r"$3Z_f$")
+fir(ax, [x1, x1, x0, x0], [N1, 1.6, 1.6, N0])
+fir(ax, [x2, x2], [N2, 1.6])
+ax.text(2.0, 0.9, "I₁ + I₂ + I₀ = 0\n(toate trei în paralel)", ha="center", fontsize=9, color=TEXT)
+salveaza(fig, "f01-4-conectare-secvente")
 
 # --- Figura 1.3: curentul de scurtcircuit cu componentă aperiodică la bara B2 ---
 s = r.scurtcircuit_secvente("B2", "3f")
@@ -108,7 +133,7 @@ ax.set_ylim(-12, 18)
 ax.legend(loc="lower right", ncol=3, fontsize=8.5)
 ax.set_title(f"Bara B2: I\"k = {Ik / 1e3:.2f} kA, R/X = {R / X:.3f}, T = X/(ωR) = {tau * 1e3:.1f} ms".replace(".", ","))
 virgula(ax)
-salveaza(fig, "f01-3-curent-soc")
+salveaza(fig, "f01-2-curent-soc")
 
 # --- Figura 1.4: curentul de defect în lungul fiderului F1 ---
 r_min80 = retea_referinta(c=C_MIN, cu_capacitati=False, kR20=1 + 0.004 * 60)
@@ -137,13 +162,13 @@ for xx, nume in ((0, "B2"), (lc + la, "P1"), (lc + la + lb, "P2")):
     ax.axvline(xx, color=TEXT2, lw=0.8, ls=":")
     ax.text(xx + 0.2, 0.15, nume, color=TEXT, fontsize=10, fontweight="bold")
 ax.axvspan(0, lc, color="#ecebe7", zorder=0)
-ax.text(lc / 2, 5.4, "cablu", ha="center", fontsize=8.5, color=TEXT2)
+ax.text(lc / 2, 3.2, "cablu", ha="center", fontsize=8.5, color=TEXT2)
 ax.set_xlabel("distanța de la bara B2 [km]")
 ax.set_ylabel("curentul de defect [kA]")
 ax.set_ylim(0, 6.8)
 ax.legend(loc="upper right", bbox_to_anchor=(0.97, 0.98))
 virgula(ax)
-salveaza(fig, "f01-4-profil-fider")
+salveaza(fig, "f01-1-profil-fider")
 
 # --- Figura 1.5: punerea la pământ în rețeaua de 20 kV ---
 Uf = d["U20"] / SQRT3
@@ -165,7 +190,7 @@ for k, c in enumerate((C1, C2, C3)):
 a1.plot([G.real], [G.imag], "o", color=TEXT, ms=5)
 a1.text(G.real + 0.02, G.imag + 0.08, "G = pământul\n(potențialul fazei a)", ha="left", fontsize=8.5, color=TEXT)
 a1.plot([0], [0], "o", color=TEXT2, ms=4)
-a1.text(-0.05, 0.06, "N", ha="right", fontsize=9, color=TEXT2)
+a1.text(-0.06, -0.1, "N", ha="right", va="top", fontsize=9, color=TEXT2)
 sageata(a1, G, 0j, TEXT2, "U0", offset=(0, -14), t=0.5, lw=1.2, fs=8.5)
 a1.set_xlim(-1.3, 1.9)
 a1.set_ylim(-1.3, 1.3)

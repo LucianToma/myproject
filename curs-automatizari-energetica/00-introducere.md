@@ -4,6 +4,12 @@
 
 Un sistem electroenergetic funcționează aproape tot timpul în **regim normal**: tensiuni și frecvență apropiate de valorile nominale, curenți sub valorile admisibile. Din când în când apar însă **defecte** (de exemplu un scurtcircuit provocat de un trăsnet) și **regimuri anormale** (de exemplu o suprasarcină sau o scădere a frecvenței). Echipamentele care le detectează și reacționează automat, în fracțiuni de secundă, sunt subiectul acestui curs.
 
+Toate problemele din curs folosesc aceeași **rețea de referință** (figura 0.1), descrisă în § 0.7.
+
+![Figura 0.1 – Rețeaua de referință](figuri/f00-1-retea-referinta.svg)
+
+*Figura 0.1 – Rețeaua de referință: rețeaua de 110 kV (A–B–C), stația B cu transformatorul T1 și rețeaua de 20 kV alimentată din bara B2.*
+
 Cursul urmărește în special trei cărți de referință publicate de firme din domeniu: ghidul Alstom *Network Protection & Automation Guide* [1], cărțile lui G. Ziegler (Siemens) despre protecția de distanță și cea diferențială [2, 3] și manualul ABB editat de W. A. Elmore [7]. Lista completă este în [README](README.md#bibliografie).
 
 ---
@@ -40,7 +46,7 @@ Cele două categorii lucrează împreună. De exemplu, după ce protecția de di
 | **Selectivitate** | se deconectează numai elementul defect, cu cel mai mic număr de întrerupătoare | coordonarea în timp (§ 3.4), protecții cu zonă închisă (capitolul 4), zone de distanță (capitolul 5) |
 | **Rapiditate** | defectul este eliminat cât mai repede | timpul critic de eliminare (capitolul 7), problema 0.1 |
 | **Sensibilitate** | protecția acționează și la cel mai mic curent de defect din zona ei | curenții minimi de scurtcircuit (§ 1.2), coeficienții de sensibilitate (§ 3.3) |
-| **Siguranță în funcționare** | protecția acționează când trebuie (**fiabilitate**, în engleză *dependability*) și numai când trebuie (**securitate**, *security*) | redundanța (problema 0.2) |
+| **Siguranță în funcționare** | protecția acționează când trebuie (**siguranța acționării**, în engleză *dependability*) și numai când trebuie (**securitatea**, *security*) | redundanța (problema 0.2) |
 
 Cerințele se contrazic parțial. O protecție foarte sensibilă și foarte rapidă riscă să acționeze și la fenomene care nu sunt defecte (curentul de magnetizare la conectarea unui transformator, pornirea unui motor, pendulațiile). O protecție foarte selectivă prin temporizare este lentă. Proiectarea protecțiilor înseamnă găsirea unui compromis, verificat prin calcul.
 
@@ -96,32 +102,28 @@ Unele protecții au o zonă **închisă**, delimitată exact de transformatoarel
 | 90 | dispozitiv de reglaj (de exemplu regulatorul de ploturi) | – | 8 |
 | – | întrerupătorul (nodul logic al echipamentului primar) | XCBR | 9 |
 
-Denumirile au fost verificate în liste secundare ale codurilor IEEE C37.2, pentru că textul standardului nu a putut fi consultat; pentru codurile 25, 40 și 49 s-a găsit o singură astfel de sursă. Nodurile logice IEC 61850 sunt cele confirmate în documentația producătorilor (capitolul 9).
+În coloana nodurilor logice, „–” înseamnă că nodul logic al funcției nu este detaliat în curs.
 
 Un sufix precizează mărimea: N pentru curentul rezidual (de exemplu 51N, protecția homopolară temporizată), G pentru generator sau pământ, T pentru transformator.
 
 ## 0.7. Rețeaua de referință a cursului
 
-Pentru unitate, problemele din toate capitolele folosesc aceeași rețea (figura 0.1). Datele ei sunt **construite pentru curs**, cu valori din domeniile uzuale, și nu reproduc o instalație reală.
-
-![Figura 0.1 – Rețeaua de referință](figuri/f00-1-retea-referinta.svg)
-
-*Figura 0.1 – Rețeaua de referință: rețeaua de 110 kV (A–B–C), stația B cu transformatorul T1 și rețeaua de 20 kV alimentată din bara B2.*
+Pentru unitate, problemele din toate capitolele folosesc aceeași rețea (figura 0.1, la începutul capitolului). Datele ei sunt **construite pentru curs**, cu valori din domeniile uzuale, și nu reproduc o instalație reală.
 
 | Element | Date | Folosit în |
 |---|---|---|
 | sursele echivalente QA și QC | S"k = 3000 MVA (la A) și 1500 MVA (la C), X/R = 10, $Z_0 = Z_1$ | cap. 1, 5 |
 | liniile L1 (A–B) și L2 (B–C) | LEA 110 kV, 40 km și 30 km; $z_1$ = 0,12 + j0,40 Ω/km, $z_0$ = 0,30 + j1,20 Ω/km | cap. 1, 2, 5 |
-| transformatorul T1 | 25 MVA, 110/20 kV, YNd11, $u_k$ = 11 %, $P_k$ = 120 kW; neutrul de 110 kV legat la pământ | cap. 1, 4 |
+| transformatorul T1 | 25 MVA, 110/20 kV, YNd11, $u_k$ = 11 %, $P_k$ = 120 kW; neutrul de 110 kV legat direct la pământ; impedanța homopolară văzută de pe partea de 110 kV egală cu cea de scurtcircuit | cap. 1, 4 |
 | tratarea neutrului rețelei de 20 kV | bobină de punct neutru (BPN) cu rezistor de 38,49 Ω (limitează curentul la 300 A); în probleme se compară cu neutrul izolat și cu bobina de stingere | cap. 1, 2, 3 |
-| fiderul F1 | B2–P1: 3 km cablu Al 185 mm² ($z_1$ = 0,164 + j0,12 Ω/km, C = 0,26 µF/km) + 7 km LEA Ol-Al 70 mm² ($z_1$ = 0,413 + j0,36 Ω/km); P1–P2: 8 km LEA | cap. 1, 3 |
+| fiderul F1 | B2–P1: 3 km cablu Al 185 mm² ($z_1$ = 0,164 + j0,12 Ω/km, $z_0$ = 0,66 + j0,40 Ω/km, $C_1 = C_0$ = 0,26 µF/km) + 7 km LEA Ol-Al 70 mm² ($z_1$ = 0,413 + j0,36 Ω/km, $z_0$ = 0,56 + j1,55 Ω/km, $C_1$ = 0,0095 µF/km, $C_0$ = 0,005 µF/km); P1–P2: 8 km din aceeași LEA. Sarcini maxime: 180 A la plecare, 110 A pe P1–P2, 50 A la consumatorul din P2 | cap. 1, 3 |
 | restul rețelei de 20 kV | 37 km de cablu și 60 km de LEA (contează prin capacitățile lor față de pământ) | cap. 1, 3 |
 | releele R0 … R3 | protecțiile maximale ale fiderului F1 și ale intrării de 20 kV a lui T1 | cap. 3 |
 | protecția de distanță 21 | în A, pe linia L1; TC 600/1 A, TT 110/0,1 kV | cap. 2, 5 |
-| generatorul G1 | hidrogenerator de 50 MVA, 10,5 kV, cu transformator bloc, racordat în C | cap. 6, 7, 8 |
+| generatorul G1 | hidrogenerator de 50 MVA, 10,5 kV, cu transformator bloc, racordat în C; contribuția lui la curenții de scurtcircuit din capitolul 1 este inclusă în sursa echivalentă QC | cap. 6, 7, 8 |
 | motorul M1 | motor asincron de 800 kW, 6 kV | cap. 6, 7 |
 
-Toate calculele (curenți de defect, reglaje, verificări) sunt făcute de scripturile din [`scripts/`](scripts/), din aceste date (§ „Cum au fost verificate calculele” din [README](README.md)).
+Toate calculele (curenți de defect, reglaje, verificări) sunt făcute de scripturile din [`scripts/`](scripts/), din aceste date (vezi secțiunea „Cum au fost verificate calculele” din [README](README.md#cum-au-fost-verificate-calculele)).
 
 ---
 
@@ -146,9 +148,11 @@ Temperatura finală pentru câteva durate de eliminare (din ecuația adiabatică
 |---|---|---|---|---|---|
 | temperatura finală | 92 °C | 98 °C | 106 °C | 122 °C | 248 °C |
 
+Calculul folosește valoarea efectivă a componentei alternative, $I''_k$, constantă (defect departe de generatoare). Componenta aperiodică (§ 1.3) adaugă energia $I^2 T\thinspace(1 - e^{-2t/T})$, cu $T$ = 42,5 ms la B2: 42,1 % în plus la 0,1 s, dar numai 8,5 % la 0,5 s și 4,2 % la 1 s. Cu componenta aperiodică maximă, durata admisibilă scade de la 8,31 s la 8,265 s.
+
 Cablul suportă deci curentul de scurtcircuit chiar și pe durata temporizărilor protecțiilor maximale (capitolul 3, sub 1 s). Rezerva este însă mult mai mică pentru secțiuni mai mici, în rețele cu putere de scurtcircuit mai mare sau la refuzul unei protecții.
 
-**Verificare.** Factorul $k$ se poate calcula și din constantele de material, cu forma generală $k = \sqrt{Q_c(\beta + 20)/\rho_{20}\cdot\ln[(\beta + \theta_f)/(\beta + \theta_i)]}$. Pentru aluminiu, cu $Q_c$ = 2,5·10⁻³ J/(K·mm³), $\beta$ = 228 K și $\rho_{20}$ = 28,264·10⁻⁶ Ω·mm, rezultă $K = \sqrt{Q_c(\beta + 20)/\rho_{20}}$ = 148,1 și $k$ = 94,55, față de 94 în tabel. Același calcul pentru cupru dă $k$ = 142,9, față de 143 în tabel. La $t_{max}$ temperatura calculată este 248 °C, adică puțin sub 250 °C, pentru că valoarea din tabel (94) este rotunjită în jos.
+**Verificare.** Factorul $k$ se poate calcula și din constantele de material, cu forma generală $k = \sqrt{Q_c(\beta + 20)/\rho_{20}\cdot\ln[(\beta + \theta_f)/(\beta + \theta_i)]}$. Pentru aluminiu, cu $Q_c$ = 2,5·10⁻³ J/(K·mm³), $\beta$ = 228 K și $\rho_{20}$ = 28,264·10⁻⁶ Ω·mm, rezultă $K = \sqrt{Q_c(\beta + 20)/\rho_{20}}$ = 148,1 și $k$ = 94,55, față de 94 în tabel. Același calcul pentru cupru dă $k$ = 142,9, față de 143 în tabel. La $t_{max}$ temperatura calculată este 248 °C, adică puțin sub 250 °C, pentru că valoarea din tabel (94) este rotunjită în jos. Durata admisibilă cu componenta aperiodică (8,265 s) rezultă și prin integrarea numerică a pătratului curentului asimetric real: 8,267 s; diferența provine din termenii oscilanți ai lui $i^2$, pe care formula îi neglijează.
 
 ### Problema 0.2 – Redundanța protecțiilor
 
@@ -181,8 +185,8 @@ Schema „1 din 2” (două protecții, oricare declanșează) reduce refuzul de
    <details><summary>Răspuns</summary>Protecția detectează un defect sau un regim anormal și deconectează zona afectată (sau semnalizează): protecția maximală de curent, protecția diferențială. Automatizarea menține sau restabilește funcționarea: reanclanșarea automată, anclanșarea automată a rezervei, descărcarea automată a sarcinii la scăderea frecvenței, regulatoarele de tensiune și de frecvență.</details>
 3. De ce selectivitatea și rapiditatea se contrazic la protecțiile maximale de curent, dar nu și la protecția diferențială?
    <details><summary>Răspuns</summary>Protecția maximală are zonă deschisă: același curent de defect îl văd toate releele din amonte, iar selectivitatea se obține prin temporizări crescătoare spre sursă (§ 3.4), deci prin întârzieri. Protecția diferențială are zonă închisă, delimitată de transformatoarele de curent: ea compară curenții de la capetele zonei și știe dacă defectul este în interior, deci poate acționa instantaneu fără să piardă selectivitatea.</details>
-4. Ce înseamnă „fiabilitate” și „securitate” pentru o protecție? Care schemă cu două protecții o favorizează pe fiecare?
-   <details><summary>Răspuns</summary>Fiabilitatea (*dependability*) este capacitatea de a acționa la toate defectele din zonă; securitatea (*security*) este capacitatea de a nu acționa în afara lor. Schema „1 din 2” (oricare dintre protecții declanșează) favorizează fiabilitatea; schema „2 din 2” (trebuie să fie de acord amândouă) favorizează securitatea (problema 0.2).</details>
+4. Ce înseamnă „siguranța acționării” și „securitatea” unei protecții? Care schemă cu două protecții o favorizează pe fiecare?
+   <details><summary>Răspuns</summary>Siguranța acționării (*dependability*) este capacitatea de a acționa la toate defectele din zonă; securitatea (*security*) este capacitatea de a nu acționa în afara lor. Schema „1 din 2” (oricare dintre protecții declanșează) favorizează siguranța acționării; schema „2 din 2” (trebuie să fie de acord amândouă) favorizează securitatea (problema 0.2).</details>
 5. De ce zonele de protecție se suprapun în jurul întrerupătoarelor?
    <details><summary>Răspuns</summary>Ca să nu existe nicio porțiune neprotejată. Transformatoarele de curent ale protecțiilor vecine se montează de o parte și de alta a întrerupătorului, astfel încât un defect între ele (de exemplu chiar în întrerupător) să fie văzut de ambele protecții. Prețul este că un defect în zona comună deconectează ambele elemente.</details>
 6. De ce sursa operativă a protecțiilor este de curent continuu, din baterii?

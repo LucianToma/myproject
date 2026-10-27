@@ -2,8 +2,9 @@
 
 import numpy as np
 from modele import GEN, DATE, SQRT3, W0, fmt, verifica, verifica_adevarat, retea_referinta
-from calcul_cap08 import (M_inertie, K_statism, izolat_ode, izolat_lti, nadir, ce_simulare, ce_nadir_analitic,
-                          dasf_simulare, doua_zone, jacobian_numeric, tensiune_secundar,
+from calcul_cap08 import (M_inertie, K_statism, izolat_ode, izolat_lti, nadir, ce_simulare, ce_ivp, ce_nadir_analitic,
+                          profil_liniar, profil_patratic, profil_intarziat, dasf_simulare, dasf_ivp,
+                          doua_zone, jacobian_numeric, tensiune_secundar,
                           tensiune_secundar_iterativ, regulator_ploturi, rat_ode, rat_lti, rat_analitic)
 
 F0 = 50.0
@@ -17,12 +18,12 @@ Tg, Tt = 0.2, 2.0       # constantele de timp ale regulatorului și ale turbinei
 dP = 100.0              # puterea pierdută [MW]
 M = M_inertie(H, S_rest)
 K = K_statism(S_rest, s_st)
-print(f"  M = 2·H·S/f0 = {fmt(M, 1)} MW·s/Hz; panta regulatoarelor K = S/(s·f0) = {fmt(K, 1)} MW/Hz")
+print(f"  M = 2·H·S/f0 = {fmt(M, 1)} MW·s/Hz; panta regulatoarelor K_reg = S/(s·f0) = {fmt(K, 1)} MW/Hz")
 rocof0 = -dP / M
 df_ss = -dP / (K + D)
 df_ss_fara = -dP / D
 print(f"  RoCoF inițial = −ΔP/M = {fmt(rocof0, 3)} Hz/s")
-print(f"  abaterea staționară cu regulatoare: Δf = −ΔP/(K + D) = {fmt(df_ss * 1e3, 1)} mHz")
+print(f"  abaterea staționară cu regulatoare: Δf = −ΔP/(K_reg + D) = {fmt(df_ss * 1e3, 1)} mHz")
 print(f"  fără regulatoare: Δf = −ΔP/D = {fmt(df_ss_fara, 2)} Hz, cu constanta de timp M/D = {fmt(M / D, 2)} s")
 t, df, Pm = izolat_ode(dP, M, D, K, Tg, Tt, 120.0, n=12001)
 df_lti = izolat_lti(dP, M, D, K, Tg, Tt, t)
@@ -34,11 +35,12 @@ rocof_500 = df[k500] / t[k500]
 print(f"  simulare: nadir Δf = {fmt(dfn * 1e3, 1)} mHz la t = {fmt(tn, 2)} s (funcția de transfer: "
       f"{fmt(dfn2 * 1e3, 1)} mHz la {fmt(tn2, 2)} s); Δf(120 s) = {fmt(df[-1] * 1e3, 1)} mHz")
 print(f"  RoCoF mediu pe primele 500 ms = {fmt(rocof_500, 3)} Hz/s (inițial {fmt(rocof0, 3)} Hz/s)")
-verifica("RoCoF inițial: analitic vs simulare (primul pas)", rocof0, rocof_num, rtol=2e-3)
+verifica("consistență: panta din primul pas = −ΔP/M (la t = 0 acționează numai inerția)", rocof0, rocof_num, rtol=2e-3)
 verifica("Δf staționar: analitic vs simulare", df_ss, df[-1], rtol=1e-3)
-verifica("nadir: solve_ivp vs funcția de transfer", dfn, dfn2, rtol=1e-3)
+verifica("nadir: solve_ivp vs funcția de transfer (verificare numerică încrucișată a aceluiași model)", dfn, dfn2,
+         rtol=1e-3)
 verifica("momentul nadirului: solve_ivp vs funcția de transfer", tn, tn2, atol=0.02, rtol=0)
-verifica("ΔPm final = K·|Δf| (bilanțul regulatoarelor)", Pm[-1], -K * df[-1], rtol=1e-3)
+verifica("ΔPm final = K_reg·|Δf| (bilanțul regulatoarelor)", Pm[-1], -K * df[-1], rtol=1e-3)
 print(f"  în regim staționar: turbinele dau {fmt(Pm[-1], 1)} MW, sarcina scade cu D·|Δf| = {fmt(-D * df[-1], 1)} MW")
 verifica("bilanțul staționar: ΔPm + D·|Δf| = ΔP", Pm[-1] - D * df[-1], dP, rtol=1e-3)
 t2, df2, _ = izolat_ode(dP, M, D, K, Tg, Tt, 200.0, cu_regulator=False)
@@ -55,42 +57,55 @@ for Tt_ in (0.5, 5.0):
 # ---------------------------------------------------------------------------
 print("\nProblema 8.2 – incidentul de referință în Europa continentală (3000 MW)")
 P_inc, Pfcr, df_fcr = 3000.0, 3000.0, 0.200       # SOGL: incident de referință, FCR total, abaterea la activare completă
-lam = Pfcr / df_fcr
+lam_fcr = Pfcr / df_fcr
 S_ce, H_ce = 300e3, 4.0                            # date de problemă: sarcina 300 GW, H = 4 s
 D_ce = 0.01 * S_ce                                 # date de problemă: 1 % din sarcină pe Hz
 M_ce = M_inertie(H_ce, S_ce)
-viteza = Pfcr / 30.0                               # cea mai lentă creștere admisă: liniar, 100 % în 30 s
-df_ce = -P_inc / (lam + D_ce)
-print(f"  caracteristica FCR λ = {fmt(Pfcr, 0)} MW / {fmt(df_fcr * 1e3, 0)} mHz = {fmt(lam, 0)} MW/Hz; "
+viteza = Pfcr / 30.0                               # activarea liniară: 50 % la 15 s, 100 % la 30 s
+df_ce = -P_inc / (lam_fcr + D_ce)
+print(f"  caracteristica FCR λ_FCR = {fmt(Pfcr, 0)} MW / {fmt(df_fcr * 1e3, 0)} mHz = {fmt(lam_fcr, 0)} MW/Hz; "
       f"D = {fmt(D_ce, 0)} MW/Hz; M = {fmt(M_ce, 0)} MW·s/Hz")
-print(f"  abaterea staționară Δf = −ΔP/(λ + D) = {fmt(df_ce * 1e3, 1)} mHz; FCR livrează {fmt(-lam * df_ce, 0)} MW,"
+print(f"  abaterea staționară Δf = −ΔP/(λ_FCR + D) = {fmt(df_ce * 1e3, 1)} mHz; FCR livrează {fmt(-lam_fcr * df_ce, 0)} MW,"
       f" sarcina scade cu {fmt(-D_ce * df_ce, 0)} MW")
 print(f"  RoCoF inițial = −ΔP/M = {fmt(-P_inc / M_ce * 1e3, 1)} mHz/s")
-t, dfc, Pc = ce_simulare(P_inc, M_ce, D_ce, lam, Pfcr, viteza, 200.0, dt=2e-3)
-tn, dfn = nadir(t, dfc)
+t_ev = np.linspace(0, 200.0, 200001)
+profiluri = (("liniar (exact minimul cerut)", profil_liniar), ("pătratic până la 50 % la 15 s", profil_patratic),
+             ("nimic până la 15 s, apoi 50 % și liniar", profil_intarziat))
+rez_ce = {}
+for nume, prof in profiluri:
+    t, dfc, Pc = ce_simulare(P_inc, M_ce, D_ce, lam_fcr, Pfcr, prof, 200.0, dt=2e-3)
+    t2, x2 = ce_ivp(P_inc, M_ce, D_ce, lam_fcr, Pfcr, prof, 200.0, t_ev)
+    tn, dfn = nadir(t, dfc)
+    tn2, dfn2 = nadir(t2, x2)
+    rez_ce[nume] = (tn, dfn)
+    print(f"  profil {nume}: nadir {fmt(dfn * 1e3, 1)} mHz la {fmt(tn, 2)} s (solve_ivp: {fmt(dfn2 * 1e3, 1)} mHz la "
+          f"{fmt(tn2, 2)} s); Δf(200 s) = {fmt(dfc[-1] * 1e3, 1)} mHz; FCR la 15 s = "
+          f"{fmt(Pc[np.searchsorted(t, 15.0)], 0)} MW")
+    verifica(f"profil {nume}: nadir RK4 vs solve_ivp", dfn, dfn2, rtol=2e-4)
+    verifica(f"profil {nume}: Δf staționar analitic vs simulare", df_ce, dfc[-1], rtol=1e-3)
+    verifica_adevarat(f"profil {nume}: abaterea maximă instantanee < 800 mHz (SOGL)", abs(dfn) < 0.800)
+    verifica_adevarat(f"profil {nume}: abaterea staționară ≤ 200 mHz (SOGL)", abs(dfc[-1]) <= 0.200)
+    verifica_adevarat(f"profil {nume}: cel puțin 50 % din FCR la 15 s și 100 % la 30 s", prof(15.0) >= 0.5 and prof(30.0) >= 1.0)
 tn_a, dfn_a = ce_nadir_analitic(P_inc, M_ce, D_ce, viteza)
-print(f"  nadir: simulare {fmt(dfn * 1e3, 1)} mHz la {fmt(tn, 2)} s; analitic (faza cu FCR limitat de viteză) "
-      f"{fmt(dfn_a * 1e3, 1)} mHz la {fmt(tn_a, 2)} s")
-verifica("nadir CE: analitic vs simulare", dfn_a, dfn, rtol=1e-3)
-verifica("momentul nadirului CE: analitic vs simulare", tn_a, tn, atol=0.02, rtol=0)
-verifica_adevarat("la nadir FCR este încă limitat de viteză (ipoteza formulei analitice)",
-                  viteza * tn_a < lam * abs(dfn_a) and viteza * tn_a < Pfcr)
-verifica("Δf staționar CE: analitic vs simulare", df_ce, dfc[-1], rtol=1e-3)
-verifica_adevarat("abaterea maximă instantanee < 800 mHz (SOGL)", abs(dfn) < 0.800)
-verifica_adevarat("abaterea staționară ≤ 200 mHz (SOGL)", abs(dfc[-1]) <= 0.200)
-P15 = Pc[np.searchsorted(t, 15.0)]
-print(f"  FCR la 15 s = {fmt(P15, 0)} MW ({fmt(100 * P15 / Pfcr, 1)} % din 3000 MW)")
-# Fără efectul de autoreglare al sarcinii (D = 0): FCR crește liniar 30 s, timp în care deficitul
-# scade de la 3000 MW la 0; frecvența se oprește la Δf(30 s) = −(ΔP·T − r·T²/2)/M și rămâne acolo,
-# deoarece FCR este saturat exact la valoarea deficitului (nu mai există putere care să o readucă).
-t0, dfc0, _ = ce_simulare(P_inc, M_ce, 1e-9, lam, Pfcr, viteza, 200.0, dt=2e-3)
+tn_l, dfn_l = rez_ce["liniar (exact minimul cerut)"]
+print(f"  profilul liniar, analitic (FCR = r·t până la nadir): {fmt(dfn_a * 1e3, 1)} mHz la {fmt(tn_a, 2)} s")
+verifica("profil liniar: nadir analitic vs simulare", dfn_a, dfn_l, rtol=1e-3)
+verifica("profil liniar: momentul nadirului analitic vs simulare", tn_a, tn_l, atol=0.02, rtol=0)
+verifica_adevarat("la nadir FCR este încă limitată de profil (ipoteza formulei analitice)",
+                  viteza * tn_a < lam_fcr * abs(dfn_a) and viteza * tn_a < Pfcr)
+nadire = [rez_ce[n][1] for n, _ in profiluri]
+verifica_adevarat("profilurile mai lente, dar conforme, dau nadire mai adânci", nadire[0] > nadire[1] > nadire[2])
+# Fără efectul de autoreglare al sarcinii (D = 0), cu profilul liniar: FCR crește liniar 30 s, timp în care
+# deficitul scade de la 3000 MW la 0; frecvența se oprește la Δf(30 s) = −(ΔP·T − r·T²/2)/M și rămâne acolo,
+# deoarece FCR este la maximum, exact cât deficitul (nu mai există putere care să o readucă).
+t0, dfc0, _ = ce_simulare(P_inc, M_ce, 1e-9, lam_fcr, Pfcr, profil_liniar, 200.0, dt=2e-3)
 T_fcr = Pfcr / viteza
 df30 = -(P_inc * T_fcr - viteza * T_fcr**2 / 2) / M_ce
 print(f"  dacă D = 0: frecvența coboară până la Δf(30 s) = −(ΔP·T − r·T²/2)/M = {fmt(df30 * 1e3, 1)} mHz și rămâne acolo "
       f"(simulare: nadir {fmt(nadir(t0, dfc0)[1] * 1e3, 1)} mHz, Δf(200 s) = {fmt(dfc0[-1] * 1e3, 1)} mHz)")
 verifica("D = 0: Δf(30 s) analitic vs simulare", df30, dfc0[np.searchsorted(t0, T_fcr)], rtol=1e-3)
 verifica("D = 0: frecvența nu mai revine (Δf(200 s) = Δf(30 s))", dfc0[-1], df30, rtol=1e-3)
-verifica_adevarat("D = 0 cu FCR la viteza minimă: limita de 800 mHz ar fi depășită", abs(df30) > 0.800)
+verifica_adevarat("D = 0 cu profilul liniar: limita de 800 mHz ar fi depășită", abs(df30) > 0.800)
 
 # ---------------------------------------------------------------------------
 print("\nProblema 8.3 – descărcarea automată a sarcinii (DASF) într-o insulă cu deficit de 30 %")
@@ -189,6 +204,23 @@ print(f"  cu DASF: frecvența minimă {fmt(f_cu.min(), 3)} Hz la t = {fmt(t[np.a
       f"(analitic {fmt(F0 + df_fin, 3)} Hz)")
 verifica("frecvența finală cu DASF: analitic vs simulare", F0 + df_fin, f_cu[-1], rtol=1e-5)
 verifica_adevarat("cu DASF frecvența rămâne peste 48,0 Hz", f_cu.min() > 48.0)
+# A doua cale: solve_ivp cu detectarea evenimentelor (trecerea pragurilor și minimul frecvenței)
+rv = dasf_ivp(dP3, M3, D3, K3, Tg=0.2, Tt=1.0, rezerva=rez, trepte=trepte, t_intarziere=t_int, t_end=40.0)
+print("  solve_ivp cu evenimente: deconectări la " + "; ".join(f"{fmt(ta, 4)} s" for _, ta in rv["actionari"]) +
+      f"; minimul {fmt(rv['minim'][1], 4)} Hz la {fmt(rv['minim'][0], 3)} s; frecvența finală {fmt(rv['f_final'], 3)} Hz")
+verifica_adevarat("aceleași trepte acționează pe ambele căi", [a[0] for a in act] == [i for i, _ in rv["actionari"]])
+verifica("momentele deconectării: pas fix vs solve_ivp (în 2 ms)", np.array([a[1] for a in act]),
+         np.array([ta for _, ta in rv["actionari"]]), rtol=0, atol=2e-3)
+verifica("frecvența minimă: pas fix (1 ms) vs solve_ivp, în 2 mHz", f_cu.min(), rv["minim"][1], rtol=0, atol=2e-3)
+verifica("momentul minimului: pas fix vs solve_ivp", t[np.argmin(f_cu)], rv["minim"][0], rtol=0, atol=5e-3)
+# Dacă autoreglarea sarcinii scade proporțional cu sarcina rămasă (D·(1 − desc/PL0))
+_, f_p, _, desc_p, _ = dasf_simulare(dP3, M3, D3, K3, Tg=0.2, Tt=1.0, rezerva=rez, trepte=trepte,
+                                     t_intarziere=t_int, t_end=40.0, dt=1e-3, PL0=PL0)
+D_rest = D3 * (1 - desc_p[-1] / PL0)
+df_p_an = -(dP3 - desc_p[-1]) / (K3 + D_rest)
+print(f"  cu D proporțional cu sarcina rămasă (D = {fmt(D_rest, 1)} MW/Hz după deconectare): frecvența finală "
+      f"{fmt(f_p[-1], 3)} Hz (analitic {fmt(F0 + df_p_an, 3)} Hz), față de {fmt(f_cu[-1], 3)} Hz cu D constant")
+verifica("D proporțional: frecvența finală analitic vs simulare", F0 + df_p_an, f_p[-1], rtol=1e-5)
 # Aceeași insulă cu schema de 6 trepte inegale (trepte mai mari)
 trepte6 = [(f, c * PL0) for f, c in zip(praguri6, cote6n)]
 _, f6, _, desc6, act6 = dasf_simulare(dP3, M3, D3, K3, Tg=0.2, Tt=1.0, rezerva=rez, trepte=trepte6,
@@ -207,6 +239,10 @@ df_fin_fara = -(dP3 - rez) / D3
 print(f"  fără DASF: frecvența scade sub 47,5 Hz după {fmt(t475, 2)} s; staționarul teoretic ar fi "
       f"{fmt(F0 + df_fin_fara, 2)} Hz (regulatoare saturate) – practic insula se prăbușește")
 verifica_adevarat("fără DASF se coboară sub 47,5 Hz", f_fara.min() < 47.5)
+rv0 = dasf_ivp(dP3, M3, D3, K3, Tg=0.2, Tt=1.0, rezerva=rez, trepte=[], t_intarziere=t_int, t_end=5.0,
+               praguri_obs=(47.5,))
+print(f"  momentul trecerii sub 47,5 Hz: pas fix {fmt(t475, 3)} s, solve_ivp cu evenimente {fmt(rv0['treceri'][47.5], 4)} s")
+verifica("trecerea sub 47,5 Hz: pas fix vs solve_ivp (în 2 ms)", t475, rv0["treceri"][47.5], rtol=0, atol=2e-3)
 _, f_lung, _, _, _ = dasf_simulare(dP3, M3, D3, K3, Tg=0.2, Tt=1.0, rezerva=rez, trepte=[], t_intarziere=t_int,
                                    t_end=120.0, dt=5e-3)
 verifica("fără DASF: staționar analitic vs simulare (120 s)", F0 + df_fin_fara, f_lung[-1], rtol=1e-5)
@@ -264,11 +300,24 @@ verifica("modul interconexiunii fără regulatoare: σ valori proprii vs analiti
 verifica("modul interconexiunii fără regulatoare: ω valori proprii vs analitic", osc_n.imag, om_a, rtol=1e-4)
 # Contraexemplu: turbine mai lente și interconexiune mai puternică
 z1b, z2b = dict(z1, Tt=1.0), dict(z2, Tt=1.0)
-_, _, fun_b = doua_zone(z1b, z2b, 2000.0, dPL1, 1.0, cu_secundar=True, n=11)
-ev_b = np.linalg.eigvals(jacobian_numeric(fun_b, 9))
-print(f"  cu Tt = 1 s și Ps = 2000 MW/rad: partea reală maximă = {fmt(np.max(ev_b.real), 4)} 1/s → oscilație neamortizată")
-verifica_adevarat("contraexemplu: modelul devine instabil (amortizare negativă a modului de interconexiune)",
-                  np.max(ev_b.real) > 0)
+for sec in (True, False):
+    _, _, fun_b = doua_zone(z1b, z2b, 2000.0, dPL1, 1.0, cu_secundar=sec, n=11)
+    ev_b, vec_b = np.linalg.eig(jacobian_numeric(fun_b, 9))
+    k_inst = np.argmax(ev_b.real)
+    raport = vec_b[0, k_inst] / vec_b[1, k_inst]
+    print(f"  cu Tt = 1 s și Ps = 2000 MW/rad, {'cu' if sec else 'fără'} reglaj secundar: partea reală maximă = "
+          f"{fmt(ev_b[k_inst].real, 4)} 1/s, f = {fmt(abs(ev_b[k_inst].imag) / (2 * np.pi), 3)} Hz, "
+          f"forma modului Δf1/Δf2 = {fmt(raport.real, 3)} {'+' if raport.imag >= 0 else '−'} j{fmt(abs(raport.imag), 3)}")
+    verifica_adevarat(f"contraexemplu ({'cu' if sec else 'fără'} reglaj secundar): modul instabil există",
+                      ev_b[k_inst].real > 0)
+    verifica(f"contraexemplu ({'cu' if sec else 'fără'} secundar): mod interzonal, Δf1/Δf2 ≈ −M2/M1 = −2",
+             raport, -z2["M"] / z1["M"], rtol=0, atol=0.05)
+# Fiecare zonă izolată (fără interconexiune) este stabilă cu aceleași turbine
+for nume, z in (("zona 1", z1b), ("zona 2", z2b)):
+    J1 = np.array([[-z["D"] / z["M"], 0, 1 / z["M"]], [-z["K"] / z["Tg"], -1 / z["Tg"], 0], [0, 1 / z["Tt"], -1 / z["Tt"]]])
+    e1 = np.linalg.eigvals(J1)
+    print(f"  {nume} izolată (Tt = 1 s): partea reală maximă a valorilor proprii = {fmt(np.max(e1.real), 4)} 1/s")
+    verifica_adevarat(f"{nume} izolată este stabilă", np.max(e1.real) < 0)
 kn = np.argmin(Y[0])
 print(f"  nadirul în zona 1: {fmt(Y[0, kn] * 1e3, 1)} mHz la t = {fmt(t[kn], 2)} s; "
       f"Δf1 revine sub 1 mHz după {fmt(t[np.where(np.abs(Y[0]) > 1e-3)[0][-1]], 0)} s")
@@ -286,15 +335,29 @@ E_ = 113e3 / (110 / 20)
 print(f"  t.e.m. raportată la 20 kV (plotul 0): E = 113/5,5 = {fmt(E_ / 1e3, 3)} kV")
 U_q = tensiune_secundar(E_, P_, Q_, RT, XT)
 U_i = tensiune_secundar_iterativ(E_, P_, Q_, RT, XT)
-U_ap = E_ - (RT * P_ + XT * Q_) / E_
+# aproximația 1: numai componenta longitudinală, ΔU = (RP + XQ)/U2, cu U2 tensiunea la sarcină:
+# U2² − E·U2 + (RP + XQ) = 0
+cRX = RT * P_ + XT * Q_
+U_ap1 = (E_ + np.sqrt(E_**2 - 4 * cRX)) / 2
+# aproximația 2 (calcul de mână): în plus, U2 din numitor înlocuit cu E
+U_ap2 = E_ - cRX / E_
 print(f"  la 113 kV și 20 MW, cos φ = 0,9: U2 = {fmt(U_q / 1e3, 4)} kV (ecuația bicuadratică), "
-      f"{fmt(U_i / 1e3, 4)} kV (iterații), {fmt(U_ap / 1e3, 4)} kV (ΔU ≈ (RP + XQ)/U)")
+      f"{fmt(U_i / 1e3, 4)} kV (iterații)")
 verifica("U2: ecuația bicuadratică vs iterații fazoriale", U_q, U_i, rtol=1e-9)
-print(f"  formula aproximativă (numai componenta longitudinală a căderii) greșește cu {fmt(100 * (U_ap / U_q - 1), 2)} %")
-verifica("U2: formula aproximativă (abatere sub 1 %)", U_ap, U_q, rtol=1e-2)
+print(f"  ΔU ≈ (RP + XQ)/U2 (numai componenta longitudinală): U2 = {fmt(U_ap1 / 1e3, 4)} kV, eroare "
+      f"{fmt(100 * (U_ap1 / U_q - 1), 2)} %; ΔU ≈ (RP + XQ)/E: U2 = {fmt(U_ap2 / 1e3, 4)} kV, eroare "
+      f"{fmt(100 * (U_ap2 / U_q - 1), 2)} %")
+verifica("U2: aproximația longitudinală (abatere sub 0,5 %)", U_ap1, U_q, rtol=5e-3)
+verifica("U2: aproximația longitudinală cu E (abatere sub 1 %)", U_ap2, U_q, rtol=1e-2)
 # (b) pasul de tensiune al unui plot și regula benzii
-pasi = [1 - (1 + pas * n) / (1 + pas * (n + 1)) for n in range(-8, 8)]
-print(f"  un plot schimbă tensiunea secundară cu {fmt(100 * min(pasi), 2)} … {fmt(100 * max(pasi), 2)} %")
+# raportul U2(n)/U2(n+1) = (1 + p(n+1))/(1 + pn); variația relativă față de tensiunea dinaintea comutării
+scaderi = [1 - (1 + pas * n) / (1 + pas * (n + 1)) for n in range(-8, 8)]      # n → n + 1
+cresteri = [(1 + pas * (n + 1)) / (1 + pas * n) - 1 for n in range(-8, 8)]     # n + 1 → n
+pasi = scaderi + cresteri
+print(f"  un plot schimbă tensiunea secundară cu {fmt(100 * min(pasi), 2)} … {fmt(100 * max(pasi), 2)} % "
+      f"(scădere {fmt(100 * min(scaderi), 2)} … {fmt(100 * max(scaderi), 2)} %, creștere "
+      f"{fmt(100 * min(cresteri), 2)} … {fmt(100 * max(cresteri), 2)} %)")
+verifica("creșterea maximă: de la −7 la −8, p/(1 − 8p)", max(cresteri), pas / (1 - 8 * pas))
 U_ref = 20.5e3
 T_int = 30.0
 t_h = np.arange(0, 3600.0, 1.0)
@@ -307,8 +370,11 @@ for banda_pct in (0.5, 1.0):
     Ub, Us, Ur, poz, nc = regulator_ploturi(t_h, U_IT_c, Pc_, Qc_, RT, XT, U_ref, banda, T_int, pas)
     dupa = np.sum(np.abs(np.diff(poz[600:])) > 0)
     rezultate[banda_pct] = dupa
+    # 2b < pasul minim: pendulare sigură; 2b > pasul maxim: condiția necesară este îndeplinită pentru orice poziție
     pendulare_prezisa = 2 * banda_pct / 100 < min(pasi)
-    print(f"  banda ±{fmt(banda_pct, 1)} % (lățime {fmt(2 * banda_pct, 1)} %): {nc} comutări într-o oră la sarcină constantă,"
+    assert pendulare_prezisa or 2 * banda_pct / 100 > max(pasi)
+    print(f"  banda ±{fmt(banda_pct, 1)} % (lățime {fmt(2 * banda_pct, 1)} %): {nc} comutări într-o oră la sarcină constantă"
+          f" (15 MW, cos φ = 0,9, 113 kV),"
           f" din care {dupa} după primele 10 minute → {'pendulare' if dupa > 0 else 'fără pendulare'}"
           f" (regula 2·bandă < pas prezice {'pendulare' if pendulare_prezisa else 'stabilitate'})")
     verifica_adevarat(f"banda ±{banda_pct} %: simularea confirmă regula lățimii benzii", (dupa > 0) == pendulare_prezisa)
@@ -321,10 +387,10 @@ U_IT_d = 1e3 * (113.5 + 1.5 * np.cos(2 * np.pi * (ora - 3) / 24))
 banda = 0.01 * U_ref
 
 
-def zi(**kw):
+def zi(Uref=U_ref, **kw):
     """Simulează o zi pornind din poziția plotului de la sfârșitul zilei precedente (regim periodic)."""
-    n_start = regulator_ploturi(t_d, U_IT_d, P_d, Q_d, RT, XT, U_ref, banda, T_int, pas, **kw)[3][-1]
-    return regulator_ploturi(t_d, U_IT_d, P_d, Q_d, RT, XT, U_ref, banda, T_int, pas, n0=int(n_start), **kw)
+    n_start = regulator_ploturi(t_d, U_IT_d, P_d, Q_d, RT, XT, Uref, 0.01 * Uref, T_int, pas, **kw)[3][-1]
+    return regulator_ploturi(t_d, U_IT_d, P_d, Q_d, RT, XT, Uref, 0.01 * Uref, T_int, pas, n0=int(n_start), **kw)
 
 
 Ub, Us, Ur, poz, nc = zi()
@@ -333,9 +399,22 @@ print(f"  o zi: sarcina {fmt(P_d.min() / 1e6, 1)} … {fmt(P_d.max() / 1e6, 1)} 
       f"{fmt(U_IT_d.max() / 1e3, 1)} kV; {nc} comutări; plotul între {poz.min()} și {poz.max()}; "
       f"tensiunea în bandă {fmt(100 * in_banda, 2)} % din timp; abaterea maximă {fmt(100 * np.max(np.abs(Ur / U_ref - 1)), 2)} %")
 verifica_adevarat("tensiunea reglată este în bandă peste 99 % din timp", in_banda > 0.99)
-verifica("numărul de comutări = numărul de schimbări ale poziției", nc, int(np.sum(np.abs(np.diff(poz)))), rtol=0)
+# Verificare: după fiecare comutare, tensiunea din simulare (ecuația bicuadratică) este recalculată independent
+# prin iterații fazoriale, cu poziția nouă a plotului
+k_sch = np.nonzero(np.diff(poz))[0]
+U_iter = np.array([tensiune_secundar_iterativ(U_IT_d[k + 1] / (110.0 / 20.0 * (1 + pas * poz[k + 1])), P_d[k + 1],
+                                              Q_d[k + 1], RT, XT) for k in k_sch])
+verifica("tensiunea după fiecare comutare: simulare vs iterații fazoriale", Ub[k_sch + 1], U_iter, rtol=1e-6)
+salt_sim = np.abs(Ub[k_sch + 1] / Ub[k_sch] - 1)
+salt_gol = np.abs((1 + pas * poz[k_sch]) / (1 + pas * poz[k_sch + 1]) - 1)
+print(f"  salturile de tensiune la cele {len(k_sch)} comutări: {fmt(100 * salt_sim.min(), 2)} … {fmt(100 * salt_sim.max(), 2)} %"
+      f" (la gol, din raportul de transformare: {fmt(100 * salt_gol.min(), 2)} … {fmt(100 * salt_gol.max(), 2)} %)")
+verifica_adevarat("sub sarcină de putere constantă saltul este mai mare decât la gol (curentul scade când tensiunea crește)",
+                  np.all(salt_sim > salt_gol))
+verifica_adevarat("toate salturile sub sarcină rămân sub lățimea benzii (2 %)", np.all(salt_sim < 0.02))
 # fără reglaj (plot fix la poziția medie)
 Ub0, _, _, _, _ = regulator_ploturi(t_d, U_IT_d, P_d, Q_d, RT, XT, U_ref, 1e9, T_int, pas, n0=int(np.round(np.mean(poz))))
+print(f"  date: P(t) = 14 − 5·cos(2π(t − 4)/24) + 3·exp(−((t − 19,5)/1,5)²) MW, U110(t) = 113,5 + 1,5·cos(2π(t − 3)/24) kV")
 print(f"  cu plotul blocat în poziția {int(np.round(np.mean(poz)))}: tensiunea variază între {fmt(Ub0.min() / 1e3, 3)} și "
       f"{fmt(Ub0.max() / 1e3, 3)} kV ({fmt(100 * (Ub0.max() - Ub0.min()) / U_ref, 2)} % din U_ref)")
 # (d) compensarea căderii de tensiune (LDC) până la centrul de sarcină
@@ -347,13 +426,35 @@ print(f"  fără LDC: tensiunea în centrul de sarcină {fmt(Us_f.min() / 1e3, 3
       f"({nc_f} comutări)")
 print(f"  cu LDC (Zc = Zl): tensiunea în centrul de sarcină {fmt(Us_l.min() / 1e3, 3)} … {fmt(Us_l.max() / 1e3, 3)} kV, "
       f"pe bara de 20 kV {fmt(Ub_l.min() / 1e3, 3)} … {fmt(Ub_l.max() / 1e3, 3)} kV ({nc_l} comutări)")
-verifica("LDC: tensiunea estimată de regulator = tensiunea calculată în centrul de sarcină", Ur_l, Us_l, rtol=1e-9)
+# Identitate (nu verificare independentă): cu Zc = Zl, mărimea reglată este chiar tensiunea din centrul de sarcină
+verifica("LDC: identitatea Ureg = U_sarcină când Zc = Zl", Ur_l, Us_l, rtol=1e-9)
+# Verificare independentă: tensiunea din centrul de sarcină (ecuația bicuadratică) satisface teorema a doua a lui
+# Kirchhoff pe tot circuitul, în fiecare secundă: |U_f + (Z_T + Z_l)·I| = E_f (t.e.m. de fază la plotul curent)
+E_f = U_IT_d / (110.0 / 20.0 * (1 + pas * poz_l)) / SQRT3
+I_l = np.conj((P_d + 1j * Q_d) / (SQRT3 * Us_l))
+verifica("LDC: |U_f + (Z_T + Z_l)·I| = E_f în fiecare secundă", np.abs(Us_l / SQRT3 + (RT + 1j * XT + Zl) * I_l), E_f,
+         rtol=1e-9)
 verifica_adevarat("LDC: tensiunea în centrul de sarcină rămâne în bandă peste 99 % din timp",
                   np.mean(np.abs(Us_l - U_ref) <= banda) > 0.99)
 verifica_adevarat("fără LDC, tensiunea în centrul de sarcină iese din bandă mai mult de 10 % din timp",
                   np.mean(np.abs(Us_f - U_ref) <= banda) < 0.9)
 print(f"  timpul în bandă al tensiunii din centrul de sarcină: fără LDC {fmt(100 * np.mean(np.abs(Us_f - U_ref) <= banda), 1)} %,"
       f" cu LDC {fmt(100 * np.mean(np.abs(Us_l - U_ref) <= banda), 1)} %")
+dU_f, dU_l = Us_f.max() - Us_f.min(), Us_l.max() - Us_l.min()
+print(f"  plaja de variație în centrul de sarcină: fără LDC {fmt(dU_f / 1e3, 2)} kV, cu LDC {fmt(dU_l / 1e3, 2)} kV")
+verifica_adevarat("LDC reduce plaja de variație de peste două ori", dU_f > 2 * dU_l)
+# Comparație corectă: fără LDC, dar cu consemnul barei ridicat (cel mai bun consemn dintre câteva valori)
+cel_mai_bun = None
+for Ub_ref in (21.0e3, 21.2e3, 21.4e3, 21.6e3, 21.8e3, 22.0e3):
+    _, Us_x, _, _, nc_x = zi(Uref=Ub_ref, Zl=Zl)
+    proc = np.mean(np.abs(Us_x - U_ref) <= banda)
+    print(f"    fără LDC, consemnul barei {fmt(Ub_ref / 1e3, 1)} kV: tensiunea în centrul de sarcină în bandă "
+          f"{fmt(100 * proc, 1)} % din timp ({fmt(Us_x.min() / 1e3, 3)} … {fmt(Us_x.max() / 1e3, 3)} kV, {nc_x} comutări)")
+    if cel_mai_bun is None or proc > cel_mai_bun[1]:
+        cel_mai_bun = (Ub_ref, proc)
+print(f"  cel mai bun consemn fără LDC: {fmt(cel_mai_bun[0] / 1e3, 1)} kV, cu {fmt(100 * cel_mai_bun[1], 1)} % din timp în bandă")
+verifica_adevarat("cu LDC timpul în bandă este mai mare decât cu cel mai bun consemn fix",
+                  np.mean(np.abs(Us_l - U_ref) <= banda) > cel_mai_bun[1])
 verifica_adevarat("fără LDC, tensiunea minimă în centrul de sarcină este mai mică decât cu LDC", Us_f.min() < Us_l.min())
 
 # (e) o treaptă de baterie de condensatoare pe bara B2: creșterea de tensiune
@@ -377,14 +478,19 @@ print(f"  treaptă de condensatoare de {fmt(Qb / 1e6, 0)} Mvar pe B2 (X_Th = {fm
       f"{fmt(100 * dU_retea, 3)} %")
 verifica("treapta de condensatoare: divizor Thevenin vs rețeaua în coordonate de fază", dU_exact, dU_retea, rtol=1e-3)
 verifica("treapta de condensatoare: formula aproximativă (abatere relativă sub 3 %)", dU_aprox, dU_exact, rtol=3e-2)
-verifica_adevarat("lățimea benzii regulatorului (2 %) depășește efectul unei trepte (fără pendulare)",
+verifica_adevarat("regulatorul bateriei (după tensiune, ±1 %): lățimea benzii, 2 %, depășește efectul unei trepte",
                   2 * 0.01 > dU_exact)
+U_dupa = 1.005 * (1 + dU_exact)
+print(f"  interacțiunea cu regulatorul de ploturi: dacă bara este la +0,5 % față de U_ref, după conectarea treptei "
+      f"ajunge la +{fmt(100 * (U_dupa - 1), 2)} %, în afara benzii de ±1 % a ploturilor")
+verifica_adevarat("o treaptă conectată la +0,5 % scoate tensiunea din banda regulatorului de ploturi", U_dupa - 1 > 0.01)
 
 # ---------------------------------------------------------------------------
 print("\nProblema 8.6 – regulatorul automat de tensiune al generatorului G1 (în gol)")
 Td0 = GEN["Td0_t"]
 TA = 0.02
 dU = 0.01
+t_stab = {}
 for KA in (50.0, 200.0, 400.0):
     wn, zeta, er, supra, tp = rat_analitic(KA, TA, Td0)
     t, dE, dEfd = rat_ode(KA, TA, Td0, dU, 2.0)
@@ -410,9 +516,18 @@ for KA in (50.0, 200.0, 400.0):
     else:
         txt += "; răspuns aperiodic (ζ ≥ 1), fără suprareglare"
         verifica_adevarat(f"KA = {KA:g}: fără suprareglare în simulare", np.max(dE) <= yss * (1 + 1e-9))
+    k2p = np.nonzero(np.abs(dE - yss) > 0.02 * yss)[0][-1] + 1
+    t_s = t[k2p]
+    t_stab[KA] = t_s
+    txt += f"; partea reală a polilor {fmt(max(p1.real, p2.real), 1)} 1/s; timpul de stabilizare (±2 %) {fmt(t_s * 1e3, 0)} ms"
+    if zeta < 1:
+        verifica(f"KA = {KA:g}: partea reală a polilor = −(TA + Td0')/(2·TA·Td0')", p1.real, -(TA + Td0) / (2 * TA * Td0))
     print(txt + f"; comanda inițială KA·ΔUref = {fmt(KA * dU, 2)} u.r., ΔEfd maxim (simulare) = {fmt(np.max(dEfd), 2)} u.r."
           f" = {fmt(np.max(dEfd) / dEfd[-1], 0)} × ΔEfd final ({fmt(dEfd[-1], 4)} u.r.)")
     verifica(f"KA = {KA:g}: ΔEfd final = ΔU final (generator în gol)", dEfd[-1], dE[-1], rtol=1e-4)
+print(f"  pentru ζ < 1, partea reală a polilor, −(TA + Td0')/(2·TA·Td0') = {fmt(-(TA + Td0) / (2 * TA * Td0), 1)} 1/s, nu depinde de KA:"
+      f" timpul de stabilizare rămâne {fmt(t_stab[200.0] * 1e3, 0)} ms (KA = 200) și {fmt(t_stab[400.0] * 1e3, 0)} ms (KA = 400)")
+verifica("timpul de stabilizare practic același pentru KA = 200 și 400 (în 5 %)", t_stab[200.0], t_stab[400.0], rtol=5e-2)
 # fără regulator: constanta de timp Td0' (răspunsul la o treaptă a tensiunii de excitație)
 t, dE, _ = rat_ode(1e-9, TA, Td0, 0.0, 1.0)
 print(f"  comparație: fără regulator, tensiunea urmează excitația cu constanta de timp Td0' = {fmt(Td0, 1)} s;"

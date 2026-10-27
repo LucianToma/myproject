@@ -17,7 +17,9 @@ ALF, Sn, Rct = 20, 5.0, 1.5
 Rn = Sn / In2**2
 rho_cu = 0.0178          # Ω·mm²/m la 20 °C
 l_cond, S_cond = 10.0, 2.5   # lungimea traseului (dus) [m], secțiunea [mm²]
-R_cond = rho_cu * 2 * l_cond / S_cond     # bucla dus–întors (defect între faze)
+# acoperitor: bucla dus–întors (la defectul monofazat curentul revine prin conductorul neutru al TC în stea;
+# la defectele între faze fiecare TC vede practic un singur conductor)
+R_cond = rho_cu * 2 * l_cond / S_cond
 R_releu = 0.1 / In2**2                      # releu numeric: 0,1 VA la 1 A
 Rb = R_cond + R_releu
 ALF_ef = ALF * (Rct + Rn) / (Rct + Rb)

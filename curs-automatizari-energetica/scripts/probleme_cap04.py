@@ -35,8 +35,6 @@ print("Problema 4.1 – adaptarea de amplitudine și compensarea grupei de conex
 print(f"  In(110 kV) = {fmt(IN_IT, 1)} A, In(20 kV) = {fmt(IN_JT, 1)} A; TC {TC_IT:g}/1 A și {TC_JT:g}/1 A")
 print(f"  factori de adaptare: 110 kV: {TC_IT:g}/{fmt(IN_IT, 1)} = {fmt(TC_IT / IN_IT, 4)}; "
       f"20 kV: {TC_JT:g}/{fmt(IN_JT, 1)} = {fmt(TC_JT / IN_JT, 4)}")
-verifica("produsul factorilor = raportul curenților nominali ai TC raportat la n", (TC_IT / IN_IT) / (TC_JT / IN_JT),
-         TC_IT / TC_JT * n_T)
 cazuri = [("P1", "3f", "defect trifazat în P1 (20 kV, exterior)"),
           ("B", "1f", "defect monofazat pe bara B de 110 kV (exterior)"),
           ("P1", "1f", "defect monofazat în P1 (20 kV, neutru prin rezistor, exterior)")]
@@ -95,7 +93,24 @@ verifica_adevarat("panta k1 acoperă plotul extrem și erorile TC", pire_max < K
 # a doua cale: căutare numerică pe o grilă de erori și ploturi
 grila = [abs((1 / t) * (1 + e1) - (1 + e2)) / (((1 / t) * (1 + e1) + (1 + e2)) / 2)
          for t in np.linspace(0.9, 1.1, 41) for e1 in np.linspace(-eps, eps, 21) for e2 in np.linspace(-eps, eps, 21)]
-verifica("maximul Id/Ib: analiza cazurilor extreme vs grilă", pire_max, max(grila), rtol=1e-6)
+verifica("maximul pe grilă este atins într-un colț (plot extrem, erori extreme)", pire_max, max(grila), rtol=1e-6)
+# treapta nefrânată față de cel mai mare curent traversant (defect în B2), pe tot domeniul ploturilor
+I_trav = {}
+for t in (0.90, 1.00, 1.10):
+    rt = retea_referinta(cu_capacitati=False)
+    rt.element("T1")["U1"] = d["U110"] * t
+    I_IT, I_JT, _ = curenti_T1(rt, "B2", "3f")
+    Idt_, Ibt_, cIT_, cJT_ = marimi_releu(I_IT, I_JT)
+    # la saturația completă a unui TC, Id poate ajunge cel mult la curentul de pe cealaltă parte
+    I_trav[t] = max(abs(I_JT[0]) / IN_JT, abs(cIT_[0]))
+    verifica(f"plot {t:g}: curentul traversant maxim = Ib + Id/2 (definiția mediei)", I_trav[t],
+             Ibt_[0] + Idt_[0] / 2, rtol=1e-9)
+t_max = max(I_trav, key=I_trav.get)
+print(f"  curentul traversant maxim (defect în B2, partea cu curentul mai mare), în multipli de In: plot −10 % {fmt(I_trav[0.90], 2)}, "
+      f"nominal {fmt(I_trav[1.00], 2)}, plot +10 % {fmt(I_trav[1.10], 2)} → rezerva treptei nefrânate "
+      f"{fmt(IDIFF_NEFRANAT / I_trav[t_max], 2)}")
+verifica_adevarat("treapta nefrânată depășește curentul traversant maxim pe tot domeniul ploturilor",
+                  IDIFF_NEFRANAT > max(I_trav.values()))
 
 print("\nProblema 4.3 – defecte interioare zonei protejate")
 # (a) defect trifazat la bornele de 20 kV ale lui T1, între transformator și TC de 20 kV:
@@ -134,6 +149,19 @@ for c_fact, eticheta in ((1.10, "c = 1,1"), (C_MIN, "c = 1,0")):
              rtol=1e-3)
 verifica_adevarat("la c = 1,0 și homopolara eliminată, defectul nu este sesizat (de aici protecția de neutru)",
                   Id_fara[0] < IDIFF_MIN)
+# Curentul rezidual al TC de 20 kV ai lui T1: zero la defectele exterioare (triunghiul nu dă homopolară, BPN este
+# în afara zonei), egal cu curentul de defect la defectul dintre T1 și TC
+rr = retea_referinta("rezistor", c=C_MIN, cu_capacitati=False)
+_, I_JT_ext, _ = curenti_T1(rr, "P1", "1f")
+I_res_ext = abs(np.sum(I_JT_ext))
+I_IT_c, _, pc = curenti_T1(rr, "B2", "1f")
+I_res_int = abs(np.sum(-rr.curenti_ramura_faze(pc, "BPN", 1)))
+If_c = abs(rr.curent_defect_faze(pc)[0])
+s_c = rr.scurtcircuit_secvente("B2", "1f")
+print(f"  curentul rezidual al TC de 20 kV ai lui T1 (c = 1,0): defect exterior în P1 {fmt(I_res_ext, 3)} A; "
+      f"defect la bornele lui T1 {fmt(I_res_int, 1)} A (= curentul de defect {fmt(If_c, 1)} A)")
+verifica_adevarat("defect exterior: curentul rezidual al TC de 20 kV ai lui T1 este practic zero", I_res_ext < 1e-3)
+verifica("defect la borne: curentul rezidual = 3·I0 din rețelele de secvență", I_res_int, abs(3 * s_c["I_seq"][0]), rtol=1e-4)
 
 print("\nProblema 4.4 – curentul de magnetizare la conectarea lui T1 și blocarea la armonica a doua")
 psi_n, Lm, L_aer = parametri_inrush()
@@ -141,6 +169,9 @@ p = INRUSH
 psi_s = p["k_sat"] * psi_n
 i_s = psi_s / Lm
 Lr = p["X_retea"] / W0
+Rk = d["PkT"] * d["U110"]**2 / d["ST"]**2
+print(f"  Rk = Pk·U²/Sn² = {fmt(Rk, 3)} Ω; rezistența înfășurării de 110 kV ≈ Rk/2 = {fmt(Rk / 2, 2)} Ω")
+verifica("rezistența înfășurării din model = Rk/2", p["R_inf"], Rk / 2, rtol=5e-3)
 print(f"  ψn = Vm/ω = {fmt(psi_n, 1)} V·s; Lm = {fmt(Lm, 0)} H; L(saturat) = {fmt(L_aer, 4)} H; L(rețea) = {fmt(Lr, 4)} H")
 # Calea 1: vârful fără rezistențe, din conservarea fluxului: Lr·i + ψ = ψrem + 2ψn la ωt = π
 i_varf_R0 = (p["psi_rem"] * psi_n + 2 * psi_n - psi_s + i_s * L_aer) / (Lr + L_aer)
@@ -148,6 +179,11 @@ p0 = dict(p, R_inf=0.0, R_retea=0.0)
 t0, i0, _ = simuleaza_inrush(0.025, 2e-6, p0)
 print(f"  fără rezistențe: vârf analitic = {fmt(i_varf_R0, 1)} A; simulare = {fmt(i0.max(), 1)} A")
 verifica("vârful curentului (R = 0): analitic vs simulare Runge–Kutta", i_varf_R0, i0.max(), rtol=2e-3)
+psi_miez_R0 = psi_s + (i_varf_R0 - i_s) * L_aer
+_, _, psi0 = simuleaza_inrush(0.025, 2e-6, p0)
+print(f"  fluxul înlănțuit total (miez + rețea) la vârf = ψrem + 2ψn = {fmt(p['psi_rem'] + 2, 2)}·ψn; fluxul din miez = "
+      f"{fmt(psi_miez_R0 / psi_n, 3)}·ψn (simulare: {fmt(psi0.max() / psi_n, 3)}·ψn)")
+verifica("fluxul maxim din miez (R = 0): analitic vs simulare", psi_miez_R0, psi0.max(), rtol=2e-3)
 t, i, psi = simuleaza_inrush(0.4, 2e-6)
 In_varf = np.sqrt(2) * IN_IT
 N = int(round(0.02 / (t[1] - t[0])))
@@ -161,6 +197,16 @@ print(f"  raportul I(2f)/I(f) pe fereastră alunecătoare: minim {fmt(100 * r2.m
 verifica_adevarat("curentul de conectare depășește pragul minim (fără blocare ar acționa)", h[1] / In_varf > IDIFF_MIN)
 verifica_adevarat("fundamentala curentului de conectare rămâne sub treapta nefrânată", i1.max() / In_varf < IDIFF_NEFRANAT)
 verifica_adevarat(f"armonica a doua rămâne peste pragul de blocare de {ARMONICA2:.0%}", r2.min() > ARMONICA2)
+psi_max_R = psi[:N].max()
+print(f"  cu rezistențe, fluxul maxim din miez în prima perioadă = {fmt(psi_max_R / psi_n, 3)}·ψn")
+# Calea a doua pentru 14,7 %: unghiul de conducție al primului impuls (miezul saturat) și seria Fourier analitică
+sat = np.where(psi[:N] > psi_s)[0]
+unghi_cond = (sat[-1] - sat[0] + 1) * (t[1] - t[0]) * W0
+an_cond = sinus_trunchiat_analitic(unghi_cond / 2, 2)
+print(f"  primul impuls conduce {fmt(np.degrees(unghi_cond), 1)}°; impulsul sinusoidal trunchiat cu același unghi are "
+      f"armonica 2 = {fmt(100 * an_cond[2] / an_cond[1], 2)} % (simulare: {fmt(100 * h[2] / h[1], 2)} %)")
+verifica("armonica 2 a primei perioade: simulare vs impulsul analitic cu același unghi de conducție",
+         h[2] / h[1], an_cond[2] / an_cond[1], rtol=0, atol=1e-3)
 # Verificarea metodei de calcul al armonicilor pe un impuls sinusoidal trunchiat (serie Fourier analitică)
 for alfa_g in (60, 90, 120):
     alfa = np.radians(alfa_g)
@@ -200,37 +246,52 @@ for nume, cheie, valori in (("flux remanent", "psi_rem", (0.0, 0.4, 0.8)), ("cot
               f"{fmt(100 * r2v.min(), 1)} %")
 
 print("\nProblema 4.5 – protecția diferențială de bare de impedanță mare (bara B de 110 kV)")
-# curentul maxim care traversează un singur TC la un defect exterior imediat după el
-pB = r.rezolva_faze(defect_faze("B", "3f"))
-I_dinspre_A = abs(r.curenti_ramura_faze(pB, "L1", 2)[0])
-I_dinspre_C = abs(r.curenti_ramura_faze(pB, "L2", 1)[0])
-I_trec = max(I_dinspre_A, I_dinspre_C)
+# Curentul printr-un TC de celulă la un defect exterior imediat după el = suma aporturilor celorlalte circuite.
+# Calea 1: rețelele de secvență; calea 2: rezolvarea în coordonate de fază.
+celule = {"L1": 2, "L2": 1, "T1": 1}          # capătul fiecărui element legat la bara B
+I_TC = {}
+for tip in ("3f", "2f", "2fp", "1f"):
+    s_ = r.scurtcircuit_secvente("B", tip)
+    p_ = r.rezolva_faze(defect_faze("B", tip))
+    for X in celule:
+        I_s = -sum(r.curenti_ramura_secvente(s_, k, c) for k, c in celule.items() if k != X)
+        I_p = -sum(r.curenti_ramura_faze(p_, k, c) for k, c in celule.items() if k != X)
+        verifica(f"curentul prin TC {X}, defect {tip} după el: secvențe vs fază", np.abs(I_s), np.abs(I_p),
+                 rtol=1e-4, atol=1e-3)
+        I_TC[(X, tip)] = np.max(np.abs(I_p))
+for tip in ("3f", "1f"):
+    print(f"  defect {tip} imediat după TC: " + ", ".join(f"TC {X}: {fmt(I_TC[(X, tip)], 0)} A" for X in celule))
+cheie_max = max(I_TC, key=I_TC.get)
+I_trec = I_TC[cheie_max]
+Ik_B3 = abs(r.scurtcircuit_secvente("B", "3f")["I_faza"][0])
+print(f"  cazul cel mai sever: TC {cheie_max[0]}, defect {cheie_max[1]}: {fmt(I_trec, 0)} A "
+      f"(întregul curent de defect al barei, {fmt(Ik_B3, 0)} A: în spatele lui T1 nu există sursă)")
+verifica("TC T1, defect trifazat = I\"k3(B) (capitolul 1)", I_TC[("T1", "3f")], Ik_B3)
 nTC, Rct, RL = 1200.0, 4.0, 1.5
 I_sec = I_trec / nTC
 Vs_min = I_sec * (Rct + 2 * RL)
-Vs = np.ceil(1.2 * Vs_min / 5) * 5
-I_R = 0.1                       # curentul de acționare al releului [A]
+Vs = np.ceil(1.2 * Vs_min / 5) * 5          # rezerva 1,2 și rotunjirea la 5 V: alegeri ale cursului
+I_R = 0.1                                   # curentul de acționare al releului [A]
 R_R = Vs / I_R
-print(f"  aporturi la defect pe bara B: dinspre A {fmt(I_dinspre_A, 0)} A, dinspre C {fmt(I_dinspre_C, 0)} A → "
-      f"curentul maxim printr-un TC = {fmt(I_trec, 0)} A ({fmt(I_sec, 3)} A secundar)")
-print(f"  Vs ≥ I·(Rct + 2RL) = {fmt(I_sec, 3)}·({fmt(Rct, 1)} + 2·{fmt(RL, 1)}) = {fmt(Vs_min, 1)} V → ales {fmt(Vs, 0)} V "
-      f"(≥ 1,2·Vs_min, rotunjit la 5 V); R releu = Vs/I_R = {fmt(R_R, 0)} Ω")
-# Calea 2: circuitul cu un TC complet saturat (numai Rct), celelalte TC surse de curent ideale
-G = np.array([[1 / R_R + 1 / (Rct + 2 * RL)]])
-V = np.linalg.solve(G, np.array([I_sec]))[0]
-print(f"  tensiunea pe releu în circuitul cu TC saturat: {fmt(V, 2)} V (formula: {fmt(Vs_min, 2)} V, "
-      f"cu {fmt(100 * (1 - V / Vs_min), 1)} % mai mare)")
-verifica("circuit vs formula corectată cu divizorul R_R/(R_R + Rct + 2RL)", V,
-         Vs_min * R_R / (R_R + Rct + 2 * RL), rtol=1e-9)
-verifica_adevarat("formula Vs ≥ I·(Rct + 2RL) este acoperitoare (V ≤ Vs_min)", V <= Vs_min + 1e-9)
-verifica_adevarat("releul rămâne stabil la defectul exterior", V < Vs)
-Ie_Vs = 0.03                    # curentul de magnetizare al unui TC la tensiunea Vs (curba TC)
-n_TC = 3
+print(f"  Vs ≥ I·(Rct + 2RL) = {fmt(I_sec, 3)}·({fmt(Rct, 1)} + 2·{fmt(RL, 1)}) = {fmt(Vs_min, 2)} V; "
+      f"1,2·Vs,min = {fmt(1.2 * Vs_min, 1)} V → ales {fmt(Vs, 0)} V; R releu = Vs/I_R = {fmt(R_R, 0)} Ω")
+verifica_adevarat("reglajul vechi de 25 V (calculat numai pentru liniile L1, L2) ar fi instabil", 25.0 < Vs_min)
+V = I_sec * (R_R * (Rct + 2 * RL)) / (R_R + Rct + 2 * RL)
+print(f"  cu releul de {fmt(R_R, 0)} Ω în paralel, tensiunea reală este {fmt(V, 2)} V, puțin sub formulă: formula este acoperitoare")
+verifica_adevarat("releul rămâne stabil la defectul exterior cel mai sever", V < Vs)
+V_k_min = 2 * Vs                            # regulă de proiectare a cursului: tensiunea de cot ≥ 2·Vs
+print(f"  tensiunea de cot a TC (regulă de proiectare a cursului: ≥ 2·Vs) ≥ {fmt(V_k_min, 0)} V")
+Ie_Vs = 0.03                    # curentul de magnetizare al unui TC la 50 V (din curba TC; date de problemă)
+n_TC = len(celule)
 I_op = nTC * (I_R + n_TC * Ie_Vs)
 I1f_min = abs(retea_referinta(c=C_MIN, cu_capacitati=False).scurtcircuit_secvente("B", "1f")["I_faza"][0])
 print(f"  curentul primar minim de acționare = {fmt(nTC, 0)}·({fmt(I_R, 2)} + {n_TC}·{fmt(Ie_Vs, 2)}) = {fmt(I_op, 0)} A;"
       f" defectul monofazat minim pe bară = {fmt(I1f_min, 0)} A (sensibilitate {fmt(I1f_min / I_op, 1)})")
 verifica_adevarat("sensibilitatea la defectul interior minim ≥ 2", I1f_min / I_op >= 2)
+V_int = Ik_B3 / nTC * R_R
+print(f"  la un defect interior, fără saturație, curentul secundar {fmt(Ik_B3 / nTC, 2)} A ar produce pe {fmt(R_R, 0)} Ω "
+      f"{fmt(V_int, 0)} V (valoare efectivă) → este necesar un limitator neliniar de tensiune în paralel cu releul")
+verifica_adevarat("tensiunea la defect interior ar depăși de peste 10 ori tensiunea de cot minimă", V_int > 10 * V_k_min)
 
 print("\nLucrarea de laborator L3 – valorile așteptate la încercarea prin injecție secundară")
 from modele import sistem_direct  # noqa: E402

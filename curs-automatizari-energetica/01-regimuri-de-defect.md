@@ -2,7 +2,7 @@
 
 > **Obiective.** După acest capitol ar trebui să puteți: (1) lucra în unități relative și trece impedanțele de pe un nivel de tensiune pe altul; (2) calcula curentul de scurtcircuit trifazat cu metoda sursei echivalente din IEC 60909-0, în variantele de curent maxim și minim; (3) calcula curentul de șoc; (4) descompune un sistem nesimetric în componente simetrice și conecta rețelele de secvență pentru defectele nesimetrice; (5) compara modurile de tratare a neutrului rețelelor de medie tensiune după curentul de punere la pământ și supratensiunile pe fazele sănătoase.
 
-Reglajele protecțiilor se stabilesc din **curenții de defect**: cei maximi decid selectivitatea și solicitările echipamentelor, cei minimi decid sensibilitatea. Capitolul prezintă metodele de calcul folosite în tot cursul, aplicate rețelei de referință (§ 0.7). Toate rezultatele sunt calculate pe **trei căi independente** (unități relative „de mână”, rețele de secvență, rezolvarea directă în coordonate de fază) de scripturile din [`scripts/`](scripts/).
+Reglajele protecțiilor se stabilesc din **curenții de defect**: cei maximi decid selectivitatea și solicitările echipamentelor, cei minimi decid sensibilitatea. Capitolul prezintă metodele de calcul folosite în tot cursul, aplicate rețelei de referință (§ 0.7). Rezultatele sunt calculate de scripturile din [`scripts/`](scripts/). Curenții de defect se obțin pe două căi independente (rețele de secvență și rezolvarea directă în coordonate de fază), iar în problema 1.1 și pe o a treia (unități relative „de mână”). Fiecare paragraf „Verificare” spune ce anume se verifică.
 
 ---
 
@@ -30,7 +30,7 @@ O rețea de alimentare cunoscută numai prin puterea ei de scurtcircuit $S''_{kQ
 
 $$Z_Q = \frac{c\thinspace U_n^2}{S''_{kQ}} .$$
 
-Curenții **maximi** (cu $c_{max}$) servesc la verificarea echipamentelor și la coordonarea protecțiilor; curenții **minimi** servesc la verificarea sensibilității: se calculează cu $c_{min}$, pentru configurația rețelei care dă curentul cel mai mic și cu rezistențele conductoarelor încălzite de curentul de defect. În curs, rezistențele liniilor de 20 kV se iau la 80 °C pentru curenții minimi, cu coeficientul de temperatură al aluminiului (aproximativ 0,004 K⁻¹): ele cresc cu 24 %.
+Curenții **maximi** (cu $c_{max}$) servesc la verificarea echipamentelor și la coordonarea protecțiilor; curenții **minimi** servesc la verificarea sensibilității. În curs, ei se calculează cu $c_{min}$ și cu rezistențele liniilor de 20 kV la 80 °C (coeficientul de temperatură al aluminiului este aproximativ 0,004 K⁻¹, deci rezistențele cresc cu 24 %), pentru două configurații: cea normală și cea mai slabă, cu o linie de 110 kV scoasă din funcțiune. Sursele echivalente QA și QC își păstrează impedanța, pentru că nu se cunoaște o putere de scurtcircuit minimă a rețelelor de alimentare.
 
 Pentru **transformatoarele de rețea**, IEC 60909-0 introduce un factor de corecție a impedanței [S1]:
 
@@ -38,21 +38,21 @@ $$K_T = 0{,}95\thinspace\frac{c_{max}}{1 + 0{,}6\thinspace x_T} ,$$
 
 unde $x_T$ este reactanța relativă a transformatorului. Pentru T1 ($x_T \approx$ 0,11), $K_T$ = 0,9803, iar efectul asupra curentului la bara B2 este de +1,67 % (problema 1.5). În celelalte probleme ale cursului factorul este neglijat; diferența este sub precizia cu care se cunosc datele rețelei.
 
-![Figura 1.4 – Curentul de defect în lungul fiderului F1](figuri/f01-4-profil-fider.svg)
+![Figura 1.1 – Curentul de defect în lungul fiderului F1](figuri/f01-1-profil-fider.svg)
 
-*Figura 1.4 – Curentul de defect în funcție de locul defectului pe fiderul F1: trifazat maxim și bifazat minim. Scăderea este mai lentă pe cablu (reactanță mică) și mai rapidă pe linia aeriană.*
+*Figura 1.1 – Curentul de defect în funcție de locul defectului pe fiderul F1: trifazat maxim și bifazat minim. Scăderea este mai lentă pe cablu (reactanță mică) și mai rapidă pe linia aeriană.*
 
 ## 1.3. Curentul de șoc
 
-La apariția scurtcircuitului, curentul nu poate varia brusc (rețeaua este inductivă). De aceea, peste componenta alternativă apare o **componentă aperiodică** care se amortizează cu constanta de timp $T = X/(\omega R)$ (figura 1.3). Valoarea maximă instantanee, **curentul de șoc** $i_p$, apare după aproximativ o semiperioadă și dă solicitările electrodinamice. IEC 60909-0 o calculează cu
+La apariția scurtcircuitului, curentul nu poate varia brusc (rețeaua este inductivă). De aceea, peste componenta alternativă apare o **componentă aperiodică** care se amortizează cu constanta de timp $T = X/(\omega R)$ (figura 1.2). Valoarea maximă instantanee, **curentul de șoc** $i_p$, apare după aproximativ o semiperioadă și dă solicitările electrodinamice. IEC 60909-0 o calculează cu
 
 $$\boxed{i_p = \kappa\thinspace\sqrt2\thinspace I''_k, \qquad \kappa = 1{,}02 + 0{,}98\thinspace e^{-3R/X}}$$
 
-unde $R/X$ este raportul impedanței de scurtcircuit [S1]. Pentru rețelele buclate, standardul dă trei metode de alegere a raportului $R/X$ (A, B și C); în curs se folosește raportul impedanței echivalente de la locul defectului.
+unde $R/X$ este raportul impedanței de scurtcircuit [S1]. Pentru rețelele buclate, standardul dă trei metode de alegere a raportului $R/X$ (A, B și C). În curs se folosește raportul impedanței echivalente de la locul defectului (metoda B), verificat cu metoda frecvenței echivalente (metoda C: impedanța se calculează cu reactanțele la $f_c$ = 20 Hz, iar $R/X = (R_c/X_c)(f_c/f)$). Pentru metoda B standardul prevede, în anumite condiții, și un factor de siguranță suplimentar; în rețeaua de referință toate ramurile buclate au $R/X \le$ 0,3 (problema 1.4), iar cele două metode dau același κ.
 
-![Figura 1.3 – Curentul de șoc](figuri/f01-3-curent-soc.svg)
+![Figura 1.2 – Curentul de șoc](figuri/f01-2-curent-soc.svg)
 
-*Figura 1.3 – Curentul de scurtcircuit la bara B2 pentru momentul de conectare care dă componenta aperiodică maximă (problema 1.4).*
+*Figura 1.2 – Curentul de scurtcircuit la bara B2 pentru momentul de conectare care dă componenta aperiodică maximă (problema 1.4).*
 
 ## 1.4. Componente simetrice
 
@@ -66,9 +66,9 @@ cu operatorul $a = e^{j120°}$. Transformarea și inversa ei sunt
 
 $$\begin{bmatrix}\underline{V}_a\\ \underline{V}_b\\ \underline{V}_c\end{bmatrix} = \begin{bmatrix}1&1&1\\ 1&a^2&a\\ 1&a&a^2\end{bmatrix}\begin{bmatrix}\underline{V}_0\\ \underline{V}_1\\ \underline{V}_2\end{bmatrix}, \qquad \underline{V}_0 = \frac{\underline{V}_a+\underline{V}_b+\underline{V}_c}{3},\quad \underline{V}_1 = \frac{\underline{V}_a+a\underline{V}_b+a^2\underline{V}_c}{3},\quad \underline{V}_2 = \frac{\underline{V}_a+a^2\underline{V}_b+a\underline{V}_c}{3}.$$
 
-![Figura 1.1 – Componente simetrice](figuri/f01-1-componente-simetrice.svg)
+![Figura 1.3 – Componente simetrice](figuri/f01-3-componente-simetrice.svg)
 
-*Figura 1.1 – Tensiunile de la bara A în timpul unui defect monofazat la bara B și componentele lor simetrice (u.r. față de $c\thinspace U_n/\sqrt3$).*
+*Figura 1.3 – Tensiunile de la bara A în timpul unui defect monofazat la bara B și componentele lor simetrice (u.r. față de $c\thinspace U_n/\sqrt3$).*
 
 Utilitatea metodei: un element **simetric** (linie, transformator, generator) nu „amestecă” secvențele. Fiecare secvență vede propria impedanță, $Z_1$, $Z_2$ sau $Z_0$, iar rețeaua se descompune în trei **rețele de secvență** independente. Numai rețeaua directă conține t.e.m. Nesimetria este concentrată la locul defectului, unde rețelele de secvență se conectează între ele.
 
@@ -77,27 +77,27 @@ Câteva proprietăți folosite în curs:
 - la linii și transformatoare $Z_2 = Z_1$; la liniile aeriene $Z_0$ este de câteva ori mai mare decât $Z_1$ (curentul homopolar se întoarce prin pământ), aici $z_0/z_1 \approx$ 3;
 - curentul homopolar trece printr-un transformator numai dacă există cale de întoarcere: la T1 (YNd11) există pe partea de 110 kV, prin neutrul legat la pământ, dar nu și pe partea în triunghi. Pe partea de 110 kV, T1 apare în rețeaua homopolară ca o impedanță spre pământ;
 - transformatorul YNd11 rotește fazorii de secvență directă cu +30° de la 110 kV la 20 kV și pe cei de secvență inversă cu −30° (relevant la protecția diferențială, capitolul 4);
-- **curentul rezidual** $\underline{I}_a + \underline{I}_b + \underline{I}_c = 3\underline{I}_0$ și **tensiunea reziduală** $3\underline{V}_0$ apar numai la defectele cu pământul; pe ele se bazează protecțiile homopolare (§ 2.5, § 3.7).
+- **curentul rezidual** $\underline{I}_a + \underline{I}_b + \underline{I}_c = 3\underline{I}_0$ și **tensiunea reziduală** $3\underline{V}_0$ apar în principal la defectele cu pământul (în rețelele cu neutrul legat la pământ apar și la alte nesimetrii, de exemplu la întreruperea unei faze); pe ele se bazează protecțiile homopolare (§ 2.5, § 3.7).
 
 ## 1.5. Defecte nesimetrice
 
-Condițiile la locul defectului impun conectarea rețelelor de secvență ca în figura 1.2. Cu $\underline{E}$ = tensiunea dinaintea defectului ($c\thinspace U_n/\sqrt3$), $Z_1$, $Z_2$, $Z_0$ impedanțele Thevenin de secvență văzute de la locul defectului și $Z_f$ impedanța defectului:
+Condițiile la locul defectului impun conectarea rețelelor de secvență ca în figura 1.4. Cu $\underline{E}$ = tensiunea dinaintea defectului ($c\thinspace U_n/\sqrt3$), $Z_1$, $Z_2$, $Z_0$ impedanțele Thevenin de secvență văzute de la locul defectului și $Z_f$ impedanța defectului:
 
 | Defectul | Conectarea | Curenții |
 |---|---|---|
 | monofazat (a – pământ) | rețelele în **serie** | $\underline{I}_1 = \underline{I}_2 = \underline{I}_0 = \dfrac{\underline{E}}{Z_1 + Z_2 + Z_0 + 3Z_f}$, $\underline{I}_a = 3\underline{I}_0$ |
 | bifazat (b – c) | directă și inversă în **paralel** | $\underline{I}_1 = -\underline{I}_2 = \dfrac{\underline{E}}{Z_1 + Z_2 + Z_f}$, $\underline{I}_0 = 0$ |
-| bifazat cu pământ | toate trei în **paralel** | $\underline{I}_1 = \dfrac{\underline{E}}{Z_1 + Z_2 \parallel Z_0}$ |
+| bifazat cu pământ | toate trei în **paralel** (homopolara în serie cu $3Z_f$) | $\underline{I}_1 = \dfrac{\underline{E}}{Z_1 + Z_2 \parallel (Z_0 + 3Z_f)}$ |
 
-![Figura 1.2 – Conectarea rețelelor de secvență](figuri/f01-2-conectare-secvente.svg)
+![Figura 1.4 – Conectarea rețelelor de secvență](figuri/f01-4-conectare-secvente.svg)
 
-*Figura 1.2 – Conectarea rețelelor de secvență pentru defectele nesimetrice.*
+*Figura 1.4 – Conectarea rețelelor de secvență pentru defectele nesimetrice.*
 
 Două consecințe utile:
 
 $$\boxed{I''_{k2} = \frac{\sqrt3}{2}\thinspace I''_{k3}} \quad (Z_2 = Z_1), \qquad \boxed{\frac{I''_{k1}}{I''_{k3}} = \left|\frac{3}{2 + Z_0/Z_1}\right|}$$
 
-Curentul bifazat este cu 13 % mai mic decât cel trifazat. Departe de generatoare, unde $Z_2 = Z_1$, el este **curentul minim** de scurtcircuit între faze, folosit la verificarea sensibilității protecțiilor maximale (§ 3.3). Curentul monofazat depășește curentul trifazat numai dacă $Z_0 < Z_1$, adică dacă în apropiere sunt multe neutre de transformatoare legate la pământ.
+Curentul bifazat este cu 13 % mai mic decât cel trifazat. Departe de generatoare, unde $Z_2 = Z_1$, el este **curentul minim** de scurtcircuit între faze, folosit la verificarea sensibilității protecțiilor maximale (§ 3.3). Curentul monofazat depășește curentul trifazat dacă $|2 + Z_0/Z_1| < 3$; pentru $Z_0/Z_1$ practic real, condiția devine $Z_0 < Z_1$, adică în apropiere sunt multe neutre de transformatoare legate la pământ.
 
 ## 1.6. Tratarea neutrului rețelelor de medie tensiune
 
@@ -107,7 +107,7 @@ Curentul bifazat este cu 13 % mai mic decât cel trifazat. Departe de generatoar
 
 $$\boxed{I_C = 3\thinspace\omega\thinspace C_0\thinspace U_f}$$
 
-unde $C_0$ este capacitatea unei faze față de pământ pentru toată rețeaua. Curentul este mic (zeci de amperi), dar tensiunea fazelor sănătoase crește la aproximativ $\sqrt3\thinspace U_f$ (tensiunea de linie, figura 1.5), iar arcul la locul defectului se poate reaprinde intermitent și produce supratensiuni. Rețeaua poate funcționa un timp cu defectul, dar acesta trebuie găsit.
+unde $C_0$ este capacitatea unei faze față de pământ pentru toată rețeaua. Curentul este relativ mic (de la câțiva amperi la peste o sută de amperi; 117 A în rețeaua de referință), dar tensiunea fazelor sănătoase crește la aproximativ $\sqrt3\thinspace U_f$ (tensiunea de linie, figura 1.5), iar arcul la locul defectului se poate reaprinde intermitent și produce supratensiuni. Rețeaua poate funcționa un timp cu defectul, dar acesta trebuie găsit.
 
 **Neutru compensat (bobina de stingere).** O bobină între neutru și pământ produce un curent inductiv în opoziție cu cel capacitiv. Dacă reactanța ei este acordată pe $X_N \approx 1/(3\omega C_0)$, la locul defectului rămâne numai un **curent rezidual** mic (componenta datorată dezacordului și pierderilor), iar arcul se stinge de la sine. Detectarea selectivă a fiderului defect devine mai dificilă (§ 3.8).
 
@@ -147,20 +147,20 @@ Bara B este alimentată din două părți: $z_B = (z_{QA} + z_{L1}) \parallel (z
 
 Să se calculeze, la toate barele, curentul trifazat maxim, curentul trifazat minim și curentul bifazat minim.
 
-**Rezolvare.** Curentul minim folosește $c_{min}$ = 1,0 și, pentru liniile de 20 kV, rezistențele la 80 °C (de 1,24 ori mai mari).
+**Rezolvare.** Curenții minimi folosesc $c_{min}$ = 1,0 și, pentru liniile de 20 kV, rezistențele la 80 °C (de 1,24 ori mai mari). Ultima coloană dă curentul bifazat minim în configurația cea mai slabă, cu una dintre liniile L1 sau L2 scoasă din funcțiune (se indică linia care dă curentul cel mai mic).
 
-| Bara | $Z_1$ [Ω] | $I''_{k3max}$ | $S''_k$ | $I''_{k3min}$ | $I''_{k2min}$ (R la 80 °C) |
-|---|---|---|---|---|---|
-| A | 0,456 + j3,950 | 17,567 kA | 3347 MVA | 15,970 kA | 13,831 kA |
-| B | 2,434 + j10,314 | 6,592 kA | 1256 MVA | 5,993 kA | 5,190 kA |
-| C | 0,943 + j6,972 | 9,929 kA | 1892 MVA | 9,027 kA | 7,817 kA |
-| B2 | 0,157 + j2,099 | 6,034 kA | 209 MVA | 5,485 kA | 4,750 kA |
-| P1 | 3,540 + j4,979 | 2,079 kA | 72 MVA | 1,890 kA | **1,512 kA** |
-| P2 | 6,844 + j7,859 | 1,219 kA | 42 MVA | 1,108 kA | **0,867 kA** |
+| Bara | $Z_1$ [Ω] | $I''_{k3max}$ | $S''_k$ | $I''_{k3min}$ | $I''_{k2min}$ | $I''_{k2min}$, configurația cea mai slabă |
+|---|---|---|---|---|---|---|
+| A | 0,456 + j3,950 | 17,567 kA | 3347 MVA | 15,970 kA | 13,831 kA | 12,397 kA (fără L1) |
+| B | 2,434 + j10,314 | 6,592 kA | 1256 MVA | 5,993 kA | 5,190 kA | 2,581 kA (fără L1) |
+| C | 0,943 + j6,972 | 9,929 kA | 1892 MVA | 9,027 kA | 7,817 kA | 6,198 kA (fără L1) |
+| B2 | 0,157 + j2,099 | 6,034 kA | 209 MVA | 5,485 kA | 4,750 kA | 4,070 kA (fără L1) |
+| P1 | 3,540 + j4,979 | 2,079 kA | 72 MVA | 1,746 kA | 1,512 kA | **1,444 kA** (fără L2) |
+| P2 | 6,844 + j7,859 | 1,219 kA | 42 MVA | 1,001 kA | 0,867 kA | **0,845 kA** (fără L2) |
 
-La A, puterea de scurtcircuit (3347 MVA) este mai mare decât cea a sursei QA (3000 MVA), pentru că la defect contribuie și sursa QC, prin liniile L2 și L1. La P1 și P2, încălzirea conductoarelor reduce curentul bifazat minim de la 1,637 kA la 1,512 kA și de la 0,960 kA la 0,867 kA. Aceste valori se folosesc la verificarea sensibilității protecțiilor fiderului (problema 3.2).
+La A, puterea de scurtcircuit (3347 MVA) este mai mare decât cea a sursei QA (3000 MVA), pentru că la defect contribuie și sursa QC, prin liniile L2 și L1. La B, scoaterea liniei L1 înjumătățește curentul (bara rămâne alimentată numai din C, prin L2). Pe fider, configurația rețelei de 110 kV contează mai puțin, pentru că impedanța transformatorului și a liniilor de 20 kV domină. Valorile minime de pe fider (1,444 kA în P1 și 0,845 kA în P2) se folosesc la verificarea sensibilității protecțiilor (problema 3.2).
 
-**Verificare.** Pentru fiecare bară se verifică: (a) $I''_{k3min}/I''_{k3max} = c_{min}/c_{max}$ = 0,909; (b) $I''_{k2} = (\sqrt3/2)\thinspace I''_{k3}$; (c) curentul bifazat calculat cu rețelele de secvență coincide cu cel din rezolvarea în coordonate de fază, cu un defect între fazele b și c.
+**Verificare.** (a) La barele fără linii de 20 kV pe drumul curentului (A, B, C, B2), $I''_{k3min}/I''_{k3max} = c_{min}/c_{max}$ = 0,909; la P1 și P2 raportul este mai mic, din cauza încălzirii conductoarelor. (b) $I''_{k2} = (\sqrt3/2)\thinspace I''_{k3}$ la toate barele (verificare de consistență, $Z_2 = Z_1$). (c) Curenții bifazați minimi, atât în configurația normală, cât și în cea mai slabă, calculați cu rețelele de secvență coincid cu cei din rezolvarea în coordonate de fază, cu un defect între fazele b și c (cale independentă).
 
 ### Problema 1.3 – Defectul monofazat în rețeaua de 110 kV
 
@@ -176,7 +176,7 @@ Să se calculeze curentul de scurtcircuit monofazat la barele A, B și C și să
 
 La B, departe de surse, raportul $Z_0/Z_1$ este cel mai mare (liniile au $z_0 \approx 3 z_1$), deci curentul monofazat este cel mai mic în raport cu cel trifazat, iar tensiunea fazelor sănătoase crește cel mai mult (cu 11 %).
 
-**Verificare.** (a) Raportul $I''_{k1}/I''_{k3}$ coincide cu formula $|3/(2 + Z_0/Z_1)|$ la toate cele trei bare; (b) curentul monofazat calculat cu rețelele de secvență coincide cu cel din rezolvarea în coordonate de fază, cu faza a legată la pământ printr-o rezistență de 10⁻⁴ Ω.
+**Verificare.** Curentul monofazat calculat cu rețelele de secvență coincide cu cel din rezolvarea în coordonate de fază, cu faza a legată la pământ printr-o rezistență de 10⁻⁴ Ω (cale independentă). În plus, raportul $I''_{k1}/I''_{k3}$ coincide cu formula $|3/(2 + Z_0/Z_1)|$ (verificare de consistență: formula folosește aceleași impedanțe Thevenin).
 
 ### Problema 1.4 – Curentul de șoc
 
@@ -187,9 +187,11 @@ Să se calculeze curentul de șoc la barele B2 și A.
 - B2: $R/X$ = 0,157/2,099 = 0,0749 → $\kappa = 1{,}02 + 0{,}98\thinspace e^{-0{,}225}$ = **1,803**; $i_p$ = 1,803 · √2 · 6,034 = **15,38 kA**;
 - A: $R/X$ = 0,1155 → $\kappa$ = **1,713**; $i_p$ = **42,56 kA**.
 
-Constanta de timp a componentei aperiodice la B2 este $T = X/(\omega R)$ = 42,5 ms (figura 1.3). Ea contează și la saturația transformatoarelor de curent (§ 2.3).
+Rețeaua de 110 kV este buclată, iar κ s-a calculat cu raportul R/X de la locul defectului (metoda B). Ramurile rețelei buclate au R/X = 0,100 (sursele), 0,300 (liniile) și 0,044 (T1), deci toate cel mult 0,3. Metoda frecvenței echivalente (metoda C) dă R/X = 0,0748 și κ = 1,803 la B2, respectiv R/X = 0,1127 și κ = 1,719 la A.
 
-**Verificare.** Formula lui κ din IEC 60909-0 este o aproximare. Pentru un circuit R-L cu același raport R/X, scriptul caută numeric maximul curentului $i(t) = \sqrt2\thinspace I''_k[\sin(\omega t + \alpha - \varphi) - \sin(\alpha - \varphi)\thinspace e^{-t/T}]$ după unghiul de conectare α (din 0,25° în 0,25°) și după timp. Rezultă κ = 1,794 la B2 și 1,704 la A. Formula standardului este cu 0,5 % mai mare, deci acoperitoare.
+Constanta de timp a componentei aperiodice la B2 este $T = X/(\omega R)$ = 42,5 ms (figura 1.2). Ea contează și la saturația transformatoarelor de curent (§ 2.3).
+
+**Verificare.** (a) Metoda C, calculată cu o rețea separată (toate reactanțele la 20 Hz), dă același κ cu cel mult 0,4 % diferență. (b) Pentru un **singur** circuit R-L cu același raport R/X, scriptul caută numeric maximul curentului $i(t) = \sqrt2\thinspace I''_k[\sin(\omega t + \alpha - \varphi) - \sin(\alpha - \varphi)\thinspace e^{-t/T}]$ după unghiul de conectare α (din 0,25° în 0,25°) și după timp. Rezultă κ = 1,794 la B2 și 1,704 la A; formula standardului este cu 0,5 % mai mare, deci acoperitoare pentru un circuit R-L. Pentru rețeaua buclată reală, această comparație arată doar ordinul de mărime al aproximării.
 
 ### Problema 1.5 – Factorul de corecție $K_T$
 
@@ -197,7 +199,7 @@ Cât se modifică curentul de scurtcircuit la bara B2 dacă impedanța lui T1 se
 
 **Rezolvare.** $K_T = 0{,}95 \cdot 1{,}1/(1 + 0{,}6 \cdot 0{,}11)$ = **0,9803**. Cu impedanța transformatorului înmulțită cu $K_T$, curentul la B2 crește de la 6,034 kA la **6,135 kA** (+1,67 %).
 
-**Verificare.** Scriptul recalculează rețeaua cu impedanța corectată (inclusiv rezistența) și verifică atât valoarea lui $K_T$, cât și faptul că efectul este sub 2 %, ceea ce justifică neglijarea lui în celelalte probleme ale cursului.
+**Verificare.** Scriptul recalculează rețeaua cu impedanța corectată (inclusiv rezistența) și verifică faptul că efectul este sub 2 %, ceea ce justifică neglijarea lui în celelalte probleme ale cursului. Valoarea lui $K_T$ este doar recalculată din aceeași formulă (verificare de calcul, nu cale independentă).
 
 ### Problema 1.6 – Punerea la pământ în rețeaua de 20 kV
 
@@ -234,7 +236,7 @@ Diferențele (de cel mult 2,2 %) au două cauze, pe care formulele de manual le 
 4. De ce la un defect bifazat nu apare curent homopolar, iar la unul monofazat cele trei rețele de secvență sunt în serie?
    <details><summary>Răspuns</summary>La defectul bifazat fără pământ curenții de fază se închid între fazele b și c ($I_b = -I_c$, $I_a = 0$), deci suma lor este nulă și $I_0 = 0$. La defectul monofazat $I_b = I_c = 0$, ceea ce, transformat în componente, înseamnă $I_0 = I_1 = I_2$: același curent parcurge toate rețelele de secvență, adică ele sunt conectate în serie.</details>
 5. Ce avantaje și ce dezavantaje are tratarea neutrului prin rezistor față de neutrul izolat?
-   <details><summary>Răspuns</summary>Avantaje: curentul de defect este bine definit (sute de amperi, practic independent de capacitățile rețelei), deci protecțiile homopolare sunt simple și selective; supratensiunile pe fazele sănătoase și cele tranzitorii (arc intermitent) sunt mai mici; defectul se elimină rapid. Dezavantaje: fiecare punere la pământ deconectează fiderul (continuitate mai slabă decât la neutrul izolat sau compensat), curentul la locul defectului este mai mare (tensiuni de atingere și de pas, deteriorări), iar defectele cu rezistență mare rămân greu de detectat (§ 3.7).</details>
+   <details><summary>Răspuns</summary>Avantaje: curentul de defect este bine definit (sute de amperi, dominat de rezistor: 300 A față de 117 A capacitivi în rețeaua de referință), deci protecțiile homopolare sunt simple și selective; supratensiunile tranzitorii (arc intermitent) sunt mai mici; defectul se elimină rapid. Supratensiunea de regim permanent pe fazele sănătoase rămâne însă de ordinul tensiunii de linie (problema 1.6). Dezavantaje: fiecare punere la pământ deconectează fiderul (continuitate mai slabă decât la neutrul izolat sau compensat), curentul la locul defectului este mai mare (tensiuni de atingere și de pas, deteriorări), iar defectele cu rezistență mare rămân greu de detectat (§ 3.7).</details>
 6. De ce o bobină de stingere poate stinge arcul la locul defectului?
    <details><summary>Răspuns</summary>Curentul ei inductiv este în opoziție cu curentul capacitiv al rețelei și îl compensează aproape complet. La locul defectului rămâne un curent rezidual mic, iar tensiunea care reapare pe faza defectă după stingerea arcului crește lent, astfel că arcul nu se mai reaprinde.</details>
 

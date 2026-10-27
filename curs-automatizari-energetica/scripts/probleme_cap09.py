@@ -52,11 +52,11 @@ rez92 = {}
 for nume, c in cazuri.items():
     cadre, debit = debit_sv(c["fs"], c["asdu"], c["L"])
     spc = c["fs"] / f
-    # calea 2: numărarea biților pe fir într-o secundă (preambul + cadru + pauză), cadru cu cadru
+    # verificare aritmetică: numărarea biților pe fir într-o secundă (preambul + cadru + pauză), cadru cu cadru
     biti = 0
     for _ in range(int(cadre)):
         biti += 8 * (8 + c["L"] + 12)
-    verifica(f"{nume}: debit formulă vs numărare pe biți", debit, biti)
+    verifica(f"{nume}: debit formulă vs numărare pe biți (verificare aritmetică)", debit, biti)
     rez92[nume] = (cadre, debit)
     print(f"  {nume}: {fmt(spc, 0)} eșantioane/ciclu, pas {fmt(1e6 / c['fs'], 2)} µs; {fmt(cadre, 0)} cadre/s × "
           f"({c['L']} + {SUPLIMENT_FIR}) octeți → {fmt(debit / 1e6, 3)} Mbit/s pe flux")
@@ -70,11 +70,12 @@ for nume, c in cazuri.items():
     inc_sim, tmax_sim, t_cadru = simuleaza_port(N, cadre, c["L"], C)
     inc_rnd, tmax_rnd, _ = simuleaza_port(N, cadre, c["L"], C, decalaje=rng.random(N))
     print(f"    {nume}: încărcare {fmt(100 * inc, 1)} % (simulare {fmt(100 * inc_sim, 1)} %); "
-          f"timp pe fir al unui cadru {fmt(t_cadru * 1e6, 1)} µs; întârziere maximă în coadă {fmt(tmax_sim * 1e6, 1)} µs "
+          f"timp pe fir al unui cadru {fmt(t_cadru * 1e6, 1)} µs; întârziere maximă în coadă (inclusiv transmisia "
+          f"cadrului propriu) {fmt(tmax_sim * 1e6, 1)} µs, față de intervalul dintre cadre {fmt(1e6 / cadre, 1)} µs "
           f"(fluxuri decalate aleator: {fmt(tmax_rnd * 1e6, 1)} µs); cel mult {nmax} fluxuri pentru încărcare ≤ 50 %")
     verifica(f"{nume}: încărcarea analitică vs simulare", inc, inc_sim, rtol=2e-3)
     verifica(f"{nume}: întârzierea maximă = N × timpul unui cadru", tmax_sim, N * t_cadru)
-    verifica_adevarat(f"{nume}: coada se golește înainte de următorul eșantion", N * t_cadru < 1 / cadre)
+    verifica_adevarat(f"{nume}: coada se golește înainte de următorul set de cadre", N * t_cadru < 1 / cadre)
     verifica_adevarat(f"{nume}: întârzierea cu fluxuri decalate nu depășește cazul sincron", tmax_rnd <= tmax_sim + 1e-12)
 
 print("\nProblema 9.3 – blocarea protecției barelor de 20 kV prin mesaje GOOSE (problema 3.3)")
@@ -130,6 +131,13 @@ print(f"  p = {fmt(p, 1)}: P(blocare întârziată) = p^{k_max + 1} = {P_teorie:
 verifica("P(întârziere): analitic vs Monte Carlo", P_intarziere, P_teorie, rtol=0,
          atol=5 * np.sqrt(P_teorie * (1 - P_teorie) / n_inc))
 verifica("momentul mediu: analitic vs Monte Carlo", np.mean(sos), E_teorie, rtol=2e-3)
+# media condiționată: numai încercările în care blocarea sosește înainte ca R0 să declanșeze
+baza = t_porn + t_pub + t_retea + t_sub + t_ciclu
+E_cond = sum(p**k * (1 - p) * (baza + emis[k]) for k in range(k_max + 1)) / (1 - p ** (k_max + 1))
+E_cond_mc = np.mean(sos[sos <= t_R0])
+print(f"  media necondiționată (inclusiv sosirile după declanșarea lui R0) = {fmt(E_teorie * 1e3, 3)} ms; "
+      f"media condiționată de sosirea la timp = {fmt(E_cond * 1e3, 3)} ms (Monte Carlo {fmt(E_cond_mc * 1e3, 3)} ms)")
+verifica("momentul mediu condiționat: analitic vs Monte Carlo", E_cond_mc, E_cond, rtol=2e-3)
 print(f"  pentru p = 10⁻³: P(blocare întârziată) = {0.001 ** (k_max + 1):.0e}")
 # Supravegherea legăturii: intervalul de „bătaie de inimă” T0 = 1 s, TAL = 2 s (exemplu)
 T0, TAL = 1.0, 2.0

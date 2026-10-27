@@ -150,9 +150,9 @@ Regulile generale sunt cele din Legea nr. 319/2006 a securității și sănătă
 
 | Zona | modulul Z (mho, la 73,3°) | X (poligon) | R (poligon) | t |
 |---|---|---|---|---|
-| 1 | 7,745 Ω | 7,418 Ω | 8,18 Ω | 0 |
+| 1 | 7,471 Ω | 7,156 Ω | 8,18 Ω | 0 |
 | 2 | 10,934 Ω | 10,473 Ω | 10,91 Ω | 0,3 s |
-| 3 | 20,727 Ω | 19,853 Ω | 16,36 Ω | 0,6 s |
+| 3 | 22,636 Ω | 21,682 Ω | 16,36 Ω | 0,6 s |
 
 Factorul de compensare homopolară: $\underline{k}_0$ = 0,655 ∠ 4,02° (sau, după convenția releului, $\underline{Z}_0/\underline{Z}_1$ = 2,962 ∠ 2,66°; se verifică în manualul releului ce mărime cere).
 
@@ -168,20 +168,20 @@ Factorul de compensare homopolară: $\underline{k}_0$ = 0,655 ∠ 4,02° (sau, d
 
 | Punctul (secundar) | Ce trebuie să se întâmple |
 |---|---|
-| 0,9·$Z_1$ = 2,003 + j6,676 Ω | declanșare în zona 1, fără temporizare |
-| 1,1·$Z_1$ = 2,448 + j8,160 Ω | declanșare în zona 2, după 0,3 s |
+| 0,9·$Z_1$ = 1,932 + j6,441 Ω | declanșare în zona 1, fără temporizare |
+| 1,1·$Z_1$ = 2,362 + j7,872 Ω | declanșare în zona 2, după 0,3 s |
 | 0,9·$Z_2$ = 2,828 + j9,425 Ω | declanșare în zona 2, după 0,3 s |
 | 1,1·$Z_2$ = 3,456 + j11,520 Ω | declanșare în zona 3, după 0,6 s |
-| 0,9·$Z_3$ = 5,360 + j17,868 Ω | declanșare în zona 3, după 0,6 s |
-| 1,1·$Z_3$ = 6,552 + j21,838 Ω | nicio declanșare |
-| zona 1, R: 8,365 + j3,709 Ω | declanșare în zona 1 (numai poligon; în afara cercului mho) |
-| zona 1, R: 10,224 + j3,709 Ω | declanșare în zona 2 |
+| 0,9·$Z_3$ = 5,854 + j19,514 Ω | declanșare în zona 3, după 0,6 s |
+| 1,1·$Z_3$ = 7,155 + j23,850 Ω | nicio declanșare |
+| zona 1, R: 8,330 + j3,578 Ω | declanșare în zona 1 (poligon); cu caracteristici mho: zona 3 |
+| zona 1, R: 10,181 + j3,578 Ω | declanșare în zona 2 (poligon); cu caracteristici mho: zona 3 |
 
 **Rezultate.** Tabel cu: punctul injectat, bucla, zona așteptată, zona indicată de releu, timpul măsurat, abaterea față de temporizarea reglată. Pentru fiecare zonă se determină și limita reală pe direcția liniei, prin apropieri succesive (pas de 1 %), și se compară cu reglajul.
 
 **Întrebări.**
 
-1. De ce punctul 8,365 + j3,709 Ω este în zona 1 poligonală, dar în afara cercului mho de aceeași acoperire?
+1. De ce punctul 8,330 + j3,578 Ω este în zona 1 poligonală, dar în afara cercurilor mho ale zonelor 1 și 2?
 2. Ce eroare relativă a acoperirii zonei 1 ați măsurat? Este compatibilă cu bugetul de erori al releului din problema 5.1 (±5 %)?
 3. Cum s-ar schimba punctele din tabel dacă TC ar fi 1200/1 A în loc de 600/1 A?
 4. De ce, la încercarea cu $k_0$ = 0, defectul monofazat „se mută” mai departe pe linie?

@@ -24,7 +24,7 @@ Cursul urmărește în primul rând cărțile de referință publicate de firmel
 
 1. **Obiective** – ce trebuie să știe studentul la final.
 2. **Teorie** – cu figuri și formule; formulele esențiale sunt încadrate.
-3. **Probleme rezolvate** – pas cu pas, fiecare cu o **verificare pe o cale independentă**.
+3. **Probleme rezolvate** – pas cu pas, fiecare cu un paragraf **„Verificare”**, care spune ce se verifică și dacă verificarea este o cale de calcul independentă sau doar o verificare de consistență.
 4. **Întrebări de autoevaluare** – cu răspunsuri ascunse (se deschid cu un clic).
 5. **Bibliografie** pentru capitol, cu numerotarea din lista de mai jos.
 
@@ -49,6 +49,46 @@ Problemele folosesc aceeași **rețea de referință** (§ 0.7, figura 0.1): re�
 
 Datele bibliografice exacte (ediții, ISBN, contradicțiile dintre surse) sunt în lista de mai jos.
 
+## Cum au fost verificate calculele
+
+Toate rezultatele numerice din probleme și toate figurile (cu excepția schițelor) sunt calculate de scripturile Python din [`scripts/`](scripts/):
+
+- `modele.py` – modelele comune: rețeaua de referință, rezolvată pe **două căi independente** (rețelele de secvență cu matricea impedanțelor nodale și rezolvarea directă în coordonate de fază, cu transformatorul modelat ca trei unități monofazate conectate fizic în stea și în triunghi), caracteristicile releelor maximale, modelul termic, transformatorul de curent saturabil, criteriul ariilor egale;
+- `probleme_cap00.py` … `probleme_cap10.py` – rezolvă problemele fiecărui capitol (și valorile așteptate din îndrumarul de laborator) și verifică rezultatele. Orice verificare eșuată oprește scriptul cu eroare;
+- `calcul_cap04.py` … `calcul_cap09.py` – funcțiile folosite atât de probleme, cât și de figurile capitolelor respective;
+- `figuri_cap00.py` … `figuri_cap09.py` – generează figurile SVG din [`figuri/`](figuri/); reglajele și rezultatele sunt citite din aceleași scripturi de probleme, astfel încât figurile și textul să nu se poată despărți;
+- `ruleaza_tot.py` – rulează tot și numără verificările.
+
+```bash
+cd curs-automatizari-energetica/scripts
+pip install -r requirements.txt
+python ruleaza_tot.py
+```
+
+Verificările sunt de două feluri, iar textul fiecărei probleme spune care este care:
+
+- **căi independente** – același rezultat obținut cu un alt model sau o altă metodă: rețele de secvență față de coordonate de fază, formulă analitică față de simulare numerică, model liniar față de model neliniar, calcul analitic față de Monte Carlo;
+- **verificări de consistență** – aceeași relație scrisă altfel, bilanțuri (de exemplu legea lui Kirchhoff la o bară) sau condiții pe care reglajele trebuie să le îndeplinească. Ele prind greșeli de calcul, dar nu greșeli de model.
+
+Afirmațiile care nu rezultă din calcul (date normative, terminologie, conținutul cărților) au fost verificate în surse publicate, de regulă în cel puțin două surse independente. Ce nu a putut fi verificat este enumerat mai jos.
+
+## Ce nu a putut fi verificat
+
+În această versiune, căutarea surselor a fost limitată (accesul direct la unele site-uri, de exemplu cel al Transelectrica, nu a fost posibil). Următoarele lucruri **nu au fost confirmate** din surse primare și trebuie tratate cu prudență:
+
+- **Normative românești.** Normativul PE 501 (proiectarea protecțiilor și automatizărilor) și normativele privind tratarea neutrului nu au putut fi găsite; treptele actuale ale DASF din România (Transelectrica a prezentat în 2016 o actualizare a normativului DAS-fmin, dar valorile provin dintr-o singură sursă) nu sunt reproduse în curs.
+- **Abrevieri românești.** RAR (reanclanșare automată rapidă) – o singură sursă găsită; DRRI – găsită numai în documente din Republica Moldova; AAR, DASF, BPN, „rezistor pentru tratarea neutrului” și „bobină de stingere” sunt confirmate.
+- **IEEE C37.2.** Denumirile funcțiilor au fost verificate în liste secundare ale codurilor, nu în textul standardului; pentru codurile 25, 40 și 49 s-a găsit o singură sursă.
+- **IEC 60909-0.** Ediția a 3-a a apărut în iulie 2026; nu s-a putut verifica dacă tabelul factorului $c$ s-a schimbat. Regulile de aplicare a factorului de siguranță al metodei B și detaliile metodei C (frecvența echivalentă de 20 Hz) sunt cele din literatura de specialitate, necitite direct din standard.
+- **Clasele TC** PR, PX, PXR, TPX, TPY, TPZ din IEC 61869-2: existența claselor PR și PX a fost confirmată dintr-o singură sursă; restul descrierii provine din literatura de specialitate.
+- **IEC 61850-5:** valorile claselor de timp de transfer TT0–TT4 provin dintr-o singură sursă publicată (TT5 = 10 ms și TT6 = 3 ms sunt confirmate). Atribuirea protocoalelor de redundanță PRP/HSR unui standard anume, parametrii de temporizare IEC 60870-5-104 și programul de retransmisie GOOSE (care diferă de la un producător la altul) nu au fost verificate; în curs apar numai ca exemple.
+- **Ecuația timpului de declanșare din IEC 60255-149** nu a putut fi citită din standard; în curs ea este **dedusă** din modelul termic de ordinul întâi.
+- **Valorile „tipice”** ale treptei de timp la protecțiile maximale și ale acoperirilor zonelor de distanță nu au fost confirmate din surse; în curs ele sunt **deduse** din componentele lor (erori, timpi de întrerupere), date ca date de problemă.
+- **Regulamentul (UE) 2016/631 (RfG):** domeniile de frecvență pentru Europa continentală au fost confirmate indirect, prin tabelul identic din Regulamentul (UE) 2016/1388 (DCC).
+- **Criteriul ANSI C50.41** (1,33 u.r. V/Hz la transferul motoarelor) este menționat în capitolul 7, dar nu a fost verificat.
+- **Cărți:** anul și ISBN-ul ediției a 13-a a *Switchgear Manual*; anul și numărul de pagini ale *Power Engineering Guide* 8.0; dacă textul actual al ghidului GE este identic cu ediția Alstom din 2011; lista completă a capitolelor NPAG (confirmată doar parțial).
+- **Datele rețelei de referință** (puteri de scurtcircuit, parametrii liniilor și cablurilor, curentul de 300 A al rezistorului de neutru, datele generatorului G1 și ale motorului M1) sunt **construite pentru curs**; ele nu sunt date normative.
+
 ## Plan orientativ (un semestru de 14 săptămâni)
 
 | Săpt. | Curs (2 h) | Laborator (2 h) |
@@ -70,8 +110,9 @@ Datele bibliografice exacte (ediții, ISBN, contradicțiile dintre surse) sunt �
 
 ## Notații și convenții
 
-- Fazorii (numere complexe) sunt subliniați: $\underline{U}$, $\underline{I}$; valorile efective nu: $U$, $I$.
-- Indicii 0, 1, 2 notează componentele homopolară, directă și inversă; a, b, c fazele; $f$ – mărime de fază, $l$ – de linie.
+- Fazorii (numere complexe) sunt subliniați când trebuie deosebiți de valorile efective: $\underline{U}$, $\underline{I}$; valorile efective nu: $U$, $I$.
+- Tensiunile se notează cu $U$; în § 1.4–1.5, la componentele simetrice, se folosește și $V$, ca în literatura de specialitate.
+- Indicii 0, 1, 2 notează componentele homopolară, directă și inversă; a, b, c fazele; $U_f$ – tensiune de fază, $U_l$ – de linie. Atenție: $Z_f$ și $R_f$ notează impedanța și rezistența **defectului**.
 - $I''_k$ – curentul de scurtcircuit inițial simetric (IEC 60909-0); $I''_{k3}$, $I''_{k2}$, $I''_{k1}$ – trifazat, bifazat, monofazat; $c$ – factorul de tensiune; $i_p$ – curentul de șoc.
 - $I_s$ – curentul de pornire al unei protecții; TMS – multiplicatorul de timp; $3I_0$, $3U_0$ – curentul și tensiunea reziduale.
 - Funcțiile de protecție sunt notate cu codurile IEEE C37.2 (§ 0.6): 21, 50/51, 87 etc.
@@ -95,7 +136,7 @@ Datele bibliografice de mai jos au fost verificate în cataloage de bibliotecă 
 10. ABB – *Switchgear Manual*, ed. 11, H. Gremmel (ed.), Cornelsen Scriptor, Berlin, 2006, ISBN 978-3-589-24112-5. Ediția a 13-a se comandă de la Hitachi Energy (anul și ISBN-ul ei nu au putut fi confirmate).
 11. K.-P. Brand, V. Lohmann, W. Wimmer – *Substation Automation Handbook*, Utility Automation Consulting Lohmann, Bremgarten, 2003, ISBN 978-3-85758-951-5 (autori din ABB; anterior ediției a 2-a a IEC 61850).
 12. ABB Review – *Special Report IEC 61850*, august 2010.
-13. C. Prévé – *Protection of Electrical Networks*, ISTE, Londra, 2006, ISBN 978-1-905209-06-4 (autor de la AREVA).
+13. C. Prévé – *Protection of Electrical Networks*, ISTE, Londra, 2006, ISBN 978-1-905209-06-4 (nota editorului îl prezintă pe autor ca inginer la AREVA, firmă din aceeași linie cu Alstom Grid).
 
 **Manuale în limba română**
 
