@@ -229,7 +229,7 @@ a2.annotate("", xy=(5.0, -alfa - 0.6), xytext=(tc_cmd, -alfa - 0.6),
             arrowprops=dict(arrowstyle="<->", color=TEXT2, lw=1))
 a2.text((tc_cmd + 5.0) / 2, -alfa - 1.0, r"$t_{\mathrm{î}}$" + f" = {t_close * 1e3:.0f} ms", ha="center", va="top",
         fontsize=8.5)
-a2.text(4.805, -alfa + 0.4, f"comanda la φ = −α = −{alfa:.2f}°".replace(".", ","), ha="left", va="bottom",
+a2.text(4.805, -alfa + 0.3, "comanda la\n" + f"φ = −α = −{alfa:.2f}°".replace(".", ","), ha="left", va="bottom",
         fontsize=8.5, color=C2)
 a2.text(5.01, -6.5, "contactele se închid\nla φ = 0", ha="left", va="bottom", fontsize=8.5, color=C3)
 a2.set_xlabel("t [s]")
@@ -248,8 +248,8 @@ fig, (a1, a2) = plt.subplots(1, 2, figsize=(11, 4.2))
 a1.plot(tt, U, color=C1, label="tensiunea remanentă Ur")
 a1.plot(tt, w, color=C3, label="turația (frecvența) n/n0")
 a1.axhline(U_PRAG, color=C2, lw=0.8, ls=":")
-a1.text(1.48, U_PRAG + 0.02, f"prag {U_PRAG:.2f} u.r.".replace(".", ","), ha="right", va="bottom", fontsize=8.5,
-        color=C2)
+a1.text(1.48, U_PRAG + 0.02, "prag " + f"{U_PRAG:.2f}".replace(".", ",") + " u.r.", ha="right", va="bottom",
+        fontsize=8.5, color=C2)
 a1.set_xlabel("t [s] (t = 0: bara rămâne fără alimentare)")
 a1.set_ylabel("[u.r.]")
 a1.set_ylim(0, 1.05)
@@ -263,10 +263,10 @@ a2.axvspan(0, tt[i_f], color=C3, alpha=0.15)
 a2.text(tt[i_f] / 2, 1.97, "fereastra\nrapidă", ha="center", va="top", fontsize=8)
 t_rem = brentq(lambda x: remanenta_analitic(x)[1] - U_PRAG, 0.01, 5)
 a2.axvspan(t_rem, 1.5, color=C4, alpha=0.15)
-a2.text((t_rem + 1.5) / 2, 1.97, f"Ur ≤ {U_PRAG:.2f} u.r.:\n|ΔU| ≤ {1 + U_PRAG:.2f} u.r.".replace(".", ","),
-        ha="center", va="top", fontsize=8)
-etich = {("a", "simultan"): ("a, simultan", (0.10, 0.10)), ("a", "secvențial"): ("a, secvențial", (0.20, 0.35)),
-         ("b", "simultan"): ("b, simultan", (0.25, 0.05)), ("b", "secvențial"): ("b, secvențial", (0.22, 1.30))}
+a2.text((t_rem + 1.5) / 2, 1.97, "Ur ≤ " + f"{U_PRAG:.2f}".replace(".", ",") + " u.r.:\n|ΔU| ≤ "
+        + f"{1 + U_PRAG:.2f}".replace(".", ",") + " u.r.", ha="center", va="top", fontsize=8)
+etich = {("a", "simultan"): ("a, simultan", (0.17, 0.04)), ("a", "secvențial"): ("a, secvențial", (0.17, 0.32)),
+         ("b", "simultan"): ("b, simultan", (0.17, 0.18)), ("b", "secvențial"): ("b, secvențial", (0.40, 1.80))}
 culori = {"a": C3, "b": C2}
 for (pornire, mod), tp in momente_aar().items():
     if pornire == "c":
