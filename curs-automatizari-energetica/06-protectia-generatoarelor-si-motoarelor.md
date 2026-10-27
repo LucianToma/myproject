@@ -1,6 +1,6 @@
 # Capitolul 6. Protecția generatoarelor și a motoarelor
 
-> **Obiective.** După acest capitol ar trebui să puteți: (1) enumera defectele și regimurile anormale ale mașinilor electrice și protecțiile corespunzătoare, cu codurile lor; (2) deduce timpul de declanșare al protecției termice din modelul termic de ordinul întâi și să-l calculați din stare rece și caldă; (3) coordona protecția termică, protecția la pornire prelungită și rotor blocat cu datele motorului; (4) regla protecția la putere inversă și explica de ce ea cere o măsurare foarte precisă a unghiului; (5) regla protecția la pierderea excitației în planul R–X și urmări traiectoria impedanței; (6) calcula consumul capabilității la sarcină nesimetrică; (7) explica de ce protecția de tensiune homopolară acoperă numai 95 % din înfășurarea statorică.
+> **Obiective.** După acest capitol ar trebui să puteți: (1) enumera defectele și regimurile anormale ale mașinilor electrice și protecțiile corespunzătoare, cu codurile lor; (2) deduce timpul de declanșare al protecției termice din modelul termic de ordinul întâi și calcula acest timp din stare rece și caldă; (3) coordona protecția termică, protecția la pornire prelungită și rotor blocat cu datele motorului; (4) regla protecția la putere inversă și explica de ce ea cere o măsurare foarte precisă a unghiului; (5) regla protecția la pierderea excitației în planul R–X și urmări traiectoria impedanței; (6) calcula consumul capabilității la sarcină nesimetrică; (7) explica de ce protecția de tensiune homopolară acoperă numai 95 % din înfășurarea statorică.
 
 Mașinile rotative sunt cele mai scumpe elemente ale unei instalații, iar multe regimuri periculoase pentru ele (suprasarcina, pierderea excitației, sarcina nesimetrică, regimul de motor) **nu sunt scurtcircuite**: curenții nu sunt mari, dar mașina se deteriorează dacă regimul durează. Protecțiile lor sunt deci, în mare parte, protecții de **regim anormal**, cu temporizări de secunde sau minute, alături de protecțiile rapide la defecte interioare (diferențiala, capitolul 4).
 
@@ -9,7 +9,7 @@ Mașinile rotative sunt cele mai scumpe elemente ale unei instalații, iar multe
 | Mașina | Date |
 |---|---|
 | generatorul **G1** | hidrogenerator, 50 MVA, 10,5 kV, cos φ = 0,85; $x_d$ = 1,00, $x_q$ = 0,65, $x'_d$ = 0,30, $x''_d$ = 0,20, $x_2$ = 0,22 u.r.; H = 3,5 s; transformator bloc TB 50 MVA, 10,5/115 kV, YNd11, $u_k$ = 12 %; din catalog: puterea absorbită în regim de motor 1,5 % din Pn, curentul invers admis permanent 0,08·In, $(I_2/I_n)^2\thinspace t$ admis = 20 s |
-| motorul asincron **M1** | 800 kW, 6 kV, η = 0,955, cos φ = 0,87; $I_p/I_n$ = 6; pornirea durează 6 s; timpul admis cu rotorul blocat 12 s din stare caldă și 18 s din stare rece; constanta de timp termică 1800 s |
+| motorul asincron **M1** | 800 kW, 6 kV, η = 0,955, cos φ = 0,87; $I_{porn}/I_n$ = 6; pornirea durează 6 s; timpul admis cu rotorul blocat 12 s din stare caldă și 18 s din stare rece; constanta de timp termică 1800 s |
 
 ---
 
@@ -24,13 +24,14 @@ Mașinile rotative sunt cele mai scumpe elemente ale unei instalații, iar multe
 | sarcină nesimetrică, fază întreruptă | curenți de frecvență dublă în rotor, încălzirea lui | curent de secvență inversă (46, § 6.7) |
 | regim de motor al generatorului | pericol pentru turbină | putere inversă (32, § 6.5) |
 | pierderea excitației | absorbție mare de putere reactivă, funcționare asincronă | 40 (§ 6.6) |
+| punere la pământ a circuitului de excitație (rotor) | o primă punere la pământ nu produce curent (circuitul este izolat); o a doua scurtcircuitează o parte din înfășurare: dezechilibru magnetic, vibrații | protecție dedicată a circuitului de excitație |
 | tensiune sau frecvență anormale; supraexcitare ($U/f$ mare) | solicitarea izolației, supraîncălzirea miezului, vibrații | minimă / maximă de tensiune (27/59), frecvență (81), protecție după $U/f$ |
 
-Notă: codul 40 este folosit pentru protecția la pierderea excitației; denumirea exactă din IEEE C37.2 nu a putut fi verificată pentru această ediție a cursului.
+Notă: codul 40 este folosit pentru protecția la pierderea excitației; denumirea exactă din IEEE C37.2 nu a fost confirmată din textul standardului.
 
 ![Figura 6.1 – Protecțiile grupului generator–transformator](figuri/f06-1-schema-protectii.svg)
 
-*Figura 6.1 – Principalele protecții ale grupului G1–TB și mărimile pe care le folosesc.*
+*Figura 6.1 – Principalele protecții ale grupului G1–TB și locul din schemă la care se referă fiecare (schemă de principiu; transformatoarele de măsură nu sunt desenate).*
 
 ## 6.2. Protecția termică: modelul de ordinul întâi
 
@@ -55,19 +56,19 @@ Standardul IEC 60255-149 [S5] stabilește cerințele funcționale ale releelor t
 
 ## 6.3. Pornirea și rotorul blocat. Celelalte protecții ale motoarelor
 
-La pornire, motorul absoarbe de câteva ori curentul nominal (pentru M1, 6·In timp de 6 s). Pentru modelul termic, o pornire este un „impuls” de căldură: din stare rece el adaugă $\Delta\theta \approx (I_p/kI_B)^2\thinspace t_p/\tau$, puțin; din stare caldă poate depăși însă limita (problema 6.2). Releul **blochează repornirea** până când modelul termic arată că o pornire completă mai încape în rezerva termică.
+La pornire, motorul absoarbe de câteva ori curentul nominal (pentru M1, $I_{porn}$ = 6·In timp de $t_{porn}$ = 6 s). Pentru modelul termic, o pornire este un „impuls” de căldură: din stare rece el adaugă $\Delta\theta \approx (I_{porn}/kI_B)^2\thinspace t_{porn}/\tau$, puțin; din stare caldă poate depăși însă limita (problema 6.2). Releul **blochează repornirea** până când modelul termic arată că o pornire completă mai încape în rezerva termică.
 
 Cu **rotorul blocat**, curentul de pornire rămâne și căldura se concentrează în rotor, care se încălzește mult mai repede decât indică modelul termic al întregii mașini (constanta de timp de funcționare este de ordinul zecilor de minute, iar timpul admis cu rotorul blocat – de ordinul secundelor). Pentru M1, modelul termic ar declanșa un rotor blocat din stare rece abia după 56 s, deși motorul admite 18 s. De aceea motoarele au o protecție separată, **la pornire prelungită și rotor blocat**: o treaptă maximală cu temporizare independentă, reglată:
 
 - **în curent**: sub curentul de pornire, dar peste suprasarcinile lăsate protecției termice;
 - **în timp**: peste durata pornirii normale (cu rezervă) și sub timpul admis cu rotorul blocat.
 
-Dacă timpul admis cu rotorul blocat ar fi **mai mic** decât durata pornirii (motoare mari cu inerție mare), cele două cazuri nu s-ar mai putea separa după timp; se folosește atunci un traductor de turație: rotorul care nu începe să se rotească este declanșat înainte de expirarea timpului de pornire.
+Dacă timpul admis cu rotorul blocat ar fi **mai mic** decât durata pornirii (motoare mari cu inerție mare), cele două cazuri nu s-ar mai putea separa după timp; se folosește atunci un traductor de turație: motorul al cărui rotor nu începe să se rotească este declanșat înainte de expirarea timpului de pornire.
 
 Alte protecții ale motoarelor:
 
 - **maximală instantanee** (50), la scurtcircuite, reglată peste curentul de pornire (cu rezervă pentru vârful aperiodic de la conectare);
-- **homopolară** (50N/51N), cu TC toroidal (§ 2.2, § 3.7);
+- **homopolară** (50N/51N), cu TC toroidal (§ 2.5);
 - **curent de secvență inversă** (46): o fază întreruptă sau o tensiune nesimetrică produc în rotor curenți de frecvență aproape dublă, care îl încălzesc mult mai mult decât curentul direct de aceeași valoare;
 - **minimă de tensiune** (27): deconectează motoarele la dispariția tensiunii, ca să nu pornească toate deodată la revenirea ei; ea se coordonează cu automatizările de transfer (capitolul 7).
 
@@ -85,7 +86,7 @@ Pragul trebuie să fie **sub** puterea absorbită în regim de motor, care este 
 
 $$\Delta P \approx Q\thinspace\varepsilon .$$
 
-Protecția la putere inversă cere deci TC și TT cu erori de unghi mici (clase de măsură) și un releu cu măsurare precisă a unghiului (problema 6.4). Temporizarea evită acționarea la inversări scurte de putere, de exemplu în timpul sincronizării sau al pendulațiilor.
+Pentru G1, cu Q = 0,3·Sn în regim de motor, eroarea de unghi a întregului lanț TC–TT–releu trebuie să rămână sub 0,609° (problema 6.4). Cerința este mai strictă decât precizia de unghi pentru care sunt specificate de obicei transformatoarele de măsură de protecție; de aceea protecția la putere inversă se alimentează de la transformatoare cu erori de unghi mici, iar precizia lanțului se verifică explicit. Temporizarea evită acționarea la inversări scurte de putere, de exemplu în timpul sincronizării sau al pendulațiilor.
 
 ## 6.6. Protecția la pierderea excitației (40)
 
@@ -97,11 +98,13 @@ Releul măsoară impedanța la bornele generatorului, $Z = U_b/I$. În regim nor
 - după ieșirea din sincronism, unghiul intern parcurge toate valorile, iar impedanța descrie un cerc care trece prin zona din jurul axei $-jX$;
 - la pierderea completă a excitației ($E$ = 0), generatorul este doar reactanța $jx_d$, iar impedanța văzută este exact $Z = -j\thinspace x_d$.
 
-Un reglaj clasic, folosit în curs, este o caracteristică **mho decalată**: un cerc cu diametrul pe axa $-jX$, de la $-j\thinspace x'_d/2$ la $-j(x'_d/2 + x_d)$. Decalajul de $x'_d/2$ ține caracteristica departe de origine (defectele trifazate apropiate dau impedanțe mici), iar diametrul $x_d$ cuprinde punctul $E$ = 0. Protecția acționează cu temporizare (impedanța poate trece prin cerc și la pendulații stabile), iar unele relee folosesc două zone sau condiții suplimentare (de exemplu, tensiune scăzută).
+G1 este însă un hidrogenerator cu **poli aparenți** ($x_q$ = 0,65 < $x_d$): modelul cu poli înecați este o aproximație. La $E$ = 0, reactanța mașinii depinde de poziția rotorului față de câmpul statoric, iar impedanța văzută oscilează între $-j\thinspace x_q$ și $-j\thinspace x_d$; ambele puncte sunt în caracteristica din curs (problema 6.5).
+
+Un reglaj clasic, folosit în curs, este o caracteristică **mho decalată**: un cerc cu diametrul pe axa $-jX$, de la $-j\thinspace x'_d/2$ la $-j(x'_d/2 + x_d)$. Decalajul de $x'_d/2$ ține caracteristica departe de origine (defectele trifazate apropiate dau impedanțe mici), iar diametrul $x_d$ cuprinde punctul $E$ = 0. Decalajul nu exclude toate pendulațiile: o pendulație stabilă poate traversa cercul pentru scurt timp. De aceea protecția acționează cu temporizare, iar unele relee folosesc două zone sau condiții suplimentare (de exemplu, tensiune scăzută).
 
 ![Figura 6.3 – Pierderea excitației în planul R–X](figuri/f06-3-pierderea-excitatiei.svg)
 
-*Figura 6.3 – Caracteristica protecției la pierderea excitației a lui G1, regimurile normale, traiectoria impedanței la scăderea excitației (P = 0,85), cercul descris la alunecarea polilor și punctul corespunzător pierderii complete a excitației (problema 6.5).*
+*Figura 6.3 – Caracteristica protecției la pierderea excitației a lui G1, regimurile normale (calculate cu U = 1 u.r. la borne), traiectoria impedanței la scăderea excitației (P = 0,85), pornind din regimul nominal, cu rețeaua de putere infinită de 0,930 u.r. în spatele lui $x_e$, cercul descris la alunecarea polilor și punctul corespunzător pierderii complete a excitației (problema 6.5; model cu poli înecați).*
 
 ## 6.7. Protecția la sarcină nesimetrică (46)
 
@@ -110,7 +113,7 @@ Curentul de secvență inversă din stator produce un câmp care se rotește inv
 - curentul invers admis **permanent**, $I_{2,adm}$ (pentru G1, 0,08·In);
 - constanta $K = (I_2/I_n)^2\thinspace t$ admisă pentru regimurile de scurtă durată (pentru G1, 20 s).
 
-Releul calculează componenta inversă din curenții de fază (§ 1.4) și integrează $(I_2/I_n)^2$ în timp, ca un model termic: declanșează când integrala ajunge la $K$. Astfel ține cont și de defectele exterioare nesimetrice eliminate lent, care consumă o parte din capabilitate (problema 6.6).
+Releul calculează componenta inversă din curenții de fază (§ 1.4) și, **numai cât timp $I_2$ depășește valoarea admisă permanent**, integrează $(I_2/I_n)^2$ în timp, ca un model termic: declanșează când integrala ajunge la $K$. Sub prag, valoarea acumulată scade (răcire; în curs, liniar, cu un timp de răcire de 300 s, reglaj al cursului). Fără prag, releul ar declanșa și la o nesimetrie admisă permanent. Unii producători integrează în schimb $(I_2/I_n)^2 - (I_{2,adm}/I_n)^2$; formele dau timpi diferiți, deci reglajul se citește împreună cu forma folosită de releu (problema 6.6). Releul ține cont astfel și de defectele exterioare nesimetrice eliminate lent, care consumă o parte din capabilitate.
 
 ## 6.8. Protecția la punere la pământ a statorului
 
@@ -147,9 +150,9 @@ Protecția termică a lui M1 are $I_B = I_n$, $k$ = 1,05 și $\tau$ = 1800 s. S�
 | 2,0 | 580,4 s | 62,6 s |
 | 6,0 | 56,0 s | 5,3 s |
 
-Diferența dintre cele două stări este mare la suprasarcini mici: motorul cald este deja aproape de limita lui termică, $\theta_0 = (1/1{,}05)^2$ = 0,907.
+În valoare absolută, diferența dintre cele două stări este cea mai mare la suprasarcini mici (2134,1 s la 1,2·In, față de 50,7 s la 6·In); relativ, ea crește cu curentul: timpul din stare rece este de 5,47 ori mai mare la 1,2·In și de 10,61 ori la 6·In. Motivul este același: motorul cald este deja aproape de limita lui termică, $\theta_0 = (1/1{,}05)^2$ = 0,907.
 
-**Verificare.** Fiecare timp a fost recalculat pe încă două căi: (1) avansând starea termică pas cu pas cu soluția exactă pe pas a ecuației; (2) integrând ecuația diferențială cu metoda Runge–Kutta de ordinul 4. Toate cele 16 comparații coincid cu formula, cu abatere sub 10⁻⁴.
+**Verificare.** Fiecare timp a fost recalculat pe încă două căi, fără formula timpului de declanșare: (1) avansând starea termică cu pasul de 0,01 s prin soluția exactă pe pas, $\theta \leftarrow \theta_\infty + (\theta - \theta_\infty)\thinspace e^{-\Delta t/\tau}$, cu interpolare liniară în pasul în care se atinge pragul; (2) integrând ecuația diferențială cu metoda Runge–Kutta de ordinul 4. Toate cele 16 comparații coincid cu formula, cu abatere sub 10⁻⁶.
 
 ### Problema 6.2 – Pornirea și blocarea repornirii
 
@@ -157,15 +160,15 @@ Ce stare termică adaugă o pornire a lui M1 (6·In, 6 s)? Se poate porni motoru
 
 **Rezolvare.**
 
-- La 6·In, $\theta_\infty = (6/1{,}05)^2$ = 32,65; o pornire din stare rece adaugă $\Delta\theta = \theta_\infty(1 - e^{-t_p/\tau})$ = **0,1087** (aproximativ $\theta_\infty\thinspace t_p/\tau$ = 0,1088).
+- La $I_{porn}$ = 6·In, $\theta_\infty = (6/1{,}05)^2$ = 32,65; o pornire din stare rece adaugă $\Delta\theta = \theta_\infty(1 - e^{-t_{porn}/\tau})$ = **0,1087** (aproximativ $\theta_\infty\thinspace t_{porn}/\tau$ = 0,1088).
 - Din stare caldă ($\theta_0$ = 0,907), releul ar declanșa după **5,28 s**, înainte de încheierea pornirii (6 s): pornirea este blocată.
 - Starea admisă la pornire: timpul de declanșare de la 6·In, pornind de la $\theta_{adm}$, trebuie să fie 1,2 · 6 = 7,2 s:
-  $$\theta_{adm} = \theta_\infty - (\theta_\infty - 1)\thinspace e^{1{,}2\thinspace t_p/\tau} = \textbf{0,8731}.$$
+  $$\theta_{adm} = \theta_\infty - (\theta_\infty - 1)\thinspace e^{1{,}2\thinspace t_{porn}/\tau} = \textbf{0,8731}.$$
 - Cu $\tau_r$ = 3 · 1800 = 5400 s, timpul de așteptare este $\tau_r \ln(\theta_0/\theta_{adm})$ = **206 s**.
 
 Modelul este mai prudent decât datele motorului (care admit 12 s cu rotorul blocat din stare caldă): o pornire din stare caldă ar fi încăput în capabilitatea reală. Parametrii modelului termic ($k$, $\tau$, eventual constante separate pentru pornire și pentru răcire) se aleg deci verificând curbele releului față de curbele de capabilitate ale motorului.
 
-**Verificare.** (1) Răcirea simulată numeric, cu pasul de 0,5 s, ajunge la $\theta_{adm}$ după 206 s. (2) Pornind de la $\theta_{adm}$, simularea Runge–Kutta a unei porniri de durată nelimitată la 6·In declanșează după exact 7,20 s, adică 1,2·$t_p$.
+**Verificare.** (1) Răcirea simulată numeric, cu pasul de 0,5 s, ajunge la $\theta_{adm}$ după 206 s. (2) Pornind de la $\theta_{adm}$, simularea Runge–Kutta a unei porniri de durată nelimitată la 6·In declanșează după exact 7,20 s, adică 1,2·$t_{porn}$.
 
 ### Problema 6.3 – Protecția la pornire prelungită și rotor blocat
 
@@ -174,7 +177,7 @@ Să se regleze protecția la rotor blocat a lui M1 și să se verifice comportar
 **Rezolvare.**
 
 - Curentul: între suprasarcinile lăsate protecției termice (de exemplu 1,5·In) și curentul de pornire (6·In): se alege **I> = 3·In = 278,0 A**.
-- Timpul: peste 1,5 · $t_p$ = 9 s și cel mult 0,75 · 12 s = 9 s (rezervă față de timpul admis din stare caldă): **t = 9 s**.
+- Timpul: cel puțin 1,5 · $t_{porn}$ = 9 s și cel mult 0,75 · 12 s = 9 s (rezervele 1,5 și 0,75 sunt alegeri ale cursului): **t = 9 s**.
 - Modelul termic singur ar declanșa un rotor blocat din stare rece după 56,0 s, mult peste cele 18 s admise: protecția separată este necesară.
 
 | Scenariu | Rezultat |
@@ -195,11 +198,11 @@ Să se regleze protecția 32 a lui G1 (TC 3000/1 A, TT 10,5/0,1 kV) la 50 % din 
 - În secundar: $P_{sec} = P/(n_{TC}\thinspace n_{TT})$ = 0,3187·10⁶/(3000 · 105) = **1,012 W** (pentru toate cele trei faze, la 100 V și 1 A nominali).
 - Eroarea de unghi: $\Delta P \approx Q\thinspace\varepsilon \le 0{,}5\thinspace P_{reglaj}$, deci $\varepsilon \le$ 0,5 · 0,3187/15 = 0,01063 rad = **0,609°**, adică 36,5 minute de arc pentru tot lanțul TC–TT–releu.
 
-**Verificare.** (1) Fazorii secundari ai regimului de motor (P = −0,6375 MW, Q = +15 Mvar), calculați pe faze și însumați, dau −2,024 W, exact $-P_{motor}/(n_{TC}\thinspace n_{TT})$: releul acționează. (2) Eroarea de unghi admisă, calculată exact din $|S|\cos(\varphi - \varepsilon) - P = 0{,}5\thinspace P_{reglaj}$, este tot 0,609°.
+**Verificare.** (1) Verificare de consistență: fazorii secundari ai regimului de motor (P = −0,6375 MW, Q = +15 Mvar), calculați pe faze și însumați, dau −2,024 W, exact $-P_{motor}/(n_{TC}\thinspace n_{TT})$: releul acționează. (2) Eroarea de unghi admisă, calculată exact din $|S|\cos(\varphi - \varepsilon) - P = 0{,}5\thinspace P_{reglaj}$, este tot 0,609°, deci aproximația liniară $\Delta P \approx Q\varepsilon$ este suficientă.
 
 ### Problema 6.5 – Protecția la pierderea excitației a lui G1
 
-Să se exprime caracteristica protecției 40 în ohmi primari și secundari, să se verifice că regimurile normale sunt în afara ei și să se urmărească impedanța la pierderea excitației (P = 0,85 u.r.). Rețeaua este reprezentată prin puterea de scurtcircuit din bara C (capitolul 1, cu $c$ = 1).
+Să se exprime caracteristica protecției 40 în ohmi primari și secundari, să se verifice că regimurile normale sunt în afara ei și să se urmărească impedanța la pierderea excitației, pornind din regimul nominal (P = 0,85, Q = 0,527 u.r., U = 1 u.r. la borne). Rețeaua este reprezentată prin puterea de scurtcircuit din bara C (capitolul 1, cu $c$ = 1); generatorul, prin modelul cu poli înecați (§ 6.6).
 
 **Rezolvare.**
 
@@ -214,13 +217,16 @@ Să se exprime caracteristica protecției 40 în ohmi primari și secundari, să
 | P = 0,3, subexcitat Q = −0,4 | 1,200 − j1,600 | în afară |
 
 - Rețeaua: $S''_k$(C) = 1720 MVA, deci $x_s = S_n/S''_k$ = 0,0291 u.r.; cu transformatorul bloc, $x_e$ = 0,12 + 0,0291 = **0,1491 u.r.**
-- Când excitația scade la P = 0,85 constant, limita de stabilitate ($\delta$ = 90°) se atinge la $E$ = 0,85 · (1,00 + 0,1491) = **0,9767**; impedanța este atunci 0,574 − j0,439 u.r., **încă în afara** caracteristicii.
-- După ieșirea din sincronism, cu $E$ = 0,9767, impedanța intră în caracteristică pentru $\delta$ între **103,6° și 256,4°** (la fiecare alunecare a polilor). La $\delta$ = 180°, $Z = jx_e - j(x_d + x_e)/(E + 1)$ = −j0,432 u.r.
-- La pierderea completă a excitației, $Z = -j\thinspace x_d$ = **−j1,000 u.r.**, în interiorul caracteristicii.
+- Regimul inițial: din $U_b$ = 1 și $\underline{I} = \underline{S}^*$ rezultă tensiunea rețelei de putere infinită din spatele lui $x_e$, $|\underline{U}_b - jx_e\underline{I}|$ = **0,9301 u.r.**, și t.e.m. $|\underline{U}_b + jx_d\underline{I}|$ = **1,7474 u.r.**, cu unghiul intern 36,94°.
+- Când excitația scade la P = 0,85 constant, limita de stabilitate ($\delta$ = 90°) se atinge la $E = P(x_d + x_e)/U$ = 0,85 · 1,1491/0,9301 = **1,0501**; impedanța este atunci 0,570 − j0,356 u.r., **încă în afara** caracteristicii.
+- După ieșirea din sincronism, cu $E$ = 1,0501, impedanța intră în caracteristică pentru $\delta$ între **108,0° și 252,0°** (la fiecare alunecare a polilor). La $\delta$ = 180°, $Z = jx_e - j(x_d + x_e)\thinspace U/(E + U)$ = −j0,391 u.r.
+- La pierderea completă a excitației, $Z = -j\thinspace x_d$ = **−j1,000 u.r.**, în interiorul caracteristicii. Cu poli aparenți, impedanța oscilează între −j0,65 u.r. ($-jx_q$) și −j1,00 u.r.; și −j0,65 este în caracteristică.
+
+Două aproximații ale problemei: (1) puterea de scurtcircuit din C include și aportul lui G1 (sursa echivalentă QC, § 0.7); fără el (156,2 MVA), $x_s$ = 0,0320 în loc de 0,0291, iar impedanța la $\delta$ = 90° devine 0,571 − j0,352 u.r. – concluzia nu se schimbă; (2) modelul cu poli înecați. Capitolul 7 folosește pentru G1 o altă schemă de studiu (linie dublă de 80 km spre sistem, reactanța externă 0,2305 u.r.), potrivită pentru stabilitatea tranzitorie; rezultatele celor două capitole nu se compară direct.
 
 Protecția nu acționează deci înainte de limita de stabilitate, ci în regimul asincron care urmează; temporizarea ei se alege astfel încât acesta să nu dureze prea mult.
 
-**Verificare.** Apartenența fiecărui punct la caracteristică a fost decisă pe două căi: (1) geometric, comparând distanța până la centrul cercului cu raza; (2) cu un comparator de fază, ca în relee: punctul este în cerc dacă unghiul dintre $Z - Z_{sus}$ și $Z - Z_{jos}$ (capetele diametrului) este de cel puțin 90° (teorema lui Thales). Cele două metode dau același rezultat pentru toate regimurile normale și pentru toate cele 3601 puncte ale cercului de alunecare. Impedanța la $\delta$ = 180° și la $E$ = 0 coincide cu expresiile calculate de mână.
+**Verificare.** Apartenența fiecărui punct la caracteristică a fost decisă pe două căi: (1) geometric, comparând distanța până la centrul cercului cu raza; (2) cu un comparator de fază, ca în relee: punctul este în cerc dacă unghiul dintre $Z - Z_{sus}$ și $Z - Z_{jos}$ (capetele diametrului) este de cel puțin 90° (teorema lui Thales). Cele două metode dau același rezultat pentru toate regimurile normale și pentru toate cele 3601 puncte ale cercului de alunecare. (3) Verificare de consistență: cu $E$ = 1,7474 și unghiul inițial, modelul reproduce exact punctul nominal 0,850 + j0,527 u.r. Impedanța la $\delta$ = 180° și la $E$ = 0 coincide cu expresiile calculate de mână.
 
 ### Problema 6.6 – Sarcina nesimetrică
 
@@ -230,9 +236,10 @@ Un defect bifazat pe bara C de 110 kV este eliminat de o protecție de rezervă 
 
 - curentul invers al generatorului: $I_2$ = **1,474 u.r.**;
 - un defect de 1 s consumă $(I_2)^2 t$ = **2,17 s** din cele 20 s; un asemenea defect ar putea dura cel mult 20/1,474² = **9,20 s**;
-- cu $I_2$ = 0,15 u.r. după eliminare (peste cele 0,08 u.r. admise permanent), restul de 17,83 s se consumă în **792 s**: protecția 46 trebuie să declanșeze generatorul.
+- cu $I_2$ = 0,15 u.r. după eliminare (peste cele 0,08 u.r. admise permanent), restul de 17,83 s se consumă în **792 s**, cu forma folosită în curs (se integrează $(I_2/I_n)^2$ cât timp $I_2 > I_{2,adm}$): protecția 46 trebuie să declanșeze generatorul. Cu forma care integrează $(I_2/I_n)^2 - (I_{2,adm}/I_n)^2$, același rest s-ar consuma în 1108 s.
+- Fără aportul lui G1 în rețeaua echivalentă (problema 6.5), $I_2$ = 1,475 u.r.: diferența este neglijabilă.
 
-**Verificare.** (1) $I_2$ al generatorului a fost recalculat rezolvând nodal circuitul în coordonate de fază (generatorul cu $Z_2 \ne Z_1$, rețeaua, defectul între fazele b și c), apoi descompunând curentul generatorului în componente simetrice: tot 1,474 u.r. (2) Integrarea numerică a lui $(I_2)^2$ pe profilul de timp (1,474 u.r. timp de 1 s, apoi 0,15 u.r.) atinge 20 s la 793,3 s de la defect, ca în calculul analitic.
+**Verificare.** (1) $I_2$ al generatorului a fost recalculat rezolvând nodal circuitul în coordonate de fază (generatorul cu $Z_2 \ne Z_1$, rețeaua, defectul între fazele b și c), apoi descompunând curentul generatorului în componente simetrice: tot 1,474 u.r. (2) Verificare de consistență: integratorul releului, simulat pe profilul de timp (1,474 u.r. timp de 1 s, apoi 0,15 u.r.), declanșează la 793,3 s de la defect, ca în calculul analitic; pentru o nesimetrie admisă permanent ($I_2$ = 0,07 u.r.) nu declanșează.
 
 ### Problema 6.7 – Punerea la pământ a statorului lui G1
 
@@ -262,7 +269,7 @@ Capacitatea față de pământ pe fază a circuitului generatorului (generator, 
 4. De ce protecția la putere inversă are nevoie de transformatoare de măsură cu erori de unghi foarte mici?
    <details><summary>Răspuns</summary>Puterea activă absorbită în regim de motor este mică (1,5 % din Pn la G1), iar puterea reactivă poate fi mult mai mare; unghiul dintre curent și tensiune este aproape de 90°. O eroare de unghi ε produce o eroare de putere activă de aproximativ Q·ε; pentru G1, eroarea lanțului de măsură trebuie să fie sub 0,61°.</details>
 5. De ce caracteristica protecției la pierderea excitației este decalată față de origine?
-   <details><summary>Răspuns</summary>Defectele apropiate și pendulațiile produc impedanțe mici în jurul originii; decalajul de $x'_d/2$ pe axa $-jX$ ține caracteristica departe de ele. Diametrul $x_d$ cuprinde punctul $-jx_d$, impedanța văzută la pierderea completă a excitației.</details>
+   <details><summary>Răspuns</summary>Defectele apropiate produc impedanțe mici, în jurul originii; decalajul de $x'_d/2$ pe axa $-jX$ ține caracteristica departe de ele. Diametrul $x_d$ cuprinde punctul $-jx_d$, impedanța văzută la pierderea completă a excitației. Pendulațiile stabile pot totuși traversa cercul pentru scurt timp, de aceea protecția este temporizată.</details>
 6. Ce efect are curentul de secvență inversă asupra rotorului unui generator?
    <details><summary>Răspuns</summary>Câmpul produs de el se rotește invers față de rotor, deci, față de rotor, cu viteza dublă: induce în rotor curenți de frecvență dublă, care circulă la suprafață și îl încălzesc local. Capabilitatea se exprimă prin curentul invers admis permanent și prin constanta $K = (I_2/I_n)^2 t$.</details>
 7. De ce protecția de tensiune homopolară a statorului nu acoperă toată înfășurarea?

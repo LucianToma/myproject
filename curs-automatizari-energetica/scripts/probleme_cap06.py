@@ -37,8 +37,8 @@ th_inf = (Ip / (K_TERMIC * IB_M))**2
 th_cald = (IN_M / (K_TERMIC * IB_M))**2
 dth_exact = th_inf * (1 - np.exp(-tp / tau))
 dth_aprox = th_inf * tp / tau
-print(f"  la 6·In: θ∞ = (Ip/(k·IB))² = {fmt(th_inf, 2)}; o pornire de {fmt(tp, 0)} s din stare rece adaugă "
-      f"Δθ = {fmt(dth_exact, 4)} (aproximativ θ∞·tp/τ = {fmt(dth_aprox, 4)})")
+print(f"  la 6·In: θ∞ = (Iporn/(k·IB))² = {fmt(th_inf, 2)}; o pornire de {fmt(tp, 0)} s din stare rece adaugă "
+      f"Δθ = {fmt(dth_exact, 4)} (aproximativ θ∞·tporn/τ = {fmt(dth_aprox, 4)})")
 verifica("Δθ exact vs aproximația liniară (t ≪ τ)", dth_exact, dth_aprox, rtol=1e-2)
 t_cald = timp_termic(Ip, IB_M, K_TERMIC, tau, IN_M)
 print(f"  după funcționare îndelungată la In: θ = (1/k)² = {fmt(th_cald, 4)}; pornirea ar declanșa după {fmt(t_cald, 2)} s"
