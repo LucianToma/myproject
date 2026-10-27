@@ -174,17 +174,46 @@ Protecția de distanță din A (linia L1) este alimentată de TC 600/1 A și TT 
 ## Întrebări de autoevaluare
 
 1. Ce înseamnă notația 5P20 și de ce un TC 5P20 cu sarcină mică rămâne precis la mai mult de 20 de ori curentul nominal?
-   <details><summary>Răspuns</summary>Eroarea compusă este de cel mult 5 % până la de 20 de ori curentul nominal, cu sarcina nominală. Precizia este limitată de tensiunea electromotoare pe care o poate dezvolta miezul fără să se satureze. Cu o sarcină mai mică decât cea nominală, aceeași tensiune corespunde unui curent mai mare: $ALF_{ef} = ALF\thinspace(R_{ct} + R_n)/(R_{ct} + R_b)$.</details>
+   <details><summary>Răspuns</summary>
+
+   Eroarea compusă este de cel mult 5 % până la de 20 de ori curentul nominal, cu sarcina nominală. Precizia este limitată de tensiunea electromotoare pe care o poate dezvolta miezul fără să se satureze. Cu o sarcină mai mică decât cea nominală, aceeași tensiune corespunde unui curent mai mare: $ALF_{ef} = ALF\thinspace(R_{ct} + R_n)/(R_{ct} + R_b)$.
+
+   </details>
+
 2. De ce componenta aperiodică saturează un TC care nu s-ar satura la curentul simetric de aceeași valoare efectivă?
-   <details><summary>Răspuns</summary>Fluxul din miez este integrala tensiunii secundare. Componenta alternativă produce un flux alternativ, de amplitudine limitată. Componenta aperiodică are semn constant, iar integrala ei crește aproape liniar până la $R_2\sqrt2 I_2 T_1$, de circa $\omega T_1$ ori fluxul alternativ. Pentru $T_1$ de zeci de milisecunde, fluxul cerut este de peste zece ori mai mare.</details>
+   <details><summary>Răspuns</summary>
+
+   Fluxul din miez este integrala tensiunii secundare. Componenta alternativă produce un flux alternativ, de amplitudine limitată. Componenta aperiodică are semn constant, iar integrala ei crește aproape liniar până la $R_2\sqrt2 I_2 T_1$, de circa $\omega T_1$ ori fluxul alternativ. Pentru $T_1$ de zeci de milisecunde, fluxul cerut este de peste zece ori mai mare.
+
+   </details>
+
 3. De ce nu se deschide niciodată secundarul unui TC aflat sub curent?
-   <details><summary>Răspuns</summary>Pentru că TC impune curentul. Fără sarcină, tot curentul primar devine curent de magnetizare, miezul se saturează puternic, iar la variațiile rapide ale fluxului (la trecerile lui prin zero) apar vârfuri de tensiune foarte mari, periculoase pentru oameni și pentru izolație.</details>
+   <details><summary>Răspuns</summary>
+
+   Pentru că TC impune curentul. Fără sarcină, tot curentul primar devine curent de magnetizare, miezul se saturează puternic, iar la variațiile rapide ale fluxului (la trecerile lui prin zero) apar vârfuri de tensiune foarte mari, periculoase pentru oameni și pentru izolație.
+
+   </details>
+
 4. Ce tensiune apare la triunghiul deschis în regim normal și la o punere la pământ metalică într-o rețea izolată? De ce?
-   <details><summary>Răspuns</summary>În regim normal, suma tensiunilor de fază este nulă, deci tensiunea este practic zero (numai nesimetriile mici ale rețelei). La punerea la pământ metalică, faza defectă are tensiunea zero față de pământ, iar celelalte două tensiunea de linie. Suma lor este $3U_f$, iar înfășurările de 100/3 V dau 100 V.</details>
+   <details><summary>Răspuns</summary>
+
+   În regim normal, suma tensiunilor de fază este nulă, deci tensiunea este practic zero (numai nesimetriile mici ale rețelei). La punerea la pământ metalică, faza defectă are tensiunea zero față de pământ, iar celelalte două tensiunea de linie. Suma lor este $3U_f$, iar înfășurările de 100/3 V dau 100 V.
+
+   </details>
+
 5. De ce se folosesc TC cu secundar de 1 A la distanțe mari între TC și releu?
-   <details><summary>Răspuns</summary>Puterea pierdută în conductoarele de legătură este $R I^2$. La 1 A, ea este de 25 de ori mai mică decât la 5 A pentru același conductor. Sarcina mai mică înseamnă un factor limită efectiv mai mare și un timp până la saturație mai lung.</details>
+   <details><summary>Răspuns</summary>
+
+   Puterea pierdută în conductoarele de legătură este $R I^2$. La 1 A, ea este de 25 de ori mai mică decât la 5 A pentru același conductor. Sarcina mai mică înseamnă un factor limită efectiv mai mare și un timp până la saturație mai lung.
+
+   </details>
+
 6. Ce avantaj are un TC toroidal față de montajul rezidual al celor trei TC de fază pentru protecția homopolară?
-   <details><summary>Răspuns</summary>În montajul rezidual, curentul $3I_0$ este diferența mică dintre curenți de fază mari, iar erorile diferite ale celor trei TC (mai ales la saturație sau la pornirea motoarelor) produc un curent rezidual fals. TC toroidal înconjoară toate cele trei faze și măsoară direct suma curenților lor (solenația totală), deci curentul homopolar real, și permite reglaje de câțiva amperi.</details>
+   <details><summary>Răspuns</summary>
+
+   În montajul rezidual, curentul $3I_0$ este diferența mică dintre curenți de fază mari, iar erorile diferite ale celor trei TC (mai ales la saturație sau la pornirea motoarelor) produc un curent rezidual fals. TC toroidal înconjoară toate cele trei faze și măsoară direct suma curenților lor (solenația totală), deci curentul homopolar real, și permite reglaje de câțiva amperi.
+
+   </details>
 
 ## Bibliografie
 

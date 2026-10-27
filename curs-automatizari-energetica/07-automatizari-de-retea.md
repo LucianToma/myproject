@@ -263,25 +263,74 @@ Un defect pe plecarea radială din bara C (problema 7.1) este detectat de protec
 ## Întrebări de autoevaluare
 
 1. De ce un defect trifazat apropiat de o centrală accelerează rotorul generatorului? Ce mărime limitează durata admisibilă a defectului?
-   <details><summary>Răspuns</summary>În timpul defectului tensiunea barei scade aproape la zero și generatorul nu mai poate transmite putere activă, în timp ce turbina continuă să dea puterea mecanică. Excedentul accelerează rotorul și unghiul δ crește. Durata admisibilă este limitată de timpul critic de eliminare: dacă defectul durează mai mult, aria de frânare disponibilă după eliminare nu mai poate absorbi energia acumulată și generatorul iese din sincronism (§ 7.1).</details>
+   <details><summary>Răspuns</summary>
+
+   În timpul defectului tensiunea barei scade aproape la zero și generatorul nu mai poate transmite putere activă, în timp ce turbina continuă să dea puterea mecanică. Excedentul accelerează rotorul și unghiul δ crește. Durata admisibilă este limitată de timpul critic de eliminare: dacă defectul durează mai mult, aria de frânare disponibilă după eliminare nu mai poate absorbi energia acumulată și generatorul iese din sincronism (§ 7.1).
+
+   </details>
+
 2. Cum se modifică timpul critic dacă generatorul funcționează la jumătate din puterea nominală? Justificați calitativ.
-   <details><summary>Răspuns</summary>Crește. Cu $P_m$ mai mic, unghiul inițial $\delta_0$ este mai mic, aria de frânare disponibilă este mai mare, iar accelerația în timpul defectului ($\propto P_m$) este mai mică. Ambele efecte măresc durata admisibilă (formulele din § 7.1).</details>
+   <details><summary>Răspuns</summary>
+
+   Crește. Cu $P_m$ mai mic, unghiul inițial $\delta_0$ este mai mic, aria de frânare disponibilă este mai mare, iar accelerația în timpul defectului ($\propto P_m$) este mai mică. Ambele efecte măresc durata admisibilă (formulele din § 7.1).
+
+   </details>
+
 3. De ce reanclanșarea nu se folosește pe cabluri, dar se folosește pe liniile aeriene?
-   <details><summary>Răspuns</summary>Pe liniile aeriene multe defecte sunt arcuri în aer, care se sting când linia este deconectată, iar aerul își reface rigiditatea: reanclanșarea reface alimentarea. Într-un cablu defectul este o străpungere a izolației solide, care nu se reface: reanclanșarea ar produce doar un nou scurtcircuit.</details>
+   <details><summary>Răspuns</summary>
+
+   Pe liniile aeriene multe defecte sunt arcuri în aer, care se sting când linia este deconectată, iar aerul își reface rigiditatea: reanclanșarea reface alimentarea. Într-un cablu defectul este o străpungere a izolației solide, care nu se reface: reanclanșarea ar produce doar un nou scurtcircuit.
+
+   </details>
+
 4. Ce sunt pauza reglată, pauza de tensiune și timpul de revenire? Ce se întâmplă dacă protecția declanșează în timpul de revenire?
-   <details><summary>Răspuns</summary>Pauza reglată este timpul de la deschiderea întrerupătorului la comanda de închidere. Pauza de tensiune, cât linia stă efectiv fără tensiune, este pauza reglată plus timpul de închidere al întrerupătorului; ea trebuie să permită deionizarea canalului arcului. Timpul de revenire începe la reanclanșare: dacă în acest interval nu mai apare nicio declanșare, ciclul este considerat reușit și automatul revine la starea inițială. O declanșare în timpul de revenire înseamnă că defectul persistă: automatul trece la reanclanșarea următoare sau, după ultima, la blocare.</details>
+   <details><summary>Răspuns</summary>
+
+   Pauza reglată este timpul de la deschiderea întrerupătorului la comanda de închidere. Pauza de tensiune, cât linia stă efectiv fără tensiune, este pauza reglată plus timpul de închidere al întrerupătorului; ea trebuie să permită deionizarea canalului arcului. Timpul de revenire începe la reanclanșare: dacă în acest interval nu mai apare nicio declanșare, ciclul este considerat reușit și automatul revine la starea inițială. O declanșare în timpul de revenire înseamnă că defectul persistă: automatul trece la reanclanșarea următoare sau, după ultima, la blocare.
+
+   </details>
+
 5. De ce o reanclanșare pe defect permanent poate fi stabilă pentru o pauză și instabilă pentru alta, mai lungă (problema 7.3)?
-   <details><summary>Răspuns</summary>Pentru că efectul celui de-al doilea defect depinde de faza oscilației rotorului în momentul reanclanșării. Dacă rotorul se mișcă înainte, defectul îl accelerează în același sens și îl poate scoate din sincronism; dacă se mișcă înapoi, defectul îi frânează mișcarea. În modelul fără amortizare, ferestrele instabile se repetă cu perioada oscilației (aici aproximativ 0,77 s); amortizarea reală le atenuează pe cele târzii.</details>
+   <details><summary>Răspuns</summary>
+
+   Pentru că efectul celui de-al doilea defect depinde de faza oscilației rotorului în momentul reanclanșării. Dacă rotorul se mișcă înainte, defectul îl accelerează în același sens și îl poate scoate din sincronism; dacă se mișcă înapoi, defectul îi frânează mișcarea. În modelul fără amortizare, ferestrele instabile se repetă cu perioada oscilației (aici aproximativ 0,77 s); amortizarea reală le atenuează pe cele târzii.
+
+   </details>
+
 6. Ce rol are accelerarea după reanclanșare? Prin ce diferă de funcția SOTF?
-   <details><summary>Răspuns</summary>După o reanclanșare pe defect permanent, protecția declanșează fără temporizarea obișnuită. Astfel scade durata totală a curentului de defect (solicitarea termică, problema 7.2) și durata celui de-al doilea defect, care afectează stabilitatea generatoarelor (problema 7.3). Funcția SOTF (*switch onto fault*) face același lucru după o închidere manuală pe o linie fără tensiune, de exemplu uitată legată la pământ.</details>
+   <details><summary>Răspuns</summary>
+
+   După o reanclanșare pe defect permanent, protecția declanșează fără temporizarea obișnuită. Astfel scade durata totală a curentului de defect (solicitarea termică, problema 7.2) și durata celui de-al doilea defect, care afectează stabilitatea generatoarelor (problema 7.3). Funcția SOTF (*switch onto fault*) face același lucru după o închidere manuală pe o linie fără tensiune, de exemplu uitată legată la pământ.
+
+   </details>
+
 7. Ce verifică un releu de control al sincronismului și prin ce diferă de un sincronizator automat?
-   <details><summary>Răspuns</summary>Releul de control al sincronismului doar permite închiderea dacă diferența de tensiune, alunecarea și unghiul dintre tensiunile de o parte și de alta a întrerupătorului sunt sub pragurile reglate. Sincronizatorul automat acționează asupra generatorului (viteză, tensiune) până când condițiile sunt îndeplinite și dă comanda de închidere cu unghiul de avans α = 360°·Δf·t_î.</details>
+   <details><summary>Răspuns</summary>
+
+   Releul de control al sincronismului doar permite închiderea dacă diferența de tensiune, alunecarea și unghiul dintre tensiunile de o parte și de alta a întrerupătorului sunt sub pragurile reglate. Sincronizatorul automat acționează asupra generatorului (viteză, tensiune) până când condițiile sunt îndeplinite și dă comanda de închidere cu unghiul de avans α = 360°·Δf·t_î.
+
+   </details>
+
 8. De ce la transferul pe o bară cu motoare nu se poate închide sursa de rezervă oricând? Care sunt metodele de transfer și de ce contează modul de pornire a AAR?
-   <details><summary>Răspuns</summary>Motoarele produc o tensiune remanentă care rămâne în urmă ca fază față de sursa de rezervă. O închidere când unghiul este mare aplică motoarelor o diferență de tensiune de până la aproape 2 u.r., cu curenți și cupluri de șoc periculoase. Metodele sunt: transferul rapid (simultan sau secvențial, cât unghiul este mic), transferul în fază (la prima trecere prin zero, cu comandă în avans) și transferul la tensiune remanentă (după ce tensiunea remanentă scade sub un prag). Modul de pornire contează pentru că fereastra rapidă durează aici doar 115,7 ms de la pierderea alimentării: pornirea de la comanda de declanșare sau de la un semnal din amonte o poate folosi, iar pornirea temporizată de la minimă tensiune nu, și trebuie să aștepte scăderea tensiunii remanente (problema 7.5).</details>
+   <details><summary>Răspuns</summary>
+
+   Motoarele produc o tensiune remanentă care rămâne în urmă ca fază față de sursa de rezervă. O închidere când unghiul este mare aplică motoarelor o diferență de tensiune de până la aproape 2 u.r., cu curenți și cupluri de șoc periculoase. Metodele sunt: transferul rapid (simultan sau secvențial, cât unghiul este mic), transferul în fază (la prima trecere prin zero, cu comandă în avans) și transferul la tensiune remanentă (după ce tensiunea remanentă scade sub un prag). Modul de pornire contează pentru că fereastra rapidă durează aici doar 115,7 ms de la pierderea alimentării: pornirea de la comanda de declanșare sau de la un semnal din amonte o poate folosi, iar pornirea temporizată de la minimă tensiune nu, și trebuie să aștepte scăderea tensiunii remanente (problema 7.5).
+
+   </details>
+
 9. De ce AAR trebuie blocată când bara a fost deconectată de protecția barelor?
-   <details><summary>Răspuns</summary>Pentru că atunci bara are un defect: închiderea sursei de rezervă ar alimenta din nou defectul, cu un nou scurtcircuit și cu deconectarea și a sursei de rezervă.</details>
+   <details><summary>Răspuns</summary>
+
+   Pentru că atunci bara are un defect: închiderea sursei de rezervă ar alimenta din nou defectul, cu un nou scurtcircuit și cu deconectarea și a sursei de rezervă.
+
+   </details>
+
 10. Cum se alege temporizarea protecției la refuzul întrerupătorului? De ce nu se poate lua oricât de mare?
-    <details><summary>Răspuns</summary>Ea trebuie să depășească timpul de întrerupere al unui întrerupător sănătos, plus timpul de revenire al detectorului de curent, plus o marjă, ca să nu se declanșeze inutil întrerupătoarele vecine. Ea se adaugă însă la timpul de eliminare a defectului în caz de refuz, care trebuie să rămână sub timpul critic al generatoarelor din apropiere (problema 7.6).</details>
+    <details><summary>Răspuns</summary>
+
+    Ea trebuie să depășească timpul de întrerupere al unui întrerupător sănătos, plus timpul de revenire al detectorului de curent, plus o marjă, ca să nu se declanșeze inutil întrerupătoarele vecine. Ea se adaugă însă la timpul de eliminare a defectului în caz de refuz, care trebuie să rămână sub timpul critic al generatoarelor din apropiere (problema 7.6).
+
+    </details>
 
 ## Bibliografie
 

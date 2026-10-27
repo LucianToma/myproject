@@ -180,17 +180,46 @@ Schema „1 din 2” (două protecții, oricare declanșează) reduce refuzul de
 ## Întrebări de autoevaluare
 
 1. De ce crește pericolul unui scurtcircuit cu durata lui? Numiți două efecte care depind de $I^2 t$ și unul care depinde de valoarea de vârf a curentului.
-   <details><summary>Răspuns</summary>Căldura degajată în conductoare și în arcul electric este proporțională cu $I^2 t$: ea deteriorează izolația (problema 0.1) și poate provoca incendii. De durată depind și pierderea stabilității generatoarelor și durata golului de tensiune la consumatori. Forțele electrodinamice depind de pătratul valorii instantanee a curentului, deci de curentul de șoc $i_p$, care apare în prima semiperioadă.</details>
+   <details><summary>Răspuns</summary>
+
+   Căldura degajată în conductoare și în arcul electric este proporțională cu $I^2 t$: ea deteriorează izolația (problema 0.1) și poate provoca incendii. De durată depind și pierderea stabilității generatoarelor și durata golului de tensiune la consumatori. Forțele electrodinamice depind de pătratul valorii instantanee a curentului, deci de curentul de șoc $i_p$, care apare în prima semiperioadă.
+
+   </details>
+
 2. Care este diferența dintre o protecție și o automatizare? Dați câte două exemple.
-   <details><summary>Răspuns</summary>Protecția detectează un defect sau un regim anormal și deconectează zona afectată (sau semnalizează): protecția maximală de curent, protecția diferențială. Automatizarea menține sau restabilește funcționarea: reanclanșarea automată, anclanșarea automată a rezervei, descărcarea automată a sarcinii la scăderea frecvenței, regulatoarele de tensiune și de frecvență.</details>
+   <details><summary>Răspuns</summary>
+
+   Protecția detectează un defect sau un regim anormal și deconectează zona afectată (sau semnalizează): protecția maximală de curent, protecția diferențială. Automatizarea menține sau restabilește funcționarea: reanclanșarea automată, anclanșarea automată a rezervei, descărcarea automată a sarcinii la scăderea frecvenței, regulatoarele de tensiune și de frecvență.
+
+   </details>
+
 3. De ce selectivitatea și rapiditatea se contrazic la protecțiile maximale de curent, dar nu și la protecția diferențială?
-   <details><summary>Răspuns</summary>Protecția maximală are zonă deschisă: același curent de defect îl văd toate releele din amonte, iar selectivitatea se obține prin temporizări crescătoare spre sursă (§ 3.4), deci prin întârzieri. Protecția diferențială are zonă închisă, delimitată de transformatoarele de curent: ea compară curenții de la capetele zonei și știe dacă defectul este în interior, deci poate acționa instantaneu fără să piardă selectivitatea.</details>
+   <details><summary>Răspuns</summary>
+
+   Protecția maximală are zonă deschisă: același curent de defect îl văd toate releele din amonte, iar selectivitatea se obține prin temporizări crescătoare spre sursă (§ 3.4), deci prin întârzieri. Protecția diferențială are zonă închisă, delimitată de transformatoarele de curent: ea compară curenții de la capetele zonei și știe dacă defectul este în interior, deci poate acționa instantaneu fără să piardă selectivitatea.
+
+   </details>
+
 4. Ce înseamnă „siguranța acționării” și „securitatea” unei protecții? Care schemă cu două protecții o favorizează pe fiecare?
-   <details><summary>Răspuns</summary>Siguranța acționării (*dependability*) este capacitatea de a acționa la toate defectele din zonă; securitatea (*security*) este capacitatea de a nu acționa în afara lor. Schema „1 din 2” (oricare dintre protecții declanșează) favorizează siguranța acționării; schema „2 din 2” (trebuie să fie de acord amândouă) favorizează securitatea (problema 0.2).</details>
+   <details><summary>Răspuns</summary>
+
+   Siguranța acționării (*dependability*) este capacitatea de a acționa la toate defectele din zonă; securitatea (*security*) este capacitatea de a nu acționa în afara lor. Schema „1 din 2” (oricare dintre protecții declanșează) favorizează siguranța acționării; schema „2 din 2” (trebuie să fie de acord amândouă) favorizează securitatea (problema 0.2).
+
+   </details>
+
 5. De ce zonele de protecție se suprapun în jurul întrerupătoarelor?
-   <details><summary>Răspuns</summary>Ca să nu existe nicio porțiune neprotejată. Transformatoarele de curent ale protecțiilor vecine se montează de o parte și de alta a întrerupătorului, astfel încât un defect între ele (de exemplu chiar în întrerupător) să fie văzut de ambele protecții. Prețul este că un defect în zona comună deconectează ambele elemente.</details>
+   <details><summary>Răspuns</summary>
+
+   Ca să nu existe nicio porțiune neprotejată. Transformatoarele de curent ale protecțiilor vecine se montează de o parte și de alta a întrerupătorului, astfel încât un defect între ele (de exemplu chiar în întrerupător) să fie văzut de ambele protecții. Prețul este că un defect în zona comună deconectează ambele elemente.
+
+   </details>
+
 6. De ce sursa operativă a protecțiilor este de curent continuu, din baterii?
-   <details><summary>Răspuns</summary>Pentru că defectul însuși poate face să dispară sau să scadă tensiunea alternativă din stație tocmai când protecția trebuie să acționeze. Bateria asigură alimentarea releelor și a bobinelor de declanșare independent de rețeaua de curent alternativ.</details>
+   <details><summary>Răspuns</summary>
+
+   Pentru că defectul însuși poate face să dispară sau să scadă tensiunea alternativă din stație tocmai când protecția trebuie să acționeze. Bateria asigură alimentarea releelor și a bobinelor de declanșare independent de rețeaua de curent alternativ.
+
+   </details>
 
 ## Bibliografie
 

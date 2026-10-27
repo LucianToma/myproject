@@ -240,19 +240,53 @@ Formula de manual $3\omega C_{0,\text{rest}} U_f$ dă 108,0 A pentru fiderul def
 ## Întrebări de autoevaluare
 
 1. De ce temporizarea independentă este dezavantajoasă pe un fider radial cu multe trepte de selectivitate?
-   <details><summary>Răspuns</summary>Temporizările cresc spre sursă cu câte o treaptă de timp, deci releul de lângă sursă are temporizarea cea mai mare. Acolo însă curenții de defect sunt cei mai mari, deci și solicitările. Caracteristicile dependente reduc timpul la curenți mari și compensează parțial acest dezavantaj (figura 3.2).</details>
+   <details><summary>Răspuns</summary>
+
+   Temporizările cresc spre sursă cu câte o treaptă de timp, deci releul de lângă sursă are temporizarea cea mai mare. Acolo însă curenții de defect sunt cei mai mari, deci și solicitările. Caracteristicile dependente reduc timpul la curenți mari și compensează parțial acest dezavantaj (figura 3.2).
+
+   </details>
+
 2. De ce curentul de pornire se împarte la raportul de revenire?
-   <details><summary>Răspuns</summary>După eliminarea unui defect exterior, curentul revine la valoarea de sarcină (eventual mărită de reaccelerarea motoarelor). Releul trebuie să revină în starea de repaus, adică curentul trebuie să scadă sub $k_r I_s$. Condiția $k_r I_s > k_{\text{sig}} I_{\text{sarcină}}$ dă $I_s > k_{\text{sig}} I_{\text{sarcină}}/k_r$.</details>
+   <details><summary>Răspuns</summary>
+
+   După eliminarea unui defect exterior, curentul revine la valoarea de sarcină (eventual mărită de reaccelerarea motoarelor). Releul trebuie să revină în starea de repaus, adică curentul trebuie să scadă sub $k_r I_s$. Condiția $k_r I_s > k_{\text{sig}} I_{\text{sarcină}}$ dă $I_s > k_{\text{sig}} I_{\text{sarcină}}/k_r$.
+
+   </details>
+
 3. La ce curent se verifică selectivitatea dintre două relee succesive și de ce?
-   <details><summary>Răspuns</summary>La curentul maxim care trece prin ambele relee, adică la un defect imediat în aval de releul din aval, în regimul maxim al sursei. La acest curent caracteristicile dependente sunt cel mai apropiate. La curenți mai mici ele se depărtează, deci marja crește.</details>
+   <details><summary>Răspuns</summary>
+
+   La curentul maxim care trece prin ambele relee, adică la un defect imediat în aval de releul din aval, în regimul maxim al sursei. La acest curent caracteristicile dependente sunt cel mai apropiate. La curenți mai mici ele se depărtează, deci marja crește.
+
+   </details>
+
 4. Ce componente trebuie să acopere treapta de timp?
-   <details><summary>Răspuns</summary>Timpul de întrerupere al întrerupătorului din aval (defectul durează până la deschiderea lui), timpul de depășire al releului din amonte, erorile de timp ale celor două relee în cazul cel mai defavorabil și o rezervă pentru erorile TC și incertitudinea datelor (§ 3.4).</details>
+   <details><summary>Răspuns</summary>
+
+   Timpul de întrerupere al întrerupătorului din aval (defectul durează până la deschiderea lui), timpul de depășire al releului din amonte, erorile de timp ale celor două relee în cazul cel mai defavorabil și o rezervă pentru erorile TC și incertitudinea datelor (§ 3.4).
+
+   </details>
+
 5. De ce treapta instantanee acoperă o porțiune mai mică a liniei când sursa este slabă?
-   <details><summary>Răspuns</summary>Reglajul ei se stabilește la curentul maxim (sursa în regim maxim) la capătul liniei. Când sursa este slabă, curenții de defect sunt mai mici în toate punctele, deci punctul în care curentul scade sub reglaj se apropie de releu.</details>
+   <details><summary>Răspuns</summary>
+
+   Reglajul ei se stabilește la curentul maxim (sursa în regim maxim) la capătul liniei. Când sursa este slabă, curenții de defect sunt mai mici în toate punctele, deci punctul în care curentul scade sub reglaj se apropie de releu.
+
+   </details>
+
 6. Cum poate R0 elimina rapid un defect pe bară fără să-și piardă selectivitatea față de fideri?
-   <details><summary>Răspuns</summary>Prin logica de blocare inversă: R0 are o treaptă rapidă care este blocată de pornirea oricărui releu de fider. Un defect pe un fider pornește releul fiderului, care blochează treapta rapidă; un defect pe bară nu pornește niciun releu de fider, deci treapta rapidă acționează (§ 3.6).</details>
+   <details><summary>Răspuns</summary>
+
+   Prin logica de blocare inversă: R0 are o treaptă rapidă care este blocată de pornirea oricărui releu de fider. Un defect pe un fider pornește releul fiderului, care blochează treapta rapidă; un defect pe bară nu pornește niciun releu de fider, deci treapta rapidă acționează (§ 3.6).
+
+   </details>
+
 7. De ce în rețeaua cu neutru izolat nu ajunge mărimea curentului homopolar pentru a găsi fiderul defect?
-   <details><summary>Răspuns</summary>Pentru că un fider sănătos lung (cu capacitate mare) poate vedea un curent capacitiv propriu comparabil cu curentul prin fiderul defect, dacă restul rețelei este mic. Direcția curentului însă diferă: înaintea lui $U_0$ pe fiderii sănătoși, în urma lui pe cel defect (problema 3.5).</details>
+   <details><summary>Răspuns</summary>
+
+   Pentru că un fider sănătos lung (cu capacitate mare) poate vedea un curent capacitiv propriu comparabil cu curentul prin fiderul defect, dacă restul rețelei este mic. Direcția curentului însă diferă: înaintea lui $U_0$ pe fiderii sănătoși, în urma lui pe cel defect (problema 3.5).
+
+   </details>
 
 ## Bibliografie
 

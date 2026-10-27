@@ -261,19 +261,53 @@ Capacitatea față de pământ pe fază a circuitului generatorului (generator, 
 ## Întrebări de autoevaluare
 
 1. De ce protecția termică a unei mașini are „memorie”, iar o protecție maximală obișnuită nu?
-   <details><summary>Răspuns</summary>Pentru că starea termică a mașinii depinde de toată istoria curentului: o mașină care a funcționat la sarcină nominală este deja caldă și suportă mult mai puțin o suprasarcină decât una rece. Modelul termic integrează pierderile în timp (ecuația de ordinul întâi) și ține cont de starea anterioară; protecția maximală compară doar curentul de acum cu un prag.</details>
+   <details><summary>Răspuns</summary>
+
+   Pentru că starea termică a mașinii depinde de toată istoria curentului: o mașină care a funcționat la sarcină nominală este deja caldă și suportă mult mai puțin o suprasarcină decât una rece. Modelul termic integrează pierderile în timp (ecuația de ordinul întâi) și ține cont de starea anterioară; protecția maximală compară doar curentul de acum cu un prag.
+
+   </details>
+
 2. De ce protecția termică nu poate înlocui protecția la rotor blocat?
-   <details><summary>Răspuns</summary>Modelul termic folosește constanta de timp a întregii mașini în funcțiune (de ordinul zecilor de minute). Cu rotorul blocat, căldura se concentrează în rotor, care se încălzește în câteva secunde peste limită. Pentru M1, modelul ar declanșa abia după 56 s din stare rece, deși motorul admite 18 s.</details>
+   <details><summary>Răspuns</summary>
+
+   Modelul termic folosește constanta de timp a întregii mașini în funcțiune (de ordinul zecilor de minute). Cu rotorul blocat, căldura se concentrează în rotor, care se încălzește în câteva secunde peste limită. Pentru M1, modelul ar declanșa abia după 56 s din stare rece, deși motorul admite 18 s.
+
+   </details>
+
 3. Ce se întâmplă dacă timpul admis cu rotorul blocat este mai mic decât durata pornirii?
-   <details><summary>Răspuns</summary>Cele două situații nu mai pot fi separate după timp: orice temporizare suficientă pentru pornire depășește timpul admis cu rotorul blocat. Se folosește un traductor de turație: dacă rotorul nu începe să se rotească, motorul este declanșat fără să se aștepte sfârșitul timpului de pornire.</details>
+   <details><summary>Răspuns</summary>
+
+   Cele două situații nu mai pot fi separate după timp: orice temporizare suficientă pentru pornire depășește timpul admis cu rotorul blocat. Se folosește un traductor de turație: dacă rotorul nu începe să se rotească, motorul este declanșat fără să se aștepte sfârșitul timpului de pornire.
+
+   </details>
+
 4. De ce protecția la putere inversă are nevoie de transformatoare de măsură cu erori de unghi foarte mici?
-   <details><summary>Răspuns</summary>Puterea activă absorbită în regim de motor este mică (1,5 % din Pn la G1), iar puterea reactivă poate fi mult mai mare; unghiul dintre curent și tensiune este aproape de 90°. O eroare de unghi ε produce o eroare de putere activă de aproximativ Q·ε; pentru G1, eroarea lanțului de măsură trebuie să fie sub 0,61°.</details>
+   <details><summary>Răspuns</summary>
+
+   Puterea activă absorbită în regim de motor este mică (1,5 % din Pn la G1), iar puterea reactivă poate fi mult mai mare; unghiul dintre curent și tensiune este aproape de 90°. O eroare de unghi ε produce o eroare de putere activă de aproximativ Q·ε; pentru G1, eroarea lanțului de măsură trebuie să fie sub 0,61°.
+
+   </details>
+
 5. De ce caracteristica protecției la pierderea excitației este decalată față de origine?
-   <details><summary>Răspuns</summary>Defectele apropiate produc impedanțe mici, în jurul originii; decalajul de $x'_d/2$ pe axa $-jX$ ține caracteristica departe de ele. Diametrul $x_d$ cuprinde punctul $-jx_d$, impedanța văzută la pierderea completă a excitației. Pendulațiile stabile pot totuși traversa cercul pentru scurt timp, de aceea protecția este temporizată.</details>
+   <details><summary>Răspuns</summary>
+
+   Defectele apropiate produc impedanțe mici, în jurul originii; decalajul de $x'_d/2$ pe axa $-jX$ ține caracteristica departe de ele. Diametrul $x_d$ cuprinde punctul $-jx_d$, impedanța văzută la pierderea completă a excitației. Pendulațiile stabile pot totuși traversa cercul pentru scurt timp, de aceea protecția este temporizată.
+
+   </details>
+
 6. Ce efect are curentul de secvență inversă asupra rotorului unui generator?
-   <details><summary>Răspuns</summary>Câmpul produs de el se rotește invers față de rotor, deci, față de rotor, cu viteza dublă: induce în rotor curenți de frecvență dublă, care circulă la suprafață și îl încălzesc local. Capabilitatea se exprimă prin curentul invers admis permanent și prin constanta $K = (I_2/I_n)^2 t$.</details>
+   <details><summary>Răspuns</summary>
+
+   Câmpul produs de el se rotește invers față de rotor, deci, față de rotor, cu viteza dublă: induce în rotor curenți de frecvență dublă, care circulă la suprafață și îl încălzesc local. Capabilitatea se exprimă prin curentul invers admis permanent și prin constanta $K = (I_2/I_n)^2 t$.
+
+   </details>
+
 7. De ce protecția de tensiune homopolară a statorului nu acoperă toată înfășurarea?
-   <details><summary>Răspuns</summary>La un defect metalic în punctul aflat la fracțiunea $x$ de neutru, tensiunea neutrului este $x\thinspace U_f$; aproape de neutru ea este prea mică pentru a fi deosebită de tensiunile homopolare normale. Cu reglajul de 5 %, ultimii 5 % de lângă neutru rămân neacoperiți; pentru ei se folosesc metodele de 100 % (armonica a treia, injecție de tensiune).</details>
+   <details><summary>Răspuns</summary>
+
+   La un defect metalic în punctul aflat la fracțiunea $x$ de neutru, tensiunea neutrului este $x\thinspace U_f$; aproape de neutru ea este prea mică pentru a fi deosebită de tensiunile homopolare normale. Cu reglajul de 5 %, ultimii 5 % de lângă neutru rămân neacoperiți; pentru ei se folosesc metodele de 100 % (armonica a treia, injecție de tensiune).
+
+   </details>
 
 ## Bibliografie
 

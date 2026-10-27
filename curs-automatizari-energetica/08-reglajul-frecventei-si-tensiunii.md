@@ -326,25 +326,74 @@ Un câștig de ordinul sutelor dă o eroare sub 1 % și un răspuns de zeci de m
 ## Întrebări de autoevaluare
 
 1. De ce frecvența este aceeași în tot sistemul sincron, iar tensiunea diferă de la o bară la alta?
-   <details><summary>Răspuns</summary>Toate generatoarele sincrone se rotesc cu aceeași viteză electrică în regim staționar, deci frecvența este o mărime globală, determinată de echilibrul puterilor active din întregul sistem. Tensiunea depinde de căderile de tensiune pe elementele rețelei, deci de circulația locală a puterii reactive (și active), și se reglează local (§ 8.1, § 8.6–8.8).</details>
+   <details><summary>Răspuns</summary>
+
+   Toate generatoarele sincrone se rotesc cu aceeași viteză electrică în regim staționar, deci frecvența este o mărime globală, determinată de echilibrul puterilor active din întregul sistem. Tensiunea depinde de căderile de tensiune pe elementele rețelei, deci de circulația locală a puterii reactive (și active), și se reglează local (§ 8.1, § 8.6–8.8).
+
+   </details>
+
 2. De ce depinde viteza inițială de scădere a frecvenței după pierderea unui grup? De ce crește ea în sistemele cu multă producție din surse regenerabile?
-   <details><summary>Răspuns</summary>$\text{RoCoF}_0 = -\Delta P/M$, cu $M = 2HS/f_0$: depinde numai de dezechilibru și de inerție. Sursele racordate prin convertoare (eoliene, fotovoltaice) nu au mase în rotație legate sincron de rețea, deci înlocuirea generatoarelor sincrone cu ele micșorează $M$ și mărește RoCoF la același dezechilibru (§ 8.1).</details>
+   <details><summary>Răspuns</summary>
+
+   $\text{RoCoF}_0 = -\Delta P/M$, cu $M = 2HS/f_0$: depinde numai de dezechilibru și de inerție. Sursele racordate prin convertoare (eoliene, fotovoltaice) nu au mase în rotație legate sincron de rețea, deci înlocuirea generatoarelor sincrone cu ele micșorează $M$ și mărește RoCoF la același dezechilibru (§ 8.1).
+
+   </details>
+
 3. Ce determină abaterea staționară a frecvenței după reglajul primar și ce determină nadirul?
-   <details><summary>Răspuns</summary>Abaterea staționară este $-\Delta P/(K_\text{reg} + D)$: depinde de statismul regulatoarelor și de autoreglarea sarcinii, nu de inerție sau de constantele de timp. Nadirul depinde în plus de inerție și de cât de repede răspund regulatoarele și turbinele: în problema 8.1, cu aceeași abatere staționară de −273 mHz, nadirul variază de la −422 la −931 mHz când $T_t$ crește de la 0,5 la 5 s (§ 8.2).</details>
+   <details><summary>Răspuns</summary>
+
+   Abaterea staționară este $-\Delta P/(K_\text{reg} + D)$: depinde de statismul regulatoarelor și de autoreglarea sarcinii, nu de inerție sau de constantele de timp. Nadirul depinde în plus de inerție și de cât de repede răspund regulatoarele și turbinele: în problema 8.1, cu aceeași abatere staționară de −273 mHz, nadirul variază de la −422 la −931 mHz când $T_t$ crește de la 0,5 la 5 s (§ 8.2).
+
+   </details>
+
 4. Ce valori impune SOGL pentru Europa continentală privind abaterile de frecvență și activarea FCR?
-   <details><summary>Răspuns</summary>Abaterea instantanee maximă de 800 mHz și abaterea staționară maximă de 200 mHz; incidentul de referință de 3000 MW; FCR activată complet la ±200 mHz în cel mult 30 s (cel puțin 50 % în 15 s); timpul de restabilire a frecvenței 15 min (§ 8.3).</details>
+   <details><summary>Răspuns</summary>
+
+   Abaterea instantanee maximă de 800 mHz și abaterea staționară maximă de 200 mHz; incidentul de referință de 3000 MW; FCR activată complet la ±200 mHz în cel mult 30 s (cel puțin 50 % în 15 s); timpul de restabilire a frecvenței 15 min (§ 8.3).
+
+   </details>
+
 5. De ce reglajul secundar trebuie să fie integral, iar cel primar este proporțional?
-   <details><summary>Răspuns</summary>Reglajul primar trebuie să acționeze imediat, în toate unitățile care furnizează FCR în zona sincronă, fără coordonare: o acțiune proporțională cu abaterea (statismul) împarte sarcina stabil între grupuri, dar lasă o abatere staționară. Reglajul secundar trebuie să anuleze abaterea (frecvența și schimburile revin la program), iar numai o acțiune integrală anulează eroarea în regim staționar (§ 8.3, § 8.4).</details>
+   <details><summary>Răspuns</summary>
+
+   Reglajul primar trebuie să acționeze imediat, în toate unitățile care furnizează FCR în zona sincronă, fără coordonare: o acțiune proporțională cu abaterea (statismul) împarte sarcina stabil între grupuri, dar lasă o abatere staționară. Reglajul secundar trebuie să anuleze abaterea (frecvența și schimburile revin la program), iar numai o acțiune integrală anulează eroarea în regim staționar (§ 8.3, § 8.4).
+
+   </details>
+
 6. După o creștere de sarcină în zona 1, de ce nu reacționează regulatorul secundar al zonei 2, deși frecvența a scăzut și acolo?
-   <details><summary>Răspuns</summary>Pentru că $ACE_2 = -\Delta P_{int,12} + K_2\Delta f$, iar ajutorul dat zonei 1 ($-\Delta P_{int,12}$, pozitiv) compensează exact termenul de frecvență ($K_2\Delta f$, negativ) când $K_2$ este egal cu caracteristica naturală a zonei 2. Zona 2 constată că abaterea de frecvență nu este cauzată de ea (§ 8.4, problema 8.4).</details>
+   <details><summary>Răspuns</summary>
+
+   Pentru că $ACE_2 = -\Delta P_{int,12} + K_2\Delta f$, iar ajutorul dat zonei 1 ($-\Delta P_{int,12}$, pozitiv) compensează exact termenul de frecvență ($K_2\Delta f$, negativ) când $K_2$ este egal cu caracteristica naturală a zonei 2. Zona 2 constată că abaterea de frecvență nu este cauzată de ea (§ 8.4, problema 8.4).
+
+   </details>
+
 7. De ce este nevoie de DASF dacă există rezerve de reglaj primar și secundar?
-   <details><summary>Răspuns</summary>FCR este dimensionată pentru incidentul de referință, iar rezervele de restabilire pentru fiecare bloc de reglaj. La dezechilibre mult mai mari, mai ales la separarea în insulă a unei zone importatoare, regulatoarele ating limita rezervei și frecvența scade până la valori la care generatoarele se pot deconecta (sub 47,5 Hz), producând o avarie în cascadă. DASF reface echilibrul sacrificând o parte din consum (§ 8.5, problema 8.3).</details>
+   <details><summary>Răspuns</summary>
+
+   FCR este dimensionată pentru incidentul de referință, iar rezervele de restabilire pentru fiecare bloc de reglaj. La dezechilibre mult mai mari, mai ales la separarea în insulă a unei zone importatoare, regulatoarele ating limita rezervei și frecvența scade până la valori la care generatoarele se pot deconecta (sub 47,5 Hz), producând o avarie în cascadă. DASF reface echilibrul sacrificând o parte din consum (§ 8.5, problema 8.3).
+
+   </details>
+
 8. De ce trebuie ca lățimea benzii regulatorului de ploturi să depășească efectul unui plot?
-   <details><summary>Răspuns</summary>Altfel, după o comutare tensiunea trece din cealaltă parte a benzii, regulatorul comandă comutarea inversă după temporizare și așa mai departe: pendulare, cu uzura inutilă a comutatorului. În problema 8.5, cu o bandă de ±0,5 % (lățime 1 %) și un pas de 1,14–1,39 % la gol, au rezultat 120 de comutări într-o oră la sarcină constantă (§ 8.7).</details>
+   <details><summary>Răspuns</summary>
+
+   Altfel, după o comutare tensiunea trece din cealaltă parte a benzii, regulatorul comandă comutarea inversă după temporizare și așa mai departe: pendulare, cu uzura inutilă a comutatorului. În problema 8.5, cu o bandă de ±0,5 % (lățime 1 %) și un pas de 1,14–1,39 % la gol, au rezultat 120 de comutări într-o oră la sarcină constantă (§ 8.7).
+
+   </details>
+
 9. Ce câștigă și ce pierde un regulator de tensiune cu câștig mai mare?
-   <details><summary>Răspuns</summary>Câștigă o eroare staționară mai mică, $1/(1 + K_A)$, și un răspuns mai rapid. Pierde amortizare: suprareglarea crește (de la 0 la 25,8 % în problema 8.6), iar tensiunea de excitație cerută crește, deci și plafonul necesar al excitației. Excitațiile rapide cu câștig mare pot amortiza slab oscilațiile electromecanice, de aceea se completează cu un stabilizator de sistem (PSS) (§ 8.6).</details>
+   <details><summary>Răspuns</summary>
+
+   Câștigă o eroare staționară mai mică, $1/(1 + K_A)$, și un răspuns mai rapid. Pierde amortizare: suprareglarea crește (de la 0 la 25,8 % în problema 8.6), iar tensiunea de excitație cerută crește, deci și plafonul necesar al excitației. Excitațiile rapide cu câștig mare pot amortiza slab oscilațiile electromecanice, de aceea se completează cu un stabilizator de sistem (PSS) (§ 8.6).
+
+   </details>
+
 10. Ce face compensarea căderii de tensiune (LDC) și care este riscul ei?
-   <details><summary>Răspuns</summary>Regulatorul reglează tensiunea estimată într-un punct al rețelei (centrul de sarcină), calculată din tensiunea și curentul din stație, nu tensiunea de pe bară. Consumatorii au astfel o tensiune mai constantă. Riscul este o tensiune prea mare pe bara stației la sarcină mare (21,85 kV în problema 8.5), deci la consumatorii apropiați. De aceea compensarea se reglează adesea doar parțial (§ 8.7).</details>
+   <details><summary>Răspuns</summary>
+
+   Regulatorul reglează tensiunea estimată într-un punct al rețelei (centrul de sarcină), calculată din tensiunea și curentul din stație, nu tensiunea de pe bară. Consumatorii au astfel o tensiune mai constantă. Riscul este o tensiune prea mare pe bara stației la sarcină mare (21,85 kV în problema 8.5), deci la consumatorii apropiați. De aceea compensarea se reglează adesea doar parțial (§ 8.7).
+
+   </details>
 
 ## Bibliografie
 

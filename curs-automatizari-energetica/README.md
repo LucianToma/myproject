@@ -65,6 +65,8 @@ pip install -r requirements.txt
 python ruleaza_tot.py
 ```
 
+La ultima rulare: 21 de scripturi, 905 verificări, toate trecute (durata: aproximativ 3 minute). Figurile SVG sunt reproductibile: o nouă rulare produce fișiere identice.
+
 Verificările sunt de două feluri, iar textul fiecărei probleme spune care este care:
 
 - **căi independente** – același rezultat obținut cu un alt model sau o altă metodă: rețele de secvență față de coordonate de fază, formulă analitică față de simulare numerică, model liniar față de model neliniar, calcul analitic față de Monte Carlo;
@@ -86,6 +88,9 @@ Afirmațiile care nu rezultă din calcul (date normative, terminologie, conținu
 - **Valorile „tipice”** ale treptei de timp la protecțiile maximale și ale acoperirilor zonelor de distanță nu au fost confirmate din surse; în curs ele sunt **deduse** din componentele lor (erori, timpi de întrerupere), date ca date de problemă.
 - **Regulamentul (UE) 2016/631 (RfG):** domeniile de frecvență pentru Europa continentală au fost confirmate indirect, prin tabelul identic din Regulamentul (UE) 2016/1388 (DCC).
 - **Criteriul ANSI C50.41** (1,33 u.r. V/Hz la transferul motoarelor) este menționat în capitolul 7, dar nu a fost verificat.
+- **Regulamentul (UE) 2017/2196 (NC ER):** valorile tabelului DASF sunt confirmate, dar formularea exactă din anexă pentru banda de implementare de ±7 % nu a fost citită; capitolul 8 folosește interpretarea „bandă în jurul dreptei 49,0 Hz/5 % → 48,0 Hz/45 %” și o spune explicit. Traducerile oficiale în limba română ale denumirilor FCR, aFRR, mFRR și RR nu au fost verificate.
+- **Practici de exploatare** prezentate calitativ, fără o sursă anume: ordinea de acționare a regulatoarelor de ploturi în cascadă, blocarea lor la tensiuni foarte mici, reglarea parțială a compensării căderii de tensiune (LDC), reconectarea bateriilor de condensatoare numai după descărcare, folosirea releelor 81R la deficite mari, faptul că sursele racordate prin convertoare nu aduc inerție proprie și faptul că amortizarea oscilațiilor dintre zone vine în principal de la regulatoarele de tensiune și stabilizatoarele de sistem (PSS). La fel, în capitolele 4–7: denumirile clasice (schema Merz–Price), comportarea releului Buchholz, blocarea încrucișată la armonica a doua, protecția 100 % a statorului prin armonica a treia sau prin injecție, logica POTT/PUTT/blocare și cea de închidere pe defect (SOTF).
+- **Conținutul detaliat al cărților:** faptul că NPAG [1] tratează protecția de distanță și descărcarea sarcinii în anumite capitole, iar [17] modurile de oscilație dintre zone, a fost confirmat numai din titlurile capitolelor; în curs cărțile sunt citate fără numere de capitol.
 - **Cărți:** anul și ISBN-ul ediției a 13-a a *Switchgear Manual*; anul și numărul de pagini ale *Power Engineering Guide* 8.0; dacă textul actual al ghidului GE este identic cu ediția Alstom din 2011; lista completă a capitolelor NPAG (confirmată doar parțial).
 - **Datele rețelei de referință** (puteri de scurtcircuit, parametrii liniilor și cablurilor, curentul de 300 A al rezistorului de neutru, datele generatorului G1 și ale motorului M1) sunt **construite pentru curs**; ele nu sunt date normative.
 

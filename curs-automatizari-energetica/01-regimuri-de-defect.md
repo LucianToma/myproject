@@ -228,17 +228,46 @@ Diferențele (de cel mult 2,2 %) au două cauze, pe care formulele de manual le 
 ## Întrebări de autoevaluare
 
 1. De ce o impedanță are aceeași valoare în unități relative pe ambele părți ale unui transformator?
-   <details><summary>Răspuns</summary>Pentru că tensiunile de bază ale celor două niveluri sunt în raportul transformatorului, iar puterea de bază este aceeași. Raportând o impedanță pe celălalt nivel, ea se înmulțește cu pătratul raportului de transformare; impedanța de bază se înmulțește cu același factor, deci raportul lor nu se schimbă.</details>
+   <details><summary>Răspuns</summary>
+
+   Pentru că tensiunile de bază ale celor două niveluri sunt în raportul transformatorului, iar puterea de bază este aceeași. Raportând o impedanță pe celălalt nivel, ea se înmulțește cu pătratul raportului de transformare; impedanța de bază se înmulțește cu același factor, deci raportul lor nu se schimbă.
+
+   </details>
+
 2. De ce se calculează doi curenți de scurtcircuit, unul maxim și unul minim? La ce servește fiecare?
-   <details><summary>Răspuns</summary>Curentul maxim (cu $c_{max}$, configurația cu cele mai multe surse) dă solicitările termice și electrodinamice ale echipamentelor și curenții la care se verifică selectivitatea protecțiilor. Curentul minim (cu $c_{min}$, rezistențe calde, configurația cea mai slabă, de regulă defect bifazat) dă cazul cel mai greu pentru sensibilitate: protecția trebuie să acționeze sigur și la acest curent.</details>
+   <details><summary>Răspuns</summary>
+
+   Curentul maxim (cu $c_{max}$, configurația cu cele mai multe surse) dă solicitările termice și electrodinamice ale echipamentelor și curenții la care se verifică selectivitatea protecțiilor. Curentul minim (cu $c_{min}$, rezistențe calde, configurația cea mai slabă, de regulă defect bifazat) dă cazul cel mai greu pentru sensibilitate: protecția trebuie să acționeze sigur și la acest curent.
+
+   </details>
+
 3. De ce curentul de șoc depinde de raportul R/X?
-   <details><summary>Răspuns</summary>Pentru că componenta aperiodică se amortizează cu constanta de timp $T = X/(\omega R)$. La R/X mic ea se amortizează lent și se adună aproape integral la vârful primei semiperioade, deci κ se apropie de 2. La R/X mare se amortizează repede și κ se apropie de 1.</details>
+   <details><summary>Răspuns</summary>
+
+   Pentru că componenta aperiodică se amortizează cu constanta de timp $T = X/(\omega R)$. La R/X mic ea se amortizează lent și se adună aproape integral la vârful primei semiperioade, deci κ se apropie de 2. La R/X mare se amortizează repede și κ se apropie de 1.
+
+   </details>
+
 4. De ce la un defect bifazat nu apare curent homopolar, iar la unul monofazat cele trei rețele de secvență sunt în serie?
-   <details><summary>Răspuns</summary>La defectul bifazat fără pământ curenții de fază se închid între fazele b și c ($I_b = -I_c$, $I_a = 0$), deci suma lor este nulă și $I_0 = 0$. La defectul monofazat $I_b = I_c = 0$, ceea ce, transformat în componente, înseamnă $I_0 = I_1 = I_2$: același curent parcurge toate rețelele de secvență, adică ele sunt conectate în serie.</details>
+   <details><summary>Răspuns</summary>
+
+   La defectul bifazat fără pământ curenții de fază se închid între fazele b și c ($I_b = -I_c$, $I_a = 0$), deci suma lor este nulă și $I_0 = 0$. La defectul monofazat $I_b = I_c = 0$, ceea ce, transformat în componente, înseamnă $I_0 = I_1 = I_2$: același curent parcurge toate rețelele de secvență, adică ele sunt conectate în serie.
+
+   </details>
+
 5. Ce avantaje și ce dezavantaje are tratarea neutrului prin rezistor față de neutrul izolat?
-   <details><summary>Răspuns</summary>Avantaje: curentul de defect este bine definit (sute de amperi, dominat de rezistor: 300 A față de 117 A capacitivi în rețeaua de referință), deci protecțiile homopolare sunt simple și selective; supratensiunile tranzitorii (arc intermitent) sunt mai mici; defectul se elimină rapid. Supratensiunea de regim permanent pe fazele sănătoase rămâne însă de ordinul tensiunii de linie (problema 1.6). Dezavantaje: fiecare punere la pământ deconectează fiderul (continuitate mai slabă decât la neutrul izolat sau compensat), curentul la locul defectului este mai mare (tensiuni de atingere și de pas, deteriorări), iar defectele cu rezistență mare rămân greu de detectat (§ 3.7).</details>
+   <details><summary>Răspuns</summary>
+
+   Avantaje: curentul de defect este bine definit (sute de amperi, dominat de rezistor: 300 A față de 117 A capacitivi în rețeaua de referință), deci protecțiile homopolare sunt simple și selective; supratensiunile tranzitorii (arc intermitent) sunt mai mici; defectul se elimină rapid. Supratensiunea de regim permanent pe fazele sănătoase rămâne însă de ordinul tensiunii de linie (problema 1.6). Dezavantaje: fiecare punere la pământ deconectează fiderul (continuitate mai slabă decât la neutrul izolat sau compensat), curentul la locul defectului este mai mare (tensiuni de atingere și de pas, deteriorări), iar defectele cu rezistență mare rămân greu de detectat (§ 3.7).
+
+   </details>
+
 6. De ce o bobină de stingere poate stinge arcul la locul defectului?
-   <details><summary>Răspuns</summary>Curentul ei inductiv este în opoziție cu curentul capacitiv al rețelei și îl compensează aproape complet. La locul defectului rămâne un curent rezidual mic, iar tensiunea care reapare pe faza defectă după stingerea arcului crește lent, astfel că arcul nu se mai reaprinde.</details>
+   <details><summary>Răspuns</summary>
+
+   Curentul ei inductiv este în opoziție cu curentul capacitiv al rețelei și îl compensează aproape complet. La locul defectului rămâne un curent rezidual mic, iar tensiunea care reapare pe faza defectă după stingerea arcului crește lent, astfel că arcul nu se mai reaprinde.
+
+   </details>
 
 ## Bibliografie
 

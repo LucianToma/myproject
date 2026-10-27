@@ -303,31 +303,67 @@ Date de problemă: timpul de pornire al releelor 25 ms, canalul de comunicație 
 ## Întrebări de autoevaluare
 
 1. De ce acoperirea unei zone a protecției de distanță nu depinde de puterea de scurtcircuit a sursei, iar a unei trepte instantanee maximale depinde?
-<details><summary>Răspuns</summary>Pentru un defect metalic, tensiunea la releu este căderea pe porțiunea de linie până la defect, $\underline{U} = x\thinspace\underline{Z}_L\thinspace\underline{I}$, deci raportul $\underline{U}/\underline{I} = x\thinspace\underline{Z}_L$ conține numai datele liniei. Curentul de defect, pe care îl măsoară protecția maximală, depinde și de impedanța sursei.</details>
+<details><summary>Răspuns</summary>
+
+Pentru un defect metalic, tensiunea la releu este căderea pe porțiunea de linie până la defect, $\underline{U} = x\thinspace\underline{Z}_L\thinspace\underline{I}$, deci raportul $\underline{U}/\underline{I} = x\thinspace\underline{Z}_L$ conține numai datele liniei. Curentul de defect, pe care îl măsoară protecția maximală, depinde și de impedanța sursei.
+
+</details>
 
 2. Ce măsoară bucla a–pământ fără compensare homopolară la un defect monofazat și de ce?
-<details><summary>Răspuns</summary>$\underline{U}_a/\underline{I}_a = x\thinspace\underline{Z}_1 (1 + \underline{k}_0\thinspace 3\underline{I}_0/\underline{I}_a)$, mai mult decât $x\thinspace\underline{Z}_1$: tensiunea conține și căderea produsă de curentul homopolar pe impedanța homopolară, mai mare decât cea directă. Releul ar subacoperi (în problema 5.2, 110 % în loc de 70 %).</details>
+<details><summary>Răspuns</summary>
+
+$\underline{U}_a/\underline{I}_a = x\thinspace\underline{Z}_1 (1 + \underline{k}_0\thinspace 3\underline{I}_0/\underline{I}_a)$, mai mult decât $x\thinspace\underline{Z}_1$: tensiunea conține și căderea produsă de curentul homopolar pe impedanța homopolară, mai mare decât cea directă. Releul ar subacoperi (în problema 5.2, 110 % în loc de 70 %).
+
+</details>
 
 3. De ce zona 1 nu se reglează la 100 % din linie? Cât ar putea fi $k_1$ dacă eroarea TC la curenții de defect ar fi doar ±1 %, cât garantează clasa 5P la curentul nominal?
-<details><summary>Răspuns</summary>Din cauza erorilor (date ale liniei, TT, TC, releu), un defect imediat după bara opusă ar putea fi văzut în zona 1 și linia ar declanșa neselectiv. Cu ±1 % la TC, $f_{sup}$ = (1,01 · 1,05)/(0,95 · 0,97) = 1,1508, deci $k_1 \le$ 0,869. Garanția de ±1 % este însă valabilă numai la curentul nominal; la curenții de defect (4,6…6,4·$I_n$ la limita zonei 1) se folosește eroarea compusă de 5 %, de unde $k_1 \le$ 0,836.</details>
+<details><summary>Răspuns</summary>
+
+Din cauza erorilor (date ale liniei, TT, TC, releu), un defect imediat după bara opusă ar putea fi văzut în zona 1 și linia ar declanșa neselectiv. Cu ±1 % la TC, $f_{sup}$ = (1,01 · 1,05)/(0,95 · 0,97) = 1,1508, deci $k_1 \le$ 0,869. Garanția de ±1 % este însă valabilă numai la curentul nominal; la curenții de defect (4,6…6,4·$I_n$ la limita zonei 1) se folosește eroarea compusă de 5 %, de unde $k_1 \le$ 0,836.
+
+</details>
 
 4. Ce condiții trebuie să îndeplinească acoperirea zonei 2?
-<details><summary>Răspuns</summary>Să acopere sigur bara opusă, inclusiv cu erorile ($k_2 > f_{sub}$). Să nu depășească zona 1 a protecției liniei următoare (altfel cele două relee ar declanșa simultan după $t_2$). Să nu ajungă prin transformatoare în rețeaua de tensiune inferioară cu care nu este coordonată.</details>
+<details><summary>Răspuns</summary>
+
+Să acopere sigur bara opusă, inclusiv cu erorile ($k_2 > f_{sub}$). Să nu depășească zona 1 a protecției liniei următoare (altfel cele două relee ar declanșa simultan după $t_2$). Să nu ajungă prin transformatoare în rețeaua de tensiune inferioară cu care nu este coordonată.
+
+</details>
 
 5. De ce, la capătul care exportă putere, un defect prin rezistență poate produce supraacoperire, iar la cel care importă, subacoperire?
-<details><summary>Răspuns</summary>Termenul $R_f\thinspace\underline{I}_F/\underline{I}_{A,comp}$ este rotit cu unghiul dintre curentul total de defect și curentul măsurat. La capătul care exportă, contribuția celuilalt capăt rămâne în urmă, unghiul este negativ și termenul coboară în planul R-X (reactanța aparentă scade): supraacoperire. La capătul care importă, unghiul este pozitiv: subacoperire.</details>
+<details><summary>Răspuns</summary>
+
+Termenul $R_f\thinspace\underline{I}_F/\underline{I}_{A,comp}$ este rotit cu unghiul dintre curentul total de defect și curentul măsurat. La capătul care exportă, contribuția celuilalt capăt rămâne în urmă, unghiul este negativ și termenul coboară în planul R-X (reactanța aparentă scade): supraacoperire. La capătul care importă, unghiul este pozitiv: subacoperire.
+
+</details>
 
 6. De ce neutrul legat la pământ al lui T1 schimbă impedanța văzută din A la defectele monofazate de pe L2, dar nu și la cele trifazate?
-<details><summary>Răspuns</summary>T1 nu are surse pe partea de 20 kV, deci nu aduce curent de secvență directă la B. Înfășurarea YN cu triunghiul de pe partea cealaltă este însă o cale pentru curentul homopolar, care intră în L2 din B fără să treacă prin releul din A: alimentare intermediară homopolară, deci subacoperire la defectele cu pământ.</details>
+<details><summary>Răspuns</summary>
+
+T1 nu are surse pe partea de 20 kV, deci nu aduce curent de secvență directă la B. Înfășurarea YN cu triunghiul de pe partea cealaltă este însă o cale pentru curentul homopolar, care intră în L2 din B fără să treacă prin releul din A: alimentare intermediară homopolară, deci subacoperire la defectele cu pământ.
+
+</details>
 
 7. Cum deosebește releul o pendulație de un defect?
-<details><summary>Răspuns</summary>După viteza de variație a impedanței: la un defect, impedanța sare practic instantaneu din domeniul de sarcină în zonă. La o pendulație sau la o alunecare, ea se deplasează lent și traversează în timp măsurabil o bandă dintre două caracteristici paralele (în problema 5.7, 33,4 ms la 1 Hz), timp comparat cu o temporizare reglată.</details>
+<details><summary>Răspuns</summary>
+
+După viteza de variație a impedanței: la un defect, impedanța sare practic instantaneu din domeniul de sarcină în zonă. La o pendulație sau la o alunecare, ea se deplasează lent și traversează în timp măsurabil o bandă dintre două caracteristici paralele (în problema 5.7, 33,4 ms la 1 Hz), timp comparat cu o temporizare reglată.
+
+</details>
 
 8. Care este diferența esențială dintre schemele permisive și schema cu blocare la pierderea canalului de comunicație?
-<details><summary>Răspuns</summary>La schemele permisive, fără semnal nu există declanșare accelerată; rămâne doar declanșarea în zona 2, deci schema este sigură, dar mai lentă. La schema cu blocare, lipsa semnalului înseamnă „nicio blocare”: releul declanșează rapid și la defecte exterioare văzute în zona extinsă. Schema este dependentă, dar poate pierde selectivitatea.</details>
+<details><summary>Răspuns</summary>
+
+La schemele permisive, fără semnal nu există declanșare accelerată; rămâne doar declanșarea în zona 2, deci schema este sigură, dar mai lentă. La schema cu blocare, lipsa semnalului înseamnă „nicio blocare”: releul declanșează rapid și la defecte exterioare văzute în zona extinsă. Schema este dependentă, dar poate pierde selectivitatea.
+
+</details>
 
 9. De ce trebuie supravegheate circuitele de tensiune ale protecției de distanță?
-<details><summary>Răspuns</summary>Dacă tensiunea secundară dispare (siguranță arsă), releul vede o impedanță aproape nulă și ar declanșa în zona 1 fără defect. Supravegherea recunoaște situația și blochează protecția de distanță.</details>
+<details><summary>Răspuns</summary>
+
+Dacă tensiunea secundară dispare (siguranță arsă), releul vede o impedanță aproape nulă și ar declanșa în zona 1 fără defect. Supravegherea recunoaște situația și blochează protecția de distanță.
+
+</details>
 
 ---
 

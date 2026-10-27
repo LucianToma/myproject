@@ -249,19 +249,53 @@ Bara B de 110 kV are trei celule (L1, L2 și T1) și o protecție de impedanță
 ## Întrebări de autoevaluare
 
 1. De ce protecția diferențială nu are nevoie de temporizare pentru a fi selectivă?
-   <details><summary>Răspuns</summary>Zona ei este închisă, delimitată exact de TC. Releul decide din semnul relativ al curenților de la capete (care intră sau ies din zonă), nu din valoarea lor, deci nu poate confunda un defect exterior cu unul interior și nu trebuie coordonat cu protecțiile vecine.</details>
+   <details><summary>Răspuns</summary>
+
+   Zona ei este închisă, delimitată exact de TC. Releul decide din semnul relativ al curenților de la capete (care intră sau ies din zonă), nu din valoarea lor, deci nu poate confunda un defect exterior cu unul interior și nu trebuie coordonat cu protecțiile vecine.
+
+   </details>
+
 2. De ce caracteristica releului diferențial are pantă (frânare) și nu un prag constant?
-   <details><summary>Răspuns</summary>La defectele exterioare apare un curent diferențial fals proporțional cu curentul traversant: erorile TC, raportul real diferit de cel de adaptare (ploturile), iar la curenți mari saturația TC. Un prag constant ar trebui ales peste curentul fals maxim și ar face protecția insensibilă la defectele interioare mici. Pragul proporțional cu curentul de frânare rămâne mic la sarcină și crește numai când curentul traversant crește.</details>
+   <details><summary>Răspuns</summary>
+
+   La defectele exterioare apare un curent diferențial fals proporțional cu curentul traversant: erorile TC, raportul real diferit de cel de adaptare (ploturile), iar la curenți mari saturația TC. Un prag constant ar trebui ales peste curentul fals maxim și ar face protecția insensibilă la defectele interioare mici. Pragul proporțional cu curentul de frânare rămâne mic la sarcină și crește numai când curentul traversant crește.
+
+   </details>
+
 3. Ce se întâmplă cu protecția diferențială a unui transformator YNd11 la un defect cu pământul în rețeaua de 110 kV, dacă releul nu elimină componenta homopolară?
-   <details><summary>Răspuns</summary>Neutrul legat la pământ al înfășurării în stea permite curentului homopolar să circule pe fazele de 110 kV ale transformatorului; pe partea în triunghi curentul homopolar rămâne în interiorul înfășurării și nu ajunge la TC de 20 kV. Releul vede un curent diferențial egal cu $I_0$ pe fiecare fază (4,449·In în problema 4.1) și declanșează greșit transformatorul.</details>
+   <details><summary>Răspuns</summary>
+
+   Neutrul legat la pământ al înfășurării în stea permite curentului homopolar să circule pe fazele de 110 kV ale transformatorului; pe partea în triunghi curentul homopolar rămâne în interiorul înfășurării și nu ajunge la TC de 20 kV. Releul vede un curent diferențial egal cu $I_0$ pe fiecare fază (4,449·In în problema 4.1) și declanșează greșit transformatorul.
+
+   </details>
+
 4. De ce conține curentul de magnetizare la conectare armonica a doua, iar curentul de scurtcircuit aproape deloc?
-   <details><summary>Răspuns</summary>Curentul de conectare este format din impulsuri unipolare (miezul se saturează numai într-un sens), deci nu are simetrie de semiundă; o asemenea formă conține armonici pare. Curentul de scurtcircuit este sinusoidal, cu o componentă aperiodică; în prima perioadă aceasta produce și ea puțină armonică a doua (6–13 % în problema 4.4), de aceea pragul de blocare trebuie ales cu grijă și completat de treapta nefrânată.</details>
+   <details><summary>Răspuns</summary>
+
+   Curentul de conectare este format din impulsuri unipolare (miezul se saturează numai într-un sens), deci nu are simetrie de semiundă; o asemenea formă conține armonici pare. Curentul de scurtcircuit este sinusoidal, cu o componentă aperiodică; în prima perioadă aceasta produce și ea puțină armonică a doua (6–13 % în problema 4.4), de aceea pragul de blocare trebuie ales cu grijă și completat de treapta nefrânată.
+
+   </details>
+
 5. De ce defectele cu pământul de pe partea de 20 kV a lui T1, într-o rețea tratată prin rezistor, nu sunt lăsate protecției diferențiale a transformatorului?
-   <details><summary>Răspuns</summary>Rezistorul limitează curentul de defect la circa 300 A, sub jumătate din curentul nominal al transformatorului, aproape de pragul minim al protecției, iar componenta homopolară vine de la bobina de punct neutru. Pentru aceste defecte se folosește protecția restrânsă la pământ (curentul rezidual al TC de 20 kV ai transformatorului), cu pragul raportat la curentul de defect, nu la curentul nominal; protecția homopolară a bobinei de punct neutru rămâne rezervă neselectivă.</details>
+   <details><summary>Răspuns</summary>
+
+   Rezistorul limitează curentul de defect la circa 300 A, sub jumătate din curentul nominal al transformatorului, aproape de pragul minim al protecției, iar componenta homopolară vine de la bobina de punct neutru. Pentru aceste defecte se folosește protecția restrânsă la pământ (curentul rezidual al TC de 20 kV ai transformatorului), cu pragul raportat la curentul de defect, nu la curentul nominal; protecția homopolară a bobinei de punct neutru rămâne rezervă neselectivă.
+
+   </details>
+
 6. Ce caz verifică formula $V_s \ge I_{k,sec}(R_{ct} + 2R_L)$ la protecția de bare de impedanță mare?
-   <details><summary>Răspuns</summary>Un defect exterior imediat după TC al unui circuit, cu acest TC complet saturat: el nu mai produce curent și se reduce la rezistența lui. Curentul celorlalte TC se închide prin această rezistență și prin conductoarele de legătură, iar tensiunea pe releu este cel mult produsul lor. Cazul se verifică pentru toate celulele; cel mai sever este de obicei celula fără sursă în spate (la bara B, celula lui T1). Releul reglat peste această tensiune rămâne stabil; la un defect interior, toate TC debitează în releul de impedanță mare, iar tensiunea este limitată de limitatorul neliniar.</details>
+   <details><summary>Răspuns</summary>
+
+   Un defect exterior imediat după TC al unui circuit, cu acest TC complet saturat: el nu mai produce curent și se reduce la rezistența lui. Curentul celorlalte TC se închide prin această rezistență și prin conductoarele de legătură, iar tensiunea pe releu este cel mult produsul lor. Cazul se verifică pentru toate celulele; cel mai sever este de obicei celula fără sursă în spate (la bara B, celula lui T1). Releul reglat peste această tensiune rămâne stabil; la un defect interior, toate TC debitează în releul de impedanță mare, iar tensiunea este limitată de limitatorul neliniar.
+
+   </details>
+
 7. Ce problemă specifică are protecția diferențială a liniilor, față de cea a transformatorului?
-   <details><summary>Răspuns</summary>Capetele sunt la distanță, deci curenții se transmit pe un canal de comunicație; măsurările trebuie sincronizate (întârzierea canalului se măsoară sau se folosește un semnal de timp extern), curentul capacitiv al liniei apare ca diferențial și trebuie compensat, iar la căderea canalului releul trebuie să treacă pe o protecție de rezervă.</details>
+   <details><summary>Răspuns</summary>
+
+   Capetele sunt la distanță, deci curenții se transmit pe un canal de comunicație; măsurările trebuie sincronizate (întârzierea canalului se măsoară sau se folosește un semnal de timp extern), curentul capacitiv al liniei apare ca diferențial și trebuie compensat, iar la căderea canalului releul trebuie să treacă pe o protecție de rezervă.
+
+   </details>
 
 ## Bibliografie
 
