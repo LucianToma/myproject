@@ -112,11 +112,11 @@ Pentru Europa continentală, Regulamentul (UE) 2017/2196 (NC ER) [S17] cere:
 
 În acest curs, **banda de implementare** este interpretată astfel: la orice frecvență între 49,0 Hz și 48,0 Hz, sarcina deconectată cumulat trebuie să se abată cu cel mult 7 puncte procentuale de la dreapta care unește punctele (49,0 Hz; 5 %) și (48,0 Hz; 45 %). Formularea exactă trebuie citită în anexa regulamentului.
 
-**Proiectarea schemei.** Cu interpretarea de mai sus, o schemă cu 6 trepte la câte 0,2 Hz nu este suficientă: ca să ajungă la 45 % ea are nevoie de trepte de 8 %, iar chiar înaintea fiecărei trepte scara rămâne cu 8 puncte sub dreaptă (figura 8.5). Schema aleasă în problema 8.3 are **9 trepte egale de 5 %**, la fiecare 0,125 Hz între 49,0 Hz și 48,0 Hz, cu abaterea maximă de 5 puncte. Fiecare treaptă are o temporizare scurtă, care evită acționările la variații tranzitorii, iar un releu 81R (după viteza de variație a frecvenței) poate grăbi primele trepte la dezechilibre mari.
+**Proiectarea schemei.** Scara treptelor se abate cel mai mult de la dreaptă chiar la praguri: imediat după acționarea unei trepte (în sus) și imediat înaintea ei (în jos). Cu numărul minim de 6 trepte, la câte 0,2 Hz, contează cum se împart cele 45 % (figura 8.5). Șase trepte **egale** de 7,5 % ies din bandă: chiar înainte de 48,0 Hz scara rămâne cu 7,5 puncte sub dreaptă. Șase trepte **inegale**, de 10, 8, 8, 8, 8 și 3 %, respectă toate condițiile: scara oscilează între +5 și −3 puncte față de dreaptă. Schema aleasă în problema 8.3 are **9 trepte egale de 5 %**, la fiecare 0,125 Hz între 49,0 Hz și 48,0 Hz. Abaterea ei maximă este tot de 5 puncte, dar o treaptă mică deconectează în plus, cel mult, puțină sarcină față de cât era nevoie. În insula din problema 8.3, schema 9 × 5 % deconectează 120 MW, cu 20 MW peste minimul necesar, iar schema cu 6 trepte inegale deconectează 156 MW, cu 56 MW peste minim. Fiecare treaptă are o temporizare scurtă, care evită acționările la variații tranzitorii, iar un releu 81R (după viteza de variație a frecvenței) poate grăbi primele trepte la dezechilibre mari.
 
 ![Figura 8.5 – Schema DASF](figuri/f08-5-schema-dasf.svg)
 
-*Figura 8.5 – Sarcina deconectată cumulat în funcție de frecvență: schema propusă (9 × 5 %) și un contraexemplu cu 6 trepte, față de dreapta 5 % → 45 % și banda de ±7 % (interpretarea din text). Axa frecvenței este inversată: frecvența scade spre dreapta.*
+*Figura 8.5 – Sarcina deconectată cumulat în funcție de frecvență, față de dreapta 5 % → 45 % și banda de ±7 % (interpretarea din text): schema aleasă (9 × 5 %), o schemă cu 6 trepte inegale care respectă banda și una cu 6 trepte egale de 7,5 % care iese din bandă chiar înainte de 48,0 Hz. Axa frecvenței este inversată: frecvența scade spre dreapta.*
 
 În România, treptele concrete sunt stabilite de operatorul de transport printr-un normativ propriu (DASf). Transelectrica a prezentat în 2016 o actualizare a „Normativului DAS-fmin”. Valorile acestui normativ nu sunt reproduse aici, pentru că nu au putut fi verificate dintr-o a doua sursă.
 
@@ -230,7 +230,7 @@ Fără autoreglarea sarcinii ($D$ = 0), frecvența coboară cât timp FCR creșt
 
 O zonă cu sarcina de **600 MW** se separă în insulă și pierde importul de **180 MW** (30 % din sarcină). Grupurile din insulă au 500 MW, $H$ = 4 s, statism 5 %, $T_g$ = 0,2 s, $T_t$ = 1 s și numai 80 MW rezervă. Autoreglarea sarcinii este $D$ = 12 MW/Hz (2 % pe Hz; dată de problemă). Proiectați o schemă DASF conformă cu NC ER și simulați funcționarea; fiecare treaptă deconectează sarcina la 0,15 s după ce frecvența a scăzut sub prag (releu + întrerupător).
 
-**Rezolvare.** Schema: 9 trepte de câte 5 % (30 MW), la 49,000; 48,875; 48,750; …; 48,000 Hz. Condițiile NC ER: prima treaptă la 49,0 Hz cu 5 % ✓; 45 % cumulat la 48,0 Hz ✓; 9 ≥ 6 trepte ✓; 5 % ≤ 10 % pe treaptă ✓; abaterea maximă față de dreapta 5 % → 45 % este 5,00 puncte ≤ 7 ✓ (figura 8.5). Varianta cu 6 trepte la 0,2 Hz ar avea o abatere de 8,00 puncte.
+**Rezolvare.** Schema: 9 trepte de câte 5 % (30 MW), la 49,000; 48,875; 48,750; …; 48,000 Hz. Condițiile NC ER: prima treaptă la 49,0 Hz cu 5 % ✓; 45 % cumulat la 48,0 Hz ✓; 9 ≥ 6 trepte ✓; 5 % ≤ 10 % pe treaptă ✓; abaterea maximă față de dreapta 5 % → 45 % este 5,00 puncte ≤ 7 ✓ (figura 8.5). Pentru comparație, cu 6 trepte la câte 0,2 Hz: 6 trepte egale de 7,5 % au abaterea maximă de 7,50 puncte și ies din bandă; 6 trepte de 10/8/8/8/8/3 % au abaterea maximă de 5,00 puncte și respectă toate condițiile.
 
 Simularea ($M$ = 80 MW·s/Hz, RoCoF inițial −2,25 Hz/s):
 
@@ -241,9 +241,9 @@ Simularea ($M$ = 80 MW·s/Hz, RoCoF inițial −2,25 Hz/s):
 | 3 | 48,750 Hz | 0,759 s |
 | 4 | 48,625 Hz | 0,849 s |
 
-Frecvența atinge 49,0 Hz la 0,474 s; minimul este **48,51 Hz** la 1,06 s. După deconectarea a 120 MW, deficitul rămas, 60 MW, este acoperit de regulatoare, nesaturate la noul echilibru, și de sarcină: $\Delta f = -60/(200 + 12)$ = −0,283 Hz, deci **$f$ = 49,717 Hz**. Fără DASF, frecvența trece de 47,5 Hz după 1,47 s, iar staționarul teoretic, cu regulatoarele saturate, ar fi $50 - (180 - 80)/12$ = 41,67 Hz: insula s-ar prăbuși.
+Frecvența atinge 49,0 Hz la 0,474 s; minimul este **48,51 Hz** la 1,06 s. După deconectarea a 120 MW, deficitul rămas, 60 MW, este acoperit de regulatoare, nesaturate la noul echilibru, și de sarcină: $\Delta f = -60/(200 + 12)$ = −0,283 Hz, deci **$f$ = 49,717 Hz**. Fără DASF, frecvența trece de 47,5 Hz după 1,47 s, iar staționarul teoretic, cu regulatoarele saturate, ar fi $50 - (180 - 80)/12$ = 41,67 Hz: insula s-ar prăbuși. Cu schema de 6 trepte inegale ar acționa 3 trepte (156 MW): minimul ar fi 48,561 Hz, iar frecvența finală 49,887 Hz, dar s-ar deconecta 56 MW peste minimul necesar de 100 MW (deficitul minus rezerva), față de 20 MW cu schema aleasă.
 
-**Verificare.** Frecvența finală simulată coincide cu cea calculată din numărul de trepte care au acționat (49,717 Hz) ✓. Simularea fără DASF pe 120 s tinde spre 41,67 Hz ✓. Timpul estimat cu RoCoF constant până la 49,0 Hz (0,444 s) este, cum trebuie, mai mic decât cel simulat (0,474 s), pentru că regulatoarele și sarcina frânează căderea ✓.
+**Verificare.** Abaterea maximă a fiecărei scheme este calculată pe două căi: exact, la praguri (imediat înainte și imediat după fiecare treaptă), și pe o grilă fină de frecvențe; rezultatele coincid (5,00; 7,50; 5,00 puncte) ✓. Frecvența finală simulată coincide cu cea calculată din numărul de trepte care au acționat, pentru ambele scheme (49,717 Hz și 49,887 Hz) ✓. Simularea fără DASF pe 120 s tinde spre 41,67 Hz ✓. Timpul estimat cu RoCoF constant până la 49,0 Hz (0,444 s) este, cum trebuie, mai mic decât cel simulat (0,474 s), pentru că regulatoarele și sarcina frânează căderea ✓.
 
 ### Problema 8.4 – Două zone interconectate
 

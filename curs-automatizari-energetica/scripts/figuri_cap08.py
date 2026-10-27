@@ -166,7 +166,8 @@ salveaza(fig, "f08-4-doua-zone")
 praguri = [49.0 - 0.125 * i for i in range(9)]
 cote = [0.05] * 9
 praguri6 = [49.0, 48.8, 48.6, 48.4, 48.2, 48.0]
-cote6 = [0.05, 0.08, 0.08, 0.08, 0.08, 0.08]
+cote6e = [0.075] * 6
+cote6n = [0.10, 0.08, 0.08, 0.08, 0.08, 0.03]
 fg = np.linspace(47.9, 49.2, 2601)
 
 
@@ -180,8 +181,10 @@ dr = 5 + 40 * (49.0 - fl)
 ax.fill_between(fl, dr - 7, dr + 7, color=ZONA, label="dreapta 5 % → 45 % cu banda ±7 %")
 ax.plot(fl, dr, color=TEXT2, lw=1.0)
 ax.step(fg, scara(praguri, cote), where="post", color=C1, label="schema propusă: 9 trepte × 5 %")
-ax.step(fg, scara(praguri6, cote6), where="post", color=C2, ls="--", lw=1.3,
-        label="contraexemplu: 6 trepte la 0,2 Hz (5 % + 5 × 8 %)")
+ax.step(fg, scara(praguri6, cote6n), where="post", color=C3, ls="-.", lw=1.3,
+        label="6 trepte inegale 10/8/8/8/8/3 % (respectă banda)")
+ax.step(fg, scara(praguri6, cote6e), where="post", color=C2, ls="--", lw=1.3,
+        label="6 trepte egale de 7,5 % (ies din bandă înainte de 48,0 Hz)")
 ax.invert_xaxis()
 ax.set_xlabel("frecvența [Hz]")
 ax.set_ylabel("sarcina deconectată cumulat [%]")

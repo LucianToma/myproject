@@ -61,8 +61,12 @@ for nume, t_el in (("protecția de bază (30 ms) + întrerupătorul (60 ms)", 0.
     verifica_adevarat(f"concluzia simulării concordă cu t {'<' if t_el < tcr else '>'} tcr", stabil(d) == (t_el < tcr))
 
 print("\nProblema 7.2 – ciclul de reanclanșare pe fiderul F1 de 20 kV (releul R1 din problema 3.2)")
-# Reglajele lui R1 din problema 3.2: Is = 300 A, TMS = 0,19 (SI), I>> = 2800 A (instantaneu, 40 ms)
-Is, TMS, I_inst, t_inst = 300.0, 0.19, 2800.0, 0.04
+# Reglajele lui R1 din problema 3.2 (citite din rezolvarea capitolului 3, aceeași sursă de adevăr)
+import contextlib, io, runpy  # noqa: E401,E402
+from pathlib import Path  # noqa: E402
+with contextlib.redirect_stdout(io.StringIO()):
+    _P3 = runpy.run_path(str(Path(__file__).with_name("probleme_cap03.py")))
+Is, TMS, I_inst, t_inst = _P3["relee"]["R1"]["Is"], _P3["relee"]["R1"]["TMS"], _P3["I_inst_R1"], _P3["T_INST"]
 r = retea_referinta(cu_capacitati=False)
 I_def = abs(r.scurtcircuit_secvente("P1", "3f")["I_faza"][0])
 t_r = float(timp_invers(I_def, Is, TMS)) if I_def < I_inst else t_inst

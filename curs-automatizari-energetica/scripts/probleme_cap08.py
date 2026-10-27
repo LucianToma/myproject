@@ -106,26 +106,65 @@ t_int = 0.15                     # temporizare + timp de deconectare [s]
 praguri = [49.0 - 0.125 * i for i in range(9)]
 cote = [0.05] * 9
 trepte = [(f, c * PL0) for f, c in zip(praguri, cote)]
-print("  schema: " + "; ".join(f"{fmt(f, 3)} Hz → {fmt(100 * c, 0)} %" for f, c in zip(praguri, cote)))
-# Verificarea cerințelor NC ER (Europa continentală)
-cum = np.cumsum(cote)
-verifica_adevarat("NC ER: prima treaptă la 49,0 Hz, cu 5 % din sarcină", praguri[0] == 49.0 and abs(cum[0] - 0.05) < 1e-12)
-verifica_adevarat("NC ER: la 48,0 Hz sunt deconectate cumulat 45 %", praguri[-1] == 48.0 and abs(cum[-1] - 0.45) < 1e-12)
-verifica_adevarat("NC ER: cel puțin 6 trepte", len(praguri) >= 6)
-verifica_adevarat("NC ER: cel mult 10 % pe treaptă", max(cote) <= 0.10)
-# Banda de implementare ±7 %: comparăm scara cumulată cu dreapta dintre (49,0 Hz; 5 %) și (48,0 Hz; 45 %)
-fgrila = np.linspace(48.0, 49.0, 10001)
-scara = np.array([np.sum([c for f, c in zip(praguri, cote) if f >= x]) for x in fgrila])
+# Verificarea cerințelor NC ER (Europa continentală). Banda de implementare de ±7 % este interpretată ca
+# abaterea admisă a scării cumulate față de dreapta dintre (49,0 Hz; 5 %) și (48,0 Hz; 45 %).
+fgrila = np.linspace(48.0, 49.0, 100001)
 dreapta = 0.05 + 0.40 * (49.0 - fgrila)
-abatere_max = np.max(np.abs(scara - dreapta))
-print(f"  abaterea maximă a scării cumulate față de dreapta 5 % – 45 %: {fmt(100 * abatere_max, 2)} puncte procentuale")
-verifica_adevarat("banda de implementare ±7 % (interpretarea din text)", abatere_max <= 0.07 + 1e-9)
-# Contraexemplu: 6 trepte la 0,2 Hz cu 5 % + 5 × 8 %
+
+
+def abatere_exacta(praguri_, cote_):
+    """Calea 1: extremele abaterii apar chiar la pragurile treptelor – imediat după acționarea treptei k
+    (cumulat C_k) și imediat înainte (cumulat C_{k−1}, cu frecvența tinzând spre prag de sus)."""
+    C = np.cumsum(cote_)
+    ab = []
+    for k, fk in enumerate(praguri_):
+        L = 0.05 + 0.40 * (49.0 - fk)
+        ab.append(C[k] - L)
+        if k > 0:
+            ab.append(C[k - 1] - L)
+    return max(ab, key=abs)
+
+
+def abatere_grila(praguri_, cote_):
+    """Calea 2: scara evaluată pe o grilă fină de frecvențe între 48,0 și 49,0 Hz."""
+    sc = np.zeros_like(fgrila)
+    for f, c in zip(praguri_, cote_):
+        sc += np.where(fgrila <= f + 1e-12, c, 0.0)
+    d = sc - dreapta
+    return d[np.argmax(np.abs(d))]
+
+
+def verifica_schema(nume, praguri_, cote_):
+    C = np.cumsum(cote_)
+    ab_e = abatere_exacta(praguri_, cote_)
+    ab_g = abatere_grila(praguri_, cote_)
+    conditii = {
+        "prima treaptă la 49,0 Hz": praguri_[0] == 49.0,
+        "cumulat la 49,0 Hz în 5 % ± 7 %": abs(C[0] - 0.05) <= 0.07 + 1e-12,
+        "45 % cumulat la 48,0 Hz": praguri_[-1] == 48.0 and abs(C[-1] - 0.45) < 1e-12,
+        "cel puțin 6 trepte": len(praguri_) >= 6,
+        "cel mult 10 % pe treaptă": max(cote_) <= 0.10 + 1e-12,
+        "abaterea față de dreaptă ≤ 7 puncte": abs(ab_e) <= 0.07 + 1e-12,
+    }
+    print(f"  {nume}: " + "; ".join(f"{fmt(f, 3)} Hz → {fmt(100 * c, 1)} %" for f, c in zip(praguri_, cote_)))
+    print(f"     abaterea maximă față de dreapta 5 % → 45 %: {fmt(100 * ab_e, 2)} puncte (grilă fină: "
+          f"{fmt(100 * ab_g, 2)}); condiții neîndeplinite: "
+          f"{', '.join(k for k, v in conditii.items() if not v) or 'niciuna'}")
+    verifica(f"{nume}: abaterea maximă – calcul exact la praguri vs grilă fină", ab_e, ab_g, rtol=0, atol=1e-4)
+    return all(conditii.values()), ab_e
+
+
+ok9, ab9 = verifica_schema("schema aleasă, 9 × 5 %", praguri, cote)
+verifica_adevarat("schema aleasă respectă toate condițiile NC ER (cu interpretarea benzii)", ok9)
+# Două scheme cu 6 trepte la câte 0,2 Hz
 praguri6 = [49.0, 48.8, 48.6, 48.4, 48.2, 48.0]
-cote6 = [0.05, 0.08, 0.08, 0.08, 0.08, 0.08]
-scara6 = np.array([np.sum([c for f, c in zip(praguri6, cote6) if f >= x]) for x in fgrila])
-ab6 = np.max(np.abs(scara6 - dreapta))
-print(f"  pentru 6 trepte la 0,2 Hz (5 % + 5 × 8 %) abaterea maximă ar fi {fmt(100 * ab6, 2)} puncte procentuale")
+cote6e = [0.075] * 6
+cote6n = [0.10, 0.08, 0.08, 0.08, 0.08, 0.03]
+ok6e, ab6e = verifica_schema("6 trepte egale de 7,5 %", praguri6, cote6e)
+verifica_adevarat("6 trepte egale de 7,5 % depășesc banda (cu 0,5 puncte, chiar înainte de 48,0 Hz)",
+                  (not ok6e) and abs(abs(ab6e) - 0.075) < 1e-12)
+ok6n, ab6n = verifica_schema("6 trepte inegale 10/8/8/8/8/3 %", praguri6, cote6n)
+verifica_adevarat("6 trepte inegale 10/8/8/8/8/3 % respectă toate condițiile", ok6n)
 # Simulări
 t, f_cu, Pm_cu, desc, act = dasf_simulare(dP3, M3, D3, K3, Tg=0.2, Tt=1.0, rezerva=rez, trepte=trepte,
                                          t_intarziere=t_int, t_end=40.0, dt=1e-3)
@@ -147,6 +186,19 @@ print(f"  cu DASF: frecvența minimă {fmt(f_cu.min(), 3)} Hz la t = {fmt(t[np.a
       f"(analitic {fmt(F0 + df_fin, 3)} Hz)")
 verifica("frecvența finală cu DASF: analitic vs simulare", F0 + df_fin, f_cu[-1], rtol=1e-5)
 verifica_adevarat("cu DASF frecvența rămâne peste 48,0 Hz", f_cu.min() > 48.0)
+# Aceeași insulă cu schema de 6 trepte inegale (trepte mai mari)
+trepte6 = [(f, c * PL0) for f, c in zip(praguri6, cote6n)]
+_, f6, _, desc6, act6 = dasf_simulare(dP3, M3, D3, K3, Tg=0.2, Tt=1.0, rezerva=rez, trepte=trepte6,
+                                      t_intarziere=t_int, t_end=40.0, dt=1e-3)
+rest6 = dP3 - desc6[-1]
+df6 = -rest6 / (K3 + D3)
+if K3 * abs(df6) > rez:
+    df6 = -(rest6 - rez) / D3
+print(f"  cu schema de 6 trepte inegale: au acționat {len(act6)} trepte ({fmt(desc6[-1], 0)} MW), minimul "
+      f"{fmt(f6.min(), 3)} Hz, frecvența finală {fmt(f6[-1], 3)} Hz (analitic {fmt(F0 + df6, 3)} Hz)")
+verifica("schema de 6 trepte inegale: frecvența finală analitic vs simulare", F0 + df6, f6[-1], rtol=1e-5)
+print(f"  surplusul deconectat față de deficitul neacoperit de rezervă (100 MW): 9 × 5 %: {fmt(shed - (dP3 - rez), 0)} MW;"
+      f" 6 trepte inegale: {fmt(desc6[-1] - (dP3 - rez), 0)} MW")
 t475 = t[np.argmax(f_fara < 47.5)]
 df_fin_fara = -(dP3 - rez) / D3
 print(f"  fără DASF: frecvența scade sub 47,5 Hz după {fmt(t475, 2)} s; staționarul teoretic ar fi "
