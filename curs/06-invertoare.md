@@ -158,7 +158,7 @@ Limita este $\frac{4}{\pi}\cdot 200$ = 254,65 V.
 
 **Verificare** ($m_a$ = 0,8, $m_f$ = 20, $V_{dc}$ = 400 V): $V_1$ = 320,0 V în
 ambele cazuri. Cea mai mare armonică este de 327 V la $h$ = 20 (bipolar),
-respectiv 126 V la $h$ = 41 (unipolar). În cazul unipolar, armonicile 17 … 23
+respectiv 126 V la $h$ = 39 și 41, adică $2m_f \pm 1$ (unipolar). În cazul unipolar, armonicile 17 … 23
 sunt sub 0,02 V.
 
 ## 6.5 Invertorul trifazat

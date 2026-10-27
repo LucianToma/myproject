@@ -3,7 +3,8 @@
 **Obiective.** La finalul modulului vei putea:
 
 - spune ce face electronica de putere și de ce lucrează în **comutație**;
-- explica, cu un calcul, de ce un regulator liniar are randament mic;
+- explica, cu un calcul, de ce un regulator liniar are randament mic atunci
+  când $V_{in}$ este mult mai mare decât $V_o$;
 - clasifica convertoarele după tipul conversiei (AC-DC, DC-DC, DC-AC, AC-AC);
 - descrie blocurile unui sistem de conversie.
 

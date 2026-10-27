@@ -46,7 +46,8 @@ Observații:
 
 - La pornire tranzistorul comută **curentul minim** (valea, 8,5 A), iar la
   blocare **curentul maxim** (vârful, 11,5 A).
-- **Dioda domină**: conduce 75 % din timp, cu o cădere de 0,7 V. Cu
+- **Dioda domină**: conduce 75 % din timp, cu o cădere de ~0,8 V
+  ($V_{F0}$ = 0,7 V plus $r_D I$ ≈ 0,1 V). Cu
   **redresare sincronă** (al doilea MOSFET de 10 mΩ în locul diodei), pierderea
   ei devine $R_{DS(on)} I_{D,rms}^2$ = 0,756 W. Totalul scade la 3,51 W
   ($\eta$ = 97,2 %; am adăugat și comanda celui de-al doilea MOSFET și am
@@ -104,7 +105,8 @@ fiabilitate: durata de viață scade puternic cu temperatura.
 Orice conductor are inductanță. Pentru un fir drept de lungime $l$ și rază $r$
 (la frecvență mare) $L \approx \frac{\mu_0 l}{2\pi}\left[\ln\frac{2l}{r} - 1\right]$,
 adică aproximativ 7 nH pentru 10 mm de fir cu diametrul de 0,5 mm (de ordinul
-1 nH/mm). Deasupra unui plan de masă apropiat, inductanța este mult mai mică.
+1 nH/mm). Această formulă este preluată din literatură și nu este verificată de
+scripturile cursului. Deasupra unui plan de masă apropiat, inductanța este mult mai mică.
 La comutații rapide, $v = L\,di/dt$ produce supratensiuni:
 
 $$L_p = 10\ \text{nH}, \quad \frac{di}{dt} = \frac{10\ \text{A}}{10\ \text{ns}} = 10^9\ \text{A/s}
@@ -164,7 +166,9 @@ compromis.
 - **Supratensiune** (de exemplu la intrare: varistoare, diode TVS).
 - **Supratemperatură** (senzor NTC pe radiator sau în modul).
 - **Subtensiune** la driver (UVLO): un MOSFET comandat cu tensiune de grilă
-  prea mică intră în regiunea liniară și se supraîncălzește.
+  prea mică nu se deschide complet. $R_{DS(on)}$ crește mult sau tranzistorul
+  ajunge în regiunea de saturație (activă), unde $v_{DS}\,i_D$ este mare, și se
+  supraîncălzește.
 
 ## 7.7 Siguranță
 

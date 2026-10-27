@@ -4,19 +4,22 @@ Un curs introductiv, în limba română, despre conversia energiei electrice cu
 dispozitive semiconductoare: redresoare, convertoare DC-DC, invertoare,
 dispozitive de putere, pierderi și calcul termic.
 
-**Principiul cursului: nicio formulă nu este „crezută pe cuvânt”.** Fiecare
-relație este:
+**Principiul cursului: nicio formulă nu este „crezută pe cuvânt”.**
 
-1. **derivată** în text, pornind de la principii (bilanțul volt-secundă,
-   bilanțul de sarcină, integrale de medie și valoare efectivă, serii Fourier);
-2. **verificată numeric** printr-o metodă independentă: simularea exactă a
-   circuitului, integrarea directă a formei de undă sau o a treia cale analitică
-   (de exemplu funcții Bessel pentru PWM);
-3. marcată explicit ca **aproximativă** acolo unde este cazul, cu eroarea
-   măsurată (de exemplu, formula uzuală a ondulației filtrului capacitiv
-   supraestimează cu 5–36 %, în funcție de $C$).
+1. **Derivare.** Relațiile sunt derivate în text, pornind de la principii
+   (bilanțul volt-secundă, bilanțul de sarcină, integrale de medie și valoare
+   efectivă, serii Fourier). Excepție: amplitudinile armonicilor PWM exprimate
+   prin funcții Bessel, a căror derivare (analiza Fourier dublă) depășește
+   nivelul cursului. Ele sunt citate din [B4] și verificate numeric.
+2. **Verificare numerică independentă**: simularea exactă a circuitului,
+   integrarea directă a formei de undă sau o a treia cale analitică. Rămân fără
+   verificare numerică, și sunt marcate ca atare, doar relațiile pentru
+   flyback/forward și formula inductanței unui fir drept (din literatură).
+3. **Aproximările sunt marcate explicit**, cu eroarea măsurată. De exemplu,
+   formula uzuală a ondulației filtrului capacitiv supraestimează cu 5–36 %, în
+   funcție de $C$, iar cursul arată din ce două cauze provine diferența.
 
-Starea curentă a verificărilor: **198 / 198 trecute**
+Starea curentă a verificărilor: **199 / 199 trecute**
 (`python3 verificari/ruleaza_toate.py`).
 
 ## Cuprins
@@ -69,17 +72,22 @@ Fiecare linie de ieșire are forma
 ```
 
 unde „obținut” vine din metoda independentă (simulare/integrare), iar
-„așteptat” din formula din curs. Toleranțele sunt alese după natura formulei:
-foarte strânse (10⁻⁶ … 10⁻¹²) pentru relațiile exacte și mai largi, cu
-justificare în cod, pentru aproximări (de exemplu ondulația mică).
+„așteptat” din formula din curs. Eroarea efectivă este afișată la fiecare
+comparație. Toleranțele reflectă precizia metodei numerice: de exemplu
+10⁻⁴ … 10⁻⁵ pentru forme de undă eșantionate care au discontinuități,
+2·10⁻³ pentru simulările cu pas fix ale tiristoarelor și 10⁻⁶ … 10⁻¹² acolo
+unde metoda este practic exactă. Pentru formulele aproximative (de exemplu
+ondulația mică), toleranțele sunt mai largi și sunt comentate în cod.
 
 ## Limitele cursului
 
 - Este un curs de **bază**: modelarea dinamică și proiectarea buclelor de
   reglare, convertoarele rezonante, componentele magnetice și topologiile
   multinivel sunt doar menționate.
-- Simulările folosesc **componente ideale** (cu excepția rezistenței bobinei în
-  analiza boost-ului). Ele verifică matematica formulelor, nu comportamentul unei
-  plăci reale. Pentru aceasta este nevoie de măsurători.
+- Simulările folosesc **componente ideale**, cu trei excepții introduse
+  deliberat: rezistența bobinei (analiza boost-ului), rezistența sursei la
+  redresorul cu filtru capacitiv (0,01 Ω și 0,5 Ω) și inductanța rețelei
+  (suprapunerea comutației). Ele verifică matematica formulelor, nu
+  comportamentul unei plăci reale. Pentru aceasta este nevoie de măsurători.
 - Datele despre dispozitive (tensiuni maxime, proprietăți de material) provin
   din surse publice citate în bibliografie și se schimbă în timp.

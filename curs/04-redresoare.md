@@ -68,6 +68,10 @@ alimentează singur sarcina.
 
 ![Filtru capacitiv](../figuri/04_filtru_capacitiv.png)
 
+*Stânga: sursă aproape ideală ($R_s$ = 0,01 Ω), cazul din tabelul de mai jos.
+Dreapta: $R_s$ = 0,5 Ω (transformator mic), cazul analizat la factorul de
+putere. Rezistența sursei scade tensiunea și lățește impulsurile de curent.*
+
 ### Formula uzuală (aproximativă)
 
 Presupunem că (a) condensatorul se descarcă **o semiperioadă întreagă** $T/2$
@@ -109,11 +113,23 @@ ei este sigură). Eroarea ei scade odată cu ondulația relativă:
 | 10 000 µF | 4,4 % | +13,3 % |
 | 47 000 µF | 1,0 % | +5,3 % |
 
-Explicația: ipoteza (a) ignoră timpul de conducție. Conducția începe când
-$|v_s|$ ajunge la $V_m - \Delta V$, adică la unghiul $\theta_c$ înainte de vârf
-cu $\cos\theta_c = 1 - \Delta V/V_m$, deci $\theta_c \approx \sqrt{2\Delta V/V_m}$.
-Unghiul de conducție scade doar ca rădăcina pătrată a ondulației relative, de
-aceea eroarea se micșorează încet.
+**De unde vine eroarea.** Pe intervalul de descărcare $C\,dv/dt = -v/R$, deci
+scăderea tensiunii este exact $\frac{1}{RC}\,\overline{V}_{desc}\,t_{desc}$. Față
+de formula uzuală apar **doi** factori, ambii subunitari:
+
+- (a) durata descărcării este $t_{desc} = \frac{T}{2}\left(1 - \frac{\theta_{cond}}{\pi}\right)$,
+  nu $T/2$. La 4700 µF, unghiul de conducție este 26,1°, factorul este 0,855
+  și explică aproximativ +16,9 %;
+- (b) curentul de descărcare este $\overline{V}_{desc}/R < V_m/R$, deoarece
+  tensiunea scade. Factorul este 0,955 și explică aproximativ +4,7 %.
+
+Produsul celor doi factori, aplicat formulei uzuale, reproduce exact scăderea
+tensiunii pe intervalul de descărcare (verificat în script, eroare ~10⁻¹⁶).
+Restul de 0,01 V până la $\Delta V$ este porțiunea de după vârf, în care
+$v_C$ încă urmărește $|v_s|$. Conducția începe când $|v_s|$ ajunge la $V_m - \Delta V$, adică
+la unghiul $\theta_c$ înainte de vârf cu $\cos\theta_c = 1 - \Delta V/V_m$,
+deci $\theta_c \approx \sqrt{2\Delta V/V_m}$. Factorul (a) se apropie de 1 doar
+ca rădăcina pătrată a ondulației relative, de aceea eroarea scade încet.
 
 ### Curentul absorbit din rețea și factorul de putere
 
@@ -146,7 +162,9 @@ cu puterea din sarcină plus pierderile din $R_s$ (eroare 2·10⁻⁸).
 ## 4.4 Redresorul monofazat comandat (punte cu tiristoare)
 
 Diodele se înlocuiesc cu tiristoare aprinse cu **unghiul de comandă** $\alpha$,
-măsurat de la trecerea prin zero a tensiunii.
+măsurat de la trecerea prin zero a tensiunii. La puntea monofazată, acesta este
+și momentul în care ar începe să conducă o diodă (punctul de comutație
+naturală).
 
 **Conducție continuă** (sarcină puternic inductivă: curentul nu se anulează).
 Perechea T1–T4 conduce de la $\alpha$ la $\pi + \alpha$, chiar și după ce $v_s$
@@ -176,7 +194,7 @@ $$V_{dc} = \frac{V_m}{\pi}(\cos\alpha - \cos\beta) \;>\; 0{,}9\,V_s\cos\alpha.$$
 | $\alpha$ = 30°, $L$ = 1 H: $V_{dc}$ | 179,33 V | 179,32 V |
 | $\alpha$ = 60°, $L$ = 1 H: $V_{dc}$ | 103,54 V | 103,56 V |
 | $\alpha$ = 30°, $L$ = 1 H: PF | 0,7797 | 0,7797 |
-| $\alpha$ = 60°, $L$ = 20 mH (discontinuu, $\beta$ = 211,8° din simulare): $V_{dc}$ | 139,81 V | 139,84 V |
+| $\alpha$ = 60°, $L$ = 20 mH (discontinuu, $\beta$ = 211,75° din simulare): $V_{dc}$ | 139,81 V | 139,84 V |
 
 ## 4.5 Puntea trifazată (redresor cu 6 pulsuri)
 
@@ -188,13 +206,22 @@ perioadă.
 $$V_{dc} = \frac{3}{\pi}\int_{\pi/3}^{2\pi/3}\sqrt2\,V_{LL}\sin\theta\,d\theta = \frac{3\sqrt2}{\pi}V_{LL} \approx 1{,}35\,V_{LL}.$$
 
 Cu tiristoare și unghi de comandă $\alpha$: $V_{dc} = 1{,}35\,V_{LL}\cos\alpha$.
+**Atenție:** la trifazat, $\alpha$ se măsoară de la **punctul de comutație
+naturală**, adică momentul în care ar comuta o diodă: intersecția a două
+tensiuni de fază, la 30° după trecerea prin zero a tensiunii de fază. Nu se
+măsoară de la trecerea prin zero.
 
 - Ondulația are frecvența $6f$ (300 Hz) și este mult mai mică decât la
   monofazat: tensiunea de ieșire conține doar armonici de ordin $6k$.
-- Cu curent de sarcină constant, curentul de fază este un dreptunghi de 120°:
-  $I_{rms} = \sqrt{2/3}\,I_d$, $I_1/I = 3/\pi \approx 0{,}955$,
-  armonici de ordin $6k \pm 1$ (5, 7, 11, 13, …) cu $I_h = I_1/h$,
-  $\mathrm{THD} \approx 31{,}08\ \%$, iar $\mathrm{PF} = (3/\pi)\cos\alpha$.
+- Cu curent de sarcină constant, curentul de fază este un puls de 120° pe
+  fiecare semiperioadă (aceeași formă ca unda cvasi-dreptunghiulară din
+  Modulul 6, cu $\delta$ = 120°). Seria Fourier dă amplitudinile
+  $\hat I_h = \frac{4I_d}{h\pi}\left|\sin\frac{h\pi}{3}\right|$ pentru $h$ impar.
+  Ele sunt zero pentru $h$ multiplu de 3 și egale cu $\hat I_1/h$ pentru
+  $h = 6k \pm 1$ (5, 7, 11, 13, …). Rezultă $I_{rms} = \sqrt{2/3}\,I_d$,
+  $I_1 = \frac{\sqrt6}{\pi}I_d$, $I_1/I = 3/\pi \approx 0{,}955$,
+  $\mathrm{THD} = \sqrt{I^2 - I_1^2}/I_1 \approx 31{,}08\ \%$ și
+  $\mathrm{PF} = (3/\pi)\cos\alpha$.
 
 ![Punte trifazată](../figuri/04_punte_trifazata.png)
 

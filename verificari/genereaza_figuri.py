@@ -80,18 +80,21 @@ def fig_redresoare():
 
 def fig_filtru():
     Vm = math.sqrt(2) * 12
-    sim = simuleaza_filtru(Vm, 50.0, 20.0, 4700e-6, Rs=0.5, perioade=20, pasi=8000)
-    t = (sim["t"] - sim["t"][0]) * 1e3
-    fig, ax = plt.subplots(2, 1, figsize=(8, 5), sharex=True)
-    ax[0].plot(t, np.abs(sim["vs"]), color=C4, lw=0.8, label="|v_s|")
-    ax[0].plot(t, sim["vC"], C1, lw=1.8, label="v_C = v_o")
-    ax[0].set_ylabel("tensiune [V]")
-    ax[0].set_ylim(10, 18)
-    ax[0].legend(fontsize=8, loc="lower right")
-    ax[0].set_title("Punte cu filtru capacitiv: 12 V / 50 Hz, C = 4700 µF, R = 20 Ω, Rs = 0,5 Ω")
-    ax[1].plot(t, sim["is"], C2, lw=1.5)
-    ax[1].set_ylabel("curent de rețea i_s [A]")
-    ax[1].set_xlabel("t [ms]")
+    fig, ax = plt.subplots(2, 2, figsize=(11, 5.2), sharex=True)
+    for col, Rs in enumerate([0.01, 0.5]):
+        sim = simuleaza_filtru(Vm, 50.0, 20.0, 4700e-6, Rs=Rs, perioade=20, pasi=8000)
+        t = (sim["t"] - sim["t"][0]) * 1e3
+        ax[0, col].plot(t, np.abs(sim["vs"]), color=C4, lw=0.8, label="|v_s|")
+        ax[0, col].plot(t, sim["vC"], C1, lw=1.8, label="v_C = v_o")
+        ax[0, col].set_ylim(10, 18)
+        ax[0, col].legend(fontsize=8, loc="lower right")
+        ax[0, col].set_title(f"Rs = {str(Rs).replace('.', ',')} Ω: V_dc = {np.mean(sim['vC']):.2f} V, "
+                             f"ΔV = {np.ptp(sim['vC']):.2f} V".replace(".", ","))
+        ax[1, col].plot(t, sim["is"], C2, lw=1.5)
+        ax[1, col].set_xlabel("t [ms]")
+    ax[0, 0].set_ylabel("tensiune [V]")
+    ax[1, 0].set_ylabel("curent de rețea i_s [A]")
+    fig.suptitle("Punte cu filtru capacitiv: 12 V / 50 Hz, C = 4700 µF, R = 20 Ω")
     salveaza(fig, "04_filtru_capacitiv.png")
 
 

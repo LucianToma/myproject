@@ -78,8 +78,12 @@ def filtru_ideal(Vm, f, R, C, puncte=200001):
     v = np.where(th <= th_off, Vm * np.sin(th),
                  V_off * np.exp(-(th - th_off) / wrc))
     Vdc = np.trapezoid(v, th) / math.pi
+    # tensiunea medie pe intervalul de descărcare (exponențiala de la V_off la Vmin)
+    durata = th_on - th_off
+    V_med_desc = V_off * wrc / durata * (1 - math.exp(-durata / wrc))
     return {"th_off": th_off, "th_on": th_on, "Vmin": Vmin, "dV": Vm - Vmin, "Vdc": Vdc,
-            "unghi_conductie": th_off - (th_on - math.pi)}
+            "unghi_conductie": th_off - (th_on - math.pi), "V_off": V_off,
+            "V_med_desc": V_med_desc}
 
 
 def simuleaza_filtru(Vm, f, R, C, Rs, perioade=25, pasi=20000):
@@ -137,6 +141,17 @@ def filtru_capacitiv():
     verifica_conditie("aproximarea Vm/(2fRC) este acoperitoare (>= valoarea exactă)",
                       aprox >= ex["dV"], f"{aprox:.4f} V >= {ex['dV']:.4f} V")
     print(f"  eroarea aproximării: {100 * (aprox / ex['dV'] - 1):+.1f} %")
+    # Descompunerea exactă a erorii: pe descărcare C dv/dt = -v/R, deci
+    # V_off - Vmin = V_med_desc * t_desc / (RC), cu t_desc = (T/2)(1 - unghi_cond/pi).
+    # Față de aproximare apar doi factori: (a) durata descărcării < T/2 și
+    # (b) curentul de descărcare V_med_desc/R < Vm/R.
+    fa = 1 - ex["unghi_conductie"] / math.pi
+    fb = ex["V_med_desc"] / Vm
+    print(f"  factor (a) durata descărcării: {fa:.4f}  (aproximarea +{100 * (1 / fa - 1):.1f} %)")
+    print(f"  factor (b) curentul mediu de descărcare: {fb:.4f}  "
+          f"(aproximarea +{100 * (1 / fb - 1):.1f} %)")
+    verifica("Vm/(2fRC) * (a) * (b) = V_off - Vmin (descompunere exactă)", aprox * fa * fb,
+             ex["V_off"] - ex["Vmin"], tol_rel=1e-6)
     verifica("aproximarea V_dc = Vm - Delta V/2", Vm - aprox / 2, ex["Vdc"], tol_rel=2e-2)
 
     print("  Eroarea aproximării Vm/(2fRC) scade când ondulația relativă scade:")
@@ -249,7 +264,7 @@ def redresor_comandat():
     j1 = int(round((math.pi + alfa) / (2 * math.pi) * n))
     j_ultim = j0 + np.nonzero(sim["io"][j0:j1] > 0)[0].max()
     beta = (j_ultim + 1) * 2 * math.pi / n
-    print(f"  unghi de stingere din simulare: beta = {math.degrees(beta):.1f} grade")
+    print(f"  unghi de stingere din simulare: beta = {math.degrees(beta):.2f} grade")
     verifica("discontinuu: V_dc = (Vm/pi)(cos alfa - cos beta)", Vdc,
              Vm / math.pi * (math.cos(alfa) - math.cos(beta)), tol_rel=2e-3)
     verifica_conditie("discontinuu: V_dc > 0,9 Vs cos(alfa)",

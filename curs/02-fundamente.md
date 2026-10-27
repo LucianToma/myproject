@@ -82,7 +82,8 @@ defazajul ei față de tensiune. Atunci
 
 $$\mathrm{PF} = \frac{V I_1 \cos\varphi_1}{V I} = \underbrace{\frac{I_1}{I}}_{\text{factor de distorsiune}} \cdot \underbrace{\cos\varphi_1}_{\text{factor de deplasare (DPF)}}.$$
 
-**Distorsiunea armonică totală:**
+**Distorsiunea armonică totală** (pentru un curent fără componentă continuă,
+cum sunt curenții absorbiți din rețea):
 
 $$\mathrm{THD} = \frac{\sqrt{\sum_{n\ge2} I_n^2}}{I_1} = \frac{\sqrt{I^2 - I_1^2}}{I_1}
 \quad\Rightarrow\quad \frac{I_1}{I} = \frac{1}{\sqrt{1 + \mathrm{THD}^2}}.$$

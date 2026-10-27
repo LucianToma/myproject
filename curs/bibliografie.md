@@ -57,12 +57,28 @@ actual al producătorului.
 - **[B15]** Mitsubishi Electric, *3.3 kV All-SiC Power Module for Traction
   System Use*, PCIM Europe 2017.
   <https://www.vde-verlag.de/proceedings-en/564424004.html>
-- **[B16]** *Commercial GaN-Based Power Electronic Systems: A Review*.
-  Tranzistoarele GaN comerciale sunt tipic de ~650 V, sub 1 kV.
+- **[B16]** *Commercial GaN-Based Power Electronic Systems: A Review*
+  (Texas Tech University). Pentru segmentul de înaltă tensiune, tranzistoarele
+  GaN laterale comerciale erau tipic de ~650 V, sub 1 kV, la data publicării
+  recenziei. Între timp au apărut și dispozitive integrate de tensiune mai mare
+  [B20].
   <https://scholars.ttu.edu/en/publications/commercial-gan-based-power-electronic-systems-a-review>
 - **[B17]** Toshiba, FAQ despre diode SiC Schottky (câmp critic 4H-SiC
   ≈ 2,8 MV/cm).
   <https://toshiba.semicon-storage.com/eu/semiconductor/knowledge/faq/diode_sic-sbd/sic-sbd001.html>
+- **[B18]** GeneSiC / Navitas, diode SiC Schottky MPS de 3300 V (de exemplu
+  GC50MPS33H, 3,3 kV / 50 A, TO-247-2).
+  <https://www.mouser.fr/genesic-3300v-5a-sic-schottky-diode>
+- **[B19]** EPC (Efficient Power Conversion): tranzistoare și circuite integrate
+  eGaN de 15–350 V; pagina de aplicații LiDAR (dispozitive recomandate de
+  15–200 V).
+  <https://epc-co.com/epc/Applications/LiDAR.aspx>
+- **[B20]** Power Integrations, *Power Integrations Launches 1700 V GaN Switcher
+  IC*, comunicat din 4 noiembrie 2024 (familia InnoMux-2). Anterior, pe 30
+  octombrie 2023, fusese lansată familia InnoSwitch3-EP cu comutator GaN de
+  1250 V.
+  <https://www.powersystemsdesign.com/articles/power-integrations-launches-1700-v-gan-switcher-ic-setting-new-benchmark-for-gallium-nitride-technology/6/22227>
+  <https://semiconductor-today.com/news_items/2023/oct/powerintegrations-311023.shtml>
 
 ---
 

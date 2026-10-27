@@ -190,9 +190,9 @@ maximă (RMS, fundamentală) cu SPWM liniar, cu injecția armonicii a 3-a și î
 
 <details><summary>Soluție</summary>
 
-- SPWM, $m_a$ = 1: $0{,}612 \cdot 600 = 367{,}4$ V;
+- SPWM, $m_a$ = 1: $\frac{\sqrt3}{2\sqrt2}\cdot 600 = 0{,}6124 \cdot 600 = 367{,}4$ V;
 - cu injecție, $m_a = 2/\sqrt3$: $367{,}4 \cdot 1{,}1547 = 424{,}3$ V;
-- șase trepte: $0{,}78 \cdot 600 = 467{,}8$ V.
+- șase trepte: $\frac{\sqrt6}{\pi}\cdot 600 = 0{,}7797 \cdot 600 = 467{,}8$ V.
 
 Pentru 400 V: $m_a = 400/367{,}4 = 1{,}0887$. Valoarea este peste 1, deci SPWM
 simplu ar intra în supramodulație, dar este sub 1,1547, deci **cu injecția

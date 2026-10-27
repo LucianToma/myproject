@@ -47,18 +47,26 @@ Pierderile au deci două surse: **conducția** (cădere de tensiune × curent) �
   (o estimare; valorile exacte depind de $di/dt$ și de temperatură, vezi foaia
   de catalog).
 - **Dioda Schottky** (joncțiune metal-semiconductor) nu are sarcină stocată de
-  purtători minoritari, deci practic nu are recuperare inversă, și are $V_F$
-  mic. În siliciu se folosește la tensiuni mici, iar în **SiC** există diode
-  Schottky de sute de volți până la ~1,7 kV.
+  purtători minoritari, deci practic nu are recuperare inversă (rămâne doar
+  sarcina capacitivă a joncțiunii). În **siliciu** are $V_F$ mic, dar se
+  folosește doar la tensiuni mici. În **SiC**, diodele Schottky (și variantele
+  MPS, *merged PiN Schottky*) acoperă în produse comerciale de la 650 V până la
+  3,3 kV [B18]. $V_F$ al lor **nu** este mic (tipic ~1,3–1,8 V la curentul
+  nominal); avantajul lor este lipsa recuperării inverse.
 
 ## 3.4 Tiristorul (SCR)
 
 - Structură pnpn. Se aprinde printr-un impuls de curent în grilă, dacă
   $v_{AK} > 0$. Odată aprins, **rămâne în conducție** fără comandă, până când
   curentul scade sub **curentul de menținere** $I_H$.
-- Oprirea se face natural, când curentul se anulează (în redresoarele
-  conectate la rețea alternativă: **comutație de la rețea**), deci nu se poate
-  bloca prin grilă.
+- **De ce nu se poate bloca din grilă.** Structura pnpn se modelează ca două
+  tranzistoare (pnp și npn) conectate astfel încât curentul de colector al
+  fiecăruia este curentul de bază al celuilalt. După amorsare, această reacție
+  pozitivă (*zăvorâre*, *latching*) se autoîntreține, iar grila nu mai are
+  control. Tiristorul se blochează doar când circuitul exterior aduce curentul
+  sub $I_H$. În redresoarele conectate la rețea alternativă, acest lucru se
+  întâmplă natural (**comutație de la rețea**). GTO-ul și IGCT-ul sunt variante
+  construite special ca să poată fi blocate și din grilă.
 - Puncte forte: tensiuni și curenți foarte mari, cădere mică în conducție,
   robustețe. Tiristoarele de clasa 8,5 kV sunt folosite la transportul HVDC
   [B9].
@@ -99,7 +107,9 @@ Pierderile au deci două surse: **conducția** (cădere de tensiune × curent) �
 
 - Combină o comandă MOS (grilă izolată) cu o conducție bipolară: zona de drift
   este „inundată” cu purtători (modulația conductivității). Rezultatul este o
-  cădere în conducție **mică și puțin dependentă de tensiunea nominală**.
+  cădere în conducție mică, care **crește mult mai lent cu tensiunea nominală**
+  decât $R_{DS(on)}$ al unui MOSFET de Si (orientativ: ~1,5–2 V la dispozitivele
+  de 650–1200 V, ~3–4 V la cele de 6,5 kV; valorile exacte sunt în catalog).
 - Model pentru conducție: $v_{CE} \approx V_{CE0} + r_{CE}\, i$, deci
   $P_{cond} = V_{CE0} I_{med} + r_{CE} I_{rms}^2$.
 - **Coada de curent** la blocare (purtătorii stocați trebuie să dispară) mărește
@@ -119,7 +129,7 @@ diferă, mai ales la conductivitatea termică — vezi bibliografia [B12–B14, 
 |---|---|---|---|
 | lățimea benzii interzise $E_g$ [eV] | 1,12 | 3,26 | ~3,4 |
 | câmpul electric critic $E_c$ [MV/cm] | ~0,3 | ~2,5–3 | ~3,3 |
-| conductivitate termică [W/(cm·K)] | ~1,5 | ~3–5 (depinde de sursă) | ~1,3–2,1 |
+| conductivitate termică [W/(cm·K)] | ~1,5 | ~2,7–4,9 (depinde de sursă, dopaj și orientare) | ~1,3–2,1 |
 
 **De ce contează câmpul critic.** Grosimea stratului care blochează tensiunea
 $V_B$ scade proporțional cu $1/E_c$, iar dopajul poate crește. Pentru un câmp
@@ -128,15 +138,19 @@ scade cu câteva ordine de mărime (dependență teoretică $\propto 1/E_c^3$ [B
 Așadar, la aceeași $R_{DS(on)}$, cipul este mult mai mic, are capacități
 parazite mai mici și comută mai repede.
 
-- **SiC MOSFET** și **diode Schottky SiC**: tipic 650–1700 V în produse
-  discrete, iar module de 3,3 kV au fost prezentate pentru tracțiune [B15].
+- **SiC MOSFET** și **diode Schottky SiC**: MOSFET-urile discrete sunt tipic de
+  650–1700 V; există și module de 3,3 kV pentru tracțiune [B15].
   Pot lucra la temperaturi mai mari și disipă bine căldura. Aplicații:
   invertoare pentru vehicule electrice, încărcătoare rapide, invertoare
   fotovoltaice.
 - **GaN HEMT**: structură laterală, canal format de un gaz electronic
   bidimensional (2DEG). Comută extrem de repede și nu are sarcină de
-  recuperare inversă. Produsele comerciale sunt tipic de ~650 V, sub 1 kV
-  [B16]. Aplicații: încărcătoare compacte, surse pentru servere, LiDAR.
+  recuperare inversă. Pe piață există două segmente mari: GaN de **joasă
+  tensiune** (aprox. 15–350 V: convertoare DC-DC, LiDAR, acționări mici) [B19]
+  și GaN de **~650 V**, pentru surse alimentate din rețea [B16]. Au apărut și
+  comutatoare GaN integrate de 1250–1700 V (de exemplu un circuit integrat
+  flyback cu comutator GaN de 1700 V, lansat în 2024) [B20]. Aplicații:
+  încărcătoare compacte, surse pentru servere, LiDAR.
 
 > **Notă de prudență.** Gamele de tensiune și frecvență de mai sus sunt
 > orientative și evoluează rapid. Pentru un proiect real, sursa de adevăr este

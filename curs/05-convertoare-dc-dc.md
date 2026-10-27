@@ -145,7 +145,13 @@ $$V_{in} D + (V_{in} - V_o)(1-D) = 0 \quad\Rightarrow\quad \boxed{V_o = \frac{V_
 - $\Delta i_L = \dfrac{V_{in} D}{L f_s}$.
 - În ON, condensatorul furnizează singur $I_o$ timp de $DT_s$:
   $\Delta v_o = \dfrac{I_o D}{C f_s}$.
-- $L_{crit} = \dfrac{D(1-D)^2 R}{2 f_s}$; în DCM ($K < D(1-D)^2$):
+- **Limita CCM/DCM:** $I_L = \Delta i_L/2$, adică
+  $\dfrac{V_{in}}{(1-D)^2 R} = \dfrac{V_{in}D}{2Lf_s}$, deci
+  $L_{crit} = \dfrac{D(1-D)^2 R}{2 f_s}$ ($K_{crit} = D(1-D)^2$).
+- **DCM** (același procedeu ca la buck): vârful curentului este
+  $I_{pk} = V_{in}DT_s/L$, volt-secunda dă $V_{in}D = (V_o - V_{in})D_2$, iar
+  curentul mediu prin diodă este egal cu $I_o$: $\tfrac12 I_{pk} D_2 = V_o/R$.
+  Eliminând $D_2$: $M^2 - M - D^2/K = 0$, deci
   $M = \dfrac{1 + \sqrt{1 + 4D^2/K}}{2}$.
 - Comutatorul și dioda blochează $V_o$.
 
@@ -200,7 +206,11 @@ $$V_{in} D - |V_o|(1-D) = 0 \quad\Rightarrow\quad \boxed{|V_o| = \frac{D}{1-D}V_
 - $I_L = I_o/(1-D)$, $\Delta i_L = V_{in}D/(Lf_s)$, $\Delta v_o = I_o D/(C f_s)$.
 - Comutatorul și dioda blochează $V_{in} + |V_o|$, cel mai mare stres dintre
   cele trei topologii.
-- $L_{crit} = (1-D)^2 R/(2f_s)$; în DCM: $M = D/\sqrt{K}$.
+- Limita CCM/DCM: $I_o/(1-D) = \Delta i_L/2$, cu $I_o = V_{in}D/((1-D)R)$,
+  deci $L_{crit} = (1-D)^2 R/(2f_s)$.
+- DCM: $\tfrac12 I_{pk}D_2 = I_o$, cu $I_{pk} = V_{in}DT_s/L$ și
+  $D_2 = V_{in}D/|V_o|$ (volt-secundă), deci $M^2 = D^2/K$ și
+  $|M| = D/\sqrt{K}$.
 
 **Verificare** ($V_{in}$ = 12 V, $D$ = 0,4, $R$ = 8 Ω): CCM — simulare
 7,998 V (formula 8 V). DCM ($L$ = 5 µH) — simulare 13,5762 V (formula 13,5765 V).
@@ -216,7 +226,7 @@ $$V_{in} D - |V_o|(1-D) = 0 \quad\Rightarrow\quad \boxed{|V_o| = \frac{D}{1-D}V_
 | curent de intrare | pulsatoriu | continuu (= $i_L$) | pulsatoriu |
 | curent spre ieșire | continuu (= $i_L$) | pulsatoriu | pulsatoriu |
 | $L_{crit}$ | $\frac{(1-D)R}{2f_s}$ | $\frac{D(1-D)^2R}{2f_s}$ | $\frac{(1-D)^2R}{2f_s}$ |
-| $M$ în DCM, $K = \frac{2L}{RT_s}$ | $\frac{2}{1+\sqrt{1+4K/D^2}}$ | $\frac{1+\sqrt{1+4D^2/K}}{2}$ | $\frac{D}{\sqrt K}$ |
+| $M$ în DCM, $K = \frac{2L}{RT_s}$ | $\frac{2}{1+\sqrt{1+4K/D^2}}$ | $\frac{1+\sqrt{1+4D^2/K}}{2}$ | $-\frac{D}{\sqrt K}$ |
 
 Toate cele 12 puncte de pe curbele CCM ($D$ = 0,2; 0,35; 0,65; 0,8 pentru
 cele trei topologii) au fost verificate prin simulare. La buck eroarea este de
