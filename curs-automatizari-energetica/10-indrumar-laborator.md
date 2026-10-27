@@ -200,8 +200,8 @@ Factorul de compensare homopolară: $\underline{k}_0$ = 0,655 ∠ 4,02° (sau, d
 
 **Mod de lucru**
 
-1. Se introduc reglajele din problema 7.2: $I_s$ = 300 A primar (TC 400/1 A, deci 0,75 A secundar), TMS = 0,19, caracteristică normal inversă, treapta instantanee la 2800 A (7,0 A secundar), două reanclanșări (0,5 s și 15 s), timpul de revenire 30 s, accelerare după reanclanșare 0,04 s.
-2. **Defect trecător:** se injectează 2079 A primar (5,20 A secundar), iar trusa oprește injecția la prima deschidere. Se măsoară timpul de declanșare, pauza și momentul reanclanșării. Se verifică revenirea după timpul de revenire.
+1. Se introduc reglajele din problema 7.2: $I_s$ = 300 A primar (TC 400/1 A, deci 0,75 A secundar), TMS = 0,19, caracteristică normal inversă, treapta instantanee la 2800 A (7,0 A secundar), două reanclanșări (pauze reglate de 0,5 s și 15 s), timpul de revenire 30 s, accelerare după reanclanșare 0,04 s.
+2. **Defect trecător:** se injectează 2079 A primar (5,20 A secundar), iar trusa oprește injecția la prima deschidere. Se măsoară timpul de declanșare, pauza de tensiune (de la deschidere la închiderea întrerupătorului simulat; calculat 0,58 s) și momentul reanclanșării. Se verifică revenirea după timpul de revenire.
 3. **Defect permanent:** trusa reia injecția la fiecare închidere. Se înregistrează toate momentele de deschidere și închidere și momentul blocării. Se repetă fără accelerare.
 4. **Blocări:** se verifică faptul că RAR nu acționează la o declanșare manuală și la o declanșare dată printr-o intrare binară „protecția barelor”.
 5. **Controlul sincronismului:** se aplică pe cele două intrări de tensiune 100 V și 100 V, cu frecvențele 50,0 Hz și 50,1 Hz. Se reglează pragurile Δφ ≤ 20°, Δf ≤ 0,2 Hz, ΔU ≤ 10 % (date ale lucrării) și se înregistrează intervalele în care închiderea este permisă. Se repetă cu ΔU = 15 % și cu Δf = 0,3 Hz.
@@ -212,7 +212,7 @@ Factorul de compensare homopolară: $\underline{k}_0$ = 0,655 ∠ 4,02° (sau, d
 | Încercarea | Deschidere 1 [s] | Închidere 1 [s] | Deschidere 2 [s] | Închidere 2 [s] | Deschidere 3 / blocare [s] |
 |---|---|---|---|---|---|
 | calculat (problema 7.2), permanent, cu accelerare | 0,734 | 1,314 | 1,414 | 16,494 | 16,594 |
-| calculat, permanent, fără accelerare | 0,734 | 1,314 | 2,048 | 17,128 | 17,862 |
+| calculat, permanent, fără accelerare | 0,734 | 1,314 | 2,048 | 17,128 | 17,861 |
 | măsurat, cu accelerare | | | | | |
 | măsurat, fără accelerare | | | | | |
 
