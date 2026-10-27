@@ -29,19 +29,19 @@ $$\boxed{I_d = \left|\underline{I}_1 + \underline{I}_2\right|, \qquad I_b = \fra
 
 $I_d$ este **curentul diferențial** (de acționare), iar $I_b$ – **curentul de frânare** (de stabilizare), o măsură a curentului care traversează zona. Producătorii folosesc definiții diferite pentru curentul de frânare (media, suma sau maximul modulelor, eventual numai pentru unele capete); reglajele trebuie citite întotdeauna împreună cu definiția folosită de releul respectiv. În curs folosim media modulelor.
 
-La un defect exterior, $I_d$ nu este exact zero: erorile TC (care cresc cu curentul), raportul real al transformatorului diferit de cel pentru care s-a făcut adaptarea (comutatorul de ploturi) și curentul de magnetizare produc un curent diferențial **aproximativ proporțional cu curentul traversant**. De aceea pragul de acționare nu este constant, ci crește cu curentul de frânare – **caracteristica cu frânare** (figura 4.2). În curs folosim o caracteristică cu două pante (date de reglaj ale cursului):
+La un defect exterior, $I_d$ nu este exact zero: erorile TC (care cresc cu curentul) și raportul real al transformatorului diferit de cel pentru care s-a făcut adaptarea (comutatorul de ploturi) produc un curent diferențial **aproximativ proporțional cu curentul traversant**; curentul de magnetizare, practic constant în regim normal, este acoperit de pragul minim. De aceea pragul de acționare nu este constant, ci crește cu curentul de frânare – **caracteristica cu frânare** (figura 4.2). În curs folosim o caracteristică cu două pante (date de reglaj ale cursului):
 
-$$I_{d,acț} = \begin{cases} \max\left(0{,}30\thinspace I_n;\ 0{,}30\thinspace I_b\right), & I_b \le 3\thinspace I_n \\ 0{,}30 \cdot 3\thinspace I_n + 0{,}70\thinspace(I_b - 3\thinspace I_n), & I_b > 3\thinspace I_n \end{cases}$$
+$$I_{d,\text{acț}} = \begin{cases} \max\left(0{,}30\thinspace I_n;\ 0{,}30\thinspace I_b\right), & I_b \le 3\thinspace I_n \\ 0{,}30 \cdot 3\thinspace I_n + 0{,}70\thinspace(I_b - 3\thinspace I_n), & I_b > 3\thinspace I_n \end{cases}$$
 
 - **pragul minim** (0,30·In) acoperă curentul de magnetizare și erorile la curenți mici;
 - **prima pantă** (30 %) acoperă erorile proporționale cu curentul: comutatorul de ploturi și erorile TC; în problema 4.2 se arată că, pentru T1, acestea dau cel mult 20,47 % din curentul de frânare;
-- **a doua pantă** (70 %), mai abruptă, acoperă saturația TC la curenți traversanți mari, când un TC poate da un curent mult mai mic decât celălalt.
+- **a doua pantă** (70 %), mai abruptă, acoperă saturația **parțială** a TC la curenți traversanți mari, când un TC dă un curent mai mic decât celălalt. Saturația puternică nu poate fi acoperită numai prin pantă; ea se evită prin dimensionarea TC (§ 2.3), iar releele numerice o recunosc și blochează pentru scurt timp treapta frânată.
 
 ![Figura 4.2 – Caracteristica cu frânare](figuri/f04-2-caracteristica.svg)
 
 *Figura 4.2 – Caracteristica cu frânare folosită în curs și punctele de funcționare calculate în problemele 4.1–4.3. Punctele defectelor exterioare rămân sub caracteristică; defectul exterior de pe bara de 110 kV ar intra în zona de acționare dacă releul nu ar elimina componenta homopolară.*
 
-Pe lângă treapta frânată, releele au o **treaptă nefrânată** (instantanee), care acționează numai după $I_d$, fără frânare și fără blocarea la armonici (§ 4.4). Ea se reglează peste curentul diferențial maxim care poate apărea la un defect exterior sau la conectare. Dacă la un defect exterior un TC se saturează complet, curentul diferențial poate ajunge cel mult la curentul traversant; pentru T1, cel mai mare curent traversant este cel al unui defect pe bara B2, 8,36·In (problema 4.3). De aceea treapta nefrânată se reglează în curs la **11·In**: peste acest curent și peste fundamentala curentului de magnetizare la conectare (2,61·In, problema 4.4).
+Pe lângă treapta frânată, releele au o **treaptă nefrânată** (instantanee), care acționează numai după $I_d$, fără frânare și fără blocarea la armonici (§ 4.4). Ea se reglează peste curentul diferențial maxim care poate apărea la un defect exterior sau la conectare. Dacă la un defect exterior un TC se saturează complet, curentul diferențial poate ajunge cel mult la curentul de pe cealaltă parte; pentru T1, cel mai mare curent traversant este cel al unui defect pe bara B2: 8,36·In cu plotul nominal și 9,20·In (pe partea de 20 kV) cu plotul în poziția +10 % (problema 4.2). De aceea treapta nefrânată se reglează în curs la **11·In**: cu o rezervă de 1,20 față de acest curent și peste fundamentala curentului de magnetizare la conectare (2,61·In, problema 4.4).
 
 Cerințele funcționale pentru protecțiile diferențiale frânate și nefrânate ale motoarelor, generatoarelor și transformatoarelor sunt stabilite în IEC 60255-187-1 [S6].
 
@@ -61,7 +61,7 @@ $$\boxed{\begin{bmatrix} I'_A \\ I'_B \\ I'_C \end{bmatrix} = \frac{1}{\sqrt3}\b
 
 Pentru sistemul direct, $I'_A = I_A\thinspace(1 - a^2)/\sqrt3 = I_A \angle +30°$; pentru cel invers, $I'_A = I_A\thinspace(1 - a)/\sqrt3 = I_A\angle -30°$, exact defazajele transformatorului (figura 4.3).
 
-**3. Eliminarea componentei homopolare.** Neutrul înfășurării de 110 kV a lui T1 este legat la pământ, așa că la un defect cu pământul în rețeaua de **110 kV** T1 debitează curent homopolar pe partea de 110 kV (prin neutrul lui), fără niciun curent corespunzător în liniile de 20 kV (curentul homopolar circulă în interiorul triunghiului). Fără corecție, acest curent ar apărea ca diferențial și protecția ar declanșa transformatorul la un defect exterior. Matricea de mai sus are suma coeficienților pe fiecare linie zero, deci **elimină automat componenta homopolară**. În schemele clasice, același efect se obținea legând în triunghi TC de pe partea în stea. La transformatoarele YNyn (fără defazaj), releul elimină explicit $I_0$ din curenții de pe partea legată la pământ.
+**3. Eliminarea componentei homopolare.** Neutrul înfășurării de 110 kV a lui T1 este legat la pământ, așa că la un defect cu pământul în rețeaua de **110 kV** T1 debitează curent homopolar pe partea de 110 kV (prin neutrul lui), fără niciun curent corespunzător în liniile de 20 kV (curentul homopolar circulă în interiorul triunghiului). Fără corecție, acest curent ar apărea ca diferențial și protecția ar declanșa transformatorul la un defect exterior. Matricea de mai sus are suma coeficienților pe fiecare linie zero, deci **elimină automat componenta homopolară**. În schemele clasice, același efect se obținea legând în triunghi TC de pe partea în stea. La transformatoarele YNyn (fără defazaj), releul elimină explicit $I_0$ din curenții de pe fiecare parte cu neutrul legat la pământ.
 
 ![Figura 4.3 – Compensarea grupei de conexiuni](figuri/f04-3-compensare.svg)
 
@@ -71,19 +71,19 @@ Pe lângă acestea, protecția diferențială a transformatorului trebuie să ț
 
 - **comutatorul de ploturi**: adaptarea se face pentru raportul nominal; în pozițiile extreme apare un curent diferențial proporțional cu sarcina (problema 4.2);
 - **curentul de magnetizare**: în regim normal este mic (în modelul din problema 4.4, 0,4 % din In) și este acoperit de pragul minim; la conectare și la supraexcitare devine însă mare (§ 4.4);
-- **defectele cu pământul pe partea de 20 kV**: în rețeaua cu neutrul tratat prin rezistor, curentul de defect este limitat la circa 300 A, adică 0,4–0,46·In al lui T1; dacă releul elimină și componenta homopolară de pe partea de 20 kV, el vede numai 2/3 din curent, sub pragul minim (problema 4.3). Aceste defecte sunt lăsate unei protecții dedicate (§ 4.5).
+- **defectele cu pământul pe partea de 20 kV**: în rețeaua cu neutrul tratat prin rezistor, curentul de defect este limitat la circa 300 A, adică 0,4–0,46·In al lui T1; dacă releul elimină și componenta homopolară de pe partea de 20 kV, el vede numai 2/3 din curent: la limita pragului minim (0,304·In la $c$ = 1,1) sau sub el (0,276·In la $c$ = 1,0; problema 4.3). Aceste defecte sunt lăsate unei protecții dedicate (§ 4.5).
 
 ## 4.4. Curentul de magnetizare la conectare
 
-La conectarea unui transformator în gol, fluxul din miez nu pornește de la valoarea lui de regim permanent, ci de la **fluxul remanent** lăsat de ultima deconectare. Dacă tensiunea $v = V_m \sin\omega t$ se aplică la trecerea ei prin zero, fluxul crește, într-o semiperioadă, cu
+La conectarea unui transformator în gol, fluxul din miez nu pornește de la valoarea lui de regim permanent, ci de la **fluxul remanent** lăsat de ultima deconectare. Dacă tensiunea $v = V_m \sin\omega t$ se aplică la trecerea ei prin zero, fluxul înlănțuit total al circuitului crește, într-o semiperioadă, cu
 
-$$\Delta\psi = \int_0^{\pi/\omega} V_m \sin\omega t\thinspace dt = \frac{2 V_m}{\omega} = 2\thinspace\psi_n ,$$
+$$\Delta\psi = \int_0^{\pi/\omega} V_m \sin\omega t\thinspace dt = \frac{2 V_m}{\omega} = 2\thinspace\psi_n .$$
 
-adică ajunge (fără rezistențe) la $\psi_{rem} + 2\psi_n$ – de aproape trei ori fluxul nominal pentru $\psi_{rem}$ = 0,8·ψn. Miezul se saturează adânc, iar curentul de magnetizare, limitat numai de inductivitatea înfășurării cu miezul saturat și de cea a rețelei, ajunge la câțiva curenți nominali (problema 4.4). Curentul are forma unor **impulsuri unipolare** care se amortizează lent (figura 4.4), cu constanta de timp dată de rezistențele circuitului.
+Fără rezistențe, fluxul înlănțuit total (al miezului și al inductivității rețelei) ajunge la $\psi_{rem} + 2\psi_n$ – de 2,8 ori fluxul nominal pentru $\psi_{rem}$ = 0,8·ψn, **dacă fluxul remanent are același semn cu variația fluxului**. O parte din tensiune cade pe inductivitatea rețelei, așa că fluxul din miez rămâne puțin mai mic: 2,694·ψn fără rezistențe și 2,649·ψn cu rezistențele circuitului (problema 4.4). Miezul se saturează adânc, iar curentul de magnetizare, limitat numai de inductivitatea înfășurării cu miezul saturat și de cea a rețelei, ajunge la câțiva curenți nominali (problema 4.4). Curentul are forma unor **impulsuri unipolare** care se amortizează lent (figura 4.4), cu constanta de timp dată de rezistențele circuitului.
 
-Curentul de magnetizare circulă numai pe partea alimentată, deci pentru protecția diferențială este un **curent diferențial**. Treapta frânată ar acționa dacă nu ar fi blocată. Forma de undă are însă un conținut mare de **armonica a doua** (o undă unipolară nu are simetrie de semiundă), pe care curenții de defect nu îl au. Releele calculează raportul $I_{2f}/I_{1f}$ pe o fereastră de o perioadă și blochează treapta frânată cât timp raportul depășește un prag; în curs pragul este **12 %**. Alegerea lui este justificată în problema 4.4:
+Curentul de magnetizare circulă numai pe partea alimentată, deci pentru protecția diferențială este un **curent diferențial**. Treapta frânată ar acționa dacă nu ar fi blocată. Forma de undă are însă un conținut mare de **armonica a doua** (o undă unipolară nu are simetrie de semiundă), pe care curenții de defect nu îl au în regim stabilizat. Releele calculează raportul $I_{2f}/I_{1f}$ pe o fereastră de o perioadă și blochează treapta frânată cât timp raportul depășește un prag; în curs pragul este **12 %**. Alegerea lui este justificată în problema 4.4:
 
-- în simulare, curentul de conectare al lui T1 are în cel mai defavorabil caz 14,7 % în prima perioadă, apoi raportul crește (61,8 % după 0,4 s);
+- în simulare, curentul de conectare al lui T1 are, în cazul de bază, 14,7 % în prima perioadă, apoi raportul crește (61,8 % după 0,4 s);
 - un defect interior la bornele de 20 kV, cu componentă aperiodică maximă, are numai 6,0 % în prima perioadă și nu este blocat;
 - un defect interior la bornele de 110 kV are 12,6 % în prima perioadă și ar putea fi blocat câteva milisecunde, dar curentul lui (50·In) acționează treapta nefrânată, care nu se blochează.
 
@@ -91,16 +91,17 @@ Curentul de magnetizare circulă numai pe partea alimentată, deci pentru protec
 
 *Figura 4.4 – Simularea conectării lui T1 pe partea de 110 kV (model monofazat, flux remanent 0,8·ψn, conectare la trecerea tensiunii prin zero): curentul (sus) și raportul armonicii a doua pe o fereastră alunecătoare de o perioadă (jos).*
 
-Marja dintre cele două situații este mică și depinde puternic de miezul transformatorului: în simulare, un cot de saturație mai jos (1,1·ψn în loc de 1,2·ψn) coboară raportul minim la 10,6 % (problema 4.4). Din acest motiv, releele moderne completează criteriul armonicii a doua cu alte criterii: blocarea tuturor fazelor când una singură detectează conectarea (blocare încrucișată), analiza formei de undă (intervalele în care curentul este aproape zero), iar reglajul se verifică pentru transformatorul concret.
+Marja dintre cele două situații este mică și depinde puternic de miezul transformatorului: în simulare, un cot de saturație mai jos (1,1·ψn în loc de 1,2·ψn) coboară raportul minim la 10,6 % (problema 4.4). În plus, modelul din curs este monofazat, iar releul nu analizează curentul unei faze, ci curentul diferențial compensat – pentru YNd11, de exemplu $(i_A - i_B)/\sqrt3$ –, în care impulsurile a două faze se combină și raportul armonicii a doua poate fi mai mic decât într-un curent de fază. Din aceste motive, releele moderne completează criteriul armonicii a doua cu alte criterii: blocarea tuturor fazelor când una singură detectează conectarea (blocare încrucișată), analiza formei de undă (intervalele în care curentul este aproape zero), iar reglajul se verifică pentru transformatorul concret.
 
-La **supraexcitare** (tensiune prea mare sau frecvență prea mică, adică $U/f$ mare – de exemplu la descărcarea bruscă a unui generator), curentul de magnetizare crește și el, dar rămâne simetric; el conține mai ales armonica a cincea. Unele relee blochează treapta frânată și după armonica a cincea, iar supraexcitarea se tratează cu o protecție separată, după raportul $U/f$ (capitolul 6).
+La **supraexcitare** (tensiune prea mare sau frecvență prea mică, adică $U/f$ mare – de exemplu la descărcarea bruscă a unui generator), curentul de magnetizare crește și el, dar rămâne simetric, deci conține numai armonici impare. Cea mai mare este armonica a treia, dar ea este eliminată de înfășurarea în triunghi și de filtrarea componentei homopolare din releu (armonicile multiplu de trei formează, în trifazat, un sistem homopolar); de aceea releele folosesc armonica a cincea. Unele relee blochează treapta frânată după armonica a cincea, iar supraexcitarea se tratează cu o protecție separată, după raportul $U/f$ (capitolul 6).
 
 ## 4.5. Alte protecții ale transformatorului
 
 Protecția diferențială nu acoperă toate defectele transformatorului; ea se completează cu:
 
 - **releul de gaze (Buchholz)**, la transformatoarele în ulei cu conservator: un defect în cuvă (chiar o scurtcircuitare între câteva spire, cu curent prea mic pentru protecția diferențială) descompune uleiul în gaze. Acumularea lentă a gazelor dă un semnal de avertizare; un val de ulei spre conservator (defect puternic) comandă declanșarea;
-- **protecția homopolară a neutrului** (curentul prin legătura neutrului la pământ sau prin bobina de punct neutru, § 1.6) și **protecția diferențială restrânsă la pământ**, care compară curentul din neutru cu suma curenților de fază ai aceleiași înfășurări și detectează defectele cu pământul cu curent mic, ca cel din problema 4.3 (c);
+- **protecția restrânsă la pământ**. La o înfășurare în stea cu neutrul legat la pământ, ea compară curentul din neutru cu suma curenților de fază ai aceleiași înfășurări. Înfășurarea de 20 kV a lui T1 este însă în triunghi, fără neutru, iar curentul de punere la pământ vine de la bobina de punct neutru (BPN), aflată pe bare, în afara zonei. Defectele cu pământul dintre T1 și TC lui de 20 kV, ca cel din problema 4.3 (c), se detectează atunci după **curentul rezidual al TC de 20 kV ai lui T1**: la un defect exterior el este zero (triunghiul nu transmite componentă homopolară), iar la un defect în zonă este egal cu curentul de defect (problema 4.3). Protecția este deci „restrânsă” la zona dintre TC și transformator, cu un prag raportat la curentul de defect de circa 300 A, nu la curentul nominal;
+- **protecția homopolară a BPN** (curentul prin rezistorul de neutru, § 1.6), care vede toate punerile la pământ din rețeaua de 20 kV; ea nu este selectivă și servește ca rezervă, cu temporizare mai mare decât protecțiile homopolare ale fiderilor (capitolul 3);
 - **protecția termică** (49), după un model termic de felul celui din § 6.2, și supravegherea temperaturii uleiului și a înfășurărilor;
 - **protecțiile maximale** de rezervă pe ambele părți (capitolul 3), care acoperă și defectele exterioare neeliminate.
 
@@ -110,14 +111,14 @@ Declanșările date de protecțiile care indică un defect interior (diferenția
 
 O bară are multe circuite; un defect pe bară este rar, dar foarte grav (se pierd toate circuitele), iar un defect exterior foarte apropiat produce cei mai mari curenți traversanți posibili printr-un singur TC. Există două familii de scheme:
 
-- **de impedanță mare**: secundarele tuturor TC (cu același raport) sunt legate în paralel pe un releu de tensiune cu un rezistor de stabilizare de valoare mare. La un defect exterior, cel mai defavorabil caz este saturația completă a TC de pe circuitul cu defectul: el devine, în secundar, o simplă rezistență $R_{ct}$, iar curentul celorlalte TC se închide prin ea și prin conductoarele de legătură. Tensiunea pe releu este atunci cel mult
+- **de impedanță mare**: secundarele tuturor TC (cu același raport) sunt legate în paralel pe un releu de tensiune cu un rezistor de stabilizare de valoare mare. La un defect exterior, cel mai defavorabil caz este saturația completă a TC de pe circuitul cu defectul: el devine, în secundar, o simplă rezistență $R_{ct}$, iar curentul celorlalte TC se închide prin ea și prin conductoarele de legătură. Tensiunea pe releu este atunci cel mult $I_{k,sec}\thinspace(R_{ct} + 2R_L)$, unde $R_L$ este rezistența unui conductor de legătură (bucla are două conductoare) și $I_{k,sec}$ cel mai mare curent secundar care poate traversa un singur TC; releul se reglează la
   $$\boxed{V_s \ge I_{k,sec}\thinspace(R_{ct} + 2R_L)}$$
-  ($R_L$ – rezistența unui conductor de legătură; bucla are două conductoare), iar releul se reglează peste această tensiune (figura 4.5, problema 4.5). La un defect interior, toate TC debitează în releul de impedanță mare și dezvoltă o tensiune mult mai mare. Schema este simplă și foarte stabilă, dar cere TC dedicate, cu același raport;
+  (figura 4.5, problema 4.5). Curentul $I_{k,sec}$ se caută pe toate celulele: cel mai sever caz este adesea celula unui transformator fără sursă în spate, prin al cărei TC trece, la un defect imediat după el, întregul curent de defect al barei. La un defect interior, toate TC debitează în releul de impedanță mare; tensiunea ar ajunge la mii de volți, de aceea în paralel cu releul se montează un **limitator neliniar de tensiune**. Ca să poată acționa sigur, TC trebuie să aibă **tensiunea de cot** a curbei de magnetizare mult peste $V_s$ (în curs: cel puțin $2V_s$, regulă de proiectare a cursului). Schema este simplă și foarte stabilă, dar cere TC dedicate, cu același raport;
 - **de impedanță mică (numerice, cu frânare)**: releul primește curenții tuturor circuitelor (adesea prin unități de achiziție în celule), îi adaptează prin calcul (rapoartele TC pot fi diferite), calculează $I_d$ și $I_b$ ca în § 4.2 și urmărește configurația separatoarelor de bare, ca să știe ce circuite aparțin fiecărei secții de bare. Multe relee recunosc saturația TC (de exemplu, din faptul că, la un defect exterior, curentul diferențial apare abia după câteva milisecunde de la defect) și o tratează ca atare.
 
 ![Figura 4.5 – Protecția de bare de impedanță mare](figuri/f04-5-bare-impedanta-mare.svg)
 
-*Figura 4.5 – Cazul de stabilitate al schemei de impedanță mare: TC al circuitului cu defectul exterior este complet saturat și se reduce la rezistența lui.*
+*Figura 4.5 – Cazul de stabilitate al schemei de impedanță mare pentru bara B: la un defect exterior imediat după TC al celulei T1, acesta este complet saturat și se reduce la rezistența lui $R_{ct}$ (în serie cu conductoarele de legătură); în paralel cu releul se află limitatorul neliniar de tensiune.*
 
 ## 4.7. Protecția diferențială a liniilor
 
@@ -127,7 +128,7 @@ La o linie, cele două capete sunt la kilometri distanță, deci curenții trebu
 - **curentul capacitiv** al liniei (mare la cablurile și liniile lungi) apare ca diferențial; releele îl compensează din tensiune sau îl acoperă prin pragul minim;
 - **canalul** poate cădea; releul trece atunci pe o protecție de rezervă (de exemplu de distanță sau maximală, capitolele 3 și 5).
 
-Protecția diferențială de linie are zona închisă, deci este selectivă fără temporizare și nu este influențată de pendulații, de rezistența de defect sau de alimentarea de la capătul opus – dificultățile principale ale protecției de distanță (capitolul 5).
+Protecția diferențială de linie are zona închisă, deci este selectivă fără temporizare și este mult mai puțin influențată de pendulații, de rezistența de defect sau de alimentarea de la capătul opus – dificultățile principale ale protecției de distanță (capitolul 5).
 
 ---
 
