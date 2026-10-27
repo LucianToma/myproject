@@ -96,7 +96,7 @@ Unele protecții au o zonă **închisă**, delimitată exact de transformatoarel
 | 90 | dispozitiv de reglaj (de exemplu regulatorul de ploturi) | – | 8 |
 | – | întrerupătorul (nodul logic al echipamentului primar) | XCBR | 9 |
 
-Denumirile funcțiilor 25, 40 și 49 au fost confirmate numai din liste secundare ale codurilor IEEE C37.2; textul standardului nu a putut fi consultat. Nodurile logice IEC 61850 sunt cele confirmate în documentația producătorilor (capitolul 9).
+Denumirile au fost verificate în liste secundare ale codurilor IEEE C37.2, pentru că textul standardului nu a putut fi consultat; pentru codurile 25, 40 și 49 s-a găsit o singură astfel de sursă. Nodurile logice IEC 61850 sunt cele confirmate în documentația producătorilor (capitolul 9).
 
 Un sufix precizează mărimea: N pentru curentul rezidual (de exemplu 51N, protecția homopolară temporizată), G pentru generator sau pământ, T pentru transformator.
 
