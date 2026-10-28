@@ -42,7 +42,7 @@ Toate rezultatele numerice din probleme și din secțiunile de construcție, pre
 
 - `modele.py` – modelele comune (transformator, mașina asincronă cu schema în T, inclusiv varianta cu colivie dublă, formula lui Kloss, mașina sincronă);
 - `probleme_cap00.py` … `probleme_cap05.py` – rezolvă problemele fiecărui capitol și **verifică fiecare rezultat pe cel puțin două căi independente** (de exemplu: bilanțul puterilor față de calculul direct, formula aproximativă față de soluția exactă, soluția analitică față de integrarea numerică). Orice nepotrivire oprește scriptul cu eroare;
-- `constructie.py` – exemplele numerice din secțiunile de construcție (secțiunea în trepte a coloanei, miezul transformatorului de 400 kVA, cupru sau aluminiu, solicitarea rotoarelor rapide, magneții permanenți, frâna troliului, autoblocarea melcului, substratul modulelor IGBT, condensatoarele), verificate tot pe două căi;
+- `constructie.py` – exemplele numerice din secțiunile de construcție (secțiunea în trepte a coloanei, miezul transformatorului de 400 kVA, cupru sau aluminiu, solicitarea rotoarelor rapide, magneții permanenți, frâna troliului, autoblocarea melcului, substratul modulelor IGBT, condensatoarele); unde există o cale independentă (de exemplu bilanțul energetic pe partea sarcinii, o metodă numerică diferită sau un tabel dintr-o sursă), rezultatul este verificat pe ea, iar verificările doar aritmetice sunt marcate ca atare în script;
 - `figuri_cap00.py` … `figuri_cap05.py`, `figuri_laborator.py` – generează figurile SVG din [`figuri/`](figuri/);
 - `figuri_constructie_cap01.py` … `figuri_constructie_cap04_05.py` – desenele constructive;
 - `ruleaza_tot.py` – rulează tot.
@@ -53,7 +53,7 @@ pip install -r requirements.txt
 python ruleaza_tot.py
 ```
 
-La ultima rulare: 18 scripturi, 124 de verificări, toate trecute.
+La ultima rulare: 18 scripturi, 125 de verificări, toate trecute.
 
 Afirmațiile care nu rezultă din calcul (date normative, valori tipice, proprietăți constructive) sunt însoțite de trimiteri la bibliografie și standarde.
 
@@ -100,8 +100,9 @@ Afirmațiile care nu rezultă din calcul (date normative, valori tipice, proprie
 10. S. V. Kulkarni, S. A. Khaparde – *Transformer Engineering: Design, Technology, and Diagnostics*, ed. 2, CRC Press, 2013 (ISBN 978-1-4398-5377-1).
 11. I. Boldea – *Synchronous Generators* (*The Electric Generators Handbook*), ed. 2, CRC Press, 2016 (ISBN 978-1-4987-2356-5).
 12. J. R. Hendershot, T. J. E. Miller – *Design of Brushless Permanent-Magnet Machines*, Motor Design Books, 2010.
+13. G. C. Stone, E. A. Boulter, I. Culbert, H. Dhirani – *Electrical Insulation for Rotating Machines: Design, Evaluation, Aging, Testing, and Repair*, Wiley–IEEE Press, 2004.
 
-Cărțile [9]–[12] sunt recomandate pentru aprofundarea aspectelor constructive și de proiectare.
+Cărțile [9]–[13] sunt recomandate pentru aprofundarea aspectelor constructive și de proiectare.
 
 **Standarde și reglementări**
 
@@ -125,6 +126,7 @@ Cărțile [9]–[12] sunt recomandate pentru aprofundarea aspectelor constructiv
 - [S18] EN 14492-1 și EN 14492-2:2019 – *Cranes – Power driven winches and hoists* (Partea 1: trolii; Partea 2: palane).
 - [S19] IEC 60034-7 – *Classification of types of construction, mounting arrangements and terminal box position (IM Code)*.
 - [S20] IEC 60034-6 – *Methods of cooling (IC Code)*.
+- [S21] EN 50347 – *General purpose three-phase induction motors having standard dimensions and outputs – Frame numbers 56 to 315 and flange numbers 65 to 740*.
 
 **Surse online** (pentru date constructive și valori tipice; consultate în 2026)
 
@@ -133,25 +135,29 @@ Cărțile [9]–[12] sunt recomandate pentru aprofundarea aspectelor constructiv
 - [W3] EN 10107:2022 – fișa de catalog: https://iteh.es/catalog/standards/cen/fce01aba-ad8d-4217-89af-19fa711a1c44/en-10107-2022 ; tabelul mărcilor cu grăunți orientați: https://www.e-magnetica.pl/doku.php/summary_of_grades_grain_oriented_electrical_steel
 - [W4] Transformatoare cu miez amorf – teză Chalmers: https://publications.lib.chalmers.se/records/fulltext/167013.pdf ; lucrare ITB: https://gcs.itb.ac.id/proceeding-igsc/index.php/igsc/article/download/431/287/2118
 - [W5] Specificație tehnică pentru transformatoare de distribuție de 315 kVA (TS Transco): https://tgtransco.com/images/data/pdfs/spec_downloads/Technical_Spec._of_315_KVA_DTRs.pdf ; note de proiectare UPES: https://dr.ddn.upes.ac.in/bitstream/123456789/2719/32/4-E-ElectricalMachineDesign_20181031055109.229_X.pdf
-- [W6] Conductivitatea electrică și indicele IACS: https://audiophonics.fr/en/blog-diy-audio/68-electrical-conductivity-of-materials-and-iacs-index.html ; https://viox.com/de/conductivity-vs-resistivity-iacs/
+- [W6] ASTM B193 – metoda de determinare a rezistivității conductoarelor (valoarea IEC de 1/58 Ω·mm²/m pentru 100 % IACS, adoptată în 1913): https://www.scribd.com/document/529010838/B193-16 ; conductivitatea cuprului și aluminiului în % IACS: https://viox.com/conductivity-vs-resistivity-iacs/
 - [W7] Esteri naturali pentru transformatoare – broșura Cargill FR3: https://www.cargill.com/doc/1432227943103/fr3r-brochure-2023.pdf ; Transformer Technology: https://transformer-technology.com/article-hub/a-tale-of-two-esters-why-the-natural-one-is-the-better-dielectric-fluid/
 - [W8] Codurile de răcire ale transformatoarelor: https://www.gigaenergy.com/blog/transformer-cooling-methods
 - [W9] Gabaritele IEC: https://inverterdrive.com/help-and-guidance/motor-frame-vs-shaft ; afișul ABB al dimensiunilor IEC: https://library.e.abb.com/public/03f0a0cfc65f46dfa71209e0120ffbf9/IEC%20Poster_24x36.pdf ; tabel de cote (neoficial): https://www.scribd.com/document/751342661/Frame-Size-to-Terminal-Size
 - [W10] Marathon Electric – fișa motorului 6RN160L04E34U461081 (15 kW, 4 poli, IE3, 160L): https://media.marathonelectric.com/images/d120001/medias/docus/573/Article_6RN160L04E34U461081_DataPack_9.pdf
 - [W11] Copper Development Association – colivia rotorică: https://www.copper.org/environment/sustainable-energy/electric-motors/education/motor-rotor/pdf/Squirrel_Cage.pdf ; *Analysis and Reduction of Parasitic Effects in Induction Motors With Die-Cast Rotors* (KTH): https://katalog.lib.cas.cz/KNAV/EdsRecord/edsndl,edsndl.UPSALLA1.oai.DiVA.org.kth.119603
 - [W12] Întrefierul motoarelor asincrone (valori orientative): https://www.xindamotor.com/knowledge/air-gap-size-of-asynchronous-motor-stator-and-rotor
-- [W13] Power Engineering – *Retaining ring replacement can prevent catastrophic generator failure*: https://www.power-eng.com/operations-maintenance/retaining-ring-replacement-can-prevent-catastrophic-generator-failure/ ; brevetul US 5 174 011: https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/5174011
+- [W13] Power Engineering – *Retaining ring replacement can prevent catastrophic generator failure*: https://www.power-eng.com/operations-maintenance/retaining-ring-replacement-can-prevent-catastrophic-generator-failure/ ; brevetul US 5 174 011: https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/5174011 ; brevete despre inele de bandaj nemagnetice: https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/4121953 , https://patents.google.com/patent/US4493733
 - [W14] Oțeluri pentru rotoare de turbogeneratoare (26NiCrMoV14-5, 18Mn18Cr): https://gruppofrattura.it/ocs/index.php/gigf/YSESM2010/paper/download/893/831
 - [W15] IEEE – *Turbogenerators*: https://technav.ieee.org/topic/turbogenerators/ ; ABB – turbogeneratoare răcite cu aer: https://library.e.abb.com/public/0440b8d51c43f92ac1256ddd00347011/20-28m499.pdf
 - [W16] Comparația materialelor magnetice: https://radialmagnet.com/magnet-material-comparison/ ; Arnold Magnetics – coeficienți de temperatură: https://www.arnoldmagnetics.com/wp-content/uploads/2017/10/TN_0303_rev_150715.pdf ; Goudsmit – mărci de ferită: https://www.goudsmitmagnetics.com/uploads/pdf/ferrite_grades_available_at_goudsmit_20250822_4120.pdf
 - [W17] OSHA 29 CFR 1910.179(f)(2) – frânele de menținere ale mecanismelor de ridicare: https://osha.gov/laws-regs/interlinking/standards/1910.179/all ; textul echivalent din California (Title 8, § 4898): https://dir.ca.gov/title8/4898.html
 - [W18] Frâne electromagnetice cu arcuri – Mayr: https://www.mayr.com/en/products/safety-brakes~48215 ; KEB: https://www.keb-automation.com/technology/brakes-clutches/operating-principle/safety-brakes
-- [W19] SEW-EURODRIVE – catalog de reductoare (randamente, autoblocare): https://download.sew-eurodrive.com/download/pdf/16840011_G05.pdf ; Martin Sprocket – angrenaje melcate: https://martinsprocket.com/docs//catalogs/power%20transmission/4_gear%20catalog/worm-worm-gears.pdf
+- [W19] SEW-EURODRIVE – catalog de reductoare (randamente, autoblocare): https://download.sew-eurodrive.com/download/pdf/16840011_G05.pdf ; autoblocarea statică, randamentul la antrenarea inversă și interdicția folosirii autoblocării ca unică funcție de siguranță la mecanismele de ridicare: https://download.sew-eurodrive.com/download/html/33346739/en-EN/891277837948168607755.html ; Martin Sprocket – angrenaje melcate: https://martinsprocket.com/docs//catalogs/power%20transmission/4_gear%20catalog/worm-worm-gears.pdf
 - [W20] Semikron Danfoss – construcția modulelor de putere: https://www.semikron-danfoss.com/innovation-technology/packaging-technology.html ; Ferrotec – substraturi DBC: https://www.ferrotec.com/products-technologies/power-electronic-substrates/ ; Vincotech – materiale pentru substraturi: https://www.vincotech.com/tech-insights/dcb-substrate-materials/ ; gelul siliconic: https://jps.usm.my/wp-content/uploads/2020/11/JPS-313_Art1-1-15.pdf
 - [W21] Mecanisme de defectare a modulelor IGBT – Fraunhofer: https://publica.fraunhofer.de/handle/publica/384285 ; oboseala lipiturii: https://koreascience.kr/article/JAKO201628740956649.page
 - [W22] Würth Elektronik SN008 – durata de viață a condensatoarelor electrolitice: https://www.we-online.com/components/media/o173043v410%20SN008a%20EN.pdf ; Rohm – regula celor 10 °C: https://micro.rohm.com/en/techweb/knowledge/acdc/acdc_sr/acdc_sr01/3177
 - [W23] Manualele convertoarelor Yaskawa F7 și J1000 (durata de viață a ventilatoarelor și condensatoarelor): https://www.manualslib.com/manual/1343226/Yaskawa-F7.html?page=161 ; https://www.manualslib.com/manual/1188409/Yaskawa-J1000.html?page=159
 - [W24] ABB – *Technical guide No. 5: Bearing currents in modern AC drive systems* și broșura *Bearing currents options* (9AKK107336): https://library.e.abb.com/public/619767be6f9340009060c208fe3c2d45/Bearing%20currents%20options-9AKK107336-EN-06-2018.pdf ; SKF INSOCOAT: https://www.engineeringnews.co.za/article/skf-delivers-higher-performance-across-its-insocoat-bearings-range-2017-05-12
-- [W25] Rulmentul SKF 6309-2Z/C3 (fișă de distribuitor): https://uk.rs-online.com/web/p/ball-bearings/6671125
+- [W25] Simbolizarea rulmenților – JTEKT (Koyo): https://koyo.jtekt.co.jp/en/support/bearing-knowledge/6-3000.html ; sistemul de simbolizare SKF: https://www.coolenbearings.com/skf/tech/skf-bearing-designation-skf-bearing-nomenclature-identification ; fișa rulmentului 6309-2Z/C3 (45 × 100 × 25 mm): https://uk.rs-online.com/web/p/ball-bearings/6671125
+- [W26] Zgomotul miezurilor cu îmbinări în trepte (multistep-lap), *Journal de Physique IV*, 1998: https://jp4.journaldephysique.org/en/articles/jp4/abs/1998/02/jp4199808PR2139/jp4199808PR2139.html
+- [W27] Efectul găurilor din tole asupra fluxului și pierderilor – brevetul US 9 805 852: https://patents.google.com/patent/US9805852 ; studiu pe un transformator de 160 kVA: https://ir.kdu.ac.lk/handle/345/2971
+- [W28] IEC 60404-8-7:2020 – fișa de catalog (clasele convențională, cu permeabilitate ridicată și cu domenii rafinate; grosimi 0,20–0,35 mm): https://standards.iteh.ai/catalog/standards/iec/181a90cd-d88b-4045-a41b-b846a431a0d7/iec-60404-8-7-2020 ; factorul de umplere – Cleveland-Cliffs: https://d1io3yog0oux5.cloudfront.net/_464c1f648dd1e0c96c45d68cdce1cf31/clevelandcliffs/db/1190/10487/file/CLF_ProductData_CARLITE_052021.pdf ; tabelul mărcilor POSCO: https://www.scribd.com/document/555768976/POSCO-CRGO
+- [W29] Motoare sincrone cu magneți îngropați pentru vehicule electrice (Aston University, IEEE): https://publications.aston.ac.uk/id/eprint/28829 ; https://research.aston.ac.uk/en/publications/design-and-flux-weakening-control-of-an-interior-permanent-magnet/
 
 Sursele online au fost folosite pentru valori tipice și pentru confirmarea datelor; unde au dat valori diferite, cursul indică intervale sau trimite la fișa producătorului.

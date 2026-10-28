@@ -53,7 +53,7 @@ for k in range(4):
         q1 = p1 + (p1 - p0) / np.hypot(*(p1 - p0)) * 0.1
         ax.add_patch(Polygon(rot(banda(p1, q1, 0.09), a), closed=True, facecolor=FUNDAL, edgecolor=FIER_INCHIS, lw=0.6))
 ax.add_patch(Circle((0, 0), 0.22, facecolor=OTEL, edgecolor=TEXT2, lw=1))
-ax.set_title("(b) magneți îngropați în V (IPM)\ncuplu sincron + cuplu de reluctanță", fontsize=10)
+ax.set_title("(b) magneți îngropați în V (IPM)\ncuplul magneților + cuplu de reluctanță", fontsize=10)
 eticheta(ax, "barieră de flux (aer)\nla capătul magnetului", (0.42, 0.86), (0.3, 1.45))
 # (c) rotor sincron cu reluctanță: bariere de flux, fără magneți și fără colivie
 ax = axs[2]

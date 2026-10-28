@@ -216,20 +216,22 @@ Schema bloc din § 5.1 ascunde multe piese concrete. Figura 5.10 le arată pe ce
 
 ### Frâna de menținere
 
-La acționările care țin o sarcină suspendată (macarale, lifturi, trolii, axele verticale ale mașinilor-unelte), motorul are o **frână electromagnetică cu arcuri**. Arcurile apasă un **disc cu garnituri de fricțiune** între o armătură mobilă și o placă fixă; când bobina electromagnetului este alimentată, ea atrage armătura și eliberează discul [W18]. Frâna **frânează deci la lipsa tensiunii** (principiul *fail-safe*): dacă rețeaua cade sau se întrerupe circuitul de comandă, sarcina rămâne ținută. Frâna se alege după:
+La acționările care țin o sarcină suspendată (macarale, lifturi, trolii, axele verticale ale mașinilor-unelte), motorul are o **frână electromagnetică cu arcuri**. Arcurile apasă un **disc cu garnituri de fricțiune** între o armătură mobilă și o placă fixă; când bobina electromagnetului este alimentată, ea atrage armătura și eliberează discul [W18]. Frâna **acționează deci la lipsa tensiunii** (principiul *fail-safe*): dacă rețeaua cade sau se întrerupe circuitul de comandă, sarcina rămâne ținută. Frâna se alege după:
 
-- **cuplul de frânare**, cu o rezervă față de cuplul sarcinii raportat la arborele pe care este montată. De exemplu, reglementarea americană OSHA 1910.179 pentru podurile rulante cere ca frâna de menținere a mecanismului de ridicare să dezvolte cel puțin 125 % din cuplul de ridicare la sarcina nominală, în punctul în care acționează, atunci când frânarea din timpul manevrei se face pe altă cale decât mecanic (de exemplu, electric) [W17]. În Europa, cerințele de securitate pentru trolii și palane electrice sunt date de standardele EN 14492-1 și EN 14492-2 [S18];
+- **cuplul de frânare**, cu o rezervă față de cuplul sarcinii raportat la arborele pe care este montată. De exemplu, reglementarea americană OSHA 1910.179 pentru podurile rulante cere ca frâna de menținere a mecanismului de ridicare să dezvolte cel puțin 125 % din cuplul de ridicare la sarcina nominală (*full load hoisting torque*), în punctul în care acționează frâna, atunci când frânarea din timpul manevrei se face pe altă cale decât mecanic (de exemplu, electric) [W17]. În Europa, cerințele de securitate pentru trolii și palane electrice sunt date de standardele EN 14492-1 și EN 14492-2 [S18];
 - **capacitatea termică**: la fiecare oprire, frâna transformă în căldură energia cinetică a maselor în mișcare și lucrul făcut de sarcină în timpul opririi; aceeași reglementare cere o capacitate termică suficientă pentru frecvența manevrelor [W17].
 
-**Exemplu – frâna troliului din problema 5.1**, montată pe arborele motorului. Cuplul static al sarcinii nominale raportat la arborele frânei, fără a conta pe frecările din reductor (care ajută la menținere), este $M_t/i = 3924/60 = 65{,}40$ N·m; 125 % din el înseamnă 81,75 N·m. Dacă se pornește, acoperitor, de la cuplul de ridicare (cu pierderile din reductor, 72,67 N·m), rezultă 90,83 N·m. Se alege o frână cu cuplul nominal $M_b$ = 100 N·m.
+**Exemplu – frâna troliului din problema 5.1**, montată pe arborele motorului. Cuplul de ridicare la sarcina nominală, raportat la acest arbore (cu pierderile din reductor), este 72,67 N·m (problema 5.1); 125 % din el înseamnă 90,83 N·m. Se alege o frână cu cuplul nominal $M_b$ = 100 N·m. Față de cuplul static al sarcinii, fără a conta pe frecările din reductor (care ajută la menținere), $M_t/i = 3924/60 = 65{,}40$ N·m, rezerva reală la menținere este $100/65{,}40 = 1{,}53$.
 
-Dacă tensiunea dispare în timp ce sarcina coboară cu 0,512 m/s și frâna intră imediat, sarcina antrenează arborele cu $M_r' = M_t\eta_t/i = 58{,}86$ N·m (§ 5.3, problema 5.1), iar mișcarea este uniform încetinită:
+Să presupunem că sarcina coboară cu aceeași viteză ca la ridicare, 0,512 m/s (de exemplu, comandată de un convertor), că tensiunea dispare și că frâna acționează imediat. Sarcina antrenează arborele cu $M_r' = M_t\eta_t/i = 58{,}86$ N·m (§ 5.3, problema 5.1), iar mișcarea este uniform încetinită:
 
 $$t_{op} = \frac{J\Omega_m}{M_b - M_r'} = \frac{0{,}1236\cdot 153{,}52}{100 - 58{,}86} = 0{,}461 \text{ s},$$
 
 $$s_{op} = \frac{v\thinspace t_{op}}{2} = \frac{0{,}512\cdot 0{,}461}{2} = 0{,}118 \text{ m}.$$
 
-Arborele motorului se mai rotește cu $\theta = \Omega_m t_{op}/2 = 35{,}4$ rad, iar frâna disipă $M_b\theta$ = 3541 J. **Verificări:** bilanțul energetic $\tfrac12 J\Omega_m^2 + M_r'\theta = 1457 + 2084 = 3541$ J ✓; integrarea numerică a ecuației mișcării dă același timp și aceeași distanță ✓. În realitate, frâna are un timp de reacție (indicat în catalog) în care sarcina accelerează nefrânată, deci distanța de oprire este mai mare decât cea calculată.
+Arborele motorului se mai rotește cu $\theta = \Omega_m t_{op}/2 = 35{,}4$ rad, iar frâna disipă $M_b\theta$ = 3541 J. **Verificare pe partea sarcinii**, cu vitezele fizice ale fiecărui corp: energia cinetică a motorului, a tamburului și a masei, $\tfrac12 J_m\Omega_m^2 + \tfrac12 J_{tambur}\Omega_t^2 + \tfrac12 mv^2 = 1178 + 16 + 262 = 1457$ J, plus lucrul greutății pe distanța de oprire, diminuat cu pierderile din reductor, $\eta_t mgs_{op} = 0{,}9\cdot 2000\cdot 9{,}81\cdot 0{,}118 = 2084$ J, dau tot 3541 J ✓ (calculul confirmă și raportarea la arbore din § 5.3).
+
+În realitate, distanța de oprire este mai mare: frâna are un timp de reacție (indicat în catalog) în care sarcina accelerează nefrânată, iar cuplul ei în timpul alunecării poate fi mai mic decât cel nominal. Dacă motorul este alimentat direct de la rețea, sarcina coboară cu motorul în regim de generator, la circa 1520 rot/min (0,530 m/s); oprirea durează atunci 0,48 s, pe 126 mm.
 
 ### Cuplajul, reductorul și traductorul
 
@@ -243,13 +245,13 @@ Arborele motorului se mai rotește cu $\theta = \Omega_m t_{op}/2 = 35{,}4$ rad,
 | cilindric-conic | perpendiculare | randament în același interval [W19] |
 | melcat (sau cilindric-melcat) | perpendiculare, neconcurente | raport mare într-o singură treaptă; frecări de alunecare mari, deci randament mai mic, care poate scădea sub 50 % la rapoarte foarte mari [W19] |
 
-Randamentul unui reductor cu mai multe trepte este produsul randamentelor treptelor: $0{,}98^3 = 0{,}941$, în acord cu valoarea de catalog de 94 % pentru trei trepte.
+Randamentul unui reductor cu mai multe trepte este produsul randamentelor treptelor: $0{,}98^3 = 0{,}941$, în acord cu valoarea de catalog de 94 % pentru trei trepte. Valoarea $\eta_t$ = 0,90 din problema 5.1 este deci acoperitoare pentru un reductor cilindric; ea poate fi privită ca randamentul întregii transmisii (reductor, lagărele tamburului, cablul).
 
-**Autoblocarea.** Un angrenaj melcat la care unghiul de înclinare al elicei melcului, $\gamma$, este mai mic decât unghiul de frecare $\rho$ ($\tan\rho = \mu$) nu poate fi rotit de la roată: este **autoblocant**. Randamentul la antrenarea de la melc este
+**Autoblocarea.** Un angrenaj melcat la care unghiul de înclinare al elicei melcului, $\gamma$, nu depășește unghiul de frecare $\rho$ nu poate fi rotit de la roată: este **autoblocant**. Randamentul la antrenarea de la melc este
 
-$$\eta = \frac{\tan\gamma}{\tan(\gamma + \rho)} ;$$
+$$\eta = \frac{\tan\gamma}{\tan(\gamma + \rho)} ,$$
 
-la limita autoblocării ($\gamma = \rho$) se obține $\eta = \tan\rho/\tan 2\rho = (1 - \mu^2)/2$, deci **un melc autoblocant are întotdeauna randamentul sub 50 %** (verificat și numeric, pentru μ = 0,03…0,08; catalogul [W19] folosește aceeași limită de 50 %). Autoblocarea **nu înlocuiește frâna**: ungerea și vibrațiile pot micșora frecarea, iar producătorii recomandă o frână acolo unde este în joc siguranța [W19].
+unde $\tan\rho = \mu'$ este coeficientul de frecare echivalent (el ține seama și de unghiul de presiune al danturii). Dacă se folosește același coeficient de frecare în repaus și în mers, la limita autoblocării ($\gamma = \rho$) se obține $\eta = \tan\rho/\tan 2\rho = (1 - \mu'^2)/2 < 0{,}5$: **un melc autoblocant are randamentul sub 50 %** (verificat și numeric, pentru $\mu'$ = 0,03…0,08). Catalogul [W19] folosește aceeași limită pentru **autoblocarea statică** ($\eta \le 0{,}5$) și dă pentru antrenarea inversă relația $\eta' \approx 2 - 1/\eta$, regăsită și din formula exactă $\eta' = \tan(\gamma - \rho)/\tan\gamma$ (abatere sub 1 % la $\gamma$ = 20°). Frecarea de repaus este însă mai mare decât cea din mers, deci comportarea reală diferă de calculul simplu. Autoblocarea **nu înlocuiește frâna**: ungerea și vibrațiile pot micșora frecarea, iar catalogul [W19] precizează că autoblocarea nu este admisă ca unică funcție de siguranță la mecanismele de ridicare.
 
 **Traductorul de turație sau de poziție** se montează, de regulă, pe capătul liber al arborelui motorului. Un **encoder incremental** dă un număr fix de impulsuri pe rotație: turația rezultă din frecvența impulsurilor, iar poziția – prin numărarea lor de la o poziție de referință. Un **encoder absolut** dă direct un cod unic pentru fiecare poziție, disponibil imediat după alimentare. La servomotoare se folosește și **resolverul**, un mic transformator rotativ ale cărui tensiuni de ieșire depind de unghiul rotorului.
 
@@ -268,9 +270,9 @@ Un convertor de joasă tensiune (figura 5.6) conține: puntea redresoare cu diod
 | Al₂O₃ (alumină 96 %), 0,38 mm | 24 W/(m·K) [W20] | 0,158 K/W | 15,8 K |
 | AlN (nitrură de aluminiu), 0,63 mm | 170 W/(m·K) [W20] | 0,037 K/W | 3,7 K |
 
-*Rezistența termică $R_{th} = t/(\lambda A)$, verificată prin rezolvarea numerică a conducției pe o rețea de noduri. Valorile reale sunt mai mici, pentru că straturile de cupru împrăștie căldura pe o arie mai mare; comparația rămâne valabilă: deși mai groasă, ceramica din AlN are o rezistență termică de circa 4 ori mai mică, de aceea este preferată la densități mari de putere.*
+*Rezistența termică $R_{th} = t/(\lambda A)$, pentru flux unidimensional. Valorile reale sunt mai mici, pentru că straturile de cupru împrăștie căldura pe o arie mai mare; comparația rămâne valabilă: deși mai groasă, ceramica din AlN are o rezistență termică de circa 4 ori mai mică, de aceea este preferată la densități mari de putere.*
 
-**De ce se defectează modulele.** Straturile au coeficienți de dilatare termică diferiți. La fiecare ciclu de încălzire și răcire (pornire, accelerare, oprire), îmbinările sunt solicitate mecanic: firele de aluminiu se pot desprinde de pe cip, iar lipitura dintre cip și substrat obosește și se fisurează; rezistența termică crește, cipul se încălzește mai tare, iar degradarea se accelerează [W21]. De aceea, durata de viață a modulelor se estimează prin **încercări de ciclare a puterii** (conectarea și deconectarea repetată a sarcinii) [W21].
+**De ce se defectează modulele.** Straturile au coeficienți de dilatare termică diferiți. La fiecare ciclu de încălzire și răcire (pornire, accelerare, oprire), îmbinările sunt solicitate mecanic: firele de aluminiu se pot desprinde de pe cip, iar lipiturile – dintre cip și substrat și dintre substrat și placa de bază – obosesc și se fisurează; rezistența termică crește, cipul se încălzește mai tare, iar degradarea se accelerează [W21]. De aceea, durata de viață a modulelor se estimează prin **încercări de ciclare a puterii** (conectarea și deconectarea repetată a sarcinii) [W21].
 
 **Piese cu durată de viață limitată.** Manualele convertoarelor dau ventilatoarele și condensatoarele circuitului intermediar ca piese de înlocuit periodic: de exemplu, circa 2–3 ani pentru ventilatoare și 5–10 ani pentru condensatoare, în condiții precizate de temperatură ambiantă, încărcare și ore de funcționare pe zi [W23]. Durata de viață a unui condensator electrolitic se **dublează, aproximativ, la fiecare 10 °C** cu care scade temperatura lui [W22]:
 
@@ -414,7 +416,7 @@ Motorul de 11 kW din problema 5.3 are constanta termică de timp $\tau$ = 20 min
 11. Menține bobina contactorului alimentată după eliberarea butonului de pornire; la căderea tensiunii, motorul nu repornește singur (§ 5.11).
 12. Închiderea simultană ar scurtcircuita două faze ale rețelei (§ 5.11).
 13. Pentru că frânează la lipsa tensiunii (principiul *fail-safe*): la căderea rețelei sau la întreruperea circuitului de comandă, sarcina rămâne ținută (§ 5.12).
-14. La limita autoblocării ($\gamma = \rho$), randamentul este $(1 - \mu^2)/2 < 0{,}5$. Nu: ungerea și vibrațiile pot micșora frecarea, iar producătorii recomandă o frână acolo unde este în joc siguranța (§ 5.12).
+14. Cu același coeficient de frecare în repaus și în mers, la limita autoblocării ($\gamma = \rho$) randamentul este $(1 - \mu'^2)/2 < 0{,}5$. Nu: ungerea și vibrațiile pot micșora frecarea, iar autoblocarea nu este admisă ca unică funcție de siguranță la mecanismele de ridicare (§ 5.12).
 15. Izolează electric cipurile de radiator, dar conduce căldura spre el. AlN are conductivitatea termică de circa 170 W/(m·K), față de 24 W/(m·K) la Al₂O₃: chiar mai groasă, ceramica din AlN are o rezistență termică de circa 4 ori mai mică (§ 5.12).
 16. Ciclurile de încălzire și răcire, combinate cu coeficienții de dilatare diferiți ai straturilor, duc la desprinderea firelor de aluminiu de pe cipuri și la oboseala și fisurarea lipiturilor (§ 5.12).
 17. Durata se dublează aproximativ la fiecare 10 °C cu care scade temperatura miezului condensatorului: un condensator de 5000 h la 105 °C ajunge la circa 80 000 h la 65 °C (§ 5.12).

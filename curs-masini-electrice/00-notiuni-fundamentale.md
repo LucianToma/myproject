@@ -195,7 +195,7 @@ Orice conversie de energie are pierderi, care se transformă în căldură:
 | mecanice, $P_{m}$ | frecări în lagăre, ventilație | viteză |
 | suplimentare | câmpuri de dispersie, armonici | sarcină |
 
-Miezurile se fac din **tole** (tablă subțire, uzual 0,23–0,65 mm, izolată) tocmai pentru a limita curenții turbionari, care ar circula altfel liber prin fierul masiv.
+Miezurile se fac din **tole** (tablă subțire, uzual 0,20–0,65 mm, izolată) tocmai pentru a limita curenții turbionari, care ar circula altfel liber prin fierul masiv.
 
 **Randamentul** este
 

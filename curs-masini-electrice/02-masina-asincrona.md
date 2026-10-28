@@ -28,7 +28,7 @@ Figura 2.1 arată părțile unui motor asincron cu rotorul în colivie, **închi
 
 **Carcasa** susține statorul și transmite căldura spre exterior prin **aripioare**. Se face din fontă, din aluminiu (la motoarele mici, mai ușoare) sau din oțel sudat (la motoarele mari). Motorul se fixează prin **tălpi** (forma de montaj IM B3), prin **flanșă** (IM B5) sau prin ambele (IM B35), după IEC 60034-7 [S19]. Cele două **scuturi** închid carcasa la capete și poartă lagărele: scutul **DE** (*drive end*) pe partea capătului de arbore care antrenează mașina de lucru și scutul **NDE** pe partea opusă.
 
-**Gabaritul** motoarelor este standardizat (IEC 60072-1 [S14]): numărul gabaritului este **înălțimea axului** față de planul tălpilor, în milimetri. De exemplu, gabaritul **160** are axul la 160 mm, capătul de arbore de Ø42 × 110 mm și pana de 12 × 8 mm [W9]. Literele **S, M, L** care urmează (160M, 160L) desemnează carcase de lungimi diferite, pentru pachete de tole mai scurte sau mai lungi: înălțimea axului rămâne aceeași, dar distanța dintre găurile tălpilor pe direcția axului crește (210 mm la 160M, 254 mm la 160L [W9]). Standardizarea permite înlocuirea unui motor cu altul, de la alt producător, fără modificarea fundației sau a cuplajului.
+**Gabaritul** motoarelor este standardizat (IEC 60072-1 [S14]): numărul gabaritului este **înălțimea axului** față de planul tălpilor, în milimetri. De exemplu, gabaritul **160** are axul la 160 mm, capătul de arbore de Ø42 × 110 mm și pana de 12 × 8 mm [W9]. Literele **S, M, L** care urmează (160M, 160L) desemnează carcase de lungimi diferite, pentru pachete de tole mai scurte sau mai lungi: înălțimea axului rămâne aceeași, dar distanța dintre găurile tălpilor pe direcția axului crește (210 mm la 160M, 254 mm la 160L [W9]). Standardizarea cotelor permite înlocuirea unui motor cu altul **de același gabarit**, de la alt producător, fără modificarea fundației sau a cuplajului; asocierea dintre puteri și gabarite pentru motoarele de uz general este dată de EN 50347 [S21].
 
 ### Miezul statoric
 
@@ -38,9 +38,9 @@ Tolele se ștanțează cu **crestăturile** deschise spre întrefier (figura 2.3
 
 ### Înfășurarea statorică
 
-- La motoarele de **joasă tensiune**, bobinele se fac din **sârmă rotundă de cupru emailată** și se introduc spiră cu spiră, prin deschiderea îngustă a **crestăturilor semiînchise**. Crestătura este căptușită cu **izolație de crestătură** (folii stratificate din materiale electroizolante), iar bobinele sunt reținute de o **pană** (figura 2.3a). Între fazele din aceeași crestătură și între capetele de bobină ale fazelor diferite se pun separatoare.
+- La motoarele de **joasă tensiune**, bobinele se fac din **sârmă rotundă de cupru emailată** și se introduc fir cu fir, prin deschiderea îngustă a **crestăturilor semiînchise**. Crestătura este căptușită cu **izolație de crestătură** (folii stratificate din materiale electroizolante), iar bobinele sunt reținute de o **pană** (figura 2.3a). Între fazele din aceeași crestătură și între capetele de bobină ale fazelor diferite se pun separatoare.
 - La motoarele de **înaltă tensiune** (de exemplu 6 kV), bobinele sunt **preformate** din conductor dreptunghiular și izolate cu **bandă de mică**; ele se introduc în **crestături deschise**.
-- Înfășurarea finită se **impregnează** cu lac sau rășină, care leagă conductoarele între ele, îmbunătățește transmiterea căldurii și protejează împotriva umidității. Clasa termică a sistemului de izolație (de exemplu F – 155 °C, § 0.9) este a ansamblului de materiale, nu a unui singur material.
+- Înfășurarea terminată se **impregnează** cu lac sau rășină, care leagă conductoarele între ele, îmbunătățește transmiterea căldurii și protejează împotriva umidității. Clasa termică a sistemului de izolație (de exemplu F – 155 °C, § 0.9) este a ansamblului de materiale, nu a unui singur material.
 
 Capetele celor trei faze se aduc în **cutia de borne** și se marchează **U1–U2, V1–V2, W1–W2** (IEC 60034-8 [S13]). Pe placa de borne, capetele sunt așezate astfel încât conexiunea **stea** sau **triunghi** să se facă doar prin mutarea a trei punți (figura 2.4).
 
@@ -58,7 +58,9 @@ Capetele celor trei faze se aduc în **cutia de borne** și se marchează **U1�
 
 ![Figura 2.5 – Colivia rotorică](figuri/f02-5-colivie.svg)
 
-*Figura 2.5 – Colivia rotorică (fără miezul de tole).* La motoarele mari, colivia se face din bare de cupru sau aliaje de cupru, lipite de inele. **Colivia din cupru turnat** reduce pierderile din rotor și crește randamentul (cuprul conduce mai bine), dar turnarea este mai dificilă din cauza temperaturii de topire mai mari; rotorul trebuie reproiectat, pentru că se modifică și cuplul de pornire [W11].
+*Figura 2.5 – Colivia rotorică (fără miezul de tole).*
+
+La motoarele mari, colivia se face din bare de cupru sau aliaje de cupru, lipite de inele. **Colivia din cupru turnat** reduce pierderile din rotor și crește randamentul (cuprul conduce mai bine), dar turnarea este mai dificilă din cauza temperaturii de topire mai mari; rotorul trebuie reproiectat, pentru că se modifică și cuplul de pornire [W11].
 
 **Forma crestăturilor rotorice** (figura 2.3b–e) stabilește caracteristicile de pornire: barele rotunde dau un motor cu alunecare mică și cuplu de pornire modest, iar **barele înalte** și **colivia dublă** folosesc efectul de refulare pentru un cuplu de pornire mare (§ 2.7).
 
@@ -78,7 +80,7 @@ Capetele celor trei faze se aduc în **cutia de borne** și se marchează **U1�
 
 ### Fișa constructivă a unui motor real de 15 kW
 
-Motorul de referință M15 are date construite pentru curs. Un motor real cu aceleași date nominale (15 kW, 4 poli, 50 Hz, IE3), din catalogul unui producător, are de exemplu: gabaritul **160L** (axul la 160 mm), capăt de arbore **Ø42 × 110 mm**, execuție cu tălpi (IM B3) sau cu flanșă (IM B5), grad de protecție **IP55**, răcire **IC 411**, rulmentul DE **6309-2Z/C3** și randamentul nominal **92,1 %** – exact minimul clasei IE3 la această putere (§ 2.11) [W10].
+Motorul de referință M15 are date construite pentru curs. Un motor real cu aceeași putere, același număr de poli și aceeași clasă de randament (15 kW, 4 poli, 50 Hz, IE3), din catalogul unui producător, are de exemplu: gabaritul **160L** (axul la 160 mm), capăt de arbore **Ø42 × 110 mm**, execuție cu tălpi (IM B3) sau cu flanșă (IM B5), grad de protecție **IP55**, răcire **IC 411**, rulmentul DE **6309-2Z/C3** și randamentul nominal **92,1 %** – exact minimul clasei IE3 la această putere (§ 2.11) [W10].
 
 ## 2.2. Principiul de funcționare. Alunecarea
 
@@ -394,7 +396,7 @@ Un motor de 15 kW, 4 poli, funcționează 4000 h/an la sarcină nominală. Cât 
 12. Regim de generator ($s < 0$): primește putere mecanică și dă putere activă rețelei, dar absoarbe putere reactivă (§ 2.5, § 2.10).
 13. Lucrează la sarcină relativă mică, unde randamentul și mai ales factorul de putere sunt mici (§ 2.6).
 14. IE3 (Regulamentul (UE) 2019/1781, de la 1 iulie 2021); IE4 este obligatorie de la 1 iulie 2023 pentru motoarele de 75–200 kW cu 2, 4 sau 6 poli (§ 2.11).
-15. Axul se află la 160 mm deasupra planului tălpilor; L desemnează carcasa lungă (distanța dintre găurile tălpilor pe direcția axului 254 mm, față de 210 mm la 160M), pentru un pachet de tole mai lung. Un motor se poate înlocui cu altul, de la alt producător, fără modificarea fundației sau a cuplajului (§ 2.1).
+15. Axul se află la 160 mm deasupra planului tălpilor; L desemnează carcasa lungă (distanța dintre găurile tălpilor pe direcția axului 254 mm, față de 210 mm la 160M), pentru un pachet de tole mai lung. Un motor se poate înlocui cu altul de același gabarit, de la alt producător, fără modificarea fundației sau a cuplajului (§ 2.1).
 16. Pierderi specifice de cel mult 4,00 W/kg la 1,5 T și 50 Hz, grosime 0,50 mm, tablă livrată complet tratată. Fluxul se rotește, deci tabla trebuie să aibă proprietăți apropiate în toate direcțiile (§ 2.1).
 17. Aluminiul se toarnă sub presiune în crestăturile pachetului de tole rotorice; barele și inelele de scurtcircuitare (adesea cu aripioare de ventilație) rezultă dintr-o singură bucată. Înclinarea, de aproximativ un pas de crestătură, atenuează cuplurile parazite și zgomotul magnetic (§ 2.1).
 18. Rulment radial cu bile (6), seria de dimensiuni 3, alezajul 9 × 5 = 45 mm, două scuturi metalice de protecție (2Z), joc radial interior mai mare decât cel normal (C3) (§ 2.1).
@@ -404,6 +406,6 @@ Un motor de 15 kW, 4 poli, funcționează 4000 h/an la sarcină nominală. Cât 
 
 ---
 
-**Bibliografie pentru capitol:** [1] cap. 6, [2] cap. 6, [3], [4], [9]; standarde [S1], [S2], [S6], [S8], [S11], [S13], [S14], [S19], [S20]; surse online [W1], [W2], [W9]–[W12], [W25]. Lista completă este în [README](README.md#bibliografie).
+**Bibliografie pentru capitol:** [1] cap. 6, [2] cap. 6, [3], [4], [9]; standarde [S1], [S2], [S6], [S8], [S11], [S13], [S14], [S19]–[S21]; surse online [W1], [W2], [W9]–[W12], [W25]. Lista completă este în [README](README.md#bibliografie).
 
 [← Capitolul 1](01-transformatorul.md) · [Cuprins](README.md) · [Capitolul 3. Generatorul sincron →](03-generatorul-sincron.md)

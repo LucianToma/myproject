@@ -20,7 +20,7 @@ Un transformator este format din **partea activă** (miezul magnetic și înfă�
 
 **Materialul.** Miezul se face din **tole de oțel electrotehnic cu grăunți orientați** (în engleză GO sau CRGO): oțel cu circa 3 % siliciu, laminat la rece și tratat termic astfel încât cristalele să fie aliniate pe direcția de laminare. Pe această direcție permeabilitatea este foarte mare și pierderile foarte mici; perpendicular pe ea, proprietățile sunt mult mai slabe. Tolele au grosimi standardizate de 0,20–0,35 mm și sunt acoperite cu un strat izolator subțire, care întrerupe drumul curenților turbionari între ele [S12], [W3].
 
-**Cum se citește marca tablei** (EN 10107 [S12]): de exemplu **M120-30S** înseamnă pierderi specifice de cel mult **1,20 W/kg** la **1,7 T** și 50 Hz, grosime **0,30 mm**, calitate **S** (convențională); litera **P** desemnează tablele cu permeabilitate ridicată, cu pierderi mai mici [W3].
+**Cum se citește marca tablei** (EN 10107 [S12]): de exemplu **M120-30S** înseamnă pierderi specifice de cel mult **1,20 W/kg** la **1,7 T** și 50 Hz, grosime **0,30 mm**, calitate **S** (convențională); litera **P** desemnează tablele cu permeabilitate ridicată, cu pierderi mai mici [W3]. Ediția din 2020 a standardului internațional corespunzător (IEC 60404-8-7) cuprinde și o a treia clasă, cu **domenii magnetice rafinate** (pierderi și mai mici), și grosimi de la 0,20 mm [W28].
 
 **Metalul amorf** este o alternativă pentru transformatoarele de distribuție: o bandă foarte subțire (de ordinul 0,02–0,03 mm), fără structură cristalină, cu rezistivitate mare. Pierderile la mers în gol scad puternic – studiile și producătorii raportează reduceri de ordinul 60–80 % față de oțelul cu grăunți orientați –, dar inducția de saturație este mai mică (puțin peste 1,5 T), iar transformatorul rezultă mai mare și mai greu [W4].
 
@@ -41,15 +41,15 @@ Un transformator este format din **partea activă** (miezul magnetic și înfă�
 |---|---|---|---|---|---|---|---|---|---|
 | Fracțiunea din cerc ocupată | 0,637 | 0,787 | 0,851 | 0,886 | 0,908 | 0,923 | 0,934 | 0,942 | 0,948 |
 
-(o singură treaptă este pătratul înscris, $2/\pi = 0{,}637$ – valoare exactă, folosită la verificarea calculului). Câștigul scade cu fiecare treaptă în plus; specificațiile de achiziție pentru transformatoare de distribuție cer de regulă un număr minim de trepte (de exemplu cel puțin 7 la 315 kVA [W5]). În plus, din cauza stratului izolator și a planeității imperfecte a tolelor, fierul ocupă doar o fracțiune din volumul pachetului (**factorul de umplere al tolelor**, în jur de 0,9 sau mai mult).
+(o singură treaptă este pătratul înscris, $2/\pi = 0{,}637$ – valoare exactă, folosită la verificarea calculului). Câștigul scade cu fiecare treaptă în plus; specificațiile de achiziție pot impune un număr minim de trepte – de exemplu, specificația consultată pentru transformatoare de distribuție de 315 kVA cere cel puțin 7 [W5]. În plus, din cauza stratului izolator și a planeității imperfecte a tolelor, fierul ocupă doar o fracțiune din volumul pachetului (**factorul de umplere al tolelor**; pentru tablele cu grăunți orientați, producătorii garantează valori minime de circa 0,95–0,96 [W28]).
 
-**Îmbinarea tolelor.** La colțurile miezului, tolele coloanelor se întâlnesc cu cele ale jugurilor. Îmbinarea dreaptă obligă fluxul să treacă, în colț, perpendicular pe direcția de laminare; de aceea tolele cu grăunți orientați se taie la **45°** și se așază cu rosturile decalate de la un strat la altul (**step-lap**, figura 1.2c). Fluxul rămâne astfel pe direcția favorabilă, iar pierderile și curentul de magnetizare scad; îmbinarea contribuie și la reducerea zgomotului.
+**Îmbinarea tolelor.** La colțurile miezului, tolele coloanelor se întâlnesc cu cele ale jugurilor. Îmbinarea dreaptă obligă fluxul să treacă, în colț, perpendicular pe direcția de laminare; de aceea tolele cu grăunți orientați se taie la **45°**, iar fluxul rămâne pe direcția favorabilă – pierderile și curentul de magnetizare scad. La îmbinarea la 45° obișnuită, rosturile alternează între două poziții de la un strat la altul; la îmbinarea **în trepte** (**step-lap**, figura 1.2c), rosturile straturilor (sau ale grupurilor de tole) succesive se decalează **progresiv**, în mai multe trepte, ceea ce reduce în plus pierderile și zgomotul. Un studiu experimental arată că 3–4 trepte aduc cea mai mare parte din reducerea zgomotului [W26].
 
 ![Figura 1.2 – Secțiunea coloanei și îmbinările](figuri/f01-2-sectiune-imbinari.svg)
 
 *Figura 1.2 – (a) Secțiunea în trepte a coloanei; (b) îmbinare dreaptă; (c) îmbinare la 45° în trepte.*
 
-Miezul se strânge cu **grinzi de strângere** și **bandaje** (nu cu șuruburi prin tole, care ar crea căi pentru curenți turbionari) și se leagă la pământ **într-un singur punct**: legarea în mai multe puncte ar închide bucle prin care ar circula curenți induși.
+Miezul se strânge cu **grinzi de strângere** și **bandaje**. Găurile prin tole (pentru șuruburi sau știfturi) se evită ori se plasează unde inducția este mică: în jurul lor fluxul se aglomerează, iar pierderile prin curenți turbionari cresc [W27]. Miezul se leagă la pământ **într-un singur punct**: legarea în mai multe puncte ar închide bucle prin care ar circula curenți induși.
 
 ### Înfășurările
 
@@ -58,11 +58,11 @@ Miezul se strânge cu **grinzi de strângere** și **bandaje** (nu cu șuruburi 
 | Material | Rezistivitate la 20 °C | Densitate | Pentru aceeași rezistență |
 |---|---|---|---|
 | cupru (100 % IACS) | 1,724·10⁻⁸ Ω·m | 8,89 g/cm³ | – |
-| aluminiu (61 % IACS) | 2,826·10⁻⁸ Ω·m | 2,70 g/cm³ | secțiune de 1,64 ori mai mare, dar masă de doar 0,50 ori |
+| aluminiu (61 % IACS) | 2,826·10⁻⁸ Ω·m | 2,70 g/cm³ | secțiune de 1,64 ori mai mare, dar numai jumătate din masă (0,50) |
 
-*Rezistivitățile corespund conductivităților de 100 % și 61 % IACS (standardul internațional al cuprului recopt) [W6].*
+*Rezistivitățile corespund conductivităților de 100 % și 61 % IACS. Standardul internațional al cuprului recopt (IACS), adoptat de IEC în 1913, definește 100 % prin rezistivitatea de 1/58 Ω·mm²/m la 20 °C; aluminiul pentru conductoare are, după puritate, circa 60–64 % IACS [W6] – în exemplu am folosit 61 %.*
 
-De exemplu, un conductor de 100 m cu rezistența de 10 mΩ are 172 mm² și 153 kg din cupru, sau 283 mm² și 76 kg din aluminiu (calcul verificat pe două căi în script). Aluminiul este mai ușor și mai ieftin, dar ocupă mai mult loc – miezul și cuva cresc. Ambele materiale se folosesc curent la transformatoarele de distribuție.
+De exemplu, un conductor de 100 m cu rezistența de 10 mΩ are 172 mm² și 153 kg din cupru, sau 283 mm² și 76 kg din aluminiu (calcul în script). Aluminiul este mai ușor și mai ieftin, dar ocupă mai mult loc – miezul și cuva cresc. Ambele materiale se folosesc curent la transformatoarele de distribuție.
 
 **Tipuri de înfășurări** (figura 1.3):
 
@@ -85,7 +85,7 @@ La curenți mari, conductorul se formează din multe fire elementare izolate și
 - **Uleiul** impregnează hârtia, completează izolația și transportă căldura spre pereții cuvei. Pe lângă uleiul mineral se folosesc **esterii** (naturali sau sintetici): esterii naturali au punctul de ardere peste 300 °C (de regulă în jur de 350 °C), deci sunt preferați acolo unde contează riscul de incendiu [S16], [W7].
 - **Transformatoarele uscate** au înfășurările turnate în **rășină epoxidică** și răcire directă cu aer; nu conțin lichid inflamabil și se montează în clădiri (spitale, centre comerciale, posturi de transformare interioare).
 
-Izolația celulozică îmbătrânește cu temperatura și umiditatea; de aceea temperatura înfășurărilor și a uleiului este limitată prin standard (IEC 60076-2 [S15]), iar uleiul este protejat de umezeala din aer.
+Izolația celulozică îmbătrânește cu temperatura și umiditatea; de aceea încălzirea înfășurărilor și a uleiului (supratemperatura față de mediul de răcire) este limitată prin standard (IEC 60076-2 [S15]), iar uleiul este protejat de umezeala din aer.
 
 ### Cuva, răcirea și accesoriile
 
@@ -409,10 +409,10 @@ $$S_{em} = S\left(1 - \frac{U_2}{U_1}\right) = 2000\cdot\frac{30}{230} = 260{,}9
 11. Care sunt condițiile de funcționare în paralel și ce se întâmplă dacă $u_{sc}$ diferă mult?
 12. De ce secundarul unui transformator de curent nu trebuie lăsat deschis?
 13. Ce înseamnă marca de tablă M120-30S? De ce miezul transformatorului folosește tablă cu grăunți orientați, iar statorul unui motor nu?
-14. De ce coloana are secțiunea în trepte și de ce tolele se îmbină la 45°, cu rosturile decalate (step-lap)?
+14. De ce coloana are secțiunea în trepte și de ce tolele se îmbină la 45°, cu rosturile decalate progresiv (step-lap)?
 15. Ce avantaje și ce dezavantaje are aluminiul față de cupru în înfășurări?
 16. Ce rol au conservatorul, filtrul cu silicagel și releul Buchholz? Ce înseamnă codul de răcire ONAN?
-17. De ce miezul se leagă la pământ într-un singur punct și nu se strânge cu șuruburi trecute prin tole?
+17. De ce miezul se leagă la pământ într-un singur punct și de ce se evită găurile prin tole?
 
 <details>
 <summary><b>Răspunsuri</b></summary>
@@ -430,15 +430,15 @@ $$S_{em} = S\left(1 - \frac{U_2}{U_1}\right) = 2000\cdot\frac{30}{230} = 260{,}9
 11. Aceleași tensiuni, aceeași grupă de conexiuni, $u_{sc}$ apropiate (±10 %), raport de puteri de cel mult 3:1. La $u_{sc}$ diferite, transformatorul cu $u_{sc}$ mic se supraîncarcă înaintea celuilalt (§ 1.9, problema 1.4).
 12. Dispare solenația secundară care compensa solenația primară; fluxul crește mult, miezul se saturează și se încălzește, iar în secundar apar tensiuni periculoase pentru om și pentru izolație (§ 1.10).
 13. Pierderi specifice de cel mult 1,20 W/kg la 1,7 T și 50 Hz, grosime 0,30 mm, calitate convențională. În transformator fluxul are o direcție fixă (de-a lungul coloanelor și jugurilor), deci poate urma direcția favorabilă de laminare; într-o mașină rotativă fluxul se rotește, deci tabla trebuie să aibă proprietăți apropiate în toate direcțiile (§ 1.2, § 2.1).
-14. Bobinele sunt circulare, iar treptele umplu mai bine cercul (0,934 din cerc cu 7 trepte, față de 0,637 cu una): mai mult fier pentru același diametru, deci înfășurări mai scurte. Îmbinarea la 45° păstrează fluxul pe direcția de laminare la colțuri, reducând pierderile, curentul de magnetizare și zgomotul (§ 1.2).
-15. Pentru aceeași rezistență, conductorul din aluminiu are secțiunea de 1,64 ori mai mare, dar masa de numai 0,50 ori; este mai ușor și mai ieftin, dar ocupă mai mult loc, deci miezul și cuva cresc (§ 1.2).
+14. Bobinele sunt circulare, iar treptele umplu mai bine cercul (0,934 din cerc cu 7 trepte, față de 0,637 cu una): mai mult fier pentru același diametru, deci înfășurări mai scurte. Îmbinarea la 45° păstrează fluxul pe direcția de laminare la colțuri, reducând pierderile și curentul de magnetizare; decalarea progresivă a rosturilor (step-lap) reduce în plus pierderile și zgomotul (§ 1.2).
+15. Pentru aceeași rezistență, conductorul din aluminiu are secțiunea de 1,64 ori mai mare, dar numai jumătate din masă; este mai ușor și mai ieftin, dar ocupă mai mult loc, deci miezul și cuva cresc (§ 1.2).
 16. Conservatorul preia dilatarea uleiului, astfel încât cuva să rămână plină; silicagelul reține umiditatea aerului care intră în conservator; releul Buchholz sesizează gazele produse de un defect intern (semnal sau declanșare). ONAN: ulei mineral cu circulație naturală, aer cu circulație naturală (§ 1.2).
-17. Legarea în mai multe puncte și șuruburile prin tole ar închide bucle sau căi prin care ar circula curenți induși (turbionari), cu pierderi și încălziri locale (§ 1.2).
+17. Legarea în mai multe puncte ar închide bucle prin care ar circula curenți induși. Găurile prin tole se evită (sau se plasează unde inducția este mică), pentru că în jurul lor fluxul se aglomerează și cresc pierderile prin curenți turbionari (§ 1.2).
 
 </details>
 
 ---
 
-**Bibliografie pentru capitol:** [1] cap. 2, [2] cap. 2, [3], [10]; standarde [S3], [S7], [S12], [S15], [S16]; surse online [W3]–[W8]. Lista completă este în [README](README.md#bibliografie).
+**Bibliografie pentru capitol:** [1] cap. 2, [2] cap. 2, [3], [10]; standarde [S3], [S7], [S12], [S15], [S16]; surse online [W3]–[W8], [W26]–[W28]. Lista completă este în [README](README.md#bibliografie).
 
 [← Capitolul 0](00-notiuni-fundamentale.md) · [Cuprins](README.md) · [Capitolul 2. Mașina asincronă →](02-masina-asincrona.md)

@@ -117,7 +117,7 @@ def colt(ax, tip):
 colt(a2, "drept")
 a2.set_title("(b) îmbinare dreaptă\n(fluxul traversează tola perpendicular\npe direcția de laminare)", fontsize=9.5)
 colt(a3, "step-lap")
-a3.set_title("(c) îmbinare la 45° în trepte (step-lap)\n(fluxul rămâne în direcția de laminare;\nrosturile straturilor sunt decalate)", fontsize=9.5)
+a3.set_title("(c) îmbinare la 45° în trepte (step-lap)\n(fluxul rămâne în direcția de laminare;\nrosturile straturilor sunt decalate progresiv)", fontsize=9.5)
 a3.text(1.75, 0.6, "săgeți: direcția de laminare\na tolelor cu grăunți orientați", color=TEXT2, fontsize=8.5, ha="center")
 for a in (a1, a2, a3):
     a.set_aspect("equal")

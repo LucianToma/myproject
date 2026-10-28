@@ -96,8 +96,8 @@ Electronica de putere a schimbat rolul motoarelor sincrone: alimentate de la un 
 
 **Rotoarele motoarelor sincrone alimentate de la convertor** (figura 4.4):
 
-- **magneți pe suprafață** (în engleză SPM): magneții sunt lipiți pe un rotor cilindric; la turații mari, forța centrifugă îi poate desprinde, de aceea sunt ținuți de un **bandaj** din fibră de sticlă sau de carbon, sau de un manșon nemagnetic. Construcția este simplă, iar cuplul este practic numai cel sincron;
-- **magneți îngropați** (IPM), de exemplu în formă de V: magneții stau în buzunare ștanțate în tole, deci sunt protejați mecanic; **barierele de flux** (aer) de la capetele lor împiedică scurtcircuitarea fluxului prin fier. Reactanțele pe cele două axe diferă, deci apare și un **cuplu de reluctanță** (§ 3.8); construcția este preferată la motoarele de tracțiune;
+- **magneți pe suprafață** (în engleză SPM): magneții sunt lipiți pe un rotor cilindric; la turații mari, forța centrifugă îi poate desprinde, de aceea sunt ținuți de un **bandaj** din fibră de sticlă sau de carbon, sau de un manșon nemagnetic. Construcția este simplă; reactanțele pe cele două axe sunt aproape egale, deci cuplul este produs practic numai de magneți (fără cuplu de reluctanță);
+- **magneți îngropați** (IPM), de exemplu în formă de V: magneții stau în buzunare ștanțate în tole, deci sunt protejați mecanic; **barierele de flux** (aer) de la capetele lor împiedică scurtcircuitarea fluxului prin fier. Reactanțele pe cele două axe diferă, deci apare și un **cuplu de reluctanță** (§ 3.8). Atenție: la IPM, invers decât la polii aparenți din § 3.8, $X_q > X_d$, deci termenul de reluctanță are semn opus, iar cuplul maxim se obține la un unghi intern mai mare de 90°. Construcția este larg folosită la tracțiunea vehiculelor electrice și hibride (de exemplu Toyota Prius, Nissan Leaf) [W29];
 - **rotor cu reluctanță** (SynRM): fără magneți și fără colivie; mai multe **bariere de flux** în formă de arc fac ca fluxul să treacă ușor pe o axă și greu pe cealaltă. Segmentele de fier sunt ținute împreună de **nervuri** subțiri, care limitează turația maximă.
 
 ![Figura 4.4 – Rotoare moderne](figuri/f04-4-rotoare-moderne.svg)
@@ -214,15 +214,15 @@ Un motor cu magneți permanenți are 8 poli. Ce turație are la 50, 200 și 800 
 8. Motorul pornește ca un motor asincron, cu ajutorul coliviei de amortizare; aproape de sincronism se aplică excitația. Înfășurarea de excitație se închide pe o rezistență, pentru că, lăsată deschisă, în ea s-ar induce tensiuni periculoase (§ 4.4).
 9. Pentru că $M_{max} \propto U$ la motorul sincron și $M_{max} \propto U^2$ la cel asincron; în plus, excitația poate fi mărită (problema 4.4).
 10. Nu are pierderi de excitație, deci are randament și densitate de putere mari; alimentat de la convertor, are turație reglabilă și pornire ușoară (§ 4.7).
-11. La primul, magneții sunt lipiți pe suprafață și reținuți de un bandaj, iar cuplul este practic numai cel sincron. La al doilea, magneții stau în buzunare ștanțate în tole (deci sunt protejați mecanic), cu bariere de flux la capete; reactanțele diferă pe cele două axe, deci apare și un cuplu de reluctanță (§ 4.8).
+11. La primul, magneții sunt lipiți pe suprafață și reținuți de un bandaj; reactanțele pe cele două axe sunt aproape egale, deci cuplul este produs practic numai de magneți. La al doilea, magneții stau în buzunare ștanțate în tole (deci sunt protejați mecanic), cu bariere de flux la capete; reactanțele diferă pe cele două axe, deci apare și un cuplu de reluctanță – cu $X_q > X_d$, invers decât la polii aparenți (§ 4.8).
 12. Barierele de flux din rotor fac ca fluxul să treacă ușor pe o axă și greu pe cealaltă; rotorul tinde să-și alinieze axa de reluctanță minimă cu câmpul învârtitor, adică dezvoltă un cuplu de reluctanță (§ 3.8, § 4.8).
 13. Inducția remanentă scade cu temperatura (de exemplu de la 1,30 T la 1,16 T între 20 °C și 120 °C), iar un câmp opus puternic, produs de un curent mare, poate aduce magnetul cald sub cotul curbei de demagnetizare – pierderea devine ireversibilă (§ 4.8).
-14. Asigură pornirea în asincron; de aceea se dimensionează pentru căldura degajată în timpul pornirii (§ 4.4, § 4.8).
+14. Asigură pornirea în asincron, de aceea se dimensionează pentru căldura degajată în timpul pornirii; în funcționare, amortizează pendulările rotorului (§ 3.1, § 4.4, § 4.5, § 4.8).
 
 </details>
 
 ---
 
-**Bibliografie pentru capitol:** [1] cap. 5, [2] cap. 5, [3], [6], [12]; surse online [W16]. Lista completă este în [README](README.md#bibliografie).
+**Bibliografie pentru capitol:** [1] cap. 5, [2] cap. 5, [3], [6], [12]; surse online [W16], [W29]. Lista completă este în [README](README.md#bibliografie).
 
 [← Capitolul 3](03-generatorul-sincron.md) · [Cuprins](README.md) · [Capitolul 5. Acționări electrice →](05-actionari-electrice.md)

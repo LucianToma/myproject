@@ -10,7 +10,7 @@ Aproape toată energia electrică produsă în centralele termoelectrice, nuclea
 
 ## 3.1. Construcția
 
-Mașina sincronă are două părți active: **statorul (indusul)**, cu înfășurarea trifazată în care se induc tensiunile, și **rotorul (inductorul)**, cu **înfășurarea de excitație** alimentată în **curent continuu**, care produce un câmp magnetic fix față de rotor, cu $2p$ poli. La puteri mici și mijlocii, câmpul poate fi produs și de **magneți permanenți**.
+Mașina sincronă are două părți active: **statorul (indusul)**, cu înfășurarea trifazată în care se induc tensiunile, și **rotorul (inductorul)**, cu **înfășurarea de excitație** alimentată în **curent continuu**, care produce un câmp magnetic fix față de rotor, cu $2p$ poli. Câmpul poate fi produs și de **magneți permanenți** – la generatoarele mici și, adesea, la generatoarele turbinelor eoliene (§ 3.11).
 
 ![Figura 3.1 – Tipuri de rotor](figuri/f03-1-tipuri-rotor.svg)
 
@@ -25,22 +25,22 @@ Mașina sincronă are două părți active: **statorul (indusul)**, cu înfășu
 
 ### Statorul
 
-**Miezul** este un pachet de tole de oțel electrotehnic; la mașinile mari, fiecare strat de tole este format din **segmente**, iar pachetul este împărțit prin **canale radiale de ventilație** și strâns între plăci de presare. **Înfășurarea** generatoarelor de înaltă tensiune (de la câțiva kV la peste 20 kV) se face din **bare** așezate câte două într-o crestătură deschisă (figura 3.2):
+**Miezul** este un pachet de tole de oțel electrotehnic; la mașinile mari, fiecare strat de tole este format din **segmente**, iar pachetul este împărțit prin **canale radiale de ventilație** și strâns între plăci de presare. Generatoarele mai mici au înfășurări din **bobine preformate** cu mai multe spire, ca motoarele de înaltă tensiune (§ 2.1). La generatoarele mari (aproximativ peste 50 MW, după [13]; limita diferă de la o sursă la alta), bobinele ar fi prea mari pentru a fi introduse în crestături fără a fi deteriorate, de aceea **înfășurarea** se face din **bare** (câte o jumătate de spiră), așezate câte două într-o crestătură deschisă (figura 3.2):
 
-- fiecare bară este formată din multe **fire elementare** de cupru izolate, **transpuse Roebel**: fiecare fir trece pe rând prin toate pozițiile din secțiune, astfel încât în toate firele se induc aceleași tensiuni și nu apar curenți de circulație între ele;
+- fiecare bară este formată din multe **fire elementare** de cupru izolate, **transpuse Roebel**: fiecare fir trece pe rând prin toate pozițiile din secțiune, astfel încât în toate firele se induc practic aceleași tensiuni, iar curenții de circulație dintre ele se reduc foarte mult;
 - **izolația principală** dintre bară și miez se face din **bandă de mică** impregnată cu **rășină epoxidică** (mica rezistă la descărcări parțiale și la temperatură);
 - un **strat de protecție anti-efluviu** (semiconductor) la suprafața barei egalizează potențialul cu miezul și împiedică descărcările în aerul dintre bară și crestătură;
 - barele sunt fixate cu **pene**, iar capetele lor sunt legate între ele în afara miezului.
 
 ![Figura 3.2 – Bara statorică](figuri/f03-2-bara-statorica.svg)
 
-*Figura 3.2 – (a) Crestătura statorică a unui generator, cu două bare; (b) principiul transpoziției Roebel.*
+*Figura 3.2 – (a) Crestătura statorică a unui generator mare, cu două bare; (b) principiul transpoziției Roebel.*
 
 ### Rotorul cu poli înecați (turbogeneratoare)
 
-Rotorul unui turbogenerator (figura 3.3) este **forjat dintr-o singură bucată** de oțel aliat (de exemplu 26NiCrMoV14-5 [W14]). Pe aproximativ două treimi din periferie se **frezează** crestături longitudinale, în care se așază bobinele de excitație din cupru, fixate cu **pene**; zonele rămase nefrezate formează polii. Capetele bobinelor, care ies din corpul rotorului, sunt ținute împotriva forței centrifuge de **inele de bandaj** din oțel **nemagnetic** (aliaj 18Mn18Cr), ca să nu scurtcircuiteze fluxul de dispersie. Aliajul 18Mn18Cr a înlocuit vechiul 18Mn5Cr, sensibil la coroziunea fisurantă sub tensiune în prezența umidității [W13].
+Rotorul unui turbogenerator (figura 3.3) este **forjat dintr-o singură bucată** de oțel aliat (de exemplu 26NiCrMoV14-5 [W14]). Pe aproximativ două treimi din periferie se **frezează** crestături longitudinale, în care se așază bobinele de excitație din cupru, fixate cu **pene**; zonele rămase nefrezate formează polii. Capetele bobinelor, care ies din corpul rotorului, sunt ținute împotriva forței centrifuge de **inele de bandaj** din oțel **nemagnetic** (aliaj 18Mn18Cr): un inel magnetic ar fi străbătut de fluxul de dispersie al capetelor de bobină și s-ar încălzi prin curenți turbionari, micșorând randamentul [W13]. Aliajul 18Mn18Cr a înlocuit vechiul 18Mn5Cr, sensibil la coroziunea fisurantă sub tensiune în prezența umidității [W13].
 
-**De ce este rotorul lung și subțire?** Tensiunea mecanică dintr-un inel subțire care se rotește crește cu pătratul vitezei periferice $v$, independent de grosimea lui: $\sigma = \rho v^2$ (pentru oțel, $\rho$ = 7850 kg/m³: 78 MPa la 100 m/s, 177 MPa la 150 m/s, 314 MPa la 200 m/s). Viteza periferică admisă de material limitează deci **diametrul**: $v = \pi D n/60$, adică $D_{max} \propto 1/n$. La aceeași viteză periferică, un rotor de 3000 rot/min poate avea un diametru de **20 de ori mai mic** decât unul de 150 rot/min (de exemplu 0,64 m față de 12,7 m la 100 m/s). Puterea mare se obține atunci prin **lungime** (calcul în [`scripts/constructie.py`](scripts/constructie.py), verificat și prin echilibrul unui element de inel).
+**De ce este rotorul lung și subțire?** Tensiunea mecanică dintr-un inel subțire care se rotește crește cu pătratul vitezei periferice $v$, independent de grosimea lui: $\sigma = \rho v^2$ (pentru oțel, $\rho$ = 7850 kg/m³: 78 MPa la 100 m/s, 177 MPa la 150 m/s, 314 MPa la 200 m/s). Viteza periferică admisă de material limitează deci **diametrul**: $v = \pi D n/60$, adică $D_{max} \propto 1/n$. La aceeași viteză periferică, diametrul maxim admis al unui rotor de 3000 rot/min este de **20 de ori mai mic** decât al unuia de 150 rot/min (de exemplu 0,64 m față de 12,7 m la 100 m/s). Puterea mare se obține atunci prin **lungime** (calcul în [`scripts/constructie.py`](scripts/constructie.py), verificat și prin echilibrul unui element de inel).
 
 ![Figura 3.3 – Rotorul turbogeneratorului](figuri/f03-3-rotor-turbo.svg)
 
@@ -75,7 +75,7 @@ Curentul continuu de excitație se obține (figura 3.5):
 Pierderile unui generator mare sunt de ordinul megawaților, iar căldura trebuie evacuată dintr-un volum relativ mic. Ordinele de mărime de mai jos sunt orientative – limitele s-au deplasat în timp și diferă de la un producător la altul [W15]:
 
 - **aer** în circuit închis, răcit cu apă în schimbătoare de căldură – generatoarele mici și mijlocii; au fost construite turbogeneratoare răcite cu aer și peste 300 MVA;
-- **hidrogen** sub presiune (de ordinul 3–6 bar), care transmite căldura mult mai bine decât aerul și are pierderi prin ventilație mai mici – turbogeneratoarele mari, de ordinul sutelor de MVA;
+- **hidrogen** sub presiune (de ordinul câtorva bari; valorile diferă de la o mașină la alta), care transmite căldura mult mai bine decât aerul și are pierderi prin ventilație mai mici – turbogeneratoarele mari, de ordinul sutelor de MVA;
 - **apă deionizată** care circulă prin conductoarele (sau prin tuburile din barele) statorului – cele mai mari turbogeneratoare.
 
 ## 3.2. Principiul de funcționare
@@ -324,16 +324,16 @@ $$\Delta f = -\frac{12}{50 + 20} = -0{,}1714\ \text{Hz} \Rightarrow f = 49{,}83\
 9. Generatorul livrează mai multă putere reactivă inductivă (supraexcitat); puterea activă nu se modifică (problema 3.4).
 10. Asigură împărțirea stabilă și previzibilă a variațiilor de sarcină între generatoare, proporțional cu $P_n/s_t$ (§ 3.10).
 11. Pentru că dispare căderea mare de tensiune pe reactanța sincronă: tensiunea devine $E_0$. De aceea este necesar regulatorul automat de tensiune (§ 3.7).
-12. Pentru ca fiecare fir să ocupe pe rând toate pozițiile din secțiune: în toate firele se induc aceleași tensiuni și nu apar curenți de circulație între ele, care ar produce pierderi suplimentare (§ 3.1).
-13. Ca să nu scurtcircuiteze fluxul de dispersie al capetelor de bobină. Se folosește 18Mn18Cr, care a înlocuit aliajul 18Mn5Cr, sensibil la coroziunea fisurantă sub tensiune în prezența umidității (§ 3.1).
+12. Pentru ca fiecare fir să ocupe pe rând toate pozițiile din secțiune: în toate firele se induc practic aceleași tensiuni, iar curenții de circulație dintre ele, care ar produce pierderi suplimentare, se reduc foarte mult. Barele se folosesc la generatoarele mari; cele mai mici au bobine cu mai multe spire (§ 3.1).
+13. Un inel magnetic ar fi străbătut de fluxul de dispersie al capetelor de bobină și s-ar încălzi prin curenți turbionari, micșorând randamentul. Se folosește 18Mn18Cr, care a înlocuit aliajul 18Mn5Cr, sensibil la coroziunea fisurantă sub tensiune în prezența umidității (§ 3.1).
 14. Tensiunea mecanică dintr-un inel care se rotește este $\sigma = \rho v^2$, deci viteza periferică admisă limitează diametrul: $D_{max} \propto 1/n$. La 3000 rot/min, diametrul admis este de 20 de ori mai mic decât la 150 rot/min; puterea mare se obține prin lungime (§ 3.1).
 15. Fără perii: o excitatoare sincronă „întoarsă” și un redresor rotativ cu diode, fără contacte alunecătoare. Statică: un transformator și un redresor cu tiristoare comandat de regulator; curentul ajunge la rotor prin perii și inele, iar răspunsul este foarte rapid (§ 3.1).
-16. Aer în circuit închis la generatoarele mici și mijlocii (s-au construit și turbogeneratoare răcite cu aer de peste 300 MVA); hidrogen sub presiune (3–6 bar) la turbogeneratoarele de sute de MVA; apă deionizată prin conductoarele statorului la cele mai mari (§ 3.1).
+16. Aer în circuit închis la generatoarele mici și mijlocii (s-au construit și turbogeneratoare răcite cu aer de peste 300 MVA); hidrogen sub presiune (câțiva bari) la turbogeneratoarele de sute de MVA; apă deionizată prin conductoarele statorului la cele mai mari (§ 3.1).
 
 </details>
 
 ---
 
-**Bibliografie pentru capitol:** [1] cap. 5, [2] cap. 4–5, [3], [8], [9], [11]; standarde [S1]; surse online [W13]–[W15]. Lista completă este în [README](README.md#bibliografie).
+**Bibliografie pentru capitol:** [1] cap. 5, [2] cap. 4–5, [3], [8], [9], [11], [13]; standarde [S1]; surse online [W13]–[W15]. Lista completă este în [README](README.md#bibliografie).
 
 [← Capitolul 2](02-masina-asincrona.md) · [Cuprins](README.md) · [Capitolul 4. Motorul sincron →](04-motorul-sincron.md)

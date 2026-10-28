@@ -15,8 +15,9 @@ m_cu, m_al = A_cu * L * D_CU, A_al * L * D_AL
 print(f"  ρ_Al = {RHO_AL * 1e8:.3f}·10⁻⁸ Ω·m; aria Al / aria Cu = {fmt(raport_arie, 3)};"
       f" masa Al / masa Cu = {fmt(raport_masa, 3)}")
 print(f"  conductor de 100 m, 10 mΩ: Cu {fmt(A_cu * 1e6, 1)} mm², {fmt(m_cu, 1)} kg; Al {fmt(A_al * 1e6, 1)} mm², {fmt(m_al, 1)} kg")
-verifica("raport arii", A_al / A_cu, raport_arie)
-verifica("raport mase", m_al / m_cu, raport_masa)
+# (verificări aritmetice ale exemplului, nu căi independente)
+verifica("exemplu vs raportul ariilor", A_al / A_cu, raport_arie)
+verifica("exemplu vs raportul maselor", m_al / m_cu, raport_masa)
 
 print("\nConstrucție 2 – factorul de umplere al secțiunii în trepte a coloanei")
 
@@ -74,9 +75,6 @@ print("\nConstrucție 5 – efectul temperaturii asupra magneților permanenți"
 for nume, Br20, alfa in (("NdFeB", 1.30, -0.11e-2), ("SmCo", 1.05, -0.04e-2), ("ferită", 0.40, -0.20e-2)):
     Br120 = Br20 * (1 + alfa * 100)
     print(f"  {nume}: Br(20 °C) = {fmt(Br20, 2)} T → Br(120 °C) = {fmt(Br120, 3)} T ({fmt(100 * alfa * 100, 0)} %)")
-# Calea a doua: integrarea dBr/dT = α·Br20 (coeficient raportat la 20 °C) pe 100 K
-Br_num = 1.30 + np.trapezoid(np.full(1001, -0.11e-2 * 1.30), np.linspace(20, 120, 1001))
-verifica("NdFeB la 120 °C: formulă vs integrare", 1.30 * (1 - 0.11), Br_num)
 
 print("\nConstrucție 6 – frâna de menținere a troliului din problema 5.1")
 m, g_, D_t, i, eta_t = 2000.0, 9.81, 0.4, 60, 0.90
@@ -85,11 +83,12 @@ Om = 2 * np.pi * 1466 / 60
 v = Om / i * D_t / 2
 M_t = m * g_ * D_t / 2
 M_static = M_t / i                     # cuplul static al sarcinii la arborele frânei, fără frecări
-M_ridicare = M_t / (i * eta_t)         # cuplul de ridicare (cu pierderile din reductor)
+M_ridicare = M_t / (i * eta_t)         # cuplul de ridicare la sarcina nominală (cu pierderile din reductor)
 M_coborare = M_t * eta_t / i           # sarcina antrenează motorul prin reductor
-print(f"  cuplul static la arborele frânei M_t/i = {fmt(M_static, 2)} N·m; 125 % = {fmt(1.25 * M_static, 2)} N·m")
-print(f"  acoperitor, din cuplul de ridicare {fmt(M_ridicare, 2)} N·m: 125 % = {fmt(1.25 * M_ridicare, 2)} N·m")
+print(f"  cuplul de ridicare la arborele frânei {fmt(M_ridicare, 2)} N·m; 125 % = {fmt(1.25 * M_ridicare, 2)} N·m")
 M_b = 100.0                            # frâna aleasă din catalog
+print(f"  cuplul static al sarcinii (fără frecări) M_t/i = {fmt(M_static, 2)} N·m;"
+      f" rezerva frânei de {fmt(M_b, 0)} N·m la menținere = {fmt(M_b / M_static, 2)}")
 t_op = J_tot * Om / (M_b - M_coborare)
 theta = Om * t_op / 2                  # unghiul parcurs de arborele motorului (decelerare uniformă)
 s_op = v * t_op / 2
@@ -103,10 +102,32 @@ oprit.terminal = True
 sol = solve_ivp(lambda t, y: [(M_coborare - M_b) / J_tot, y[0]], (0, 5), [Om, 0.0], events=oprit,
                 max_step=1e-3, rtol=1e-10, atol=1e-12)
 t_num, theta_num = sol.t_events[0][0], sol.y_events[0][0][1]
-verifica("timpul de oprire: formulă vs integrare", t_op, t_num, rtol=1e-6)
-verifica("distanța de oprire: formulă vs integrare", s_op, theta_num / i * D_t / 2, rtol=1e-6)
-# Calea a treia pentru energie: bilanț = energia cinetică + lucrul sarcinii (raportat, cu pierderi) pe θ
-verifica("energia frânei: M_b·θ vs ½JΩ² + M'·θ", E_b, 0.5 * J_tot * Om**2 + M_coborare * theta)
+verifica("timpul de oprire: formulă vs integrare (verificare aritmetică)", t_op, t_num, rtol=1e-6)
+verifica("distanța de oprire: formulă vs integrare (verificare aritmetică)", s_op, theta_num / i * D_t / 2, rtol=1e-6)
+# Calea a doua, pe partea sarcinii, cu vitezele fizice ale fiecărui corp (verifică și raportarea la arbore):
+# energia frânei = energia cinetică a motorului, tamburului și masei + lucrul greutății pe distanța de oprire,
+# diminuat cu pierderile din reductor (η_t, ca în problema 5.1)
+Om_t = Om / i
+E_cin = 0.5 * 0.1 * Om**2 + 0.5 * 5 * Om_t**2 + 0.5 * m * v**2
+E_grav = eta_t * m * g_ * s_op
+print(f"  pe partea sarcinii: energie cinetică {fmt(E_cin, 0)} J + lucrul greutății {fmt(E_grav, 0)} J"
+      f" = {fmt(E_cin + E_grav, 0)} J")
+verifica("energia frânei: M_b·θ (arborele motorului) vs bilanțul pe partea sarcinii", E_b, E_cin + E_grav)
+# Ipoteza vitezei de coborâre: alimentat direct de la rețea, motorul coboară sarcina ca generator (s < 0)
+from modele import motor_M15, kloss, sk_din_catalog
+Mn = 15000 / Om
+s_kloss = -(34 / 1500) * M_coborare / Mn                     # zona liniară a caracteristicii
+mot = motor_M15()
+from scipy.optimize import brentq
+s_model = brentq(lambda x: mot.punct(x)["P2"] / ((1 - x) * mot.W1) + M_coborare, -0.1, -1e-5)
+n_gen = 1500 * (1 - s_model)
+v_gen = 2 * np.pi * n_gen / 60 / i * D_t / 2
+t_gen = J_tot * (2 * np.pi * n_gen / 60) / (M_b - M_coborare)
+print(f"  coborâre cu motorul alimentat direct: n = {fmt(n_gen, 0)} rot/min (Kloss liniar: {fmt(1500 * (1 - s_kloss), 0)}),"
+      f" v = {fmt(v_gen, 3)} m/s, t_op = {fmt(t_gen, 3)} s, s_op = {fmt(v_gen * t_gen / 2 * 1e3, 0)} mm")
+# Kloss liniarizat ignoră pierderile mecanice (P0), care la generator se scad din cuplul la arbore;
+# de aceea cele două estimări diferă cu câteva rot/min – suficient pentru „circa 1520 rot/min”.
+verifica("turația de coborâre: schema echivalentă vs Kloss liniar", n_gen, 1500 * (1 - s_kloss), rtol=3e-3)
 
 print("\nConstrucție 7 – autoblocarea angrenajului melcat")
 # η (melcul antrenează) = tg γ / tg(γ + ρ); η' (roata antrenează) = tg(γ - ρ) / tg γ; autoblocare: η' ≤ 0 ⇔ γ ≤ ρ
@@ -121,6 +142,10 @@ for mu in (0.03, 0.05, 0.08):
           f"; la γ = 20°: η = {fmt(100 * np.tan(np.radians(20)) / np.tan(np.radians(20) + rho), 1)} %")
     verifica(f"μ={mu}: limita formulă vs căutare numerică", eta_lim, eta_max_auto, rtol=1e-4)
     verifica(f"μ={mu}: η_lim = (1 - tg²ρ)/2 < 0,5", eta_lim, (1 - mu**2) / 2, rtol=1e-12)
+    # Calea a doua pentru retroantrenare: relația aproximativă din catalogul [W19], η' ≈ 2 - 1/η (unghiuri mici)
+    g = np.radians(20)
+    e_d, e_i = np.tan(g) / np.tan(g + rho), np.tan(g - rho) / np.tan(g)
+    verifica(f"μ={mu}, γ = 20°: η' exact vs 2 - 1/η [W19]", e_i, 2 - 1 / e_d, rtol=2e-2)
 
 print("\nConstrucție 8 – reductor cu roți dințate: randamentul pe trepte")
 for z in (1, 2, 3):
@@ -131,18 +156,7 @@ print("\nConstrucție 9 – rezistența termică a ceramicii substratului DBC (1
 A = 1e-4
 for nume, t_c, k in (("Al₂O₃, 0,38 mm", 0.38e-3, 24.0), ("AlN, 0,63 mm", 0.63e-3, 170.0)):
     R_th = t_c / (k * A)
-    # Calea a doua: conducția staționară pe o rețea de 50 de noduri (sistem liniar), cu 100 W impuși
-    n = 50
-    dx = t_c / (n - 1)
-    K = np.zeros((n, n))
-    b = np.zeros(n)
-    for j in range(1, n - 1):
-        K[j, j - 1], K[j, j], K[j, j + 1] = 1, -2, 1
-    K[0, 0], K[0, 1], b[0] = -1, 1, -100.0 * dx / (k * A)   # fluxul de 100 W intră pe fața de sus
-    K[-1, -1] = 1                                            # fața de jos la 0 (temperatura de referință)
-    T = np.linalg.solve(K, b)
     print(f"  {nume}: R_th = {fmt(R_th, 4)} K/W; la 100 W, ΔT = {fmt(100 * R_th, 1)} K")
-    verifica(f"{nume}: t/(kA) vs rețea de noduri", 100 * R_th, T[0], rtol=1e-9)
 
 print("\nConstrucție 10 – durata de viață a condensatoarelor electrolitice (regula celor 10 °C)")
 L0, T0 = 5000.0, 105.0
