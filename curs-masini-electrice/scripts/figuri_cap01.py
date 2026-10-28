@@ -40,7 +40,7 @@ ax.set_xlim(-1.8, 8.2)
 ax.set_ylim(-0.6, 4.1)
 ax.set_aspect("equal")
 ax.axis("off")
-salveaza(fig, "f01-1-principiu")
+salveaza(fig, "f01-5-principiu")
 
 # --- Schema echivalentă în T ------------------------------------------------
 def borne(d, x_st, x_dr, H, U_st, U_dr):
@@ -75,7 +75,7 @@ with schemdraw.Drawing(show=False) as d:
     d.add(elm.Dot().at((xn, -H)))
     d.add(elm.Label().at((xn + 0.15, -0.35)).label("$\\underline{I}_0$ ↓", loc="right", halign="left"))
     borne(d, 0, xd, H, "$\\underline{U}_1$", "$\\underline{U}'_2$")
-    salveaza_schema(d, "f01-2-schema-T")
+    salveaza_schema(d, "f01-6-schema-T")
 
 # --- Schema simplificată ---------------------------------------------------
 H = 3.5
@@ -87,7 +87,7 @@ with schemdraw.Drawing(show=False) as d:
     d.add(elm.Line().right(0.8))
     t2 = d.add(elm.Dot(open=True))
     borne(d, 0, t2.center.x, H, "$\\underline{U}_1$", "$\\underline{U}'_2$")
-    salveaza_schema(d, "f01-3-schema-simplificata")
+    salveaza_schema(d, "f01-7-schema-simplificata")
 
 # --- Diagrama fazorială (transformatorul de 20 kVA, sarcină inductivă) -------
 Rsc, Xsc, I = 4.32, 10.679, 8.333
@@ -111,7 +111,7 @@ ax.set_ylim(-1000, 900)
 ax.set_aspect("equal")
 ax.axis("off")
 ax.set_title("Diagrama fazorială – sarcină inductivă (căderile de tensiune mărite de 5×)", fontsize=10)
-salveaza(fig, "f01-4-diagrama-fazoriala")
+salveaza(fig, "f01-8-diagrama-fazoriala")
 
 # --- Randamentul în funcție de încărcare (400 kVA, P0 = 0,43 kW, Psc = 4,6 kW) -
 Sn, P0, Psc = 400e3, 430.0, 4600.0
@@ -131,7 +131,7 @@ ax.set_ylabel("η [%]")
 ax.set_title("Randamentul transformatorului de 400 kVA")
 ax.legend(loc="lower right")
 virgula(ax)
-salveaza(fig, "f01-6-randament")
+salveaza(fig, "f01-10-randament")
 
 # --- Caracteristica externă (400 kVA, 20/0,4 kV, usc = 4 %) -----------------
 U2f, I2n = 400 / SQRT3, Sn / (SQRT3 * 400)
@@ -151,7 +151,7 @@ ax.set_ylabel("U₂ [V] (tensiunea de linie)")
 ax.set_title("Caracteristica externă U₂(β) la U₁ = U₁ₙ")
 ax.legend(loc="lower left")
 virgula(ax)
-salveaza(fig, "f01-5-caracteristica-externa")
+salveaza(fig, "f01-9-caracteristica-externa")
 
 # --- Grupa de conexiuni Dyn11 -------------------------------------------------
 fig, (a1, a2) = plt.subplots(1, 2, figsize=(8.0, 3.8))
@@ -184,4 +184,4 @@ for ax in (a1, a2):
     ax.axis("off")
 fig.text(0.5, 0.0, "Tensiunea JT este defazată cu 11 × 30° = 330° în urma celei de ÎT (adică 30° înainte).",
          ha="center", color=TEXT2, fontsize=9)
-salveaza(fig, "f01-7-grupa-dyn11")
+salveaza(fig, "f01-11-grupa-dyn11")

@@ -11,7 +11,8 @@ from pathlib import Path
 AICI = Path(__file__).resolve().parent
 sys.path.insert(0, str(AICI))
 
-scripturi = sorted(AICI.glob("probleme_cap*.py")) + sorted(AICI.glob("figuri_*.py"))
+scripturi = (sorted(AICI.glob("probleme_cap*.py")) + [AICI / "constructie.py"]
+             + sorted(AICI.glob("figuri_*.py")))
 for s in scripturi:
     print(f"\n=== {s.name} ===")
     runpy.run_path(str(s), run_name="__main__")

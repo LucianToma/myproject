@@ -110,7 +110,7 @@ ax.set_ylabel("n [rot/min]")
 ax.set_title("Pornirea unui ventilator cu cuplu motor constant 1,2·Mₙ")
 ax.legend(loc="lower right", fontsize=8.5)
 virgula(ax)
-salveaza(fig, "f05-10-accelerare-ventilator")
+salveaza(fig, "f05-12-accelerare-ventilator")
 
 # --- Pornirea directă a motorului M15 cu ventilator (model cvasistaționar) ------
 MD = motor_M15(colivie_dubla=True)

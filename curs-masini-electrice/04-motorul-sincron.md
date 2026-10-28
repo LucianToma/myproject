@@ -90,6 +90,34 @@ Electronica de putere a schimbat rolul motoarelor sincrone: alimentate de la un 
 - **Motorul sincron cu reluctanță** (SynRM): rotor din tole cu bariere de flux, fără magneți și fără colivie; cuplul provine din diferența dintre reactanțele $X_d$ și $X_q$ (termenul de reluctanță, § 3.8). Este o alternativă eficientă la motorul asincron în acționările cu convertor.
 - **Motorul pas cu pas**: rotorul se deplasează cu un unghi fix la fiecare impuls de comandă; se folosește pentru poziționare în buclă deschisă (imprimante, mașini CNC mici).
 
+## 4.8. Aspecte constructive
+
+**Motoarele sincrone clasice** (ca MS1000) au construcția generatoarelor cu poli aparenți (§ 3.1): poli fixați pe jantă, bobine de excitație, excitație cu perii și inele sau fără perii. La motor, **înfășurarea de amortizare** din tălpile polare este esențială, pentru că asigură pornirea în asincron (§ 4.4); ea se dimensionează pentru căldura degajată în timpul pornirii.
+
+**Rotoarele motoarelor sincrone alimentate de la convertor** (figura 4.4):
+
+- **magneți pe suprafață** (în engleză SPM): magneții sunt lipiți pe un rotor cilindric; la turații mari, forța centrifugă îi poate desprinde, de aceea sunt ținuți de un **bandaj** din fibră de sticlă sau de carbon, sau de un manșon nemagnetic. Construcția este simplă, iar cuplul este practic numai cel sincron;
+- **magneți îngropați** (IPM), de exemplu în formă de V: magneții stau în buzunare ștanțate în tole, deci sunt protejați mecanic; **barierele de flux** (aer) de la capetele lor împiedică scurtcircuitarea fluxului prin fier. Reactanțele pe cele două axe diferă, deci apare și un **cuplu de reluctanță** (§ 3.8); construcția este preferată la motoarele de tracțiune;
+- **rotor cu reluctanță** (SynRM): fără magneți și fără colivie; mai multe **bariere de flux** în formă de arc fac ca fluxul să treacă ușor pe o axă și greu pe cealaltă. Segmentele de fier sunt ținute împreună de **nervuri** subțiri, care limitează turația maximă.
+
+![Figura 4.4 – Rotoare moderne](figuri/f04-4-rotoare-moderne.svg)
+
+*Figura 4.4 – Rotoare cu 4 poli: (a) magneți pe suprafață; (b) magneți îngropați în V; (c) cu reluctanță.*
+
+Statorul acestor motoare are fie o înfășurare **distribuită** (ca la motorul asincron), fie una **concentrată** – câte o bobină în jurul fiecărui dinte –, cu capete de bobină foarte scurte, folosită mai ales la motoarele compacte cu magneți.
+
+### Materialele magnetice permanente
+
+| Material | Inducția remanentă $B_r$ | Temperatura maximă de lucru | Variația lui $B_r$ cu temperatura | Observații |
+|---|---|---|---|---|
+| NdFeB (neodim–fier–bor) | ≈ 1,2–1,5 T | ≈ 80–230 °C, în funcție de calitate | ≈ −0,09…−0,12 %/°C | cel mai puternic; sensibil la temperatură și la coroziune |
+| SmCo (samariu–cobalt) | ≈ 0,9–1,2 T | ≈ 250–350 °C | ≈ −0,03…−0,05 %/°C | stabil termic; scump |
+| ferită (ceramică) | ≈ 0,2–0,4 T | ≈ 250 °C | ≈ −0,18…−0,20 %/°C | ieftin, nu corodează; slab pe unitatea de volum |
+
+*Valorile sunt intervale tipice din cataloagele producătorilor [W16]; fiecare calitate concretă are fișa ei.*
+
+Exemplu (calcul în [`scripts/constructie.py`](scripts/constructie.py)): încălzit de la 20 °C la 120 °C, un magnet NdFeB cu $B_r$ = 1,30 T ajunge la 1,16 T (−11 %), unul SmCo de 1,05 T la 1,01 T (−4 %), iar unul din ferită de 0,40 T la 0,32 T (−20 %). Scăderea este **reversibilă** cât timp magnetul nu este adus, de un câmp opus (de exemplu un curent de scurtcircuit), sub „cotul” curbei de demagnetizare; dincolo de el, pierderea este **ireversibilă**. Riscul de demagnetizare crește la NdFeB odată cu temperatura, iar la ferite – la temperaturi **scăzute** (coercitivitatea lor scade la rece). De aceea temperatura rotorului și curentul maxim al convertorului sunt limitate de proiectant.
+
 ---
 
 ## Probleme rezolvate
@@ -168,6 +196,10 @@ Un motor cu magneți permanenți are 8 poli. Ce turație are la 50, 200 și 800 
 8. Descrieți pornirea în asincron. De ce înfășurarea de excitație nu se lasă deschisă în timpul pornirii?
 9. De ce motorul sincron este mai puțin sensibil decât cel asincron la scăderile de tensiune?
 10. Ce avantaje are motorul sincron cu magneți permanenți?
+11. Prin ce diferă un rotor cu magneți pe suprafață de unul cu magneți îngropați?
+12. Cum produce cuplu un motor sincron cu reluctanță, care nu are nici magneți, nici înfășurare de excitație?
+13. De ce temperatura rotorului și curentul maxim al convertorului sunt limitate la motoarele cu magneți NdFeB?
+14. Ce rol constructiv are înfășurarea de amortizare la motorul sincron clasic?
 
 <details>
 <summary><b>Răspunsuri</b></summary>
@@ -182,11 +214,15 @@ Un motor cu magneți permanenți are 8 poli. Ce turație are la 50, 200 și 800 
 8. Motorul pornește ca un motor asincron, cu ajutorul coliviei de amortizare; aproape de sincronism se aplică excitația. Înfășurarea de excitație se închide pe o rezistență, pentru că, lăsată deschisă, în ea s-ar induce tensiuni periculoase (§ 4.4).
 9. Pentru că $M_{max} \propto U$ la motorul sincron și $M_{max} \propto U^2$ la cel asincron; în plus, excitația poate fi mărită (problema 4.4).
 10. Nu are pierderi de excitație, deci are randament și densitate de putere mari; alimentat de la convertor, are turație reglabilă și pornire ușoară (§ 4.7).
+11. La primul, magneții sunt lipiți pe suprafață și reținuți de un bandaj, iar cuplul este practic numai cel sincron. La al doilea, magneții stau în buzunare ștanțate în tole (deci sunt protejați mecanic), cu bariere de flux la capete; reactanțele diferă pe cele două axe, deci apare și un cuplu de reluctanță (§ 4.8).
+12. Barierele de flux din rotor fac ca fluxul să treacă ușor pe o axă și greu pe cealaltă; rotorul tinde să-și alinieze axa de reluctanță minimă cu câmpul învârtitor, adică dezvoltă un cuplu de reluctanță (§ 3.8, § 4.8).
+13. Inducția remanentă scade cu temperatura (de exemplu de la 1,30 T la 1,16 T între 20 °C și 120 °C), iar un câmp opus puternic, produs de un curent mare, poate aduce magnetul cald sub cotul curbei de demagnetizare – pierderea devine ireversibilă (§ 4.8).
+14. Asigură pornirea în asincron; de aceea se dimensionează pentru căldura degajată în timpul pornirii (§ 4.4, § 4.8).
 
 </details>
 
 ---
 
-**Bibliografie pentru capitol:** [1] cap. 5, [2] cap. 5, [3], [6]. Lista completă este în [README](README.md#bibliografie).
+**Bibliografie pentru capitol:** [1] cap. 5, [2] cap. 5, [3], [6], [12]; surse online [W16]. Lista completă este în [README](README.md#bibliografie).
 
 [← Capitolul 3](03-generatorul-sincron.md) · [Cuprins](README.md) · [Capitolul 5. Acționări electrice →](05-actionari-electrice.md)

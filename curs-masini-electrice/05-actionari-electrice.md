@@ -1,6 +1,6 @@
 # Capitolul 5. Acționări electrice
 
-> **Obiective.** După acest capitol ar trebui să puteți: (1) descrie structura unei acționări electrice; (2) scrie și folosi ecuația fundamentală a mișcării; (3) raporta cuplurile și momentele de inerție la arborele motorului; (4) determina punctul de funcționare și stabilitatea lui; (5) calcula timpul de pornire; (6) alege și verifica motorul pentru un ciclu de sarcină; (7) explica funcționarea convertorului de frecvență și economia de energie la pompe și ventilatoare; (8) citi o schemă de pornire directă cu contactor.
+> **Obiective.** După acest capitol ar trebui să puteți: (1) descrie structura unei acționări electrice; (2) scrie și folosi ecuația fundamentală a mișcării; (3) raporta cuplurile și momentele de inerție la arborele motorului; (4) determina punctul de funcționare și stabilitatea lui; (5) calcula timpul de pornire; (6) alege și verifica motorul pentru un ciclu de sarcină; (7) explica funcționarea convertorului de frecvență și economia de energie la pompe și ventilatoare; (8) citi o schemă de pornire directă cu contactor; (9) recunoaște componentele constructive ale unei acționări (frână, cuplaj, reductor, traductor, modulul de putere al convertorului) și criteriile după care se aleg.
 
 Capitolele 1–4 au tratat mașinile; acest capitol tratează **sistemul**: mașina electrică împreună cu ce o alimentează și ce antrenează. Pentru un inginer mecanic, energetician sau mecatronist, aici se întâlnesc cel mai direct cele două lumi.
 
@@ -206,6 +206,83 @@ Figura 5.9 prezintă **circuitul de forță** pentru pornirea directă a unui mo
 
 **Pornirea stea-triunghi** folosește trei contactoare (de linie, de stea și de triunghi, cu interblocare între ultimele două) și un releu de timp care comandă trecerea din stea în triunghi.
 
+## 5.12. Componentele constructive ale unei acționări
+
+Schema bloc din § 5.1 ascunde multe piese concrete. Figura 5.10 le arată pe cele mecanice ale troliului din problema 5.1, iar figura 5.11 – piesa principală a convertorului de frecvență. Exemplele numerice din această secțiune sunt calculate și verificate în [`scripts/constructie.py`](scripts/constructie.py).
+
+![Figura 5.10 – Lanțul cinematic al troliului](figuri/f05-10-lant-cinematic.svg)
+
+*Figura 5.10 – Componentele mecanice ale troliului din problema 5.1 (schematic, fără scară).*
+
+### Frâna de menținere
+
+La acționările care țin o sarcină suspendată (macarale, lifturi, trolii, axele verticale ale mașinilor-unelte), motorul are o **frână electromagnetică cu arcuri**. Arcurile apasă un **disc cu garnituri de fricțiune** între o armătură mobilă și o placă fixă; când bobina electromagnetului este alimentată, ea atrage armătura și eliberează discul [W18]. Frâna **frânează deci la lipsa tensiunii** (principiul *fail-safe*): dacă rețeaua cade sau se întrerupe circuitul de comandă, sarcina rămâne ținută. Frâna se alege după:
+
+- **cuplul de frânare**, cu o rezervă față de cuplul sarcinii raportat la arborele pe care este montată. De exemplu, reglementarea americană OSHA 1910.179 pentru podurile rulante cere ca frâna de menținere a mecanismului de ridicare să dezvolte cel puțin 125 % din cuplul de ridicare la sarcina nominală, în punctul în care acționează, atunci când frânarea din timpul manevrei se face pe altă cale decât mecanic (de exemplu, electric) [W17]. În Europa, cerințele de securitate pentru trolii și palane electrice sunt date de standardele EN 14492-1 și EN 14492-2 [S18];
+- **capacitatea termică**: la fiecare oprire, frâna transformă în căldură energia cinetică a maselor în mișcare și lucrul făcut de sarcină în timpul opririi; aceeași reglementare cere o capacitate termică suficientă pentru frecvența manevrelor [W17].
+
+**Exemplu – frâna troliului din problema 5.1**, montată pe arborele motorului. Cuplul static al sarcinii nominale raportat la arborele frânei, fără a conta pe frecările din reductor (care ajută la menținere), este $M_t/i = 3924/60 = 65{,}40$ N·m; 125 % din el înseamnă 81,75 N·m. Dacă se pornește, acoperitor, de la cuplul de ridicare (cu pierderile din reductor, 72,67 N·m), rezultă 90,83 N·m. Se alege o frână cu cuplul nominal $M_b$ = 100 N·m.
+
+Dacă tensiunea dispare în timp ce sarcina coboară cu 0,512 m/s și frâna intră imediat, sarcina antrenează arborele cu $M_r' = M_t\eta_t/i = 58{,}86$ N·m (§ 5.3, problema 5.1), iar mișcarea este uniform încetinită:
+
+$$t_{op} = \frac{J\Omega_m}{M_b - M_r'} = \frac{0{,}1236\cdot 153{,}52}{100 - 58{,}86} = 0{,}461 \text{ s},$$
+
+$$s_{op} = \frac{v\thinspace t_{op}}{2} = \frac{0{,}512\cdot 0{,}461}{2} = 0{,}118 \text{ m}.$$
+
+Arborele motorului se mai rotește cu $\theta = \Omega_m t_{op}/2 = 35{,}4$ rad, iar frâna disipă $M_b\theta$ = 3541 J. **Verificări:** bilanțul energetic $\tfrac12 J\Omega_m^2 + M_r'\theta = 1457 + 2084 = 3541$ J ✓; integrarea numerică a ecuației mișcării dă același timp și aceeași distanță ✓. În realitate, frâna are un timp de reacție (indicat în catalog) în care sarcina accelerează nefrânată, deci distanța de oprire este mai mare decât cea calculată.
+
+### Cuplajul, reductorul și traductorul
+
+**Cuplajul** leagă doi arbori și compensează **necoaxialitatea** lor inevitabilă – abaterile radiale, unghiulare și axiale datorate montajului și dilatării. Cuplajele **elastice** (cu elemente din elastomer între două semicuple) amortizează în plus șocurile de cuplu; alte tipuri sunt cuplajele dințate și cele cu lamele metalice. La un **motoreductor**, motorul este flanșat direct pe reductor.
+
+**Reductorul** adaptează turația și cuplul (§ 5.3):
+
+| Tip | Axele | Caracteristici |
+|---|---|---|
+| cu roți dințate cilindrice (de regulă cu dinți înclinați) | paralele | randament ridicat: ≈ 98 % cu o treaptă, ≈ 94 % cu trei trepte [W19] |
+| cilindric-conic | perpendiculare | randament în același interval [W19] |
+| melcat (sau cilindric-melcat) | perpendiculare, neconcurente | raport mare într-o singură treaptă; frecări de alunecare mari, deci randament mai mic, care poate scădea sub 50 % la rapoarte foarte mari [W19] |
+
+Randamentul unui reductor cu mai multe trepte este produsul randamentelor treptelor: $0{,}98^3 = 0{,}941$, în acord cu valoarea de catalog de 94 % pentru trei trepte.
+
+**Autoblocarea.** Un angrenaj melcat la care unghiul de înclinare al elicei melcului, $\gamma$, este mai mic decât unghiul de frecare $\rho$ ($\tan\rho = \mu$) nu poate fi rotit de la roată: este **autoblocant**. Randamentul la antrenarea de la melc este
+
+$$\eta = \frac{\tan\gamma}{\tan(\gamma + \rho)} ;$$
+
+la limita autoblocării ($\gamma = \rho$) se obține $\eta = \tan\rho/\tan 2\rho = (1 - \mu^2)/2$, deci **un melc autoblocant are întotdeauna randamentul sub 50 %** (verificat și numeric, pentru μ = 0,03…0,08; catalogul [W19] folosește aceeași limită de 50 %). Autoblocarea **nu înlocuiește frâna**: ungerea și vibrațiile pot micșora frecarea, iar producătorii recomandă o frână acolo unde este în joc siguranța [W19].
+
+**Traductorul de turație sau de poziție** se montează, de regulă, pe capătul liber al arborelui motorului. Un **encoder incremental** dă un număr fix de impulsuri pe rotație: turația rezultă din frecvența impulsurilor, iar poziția – prin numărarea lor de la o poziție de referință. Un **encoder absolut** dă direct un cod unic pentru fiecare poziție, disponibil imediat după alimentare. La servomotoare se folosește și **resolverul**, un mic transformator rotativ ale cărui tensiuni de ieșire depind de unghiul rotorului.
+
+### Convertorul de frecvență
+
+Un convertor de joasă tensiune (figura 5.6) conține: puntea redresoare cu diode; **condensatoarele** circuitului intermediar, de regulă electrolitice cu aluminiu; **modulul cu IGBT** al invertorului, montat pe un radiator răcit de un **ventilator**; bobine (de rețea sau în circuitul intermediar), un filtru de compatibilitate electromagnetică, chopperul de frânare (§ 5.9) și placa electronică de comandă.
+
+![Figura 5.11 – Modulul IGBT](figuri/f05-11-modul-igbt.svg)
+
+*Figura 5.11 – Secțiune schematică printr-un modul de putere cu IGBT (grosimile straturilor nu sunt la scară).*
+
+**Modulul IGBT** (figura 5.11) este o construcție stratificată [W20]. Cipurile de siliciu (tranzistoarele IGBT și diodele) sunt lipite pe un substrat **DBC** (*direct bonded copper*): o placă ceramică subțire, din Al₂O₃ sau din AlN, acoperită cu cupru pe ambele fețe. Ceramica **izolează electric** cipurile, aflate la potențialul circuitului intermediar, de radiator, dar **conduce căldura** spre el. Substratul este lipit pe o **placă de bază** din cupru, prinsă cu șuruburi pe radiator, cu un strat de pastă termoconductoare între ele. Fețele de sus ale cipurilor sunt legate de pistele de cupru prin **fire subțiri de aluminiu** sudate pe ele (în engleză *wire bonding*). Interiorul carcasei este umplut cu **gel siliconic**, care izolează electric și protejează cipurile de umiditate și impurități [W20].
+
+| Ceramica substratului | Conductivitatea termică | Rezistența termică a 1 cm² (flux unidimensional) | Încălzirea la 100 W prin 1 cm² |
+|---|---|---|---|
+| Al₂O₃ (alumină 96 %), 0,38 mm | 24 W/(m·K) [W20] | 0,158 K/W | 15,8 K |
+| AlN (nitrură de aluminiu), 0,63 mm | 170 W/(m·K) [W20] | 0,037 K/W | 3,7 K |
+
+*Rezistența termică $R_{th} = t/(\lambda A)$, verificată prin rezolvarea numerică a conducției pe o rețea de noduri. Valorile reale sunt mai mici, pentru că straturile de cupru împrăștie căldura pe o arie mai mare; comparația rămâne valabilă: deși mai groasă, ceramica din AlN are o rezistență termică de circa 4 ori mai mică, de aceea este preferată la densități mari de putere.*
+
+**De ce se defectează modulele.** Straturile au coeficienți de dilatare termică diferiți. La fiecare ciclu de încălzire și răcire (pornire, accelerare, oprire), îmbinările sunt solicitate mecanic: firele de aluminiu se pot desprinde de pe cip, iar lipitura dintre cip și substrat obosește și se fisurează; rezistența termică crește, cipul se încălzește mai tare, iar degradarea se accelerează [W21]. De aceea, durata de viață a modulelor se estimează prin **încercări de ciclare a puterii** (conectarea și deconectarea repetată a sarcinii) [W21].
+
+**Piese cu durată de viață limitată.** Manualele convertoarelor dau ventilatoarele și condensatoarele circuitului intermediar ca piese de înlocuit periodic: de exemplu, circa 2–3 ani pentru ventilatoare și 5–10 ani pentru condensatoare, în condiții precizate de temperatură ambiantă, încărcare și ore de funcționare pe zi [W23]. Durata de viață a unui condensator electrolitic se **dublează, aproximativ, la fiecare 10 °C** cu care scade temperatura lui [W22]:
+
+$$L = L_0 \cdot 2^{(T_0 - T)/10} .$$
+
+Un condensator garantat 5000 h la 105 °C ajunge astfel la 80 000 h (circa 9 ani de funcționare continuă) dacă miezul lui lucrează la 65 °C (formula reproduce și tabelul din [W22]). Curentul ondulat încălzește condensatorul peste temperatura aerului din jur, de aceea calculul se face cu temperatura miezului și cu formula producătorului [W22]. O răcire bună a dulapului prelungește deci direct viața convertorului.
+
+**Motorul alimentat de la convertor.** Fronturile abrupte ale tensiunii PWM (§ 5.9) au două consecințe constructive:
+
+- **izolația** înfășurării este solicitată suplimentar de vârfurile de tensiune, mai ales la cabluri lungi; specificația IEC TS 60034-25 [S17] tratează interacțiunea dintre motor și convertor și caracteristicile motoarelor proiectate special pentru alimentarea de la convertor;
+- **curenții prin lagăre**: impulsurile de tensiune pot produce curenți prin rulmenți, ale căror descărcări repetate erodează treptat căile de rulare [W24]. Remediile sunt un **rulment izolat** la capătul opus acționării (de exemplu, cu un strat de oxid de aluminiu depus prin pulverizare în plasmă pe un inel), filtre de mod comun, cablarea și legarea la pământ corecte; alegerea lor depinde în principal de mărimea motorului [W24].
+
 ---
 
 ## Probleme rezolvate
@@ -237,13 +314,13 @@ Un ventilator ($J$ total = 1,0 kg·m², cuplul $M_r = k\Omega^2$, cu $M_r = 0{,}
 
 $$t = \frac{1}{\sqrt{117{,}25\cdot 0{,}00332}}\ \operatorname{artanh}\left(153{,}52\sqrt{\frac{0{,}00332}{117{,}25}}\right) = 1{,}838\ \text{s}.$$
 
-**Verificări (două căi independente):** integrarea numerică a integralei $J\int d\Omega/(M - k\Omega^2)$ (cuadratură) și integrarea în timp a ecuației mișcării dau tot 1,838 s ✓ (figura 5.10).
+**Verificări (două căi independente):** integrarea numerică a integralei $J\int d\Omega/(M - k\Omega^2)$ (cuadratură) și integrarea în timp a ecuației mișcării dau tot 1,838 s ✓ (figura 5.12).
 
 Dacă s-ar presupune, greșit, că ventilatorul are tot timpul cuplul de la turația nominală, ar rezulta 3,93 s – o supraestimare de peste două ori.
 
-![Figura 5.10 – Pornirea ventilatorului](figuri/f05-10-accelerare-ventilator.svg)
+![Figura 5.12 – Pornirea ventilatorului](figuri/f05-12-accelerare-ventilator.svg)
 
-*Figura 5.10 – Turația ventilatorului în timpul pornirii: soluția analitică, integrarea numerică și ipoteza greșită a cuplului rezistent constant.*
+*Figura 5.12 – Turația ventilatorului în timpul pornirii: soluția analitică, integrarea numerică și ipoteza greșită a cuplului rezistent constant.*
 
 ### Problema 5.3 – Alegerea motorului pentru un ciclu de sarcină
 
@@ -314,6 +391,12 @@ Motorul de 11 kW din problema 5.3 are constanta termică de timp $\tau$ = 20 min
 10. Explicați de ce reglarea debitului unui ventilator prin turație este mult mai economică decât prin clapetă.
 11. Ce rol are contactul de automenținere din schema de comandă a unui contactor?
 12. De ce contactoarele de sens direct și invers trebuie interblocate?
+13. De ce frâna unui troliu este una cu arcuri, eliberată de un electromagnet, și nu invers?
+14. De ce un angrenaj melcat autoblocant are randamentul sub 50 %? Poate înlocui frâna?
+15. Ce rol are ceramica substratului DBC dintr-un modul IGBT? De ce se folosește uneori AlN în loc de Al₂O₃?
+16. Care sunt mecanismele tipice de îmbătrânire ale unui modul IGBT?
+17. Cum influențează temperatura durata de viață a condensatoarelor electrolitice din circuitul intermediar?
+18. Ce măsuri constructive se iau la motoarele alimentate de la convertor?
 
 <details>
 <summary><b>Răspunsuri</b></summary>
@@ -330,11 +413,17 @@ Motorul de 11 kW din problema 5.3 are constanta termică de timp $\tau$ = 20 min
 10. Puterea ventilatorului variază cu cubul turației; clapeta reduce debitul păstrând turația și disipă energia în pierderi de presiune (§ 5.10).
 11. Menține bobina contactorului alimentată după eliberarea butonului de pornire; la căderea tensiunii, motorul nu repornește singur (§ 5.11).
 12. Închiderea simultană ar scurtcircuita două faze ale rețelei (§ 5.11).
+13. Pentru că frânează la lipsa tensiunii (principiul *fail-safe*): la căderea rețelei sau la întreruperea circuitului de comandă, sarcina rămâne ținută (§ 5.12).
+14. La limita autoblocării ($\gamma = \rho$), randamentul este $(1 - \mu^2)/2 < 0{,}5$. Nu: ungerea și vibrațiile pot micșora frecarea, iar producătorii recomandă o frână acolo unde este în joc siguranța (§ 5.12).
+15. Izolează electric cipurile de radiator, dar conduce căldura spre el. AlN are conductivitatea termică de circa 170 W/(m·K), față de 24 W/(m·K) la Al₂O₃: chiar mai groasă, ceramica din AlN are o rezistență termică de circa 4 ori mai mică (§ 5.12).
+16. Ciclurile de încălzire și răcire, combinate cu coeficienții de dilatare diferiți ai straturilor, duc la desprinderea firelor de aluminiu de pe cipuri și la oboseala și fisurarea lipiturilor (§ 5.12).
+17. Durata se dublează aproximativ la fiecare 10 °C cu care scade temperatura miezului condensatorului: un condensator de 5000 h la 105 °C ajunge la circa 80 000 h la 65 °C (§ 5.12).
+18. O izolație a înfășurării care suportă vârfurile de tensiune ale impulsurilor PWM (IEC TS 60034-25) și măsuri împotriva curenților prin lagăre: rulment izolat la capătul opus acționării, filtre de mod comun, cablare și legare la pământ corecte (§ 5.12).
 
 </details>
 
 ---
 
-**Bibliografie pentru capitol:** [3], [5], [6], [7]; standarde [S1], [S6]. Lista completă este în [README](README.md#bibliografie).
+**Bibliografie pentru capitol:** [3], [5], [6], [7]; standarde [S1], [S6], [S17], [S18]; surse online [W17]–[W24]. Lista completă este în [README](README.md#bibliografie).
 
 [← Capitolul 4](04-motorul-sincron.md) · [Cuprins](README.md) · [Îndrumar de laborator →](06-indrumar-laborator.md)

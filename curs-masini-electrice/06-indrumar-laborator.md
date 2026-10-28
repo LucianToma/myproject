@@ -194,7 +194,7 @@ Activitatea în laborator se desfășoară numai după **instruirea de securitat
 
 ### Prelucrarea datelor și verificări
 
-- Graficele $\eta$, $\cos\varphi$, $I$, $n$ în funcție de $P_2$ (ca în figura 2.6) și $M(n)$ în zona stabilă.
+- Graficele $\eta$, $\cos\varphi$, $I$, $n$ în funcție de $P_2$ (ca în figura 2.9) și $M(n)$ în zona stabilă.
 - **Cuplul pe două căi:** măsurat la frână și calculat din puteri: $M \approx \dfrac{P_1 - P_{Cu1} - P_{Fe}}{\Omega_1}$ (cuplul electromagnetic, din puterea electromagnetică, cu $P_{Fe}$ din L3); diferența față de cuplul măsurat la arbore corespunde pierderilor mecanice.
 - **Caracteristica mecanică pe două căi:** punctele măsurate se compară cu formula lui Kloss construită din datele de catalog și cu schema echivalentă din L3.
 - **Pornirea:** raportul vârfurilor curentului de linie la pornirea directă și stea-triunghi se compară cu valoarea teoretică 3 (§ 2.7). În practică, raportul măsurat poate fi afectat de vârful tranzitoriu de la comutarea din stea în triunghi.
@@ -227,7 +227,7 @@ Activitatea în laborator se desfășoară numai după **instruirea de securitat
 
 ### Prelucrarea datelor și verificări
 
-- Graficele $U_0(I_e)$ și $I_{sc}(I_e)$ pe aceeași diagramă (ca în figura 3.2); se trasează dreapta întrefierului.
+- Graficele $U_0(I_e)$ și $I_{sc}(I_e)$ pe aceeași diagramă (ca în figura 3.6); se trasează dreapta întrefierului.
 - $X_s = U_{0f}(I_{e0})/I_{sc}(I_{e0})$ la $I_{e0}$ care dă $U_n$ în gol; $x_s$ în unități relative; **SCR pe două căi:** $I_{e0}/I_{e,sc}$ și $1/x_s$ (problema 3.2).
 - **Caracteristica externă pe două căi:** măsurată și calculată din $E_0 = \sqrt{U^2 + (X_sI)^2}$ (sarcină rezistivă, § 3.5). Diferențele se datorează saturației și rezistenței statorice.
 

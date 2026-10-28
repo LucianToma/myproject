@@ -14,19 +14,71 @@ Motorul asincron trifazat cu rotorul în colivie este **cel mai răspândit moto
 
 ## 2.1. Construcția
 
-![Figura 2.1 – Secțiune transversală](figuri/f02-1-sectiune.svg)
+Figura 2.1 arată părțile unui motor asincron cu rotorul în colivie, **închis și ventilat exterior** – execuția cea mai răspândită în industrie. Figura 2.2 arată aceeași mașină în secțiune transversală.
 
-*Figura 2.1 – Secțiune transversală printr-un motor asincron cu rotorul în colivie (schematic).*
+![Figura 2.1 – Vedere explodată](figuri/f02-1-vedere-explodata.svg)
 
-- **Statorul** – un miez din tole în formă de coroană, cu **crestături** în care este așezată o **înfășurare trifazată** (aceeași ca la mașina sincronă). Alimentată de la rețea, ea produce câmpul magnetic învârtitor (§ 0.8).
-- **Rotorul** – un miez din tole, montat pe arbore, separat de stator printr-un **întrefier** foarte mic (zecimi de milimetru la mașinile mici, ca să fie mic și curentul de magnetizare, § 0.3). Există două tipuri:
-  - **rotor în colivie** (în scurtcircuit): bare de aluminiu sau cupru, scurtcircuitate la capete de două inele (figura 2.2);
-  - **rotor bobinat** (cu inele): o înfășurare trifazată legată la trei inele colectoare, pe care calcă perii; permite conectarea unor rezistențe exterioare (§ 2.7).
-- **Carcasa, scuturile, lagărele, ventilatorul** – mecanica și răcirea mașinii.
+*Figura 2.1 – Părțile componente ale unui motor asincron închis, cu ventilație exterioară (rândul de sus: carcasa cu statorul și piesele fixe; rândul de jos: rotorul scos din stator).*
 
-![Figura 2.2 – Colivia rotorică](figuri/f02-2-colivie.svg)
+![Figura 2.2 – Secțiune transversală](figuri/f02-2-sectiune.svg)
 
-*Figura 2.2 – Colivia rotorică (fără miezul de tole).*
+*Figura 2.2 – Secțiune transversală printr-un motor asincron cu rotorul în colivie (schematic).*
+
+### Carcasa și scuturile
+
+**Carcasa** susține statorul și transmite căldura spre exterior prin **aripioare**. Se face din fontă, din aluminiu (la motoarele mici, mai ușoare) sau din oțel sudat (la motoarele mari). Motorul se fixează prin **tălpi** (forma de montaj IM B3), prin **flanșă** (IM B5) sau prin ambele (IM B35), după IEC 60034-7 [S19]. Cele două **scuturi** închid carcasa la capete și poartă lagărele: scutul **DE** (*drive end*) pe partea capătului de arbore care antrenează mașina de lucru și scutul **NDE** pe partea opusă.
+
+**Gabaritul** motoarelor este standardizat (IEC 60072-1 [S14]): numărul gabaritului este **înălțimea axului** față de planul tălpilor, în milimetri. De exemplu, gabaritul **160** are axul la 160 mm, capătul de arbore de Ø42 × 110 mm și pana de 12 × 8 mm [W9]. Literele **S, M, L** care urmează (160M, 160L) desemnează carcase de lungimi diferite, pentru pachete de tole mai scurte sau mai lungi: înălțimea axului rămâne aceeași, dar distanța dintre găurile tălpilor pe direcția axului crește (210 mm la 160M, 254 mm la 160L [W9]). Standardizarea permite înlocuirea unui motor cu altul, de la alt producător, fără modificarea fundației sau a cuplajului.
+
+### Miezul statoric
+
+Miezul este un pachet de **tole de oțel electrotehnic cu grăunți neorientați** (proprietăți magnetice aproape aceleași în toate direcțiile – necesar, pentru că fluxul se rotește), groase de 0,35–0,65 mm și izolate. Marca tablei arată pierderile garantate (EN 10106 [S11], [W1], [W2]): **M400-50A** înseamnă cel mult **4,00 W/kg** la **1,5 T** și 50 Hz, grosime **0,50 mm**, tablă livrată complet tratată (**A**); **M270-35A** – 2,70 W/kg, 0,35 mm. Pentru randamente mai mari se folosesc table cu pierderi specifice mai mici și mai subțiri.
+
+Tolele se ștanțează cu **crestăturile** deschise spre întrefier (figura 2.3a); pachetul se presează și se fixează în carcasă. Fierul dintre crestături formează **dinții**, iar coroana exterioară – **jugul**.
+
+### Înfășurarea statorică
+
+- La motoarele de **joasă tensiune**, bobinele se fac din **sârmă rotundă de cupru emailată** și se introduc spiră cu spiră, prin deschiderea îngustă a **crestăturilor semiînchise**. Crestătura este căptușită cu **izolație de crestătură** (folii stratificate din materiale electroizolante), iar bobinele sunt reținute de o **pană** (figura 2.3a). Între fazele din aceeași crestătură și între capetele de bobină ale fazelor diferite se pun separatoare.
+- La motoarele de **înaltă tensiune** (de exemplu 6 kV), bobinele sunt **preformate** din conductor dreptunghiular și izolate cu **bandă de mică**; ele se introduc în **crestături deschise**.
+- Înfășurarea finită se **impregnează** cu lac sau rășină, care leagă conductoarele între ele, îmbunătățește transmiterea căldurii și protejează împotriva umidității. Clasa termică a sistemului de izolație (de exemplu F – 155 °C, § 0.9) este a ansamblului de materiale, nu a unui singur material.
+
+Capetele celor trei faze se aduc în **cutia de borne** și se marchează **U1–U2, V1–V2, W1–W2** (IEC 60034-8 [S13]). Pe placa de borne, capetele sunt așezate astfel încât conexiunea **stea** sau **triunghi** să se facă doar prin mutarea a trei punți (figura 2.4).
+
+![Figura 2.3 – Crestături](figuri/f02-3-crestaturi.svg)
+
+*Figura 2.3 – (a) Crestătura statorică semiînchisă a unui motor de joasă tensiune; (b)–(e) forme de crestături rotorice.*
+
+![Figura 2.4 – Cutia de borne](figuri/f02-4-cutie-borne.svg)
+
+*Figura 2.4 – Placa de borne și punțile pentru conexiunile stea și triunghi.*
+
+### Rotorul
+
+**Rotorul în colivie.** Pachetul de tole rotorice are crestături în care se toarnă sub presiune **aluminiu**; barele și cele două **inele de scurtcircuitare** (adesea cu aripioare de ventilație) se formează dintr-o singură bucată (figura 2.5).
+
+![Figura 2.5 – Colivia rotorică](figuri/f02-5-colivie.svg)
+
+*Figura 2.5 – Colivia rotorică (fără miezul de tole).* La motoarele mari, colivia se face din bare de cupru sau aliaje de cupru, lipite de inele. **Colivia din cupru turnat** reduce pierderile din rotor și crește randamentul (cuprul conduce mai bine), dar turnarea este mai dificilă din cauza temperaturii de topire mai mari; rotorul trebuie reproiectat, pentru că se modifică și cuplul de pornire [W11].
+
+**Forma crestăturilor rotorice** (figura 2.3b–e) stabilește caracteristicile de pornire: barele rotunde dau un motor cu alunecare mică și cuplu de pornire modest, iar **barele înalte** și **colivia dublă** folosesc efectul de refulare pentru un cuplu de pornire mare (§ 2.7).
+
+**Înclinarea barelor.** Barele nu sunt paralele cu axa, ci ușor **înclinate** (cu aproximativ un pas de crestătură pe lungimea pachetului; figura 2.1). Înclinarea atenuează cuplurile parazite și zgomotul magnetic produse de interacțiunea dinților statorici și rotorici.
+
+**Rotorul bobinat** are în crestături o înfășurare trifazată asemănătoare celei statorice, legată în stea, cu capetele aduse la trei **inele colectoare** pe arbore. Pe inele calcă **perii** din grafit sau metal-grafit, prin care se conectează rezistențele exterioare (§ 2.7). Construcția este mai scumpă și necesită întreținerea periilor.
+
+### Întrefierul
+
+Întrefierul este cât de mic permit toleranțele de execuție și deformațiile arborelui: de ordinul **zecimilor de milimetru** la motoarele mici și mijlocii, mai mare la mașinile mari și la cele rapide [W12]. Un întrefier mai mic reduce curentul de magnetizare și crește factorul de putere (§ 0.3, § 2.3), dar mărește pierderile suplimentare și riscul ca rotorul să atingă statorul.
+
+### Arborele, lagărele și ventilația
+
+- **Arborele** (oțel) transmite cuplul; capătul DE are o **pană** pentru cuplaj sau roată de curea.
+- **Lagărele** sunt, la motoarele mici și mijlocii, **rulmenți radiali cu bile**. Simbolul rulmentului arată tipul și dimensiunile; de exemplu **6309-2Z/C3**: 6 – rulment radial cu bile; 3 – seria de dimensiuni; 09 – alezajul de 9 × 5 = **45 mm**; 2Z – două scuturi metalice de protecție; C3 – joc radial interior mai mare decât cel normal [W25]. Când arborele este încărcat radial puternic (transmisii prin curele), la capătul DE se folosesc rulmenți cu role. La motoarele alimentate de la convertor, rulmentul NDE poate fi **izolat electric**, pentru a întrerupe curenții prin lagăre (§ 5.9, § 5.12).
+- **Ventilația**: un **ventilator** montat pe arbore, la capătul NDE, suflă aer printre aripioarele carcasei; ventilatorul este protejat de un **capac** cu grilă. Interiorul motorului rămâne închis (grad de protecție uzual IP55), iar metoda de răcire se notează **IC 411** (IEC 60034-6 [S20]).
+
+### Fișa constructivă a unui motor real de 15 kW
+
+Motorul de referință M15 are date construite pentru curs. Un motor real cu aceleași date nominale (15 kW, 4 poli, 50 Hz, IE3), din catalogul unui producător, are de exemplu: gabaritul **160L** (axul la 160 mm), capăt de arbore **Ø42 × 110 mm**, execuție cu tălpi (IM B3) sau cu flanșă (IM B5), grad de protecție **IP55**, răcire **IC 411**, rulmentul DE **6309-2Z/C3** și randamentul nominal **92,1 %** – exact minimul clasei IE3 la această putere (§ 2.11) [W10].
 
 ## 2.2. Principiul de funcționare. Alunecarea
 
@@ -49,15 +101,15 @@ La pornire ($s = 1$), $f_2 = f_1 = 50$ Hz; la funcționarea nominală a lui M15,
 
 ## 2.3. Schema echivalentă
 
-Mașina asincronă cu rotorul blocat este un **transformator** cu secundarul în scurtcircuit (statorul = primar, rotorul = secundar). Cu rotorul în mișcare se schimbă doar frecvența rotorică; se poate arăta că mașina se comportă ca un transformator la frecvența $f_1$, la care rezistența rotorică raportată devine $R_2'/s$ [1, 2]. Rezultă **schema echivalentă pe fază** (figura 2.3), identică cu cea a transformatorului (§ 1.4), cu sarcina $R_2'/s$:
+Mașina asincronă cu rotorul blocat este un **transformator** cu secundarul în scurtcircuit (statorul = primar, rotorul = secundar). Cu rotorul în mișcare se schimbă doar frecvența rotorică; se poate arăta că mașina se comportă ca un transformator la frecvența $f_1$, la care rezistența rotorică raportată devine $R_2'/s$ [1, 2]. Rezultă **schema echivalentă pe fază** (figura 2.6), identică cu cea a transformatorului (§ 1.4), cu sarcina $R_2'/s$:
 
 $$\frac{R_2'}{s} = R_2' + R_2'\thinspace \frac{1-s}{s} .$$
 
 Primul termen reprezintă pierderile Joule reale din rotor, al doilea – o **rezistență fictivă de sarcină**, în care puterea disipată este egală cu puterea mecanică.
 
-![Figura 2.3 – Schema echivalentă](figuri/f02-3-schema-echivalenta.svg)
+![Figura 2.6 – Schema echivalentă](figuri/f02-6-schema-echivalenta.svg)
 
-*Figura 2.3 – Schema echivalentă pe fază a mașinii asincrone. Pierderile în fier se grupează aici cu cele mecanice în $P_0$ (se determină împreună, din încercarea de mers în gol).*
+*Figura 2.6 – Schema echivalentă pe fază a mașinii asincrone. Pierderile în fier se grupează aici cu cele mecanice în $P_0$ (se determină împreună, din încercarea de mers în gol).*
 
 Diferențe față de transformator: din cauza întrefierului, **curentul de magnetizare este mult mai mare** (25–50 % din $I_n$ la motoarele mici și mijlocii; la M15, $I_\mu = 11{,}4$ A, adică 41 %), iar factorul de putere în gol este foarte mic.
 
@@ -65,7 +117,7 @@ Diferențe față de transformator: din cauza întrefierului, **curentul de magn
 
 ## 2.4. Bilanțul puterilor și cuplul
 
-Puterea absorbită din rețea, $P_1 = \sqrt3 U I\cos\varphi$, se împarte astfel (figura 2.4):
+Puterea absorbită din rețea, $P_1 = \sqrt3 U I\cos\varphi$, se împarte astfel (figura 2.7):
 
 | Mărime | Formulă | Unde se consumă |
 |---|---|---|
@@ -77,9 +129,9 @@ Puterea absorbită din rețea, $P_1 = \sqrt3 U I\cos\varphi$, se împarte astfel
 | pierderi mecanice (în $P_0$) | $P_m$ | lagăre, ventilator |
 | **puterea utilă** | $P_2 = P_{mi} - P_m$ | arborele |
 
-![Figura 2.4 – Bilanțul puterilor](figuri/f02-4-bilant-puteri.svg)
+![Figura 2.7 – Bilanțul puterilor](figuri/f02-7-bilant-puteri.svg)
 
-*Figura 2.4 – Bilanțul puterilor motorului M15 la 1466 rot/min, calculat din schema echivalentă (problema 2.2).*
+*Figura 2.7 – Bilanțul puterilor motorului M15 la 1466 rot/min, calculat din schema echivalentă (problema 2.2).*
 
 Relația $P_{Cu2} = s\thinspace P_\delta$ este fundamentală: **o fracțiune egală cu alunecarea din puterea care ajunge la rotor se pierde în rotor**. O mașină care funcționează cu alunecare mare are, inevitabil, randament mic.
 
@@ -102,7 +154,7 @@ $$s_k = \frac{R_2'}{\sqrt{R_1^2 + X_{sc}^2}}, \qquad M_{max} = \frac{3\thinspace
 Consecințe importante, valabile și pentru calculul exact:
 
 - **$M \propto U^2$**: la o scădere a tensiunii cu 10 %, cuplul (inclusiv cel maxim și cel de pornire) scade cu circa 19 %;
-- **$M_{max}$ nu depinde de $R_2'$**, dar **$s_k$ este proporțional cu $R_2'$** (figura 2.8);
+- **$M_{max}$ nu depinde de $R_2'$**, dar **$s_k$ este proporțional cu $R_2'$** (figura 2.11);
 - în zona de funcționare normală (s mic), cuplul este aproximativ proporțional cu alunecarea: caracteristica este „rigidă” (viteza scade puțin cu sarcina).
 
 **Formula lui Kloss.** Neglijând și $R_1$, raportul $M/M_{max}$ depinde doar de $s/s_k$:
@@ -115,9 +167,9 @@ $$s_k = s_n\left(\lambda + \sqrt{\lambda^2 - 1}\right).$$
 
 ### Regimurile de funcționare
 
-![Figura 2.5 – Regimurile de funcționare](figuri/f02-5-regimuri.svg)
+![Figura 2.8 – Regimurile de funcționare](figuri/f02-8-regimuri.svg)
 
-*Figura 2.5 – Caracteristica mecanică completă a motorului M15 (schema echivalentă).*
+*Figura 2.8 – Caracteristica mecanică completă a motorului M15 (schema echivalentă).*
 
 | Regim | Alunecare | Viteză | Puterea mecanică |
 |---|---|---|---|
@@ -129,9 +181,9 @@ Ramura dintre $s = 0$ și $s_k$ este zona **stabilă** de funcționare ca motor 
 
 ## 2.6. Caracteristicile de funcționare
 
-![Figura 2.6 – Caracteristicile de funcționare](figuri/f02-6-caracteristici-functionare.svg)
+![Figura 2.9 – Caracteristicile de funcționare](figuri/f02-9-caracteristici-functionare.svg)
 
-*Figura 2.6 – Randamentul, factorul de putere, curentul și turația lui M15 în funcție de puterea utilă.*
+*Figura 2.9 – Randamentul, factorul de putere, curentul și turația lui M15 în funcție de puterea utilă.*
 
 Observații practice:
 
@@ -153,32 +205,32 @@ Motorul (prevăzut pentru funcționare în **triunghi** la tensiunea rețelei) e
 
 $$I_{p,Y} = \frac{I_{p,\Delta}}{3}, \qquad M_{p,Y} = \frac{M_{p,\Delta}}{3} .$$
 
-Metoda este potrivită pentru pornirea **în gol sau cu sarcină mică** (ventilatoare, pompe centrifuge, unele mașini-unelte), nu și pentru sarcini cu cuplu mare la pornire (figura 2.7).
+Metoda este potrivită pentru pornirea **în gol sau cu sarcină mică** (ventilatoare, pompe centrifuge, unele mașini-unelte), nu și pentru sarcini cu cuplu mare la pornire (figura 2.10).
 
-![Figura 2.7 – Pornirea stea-triunghi](figuri/f02-7-stea-triunghi.svg)
+![Figura 2.10 – Pornirea stea-triunghi](figuri/f02-10-stea-triunghi.svg)
 
-*Figura 2.7 – Cuplul și curentul lui M15 în conexiune triunghi și stea (model cu colivie dublă, § 2.7), comparate cu un ventilator și un transportor.*
+*Figura 2.10 – Cuplul și curentul lui M15 în conexiune triunghi și stea (model cu colivie dublă, § 2.7), comparate cu un ventilator și un transportor.*
 
 ### Alte metode
 
 - **Autotransformator de pornire** cu raportul $k$ ($U_{motor} = U/k$): curentul motorului scade de $k$ ori, curentul din rețea de $k^2$ ori, iar cuplul de $k^2$ ori.
 - **Pornitor static (soft-starter)**: tiristoare care cresc treptat tensiunea; curentul scade proporțional cu tensiunea, cuplul cu pătratul ei.
 - **Convertor de frecvență**: pornire cu curent apropiat de cel nominal și cuplu mare, pentru că frecvența crește treptat de la valori mici, iar viteza de alunecare $n_1 - n$ (deci frecvența rotorică $f_2$) rămâne mică (§ 2.8); este soluția cea mai bună tehnic, dar și cea mai scumpă.
-- **Rezistențe în circuitul rotoric** (doar la motoarele cu **rotor bobinat**): mărind $R_2'$, $s_k$ crește (figura 2.8) și cuplul maxim poate fi obținut chiar la pornire, cu curent redus. Rezistențele se scot treptat pe măsură ce motorul accelerează.
+- **Rezistențe în circuitul rotoric** (doar la motoarele cu **rotor bobinat**): mărind $R_2'$, $s_k$ crește (figura 2.11) și cuplul maxim poate fi obținut chiar la pornire, cu curent redus. Rezistențele se scot treptat pe măsură ce motorul accelerează.
 
-![Figura 2.8 – Influența rezistenței rotorice](figuri/f02-8-rezistenta-rotorica.svg)
+![Figura 2.11 – Influența rezistenței rotorice](figuri/f02-11-rezistenta-rotorica.svg)
 
-*Figura 2.8 – Mărirea rezistenței rotorice deplasează cuplul maxim spre turații mici, fără să-i modifice valoarea.*
+*Figura 2.11 – Mărirea rezistenței rotorice deplasează cuplul maxim spre turații mici, fără să-i modifice valoarea.*
 
 ### Efectul de refulare (colivia dublă, barele înalte)
 
 Un motor cu colivie obișnuită și parametri constanți nu poate avea simultan alunecare nominală mică (randament bun) și cuplu de pornire mare: primul cere $R_2'$ mic, al doilea $R_2'$ mare. Soluția constructivă folosește **efectul de refulare (pelicular)**: la pornire, frecvența rotorică este 50 Hz și curentul se concentrează în partea barelor dinspre întrefier (bare înalte sau colivia exterioară a unei colivii duble), unde rezistența este mare; la funcționarea normală ($f_2 \approx 1$ Hz) curentul se repartizează uniform și rezistența este mică.
 
-Figura 2.9 compară, pentru M15: modelul cu parametri constanți, formula lui Kloss (aplicată pe datele de catalog) și un **model cu colivie dublă**, ai cărui parametri ($X_{2c}$ = 0,23 Ω, ramurile 0,51 Ω + j0,21 Ω și 0,33 Ω + j1,39 Ω) au fost ajustați pentru curs astfel încât să reproducă datele de catalog. Primele două modele descriu bine zona de funcționare, dar **subestimează cuplul de pornire de 2,3–2,8 ori** – formula lui Kloss nu se folosește pentru calculul pornirii motoarelor cu colivie (problema 2.3).
+Figura 2.12 compară, pentru M15: modelul cu parametri constanți, formula lui Kloss (aplicată pe datele de catalog) și un **model cu colivie dublă**, ai cărui parametri ($X_{2c}$ = 0,23 Ω, ramurile 0,51 Ω + j0,21 Ω și 0,33 Ω + j1,39 Ω) au fost ajustați pentru curs astfel încât să reproducă datele de catalog. Primele două modele descriu bine zona de funcționare, dar **subestimează cuplul de pornire de 2,3–2,8 ori** – formula lui Kloss nu se folosește pentru calculul pornirii motoarelor cu colivie (problema 2.3).
 
-![Figura 2.9 – Modele și catalog](figuri/f02-9-model-vs-catalog.svg)
+![Figura 2.12 – Modele și catalog](figuri/f02-12-model-vs-catalog.svg)
 
-*Figura 2.9 – Cuplul și curentul motorului M15: modele comparate cu datele de catalog (punctele negre).*
+*Figura 2.12 – Cuplul și curentul motorului M15: modele comparate cu datele de catalog (punctele negre).*
 
 ## 2.8. Reglarea vitezei
 
@@ -190,11 +242,11 @@ Din $n = \dfrac{60 f_1}{p}(1 - s)$ rezultă trei căi:
 
 ### Comanda U/f = constant
 
-Fluxul este proporțional cu $U/f$ (§ 0.4). Ca să rămână nominal (cuplul maxim să se păstreze, iar miezul să nu se satureze), convertorul modifică tensiunea proporțional cu frecvența: la 30 Hz, $U = 400\cdot 30/50 = 240$ V. Neglijând $R_1$, cuplul depinde doar de $U/f$ și de **viteza de alunecare** $n_1 - n$, astfel că **familia de caracteristici se deplasează paralel** (figura 2.10): la cuplu constant, $n_1 - n$ rămâne aproximativ același la orice frecvență (problema 2.5).
+Fluxul este proporțional cu $U/f$ (§ 0.4). Ca să rămână nominal (cuplul maxim să se păstreze, iar miezul să nu se satureze), convertorul modifică tensiunea proporțional cu frecvența: la 30 Hz, $U = 400\cdot 30/50 = 240$ V. Neglijând $R_1$, cuplul depinde doar de $U/f$ și de **viteza de alunecare** $n_1 - n$, astfel că **familia de caracteristici se deplasează paralel** (figura 2.13): la cuplu constant, $n_1 - n$ rămâne aproximativ același la orice frecvență (problema 2.5).
 
-![Figura 2.10 – Familia U/f](figuri/f02-10-familie-uf.svg)
+![Figura 2.13 – Familia U/f](figuri/f02-13-familie-uf.svg)
 
-*Figura 2.10 – Caracteristicile mecanice ale lui M15 la U/f = constant. La frecvențe mici, căderea de tensiune pe $R_1$ reduce cuplul maxim; convertoarele compensează printr-o tensiune suplimentară („boost”).*
+*Figura 2.13 – Caracteristicile mecanice ale lui M15 la U/f = constant. La frecvențe mici, căderea de tensiune pe $R_1$ reduce cuplul maxim; convertoarele compensează printr-o tensiune suplimentară („boost”).*
 
 Peste frecvența nominală tensiunea nu mai poate crește (este limitată de rețea); fluxul scade ca $1/f$, iar motorul lucrează la **putere aproximativ constantă** (zona de „slăbire a câmpului”).
 
@@ -281,7 +333,7 @@ Calculați curentul și cuplul de pornire ale lui M15 pornit în stea. Poate por
 
 (a) $74{,}9 > 9{,}8$ N·m – **ventilatorul pornește**; (b) $74{,}9 < 97{,}7$ N·m – **transportorul nu pornește** în stea.
 
-**Verificare (prin impedanțe).** Impedanța unei înfășurări la pornire: $Z_f = 400/(187{,}7/\sqrt3) = 3{,}69$ Ω. În stea: $I_{pY} = (400/\sqrt3)/3{,}69 = 62{,}6$ A ✓; cuplul $\propto U_f^2$: $224{,}7\cdot(1/\sqrt3)^2 = 74{,}9$ N·m ✓. Figura 2.7 confirmă grafic ambele concluzii.
+**Verificare (prin impedanțe).** Impedanța unei înfășurări la pornire: $Z_f = 400/(187{,}7/\sqrt3) = 3{,}69$ Ω. În stea: $I_{pY} = (400/\sqrt3)/3{,}69 = 62{,}6$ A ✓; cuplul $\propto U_f^2$: $224{,}7\cdot(1/\sqrt3)^2 = 74{,}9$ N·m ✓. Figura 2.10 confirmă grafic ambele concluzii.
 
 ### Problema 2.5 – Alimentarea de la convertor de frecvență (U/f = constant)
 
@@ -319,6 +371,11 @@ Un motor de 15 kW, 4 poli, funcționează 4000 h/an la sarcină nominală. Cât 
 12. Ce regim de funcționare are o mașină asincronă antrenată peste viteza de sincronism?
 13. De ce motoarele supradimensionate sunt ineficiente?
 14. Ce clasă de randament minimă este obligatorie în UE pentru un motor nou de 15 kW?
+15. Ce înseamnă gabaritul 160L? Ce avantaj practic aduce standardizarea gabaritelor?
+16. Ce înseamnă marca de tablă M400-50A? De ce statorul folosește tablă cu grăunți neorientați?
+17. Cum se execută o colivie din aluminiu? De ce barele sunt ușor înclinate față de axă?
+18. Ce înseamnă simbolul rulmentului 6309-2Z/C3?
+19. De ce întrefierul se face cât mai mic, dar nu oricât de mic?
 
 <details>
 <summary><b>Răspunsuri</b></summary>
@@ -329,7 +386,7 @@ Un motor de 15 kW, 4 poli, funcționează 4000 h/an la sarcină nominală. Cât 
 4. Rezistența fictivă în care puterea disipată este egală cu puterea mecanică internă (§ 2.3).
 5. Din cauza întrefierului, care cere un curent de magnetizare (reactiv) mult mai mare (§ 2.3).
 6. Ambele scad cu circa 19 %, pentru că sunt proporționale cu $U^2$ ($0{,}9^2 = 0{,}81$) (§ 2.5).
-7. Cuplul maxim rămâne același, dar apare la o alunecare mai mare (o viteză mai mică); cuplul de pornire crește (dacă $s_k \le 1$), iar curentul de pornire scade (§ 2.7, figura 2.8).
+7. Cuplul maxim rămâne același, dar apare la o alunecare mai mare (o viteză mai mică); cuplul de pornire crește (dacă $s_k \le 1$), iar curentul de pornire scade (§ 2.7, figura 2.11).
 8. La pornirea în gol sau cu sarcină mică, deoarece cuplul scade de 3 ori. Motorul trebuie să fie prevăzut pentru funcționare în triunghi la tensiunea rețelei (de exemplu 400/690 V la rețeaua de 400 V) (§ 2.7).
 9. Pentru că presupune parametri constanți și neglijează efectul de refulare; subestimează cuplul de pornire de câteva ori (problema 2.3).
 10. Pentru a menține fluxul constant ($\Phi \propto U/f$): cuplul maxim se păstrează, iar miezul nu se saturează (§ 2.8).
@@ -337,11 +394,16 @@ Un motor de 15 kW, 4 poli, funcționează 4000 h/an la sarcină nominală. Cât 
 12. Regim de generator ($s < 0$): primește putere mecanică și dă putere activă rețelei, dar absoarbe putere reactivă (§ 2.5, § 2.10).
 13. Lucrează la sarcină relativă mică, unde randamentul și mai ales factorul de putere sunt mici (§ 2.6).
 14. IE3 (Regulamentul (UE) 2019/1781, de la 1 iulie 2021); IE4 este obligatorie de la 1 iulie 2023 pentru motoarele de 75–200 kW cu 2, 4 sau 6 poli (§ 2.11).
+15. Axul se află la 160 mm deasupra planului tălpilor; L desemnează carcasa lungă (distanța dintre găurile tălpilor pe direcția axului 254 mm, față de 210 mm la 160M), pentru un pachet de tole mai lung. Un motor se poate înlocui cu altul, de la alt producător, fără modificarea fundației sau a cuplajului (§ 2.1).
+16. Pierderi specifice de cel mult 4,00 W/kg la 1,5 T și 50 Hz, grosime 0,50 mm, tablă livrată complet tratată. Fluxul se rotește, deci tabla trebuie să aibă proprietăți apropiate în toate direcțiile (§ 2.1).
+17. Aluminiul se toarnă sub presiune în crestăturile pachetului de tole rotorice; barele și inelele de scurtcircuitare (adesea cu aripioare de ventilație) rezultă dintr-o singură bucată. Înclinarea, de aproximativ un pas de crestătură, atenuează cuplurile parazite și zgomotul magnetic (§ 2.1).
+18. Rulment radial cu bile (6), seria de dimensiuni 3, alezajul 9 × 5 = 45 mm, două scuturi metalice de protecție (2Z), joc radial interior mai mare decât cel normal (C3) (§ 2.1).
+19. Un întrefier mic reduce curentul de magnetizare și îmbunătățește factorul de putere; dar toleranțele de execuție și deformațiile arborelui impun o valoare minimă, iar un întrefier prea mic mărește pierderile suplimentare și riscul ca rotorul să atingă statorul (§ 2.1).
 
 </details>
 
 ---
 
-**Bibliografie pentru capitol:** [1] cap. 6, [2] cap. 6, [3], [4]; standarde [S1], [S2], [S6], [S8]. Lista completă este în [README](README.md#bibliografie).
+**Bibliografie pentru capitol:** [1] cap. 6, [2] cap. 6, [3], [4], [9]; standarde [S1], [S2], [S6], [S8], [S11], [S13], [S14], [S19], [S20]; surse online [W1], [W2], [W9]–[W12], [W25]. Lista completă este în [README](README.md#bibliografie).
 
 [← Capitolul 1](01-transformatorul.md) · [Cuprins](README.md) · [Capitolul 3. Generatorul sincron →](03-generatorul-sincron.md)

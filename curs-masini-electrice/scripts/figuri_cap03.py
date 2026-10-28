@@ -89,7 +89,7 @@ a2.set_ylabel("I$_{sc}$ [A]")
 a2.set_title("Caracteristica de scurtcircuit (liniară)")
 for ax in (a1, a2):
     virgula(ax)
-salveaza(fig, "f03-2-gol-scurtcircuit")
+salveaza(fig, "f03-6-gol-scurtcircuit")
 
 # --- Schema echivalentă pe fază ----------------------------------------------
 with schemdraw.Drawing(show=False) as d:
@@ -107,7 +107,7 @@ with schemdraw.Drawing(show=False) as d:
     d.add(elm.Dot(open=True))
     d.add(elm.Line().left(x))
     d.add(elm.Gap().at((x, 4)).to((x, 0)).label(["+", "$\\underline{U}$", "–"]))
-    salveaza_schema(d, "f03-3-schema-echivalenta")
+    salveaza_schema(d, "f03-7-schema-echivalenta")
 
 # --- Diagrame fazoriale pentru trei tipuri de sarcină (I = Iₙ, U = Uₙ) ---------
 fig, axs = plt.subplots(1, 3, figsize=(11, 4.0))
@@ -133,7 +133,7 @@ for ax, (titlu, phi) in zip(axs, (("sarcină inductivă (cos φ = 0,8)", np.arcc
     ax.set_title(titlu, fontsize=10)
 fig.suptitle("Generator sincron 10 MVA, 6,3 kV, X$_s$ = 4,38 Ω – fazori la curentul nominal (I la altă scară)",
              color=TEXT, fontsize=11)
-salveaza(fig, "f03-4-fazori-sarcini")
+salveaza(fig, "f03-8-fazori-sarcini")
 
 # --- Caracteristica putere–unghi --------------------------------------------
 E0, _ = generator_E0(Uf, In, np.arccos(cos_n), Xs)
@@ -157,7 +157,7 @@ ax.set_xlabel("δ [°]")
 ax.set_ylabel("P [MW]")
 ax.set_title("P(δ) = 3·U·E₀·sin δ / X$_s$ (excitație constantă)")
 virgula(ax)
-salveaza(fig, "f03-6-putere-unghi")
+salveaza(fig, "f03-10-putere-unghi")
 
 # --- Caracteristicile externe (excitație constantă, aleasă pentru U = Uₙ la Iₙ) ---
 fig, ax = plt.subplots(figsize=(6.8, 3.9))
@@ -177,7 +177,7 @@ ax.annotate("limita de stabilitate\n(δ = 90°)", xy=(1.068, 4.9), xytext=(0.72,
             arrowprops=dict(arrowstyle="-", color=TEXT2, lw=0.8))
 ax.legend(loc="lower left")
 virgula(ax)
-salveaza(fig, "f03-5-caracteristici-externe")
+salveaza(fig, "f03-9-caracteristici-externe")
 
 # --- Statismul: împărțirea sarcinii între două generatoare ---------------------
 fig, ax = plt.subplots(figsize=(6.8, 3.9))
@@ -199,4 +199,4 @@ ax.set_ylabel("f [Hz]")
 ax.set_title("Caracteristici de statism f(P) ale regulatoarelor de viteză")
 ax.legend(loc="upper right")
 virgula(ax)
-salveaza(fig, "f03-7-statism")
+salveaza(fig, "f03-11-statism")

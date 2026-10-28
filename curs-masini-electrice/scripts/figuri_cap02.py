@@ -17,7 +17,7 @@ Mn = Pn / (2 * np.pi * nn / 60)
 ALBASTRU = ["#86b6ef", "#5598e7", "#2a78d6", "#1c5cab", "#104281"]   # rampă secvențială (ordinală)
 
 # --- Secțiune transversală prin motorul asincron cu rotor în colivie ---------
-fig, ax = plt.subplots(figsize=(5.6, 5.0))
+fig, ax = plt.subplots(figsize=(6.6, 5.0))
 ax.add_patch(plt.Circle((0, 0), 1.0, color="#d9d8d3", ec=TEXT2, lw=1))
 ax.add_patch(plt.Circle((0, 0), 0.62, color=FUNDAL, ec=TEXT2, lw=1))
 for k in range(36):
@@ -29,20 +29,20 @@ for k in range(28):
     a = 2 * np.pi * (k + 0.5) / 28
     ax.add_patch(plt.Circle((0.53 * np.cos(a), 0.53 * np.sin(a)), 0.035, color=C1, ec=FUNDAL, lw=0.5))
 ax.add_patch(plt.Circle((0, 0), 0.15, color=TEXT2, ec=TEXT, lw=1))
-etichete = [((0.75, 0.75), (1.05, 1.05), "stator (tole) și carcasă"),
-            ((0.70, 0.18), (1.12, 0.35), "înfășurare statorică\nîn crestături"),
-            ((0.607, -0.12), (1.1, -0.45), "întrefier (0,3–1 mm)"),
-            ((0.37, -0.38), (0.75, -1.12), "bare ale coliviei"),
-            ((-0.3, -0.3), (-1.25, -1.05), "rotor (tole)"),
-            ((-0.1, 0.1), (-1.3, 0.95), "arbore")]
-for xy, xt, t in etichete:
-    ax.annotate(t, xy=xy, xytext=xt, color=TEXT, fontsize=9, ha="center", va="center",
+etichete = [((0.75, 0.75), (1.12, 1.05), "stator (tole) și carcasă", "left"),
+            ((0.78, 0.20), (1.12, 0.40), "înfășurare statorică\nîn crestături", "left"),
+            ((0.607, -0.12), (1.12, -0.30), "întrefier (zecimi de mm)", "left"),
+            ((0.37, -0.38), (1.12, -0.85), "bare ale coliviei", "left"),
+            ((-0.3, -0.3), (-1.25, -1.05), "rotor (tole)", "center"),
+            ((-0.1, 0.1), (-1.3, 0.95), "arbore", "center")]
+for xy, xt, t, ha in etichete:
+    ax.annotate(t, xy=xy, xytext=xt, color=TEXT, fontsize=9, ha=ha, va="center",
                 arrowprops=dict(arrowstyle="-", color=TEXT, lw=0.8))
-ax.set_xlim(-1.6, 1.6)
+ax.set_xlim(-1.6, 2.4)
 ax.set_ylim(-1.3, 1.25)
 ax.set_aspect("equal")
 ax.axis("off")
-salveaza(fig, "f02-1-sectiune")
+salveaza(fig, "f02-2-sectiune")
 
 # --- Colivia rotorică (schiță) ---------------------------------------------
 fig, ax = plt.subplots(figsize=(5.0, 2.6))
@@ -62,7 +62,7 @@ ax.set_xlim(-0.6, 3.6)
 ax.set_ylim(-1.55, 1.35)
 ax.set_aspect("equal")
 ax.axis("off")
-salveaza(fig, "f02-2-colivie")
+salveaza(fig, "f02-5-colivie")
 
 # --- Schema echivalentă pe fază ---------------------------------------------
 H = 4.5
@@ -87,7 +87,7 @@ with schemdraw.Drawing(show=False) as d:
     d.add(elm.Gap().at((0, 0)).to((0, -H)).label(["+", "$\\underline{U}_1$", "–"]))
     d.add(elm.Label().at((colt[0] + 1.6, -H / 2 - 0.9)).label("rezistența\nde sarcină\n(putere mecanică)",
                                                              fontsize=10, color=TEXT2))
-    salveaza_schema(d, "f02-3-schema-echivalenta")
+    salveaza_schema(d, "f02-6-schema-echivalenta")
 
 # --- Bilanțul puterilor (punctul din problema 2.2) ---------------------------
 s = (1500 - 1466) / 1500
@@ -115,7 +115,7 @@ ax.set_ylim(-1.85, 1.75)
 ax.axis("off")
 ax.set_title(f"Bilanțul puterilor – motorul M15 la n = 1466 rot/min (η = {100 * r['eta']:.1f} %)".replace(".", ","),
              color=TEXT)
-salveaza(fig, "f02-4-bilant-puteri")
+salveaza(fig, "f02-7-bilant-puteri")
 
 # --- Caracteristica mecanică completă: regimuri de funcționare ---------------
 n = np.linspace(-900, 3000, 1500)
@@ -145,7 +145,7 @@ ax.set_xlabel("n [rot/min]")
 ax.set_ylabel("M [N·m]")
 ax.set_title("Caracteristica mecanică M(n) – schema echivalentă a motorului M15")
 virgula(ax)
-salveaza(fig, "f02-5-regimuri")
+salveaza(fig, "f02-8-regimuri")
 
 # --- Modelul cu parametri constanți vs colivia dublă vs catalog ---------------
 n = np.linspace(0, 1499, 600)
@@ -169,7 +169,7 @@ a2.set_title("Curentul absorbit")
 fig.legend(*a1.get_legend_handles_labels(), loc="lower center", ncol=4, bbox_to_anchor=(0.5, -0.07))
 for a in (a1, a2):
     virgula(a)
-salveaza(fig, "f02-9-model-vs-catalog")
+salveaza(fig, "f02-12-model-vs-catalog")
 
 # --- Caracteristicile de funcționare ----------------------------------------
 s_ = np.linspace(0.0015, 0.04, 300)
@@ -188,7 +188,7 @@ for ax in axs[1]:
     ax.set_xlabel("P₂/Pₙ")
 fig.suptitle("Caracteristicile de funcționare ale motorului M15 (U = Uₙ, f = fₙ)", color=TEXT, fontsize=11)
 fig.tight_layout()
-salveaza(fig, "f02-6-caracteristici-functionare")
+salveaza(fig, "f02-9-caracteristici-functionare")
 
 # --- Influența rezistenței rotorice -------------------------------------------
 n = np.linspace(0, 1499, 600)
@@ -203,7 +203,7 @@ ax.set_ylabel("M [N·m]")
 ax.set_title("Rezistență rotorică mărită: s$_k$ crește, M$_{max}$ rămâne același")
 ax.legend(loc="lower left")
 virgula(ax)
-salveaza(fig, "f02-8-rezistenta-rotorica")
+salveaza(fig, "f02-11-rezistenta-rotorica")
 
 # --- Familia de caracteristici la U/f = constant -------------------------------
 fig, ax = plt.subplots(figsize=(7.4, 4.2))
@@ -220,7 +220,7 @@ ax.set_xlabel("n [rot/min]")
 ax.set_ylabel("M [N·m]")
 ax.set_title("Alimentare de la convertor cu U/f = constant (fără compensarea R₁)")
 virgula(ax)
-salveaza(fig, "f02-10-familie-uf")
+salveaza(fig, "f02-13-familie-uf")
 
 # --- Pornirea stea-triunghi ---------------------------------------------------
 n = np.linspace(0, 1499, 600)
@@ -248,4 +248,4 @@ a2.set_title("Curentul de linie")
 fig.legend(*a1.get_legend_handles_labels(), loc="lower center", ncol=4, bbox_to_anchor=(0.5, -0.07))
 for a in (a1, a2):
     virgula(a)
-salveaza(fig, "f02-7-stea-triunghi")
+salveaza(fig, "f02-10-stea-triunghi")

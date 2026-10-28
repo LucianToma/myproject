@@ -73,6 +73,36 @@ def randament_transformator(beta, Sn, cos_phi2, P0, Psc_n):
 
 
 # ---------------------------------------------------------------------------
+# Secțiunea în trepte a coloanei transformatorului
+# ---------------------------------------------------------------------------
+
+def arie_trepte(theta):
+    """Aria relativă (față de cerc) a n trepte simetrice înscrise în cercul de rază 1.
+
+    Treapta k are lățimea 2 cos θk și se întinde pe înălțimea dintre ±sin θ(k-1) și ±sin θk,
+    cu 0 = θ0 < θ1 < ... < θn < π/2 (unghiurile colțurilor treptelor pe cerc).
+    """
+    th = np.concatenate([[0.0], np.sort(np.clip(theta, 0.0, np.pi / 2))])
+    arie = sum(2 * np.cos(th[k]) * 2 * (np.sin(th[k]) - np.sin(th[k - 1])) for k in range(1, len(th)))
+    return arie / np.pi
+
+
+def trepte_optime(n, metoda="L-BFGS-B"):
+    """Unghiurile optime ale celor n trepte și factorul de umplere (pornind din 40 de puncte)."""
+    from scipy.optimize import minimize
+    best, best_x = None, None
+    rng = np.random.default_rng(1)
+    for _ in range(40):
+        x0 = np.sort(rng.uniform(0.05, 1.5, n))
+        r = minimize(lambda t: -arie_trepte(t), x0, method=metoda,
+                     bounds=[(1e-6, np.pi / 2 - 1e-6)] * n if metoda != "Nelder-Mead" else None,
+                     options={"maxiter": 20000} if metoda == "Nelder-Mead" else {})
+        if best is None or -r.fun > best:
+            best, best_x = -r.fun, np.sort(np.clip(r.x, 0.0, np.pi / 2))
+    return best_x, best
+
+
+# ---------------------------------------------------------------------------
 # Mașina asincronă (schema echivalentă în T, pe fază, conexiune stea)
 # ---------------------------------------------------------------------------
 

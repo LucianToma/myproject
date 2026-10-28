@@ -10,8 +10,7 @@ Aproape toată energia electrică produsă în centralele termoelectrice, nuclea
 
 ## 3.1. Construcția
 
-- **Statorul (indusul)** – identic ca principiu cu statorul mașinii asincrone (§ 2.1): miez din tole cu o înfășurare trifazată în crestături, în care se induc tensiunile.
-- **Rotorul (inductorul)** – poartă **înfășurarea de excitație**, alimentată în **curent continuu**, care produce un câmp magnetic fix față de rotor, cu $2p$ poli. Curentul de excitație $I_e$ este adus prin inele și perii de la o sursă de c.c. (excitatoare), sau – la sistemele **fără perii** (brushless) – de la o excitatoare de c.a. montată pe același arbore, prin diode rotative. La puteri mici și mijlocii, câmpul poate fi produs de **magneți permanenți**.
+Mașina sincronă are două părți active: **statorul (indusul)**, cu înfășurarea trifazată în care se induc tensiunile, și **rotorul (inductorul)**, cu **înfășurarea de excitație** alimentată în **curent continuu**, care produce un câmp magnetic fix față de rotor, cu $2p$ poli. La puteri mici și mijlocii, câmpul poate fi produs și de **magneți permanenți**.
 
 ![Figura 3.1 – Tipuri de rotor](figuri/f03-1-tipuri-rotor.svg)
 
@@ -24,7 +23,60 @@ Aproape toată energia electrică produsă în centralele termoelectrice, nuclea
 | Turație la 50 Hz | 3000 sau 1500 rot/min | de la 1500 rot/min la sub 100 rot/min |
 | Formă | rotor lung, cu diametru mic (forțe centrifuge mari) | rotor scurt, cu diametru mare |
 
-Pe piesele polare se montează adesea o **înfășurare de amortizare** (o colivie), care amortizează oscilațiile rotorului și, la motoarele sincrone, servește la pornire (§ 4.4).
+### Statorul
+
+**Miezul** este un pachet de tole de oțel electrotehnic; la mașinile mari, fiecare strat de tole este format din **segmente**, iar pachetul este împărțit prin **canale radiale de ventilație** și strâns între plăci de presare. **Înfășurarea** generatoarelor de înaltă tensiune (de la câțiva kV la peste 20 kV) se face din **bare** așezate câte două într-o crestătură deschisă (figura 3.2):
+
+- fiecare bară este formată din multe **fire elementare** de cupru izolate, **transpuse Roebel**: fiecare fir trece pe rând prin toate pozițiile din secțiune, astfel încât în toate firele se induc aceleași tensiuni și nu apar curenți de circulație între ele;
+- **izolația principală** dintre bară și miez se face din **bandă de mică** impregnată cu **rășină epoxidică** (mica rezistă la descărcări parțiale și la temperatură);
+- un **strat de protecție anti-efluviu** (semiconductor) la suprafața barei egalizează potențialul cu miezul și împiedică descărcările în aerul dintre bară și crestătură;
+- barele sunt fixate cu **pene**, iar capetele lor sunt legate între ele în afara miezului.
+
+![Figura 3.2 – Bara statorică](figuri/f03-2-bara-statorica.svg)
+
+*Figura 3.2 – (a) Crestătura statorică a unui generator, cu două bare; (b) principiul transpoziției Roebel.*
+
+### Rotorul cu poli înecați (turbogeneratoare)
+
+Rotorul unui turbogenerator (figura 3.3) este **forjat dintr-o singură bucată** de oțel aliat (de exemplu 26NiCrMoV14-5 [W14]). Pe aproximativ două treimi din periferie se **frezează** crestături longitudinale, în care se așază bobinele de excitație din cupru, fixate cu **pene**; zonele rămase nefrezate formează polii. Capetele bobinelor, care ies din corpul rotorului, sunt ținute împotriva forței centrifuge de **inele de bandaj** din oțel **nemagnetic** (aliaj 18Mn18Cr), ca să nu scurtcircuiteze fluxul de dispersie. Aliajul 18Mn18Cr a înlocuit vechiul 18Mn5Cr, sensibil la coroziunea fisurantă sub tensiune în prezența umidității [W13].
+
+**De ce este rotorul lung și subțire?** Tensiunea mecanică dintr-un inel subțire care se rotește crește cu pătratul vitezei periferice $v$, independent de grosimea lui: $\sigma = \rho v^2$ (pentru oțel, $\rho$ = 7850 kg/m³: 78 MPa la 100 m/s, 177 MPa la 150 m/s, 314 MPa la 200 m/s). Viteza periferică admisă de material limitează deci **diametrul**: $v = \pi D n/60$, adică $D_{max} \propto 1/n$. La aceeași viteză periferică, un rotor de 3000 rot/min poate avea un diametru de **20 de ori mai mic** decât unul de 150 rot/min (de exemplu 0,64 m față de 12,7 m la 100 m/s). Puterea mare se obține atunci prin **lungime** (calcul în [`scripts/constructie.py`](scripts/constructie.py), verificat și prin echilibrul unui element de inel).
+
+![Figura 3.3 – Rotorul turbogeneratorului](figuri/f03-3-rotor-turbo.svg)
+
+*Figura 3.3 – Componentele rotorului unui turbogenerator cu 2 poli.*
+
+Rotorul se sprijină pe **lagăre cu alunecare** cu ulei sub presiune; pe arbore se află ventilatoare și, la un capăt, **inelele colectoare** cu perii sau **excitatoarea fără perii**.
+
+### Rotorul cu poli aparenți (hidrogeneratoare)
+
+Polii sunt piese separate, din tole strânse (figura 3.4): **corpul polului** poartă **bobina de excitație**, iar **talpa polară**, mai lată, dă forma câmpului în întrefier. Polii se fixează pe **janta** rotorului prin îmbinări în **coadă de rândunică** (sau „cap de ciocan”), iar janta – un pachet de segmente de tablă – este legată de butuc prin brațe. În tălpile polare se află barele **înfășurării de amortizare**, scurtcircuitate la capete (o colivie), care amortizează oscilațiile rotorului și, la motoarele sincrone, servesc la pornire (§ 4.4).
+
+![Figura 3.4 – Polul aparent](figuri/f03-4-pol-aparent.svg)
+
+*Figura 3.4 – Un pol aparent fixat pe janta rotorului (secțiune transversală).*
+
+Hidrogeneratoarele mari sunt de obicei **verticale**: un **lagăr axial** (pivot) preia greutatea părților rotitoare ale generatorului și turbinei și forța hidraulică ce acționează asupra rotorului turbinei.
+
+### Sistemul de excitație
+
+Curentul continuu de excitație se obține (figura 3.5):
+
+- de la o **excitatoare de curent continuu** pe același arbore, prin inele și perii – soluție veche;
+- **fără perii** (*brushless*): o mică mașină sincronă „întoarsă”, cu excitația pe stator și înfășurarea trifazată pe rotor, alimentează un **redresor rotativ cu diode**, legat direct la înfășurarea de excitație; nu există contacte alunecătoare;
+- **static**: un transformator alimentat de la bornele generatorului și un **redresor cu tiristoare** comandat de regulatorul de tensiune; curentul ajunge la rotor prin **perii și inele colectoare**; răspunsul este foarte rapid.
+
+![Figura 3.5 – Sisteme de excitație](figuri/f03-5-excitatie.svg)
+
+*Figura 3.5 – Excitația fără perii și excitația statică.*
+
+### Răcirea
+
+Pierderile unui generator mare sunt de ordinul megawaților, iar căldura trebuie evacuată dintr-un volum relativ mic. Ordinele de mărime de mai jos sunt orientative – limitele s-au deplasat în timp și diferă de la un producător la altul [W15]:
+
+- **aer** în circuit închis, răcit cu apă în schimbătoare de căldură – generatoarele mici și mijlocii; au fost construite turbogeneratoare răcite cu aer și peste 300 MVA;
+- **hidrogen** sub presiune (de ordinul 3–6 bar), care transmite căldura mult mai bine decât aerul și are pierderi prin ventilație mai mici – turbogeneratoarele mari, de ordinul sutelor de MVA;
+- **apă deionizată** care circulă prin conductoarele (sau prin tuburile din barele) statorului – cele mai mari turbogeneratoare.
 
 ## 3.2. Principiul de funcționare
 
@@ -42,11 +94,11 @@ unde $\Phi$ este fluxul pe pol, produs de curentul de excitație. La frecvență
 
 ## 3.3. Caracteristica de mers în gol
 
-Cu statorul deschis, $U_0 = E_0$. Curba $U_0(I_e)$ la turație nominală (figura 3.2, stânga) are forma curbei de magnetizare: liniară la început (**dreapta întrefierului**), apoi saturată.
+Cu statorul deschis, $U_0 = E_0$. Curba $U_0(I_e)$ la turație nominală (figura 3.6, stânga) are forma curbei de magnetizare: liniară la început (**dreapta întrefierului**), apoi saturată.
 
-![Figura 3.2 – Caracteristicile de gol și de scurtcircuit](figuri/f03-2-gol-scurtcircuit.svg)
+![Figura 3.6 – Caracteristicile de gol și de scurtcircuit](figuri/f03-6-gol-scurtcircuit.svg)
 
-*Figura 3.2 – Caracteristicile de mers în gol și de scurtcircuit ale generatorului G10 (curba de gol este un model cu saturație, ajustat să treacă prin punctul măsurat).*
+*Figura 3.6 – Caracteristicile de mers în gol și de scurtcircuit ale generatorului G10 (curba de gol este un model cu saturație, ajustat să treacă prin punctul măsurat).*
 
 ## 3.4. Reacția indusului
 
@@ -58,7 +110,7 @@ Când generatorul debitează, curenții statorici produc un **câmp învârtitor
 | în urmă cu 90° ($\psi = 90°$; sarcină pur inductivă) | **longitudinală demagnetizantă** – se opune excitației | tensiunea scade mult; e nevoie de mai mult curent de excitație |
 | înainte cu 90° ($\psi = -90°$; sarcină pur capacitivă) | **longitudinală magnetizantă** – se adaugă excitației | tensiunea crește |
 
-În cazurile intermediare, curentul are ambele componente. Atenție: la o sarcină **rezistivă** curentul este în fază cu $\underline{U}$, dar în urma lui $\underline{E}_0$ cu unghiul $\delta$, deci reacția este parțial transversală și **parțial demagnetizantă** (pentru G10 la $I_n$: $\psi = \delta = 47{,}8°$, componenta demagnetizantă $I\sin\psi = 0{,}74\thinspace I$). Tensiunea scade și la sarcină rezistivă, dar mai puțin decât la sarcină inductivă (figura 3.5).
+În cazurile intermediare, curentul are ambele componente. Atenție: la o sarcină **rezistivă** curentul este în fază cu $\underline{U}$, dar în urma lui $\underline{E}_0$ cu unghiul $\delta$, deci reacția este parțial transversală și **parțial demagnetizantă** (pentru G10 la $I_n$: $\psi = \delta = 47{,}8°$, componenta demagnetizantă $I\sin\psi = 0{,}74\thinspace I$). Tensiunea scade și la sarcină rezistivă, dar mai puțin decât la sarcină inductivă (figura 3.9).
 
 ## 3.5. Schema echivalentă și diagrama fazorială
 
@@ -66,21 +118,21 @@ Pentru o mașină cu poli înecați, nesaturată, efectul reacției indusului ș
 
 $$\boxed{\underline{E}_0 = \underline{U} + (R + jX_s)\thinspace \underline{I}}$$
 
-La generatoarele mari $R \ll X_s$ și se neglijează. Schema echivalentă este o sursă $\underline{E}_0$ în serie cu $jX_s$ (figura 3.3).
+La generatoarele mari $R \ll X_s$ și se neglijează. Schema echivalentă este o sursă $\underline{E}_0$ în serie cu $jX_s$ (figura 3.7).
 
-![Figura 3.3 – Schema echivalentă](figuri/f03-3-schema-echivalenta.svg)
+![Figura 3.7 – Schema echivalentă](figuri/f03-7-schema-echivalenta.svg)
 
-*Figura 3.3 – Schema echivalentă pe fază a generatorului sincron cu poli înecați.*
+*Figura 3.7 – Schema echivalentă pe fază a generatorului sincron cu poli înecați.*
 
-Spre deosebire de transformator, unde căderile de tensiune sunt de câteva procente, **căderea pe reactanța sincronă este de ordinul tensiunii nominale** ($x_s$ de ordinul 1 în unități relative), așa că diagramele fazoriale se pot desena la scară (figura 3.4). Unghiul $\delta$ dintre $\underline{E}_0$ și $\underline{U}$ se numește **unghi intern** (sau unghi de sarcină).
+Spre deosebire de transformator, unde căderile de tensiune sunt de câteva procente, **căderea pe reactanța sincronă este de ordinul tensiunii nominale** ($x_s$ de ordinul 1 în unități relative), așa că diagramele fazoriale se pot desena la scară (figura 3.8). Unghiul $\delta$ dintre $\underline{E}_0$ și $\underline{U}$ se numește **unghi intern** (sau unghi de sarcină).
 
-![Figura 3.4 – Diagrame fazoriale](figuri/f03-4-fazori-sarcini.svg)
+![Figura 3.8 – Diagrame fazoriale](figuri/f03-8-fazori-sarcini.svg)
 
-*Figura 3.4 – Diagramele fazoriale ale lui G10 la curentul nominal și tensiunea nominală, pentru trei tipuri de sarcină (problema 3.3). La sarcină inductivă este necesară cea mai mare tensiune electromotoare (excitație).*
+*Figura 3.8 – Diagramele fazoriale ale lui G10 la curentul nominal și tensiunea nominală, pentru trei tipuri de sarcină (problema 3.3). La sarcină inductivă este necesară cea mai mare tensiune electromotoare (excitație).*
 
 ## 3.6. Determinarea reactanței sincrone
 
-Din cele două încercări (figura 3.2):
+Din cele două încercări (figura 3.6):
 
 - **mers în gol**: $U_0(I_e)$;
 - **scurtcircuit trifazat** la bornele statorului: $I_{sc}(I_e)$. Caracteristica este **liniară**, pentru că în scurtcircuit reacția indusului este puternic demagnetizantă și mașina nu se saturează.
@@ -93,11 +145,11 @@ $$X_s = \frac{U_{0f}(I_e)}{I_{sc}(I_e)}$$
 
 ## 3.7. Caracteristicile externe
 
-La curent de excitație constant, tensiunea la borne variază puternic cu sarcina (figura 3.5) – mult mai mult decât la un transformator. Dacă sarcina inductivă nominală ar fi deconectată brusc, tensiunea (în regim permanent, pe modelul liniar) ar crește la $E_0$ – în problema 3.3, cu 88 %. De aceea generatoarele au un **regulator automat de tensiune** (RAT, în engleză AVR), care modifică excitația pentru a menține tensiunea constantă.
+La curent de excitație constant, tensiunea la borne variază puternic cu sarcina (figura 3.9) – mult mai mult decât la un transformator. Dacă sarcina inductivă nominală ar fi deconectată brusc, tensiunea (în regim permanent, pe modelul liniar) ar crește la $E_0$ – în problema 3.3, cu 88 %. De aceea generatoarele au un **regulator automat de tensiune** (RAT, în engleză AVR), care modifică excitația pentru a menține tensiunea constantă.
 
-![Figura 3.5 – Caracteristicile externe](figuri/f03-5-caracteristici-externe.svg)
+![Figura 3.9 – Caracteristicile externe](figuri/f03-9-caracteristici-externe.svg)
 
-*Figura 3.5 – Caracteristicile externe ale lui G10 la excitație constantă (aleasă pentru $U_n$ la $I_n$, pentru fiecare factor de putere). La sarcină capacitivă, peste 1,07·$I_n$ nu mai există regim permanent stabil.*
+*Figura 3.9 – Caracteristicile externe ale lui G10 la excitație constantă (aleasă pentru $U_n$ la $I_n$, pentru fiecare factor de putere). La sarcină capacitivă, peste 1,07·$I_n$ nu mai există regim permanent stabil.*
 
 ## 3.8. Puterea și cuplul. Stabilitatea statică
 
@@ -109,9 +161,9 @@ $$\boxed{P = 3\thinspace \frac{U\thinspace E_0}{X_s}\thinspace \sin\delta}, \qqu
 
 $$P_{max} = 3\thinspace \frac{U E_0}{X_s} .$$
 
-![Figura 3.6 – Caracteristica putere–unghi](figuri/f03-6-putere-unghi.svg)
+![Figura 3.10 – Caracteristica putere–unghi](figuri/f03-10-putere-unghi.svg)
 
-*Figura 3.6 – Caracteristica $P(\delta)$ a lui G10 la excitația nominală.*
+*Figura 3.10 – Caracteristica $P(\delta)$ a lui G10 la excitația nominală.*
 
 **Stabilitatea statică.** Pentru $\delta < 90°$, dacă turbina dă puțin mai multă putere, rotorul accelerează, $\delta$ crește, crește și puterea electrică, care frânează rotorul: funcționarea este **stabilă**. Pentru $\delta > 90°$, creșterea lui $\delta$ micșorează puterea electrică, rotorul accelerează în continuare și **iese din sincronism** (pierde pasul). În practică se lucrează cu rezervă, la $\delta$ mult sub 90°; rezerva crește cu excitația ($P_{max} \propto E_0$).
 
@@ -151,11 +203,11 @@ Regulatoarele de viteză ale turbinelor au o caracteristică cu **statism** (în
 
 $$f = f_0 - s_t\thinspace f_n\thinspace \frac{P}{P_n}, \qquad \text{deci}\qquad \Delta P = \frac{P_n}{s_t f_n}\thinspace (-\Delta f) .$$
 
-Statismul permite împărțirea stabilă a variațiilor de sarcină între generatoarele care funcționează în paralel, proporțional cu $P_n/s_t$ (problema 3.5, figura 3.7). Valori tipice: 4–5 % [8].
+Statismul permite împărțirea stabilă a variațiilor de sarcină între generatoarele care funcționează în paralel, proporțional cu $P_n/s_t$ (problema 3.5, figura 3.11). Valori tipice: 4–5 % [8].
 
-![Figura 3.7 – Statismul](figuri/f03-7-statism.svg)
+![Figura 3.11 – Statismul](figuri/f03-11-statism.svg)
 
-*Figura 3.7 – Caracteristicile de statism ale celor două generatoare din problema 3.5 și noul punct de echilibru după creșterea sarcinii.*
+*Figura 3.11 – Caracteristicile de statism ale celor două generatoare din problema 3.5 și noul punct de echilibru după creșterea sarcinii.*
 
 ## 3.11. Generatoare în sistemele moderne
 
@@ -201,12 +253,12 @@ Deci $E_0$ = 6847 V pe fază (11,86 kV de linie) și $\delta$ = 27,98°.
 
 - Puterile: $P = \sqrt3\cdot 6300\cdot 916{,}4\cdot 0{,}8 = 8{,}00$ MW, $Q = 6{,}00$ Mvar.
 - $P_{max} = 3\cdot 3637{,}3\cdot 6847/4{,}382 = 17{,}05$ MW, adică de 2,13 ori puterea debitată.
-- Pe caracteristica liniară, curentul de excitație ar fi $200\cdot 6847/3637 = 377$ A; din cauza saturației, cel real este mai mare (figura 3.2).
+- Pe caracteristica liniară, curentul de excitație ar fi $200\cdot 6847/3637 = 377$ A; din cauza saturației, cel real este mai mare (figura 3.6).
 - La deconectarea sarcinii cu excitația neschimbată, $U \to E_0$: creștere de **88 %** (în regim permanent, pe modelul liniar).
 
 **Verificare (a doua cale pentru puteri).** $P = 3UE_0\sin\delta/X_s = 8{,}00$ MW ✓ și $Q = 3(UE_0\cos\delta - U^2)/X_s = 6{,}00$ Mvar ✓.
 
-Pentru comparație, la același curent: cu $\cos\varphi = 1$, $E_0 = 5418$ V și $\delta = 47{,}8°$; cu $\cos\varphi = 0{,}8$ capacitiv, $E_0 = 3439$ V (mai mică decât $U$!) și $\delta = 69{,}1°$ (figura 3.4).
+Pentru comparație, la același curent: cu $\cos\varphi = 1$, $E_0 = 5418$ V și $\delta = 47{,}8°$; cu $\cos\varphi = 0{,}8$ capacitiv, $E_0 = 3439$ V (mai mică decât $U$!) și $\delta = 69{,}1°$ (figura 3.8).
 
 ### Problema 3.4 – Reglajul excitației la funcționarea în paralel cu rețeaua
 
@@ -252,6 +304,11 @@ $$\Delta f = -\frac{12}{50 + 20} = -0{,}1714\ \text{Hz} \Rightarrow f = 49{,}83\
 9. Ce se întâmplă cu puterea reactivă dacă se mărește curentul de excitație al unui generator conectat la rețea?
 10. Ce rol are statismul regulatorului de viteză?
 11. De ce tensiunea unui generator izolat crește mult la deconectarea sarcinii?
+12. De ce barele statorice ale generatoarelor mari sunt formate din fire elementare transpuse Roebel?
+13. De ce inelele de bandaj ale rotorului unui turbogenerator se fac din oțel nemagnetic? Ce aliaj se folosește și de ce?
+14. Explicați de ce rotorul unui turbogenerator este lung și subțire, iar cel al unui hidrogenerator este scurt și are diametru mare.
+15. Comparați excitația fără perii cu excitația statică.
+16. Ce medii de răcire se folosesc la generatoarele mari și în ce ordine a puterilor?
 
 <details>
 <summary><b>Răspunsuri</b></summary>
@@ -260,18 +317,23 @@ $$\Delta f = -\frac{12}{50 + 20} = -0{,}1714\ \text{Hz} \Rightarrow f = 49{,}83\
 2. Prin curentul de excitație (fluxul), la turație constantă (§ 3.2).
 3. Pentru că în scurtcircuit reacția indusului este aproape pur demagnetizantă: fluxul rezultant este mic și mașina nu se saturează (§ 3.6).
 4. Efectul combinat al reacției indusului și al fluxului de dispersie, reprezentat ca o reactanță în serie cu $E_0$ (§ 3.5).
-5. Pentru că reacția indusului este demagnetizantă la sarcină inductivă; diagrama fazorială arată un $E_0$ mai mare (problema 3.3, figura 3.4).
+5. Pentru că reacția indusului este demagnetizantă la sarcină inductivă; diagrama fazorială arată un $E_0$ mai mare (problema 3.3, figura 3.8).
 6. Unghiul dintre $\underline{E}_0$ și $\underline{U}$ (și, în grade electrice, dintre axa rotorului și cea a câmpului rezultant); în regim stabil, $\delta < 90°$, iar practic mult mai mic (§ 3.8).
 7. Aceeași tensiune, aceeași frecvență, aceeași succesiune a fazelor, tensiuni în fază la momentul conectării (§ 3.9).
 8. Crește puterea activă (prin creșterea lui $\delta$); turația rămâne sincronă. La excitație constantă, puterea reactivă livrată scade, pentru că $Q = 3(UE_0\cos\delta - U^2)/X_s$ și $\cos\delta$ scade (pentru G10 la $E_0$ = 6847 V: de la 8,0 Mvar la $P = 0$ la 6,0 Mvar la $P$ = 8 MW) (§ 3.8, § 3.9).
 9. Generatorul livrează mai multă putere reactivă inductivă (supraexcitat); puterea activă nu se modifică (problema 3.4).
 10. Asigură împărțirea stabilă și previzibilă a variațiilor de sarcină între generatoare, proporțional cu $P_n/s_t$ (§ 3.10).
 11. Pentru că dispare căderea mare de tensiune pe reactanța sincronă: tensiunea devine $E_0$. De aceea este necesar regulatorul automat de tensiune (§ 3.7).
+12. Pentru ca fiecare fir să ocupe pe rând toate pozițiile din secțiune: în toate firele se induc aceleași tensiuni și nu apar curenți de circulație între ele, care ar produce pierderi suplimentare (§ 3.1).
+13. Ca să nu scurtcircuiteze fluxul de dispersie al capetelor de bobină. Se folosește 18Mn18Cr, care a înlocuit aliajul 18Mn5Cr, sensibil la coroziunea fisurantă sub tensiune în prezența umidității (§ 3.1).
+14. Tensiunea mecanică dintr-un inel care se rotește este $\sigma = \rho v^2$, deci viteza periferică admisă limitează diametrul: $D_{max} \propto 1/n$. La 3000 rot/min, diametrul admis este de 20 de ori mai mic decât la 150 rot/min; puterea mare se obține prin lungime (§ 3.1).
+15. Fără perii: o excitatoare sincronă „întoarsă” și un redresor rotativ cu diode, fără contacte alunecătoare. Statică: un transformator și un redresor cu tiristoare comandat de regulator; curentul ajunge la rotor prin perii și inele, iar răspunsul este foarte rapid (§ 3.1).
+16. Aer în circuit închis la generatoarele mici și mijlocii (s-au construit și turbogeneratoare răcite cu aer de peste 300 MVA); hidrogen sub presiune (3–6 bar) la turbogeneratoarele de sute de MVA; apă deionizată prin conductoarele statorului la cele mai mari (§ 3.1).
 
 </details>
 
 ---
 
-**Bibliografie pentru capitol:** [1] cap. 5, [2] cap. 4–5, [3], [8]; standarde [S1]. Lista completă este în [README](README.md#bibliografie).
+**Bibliografie pentru capitol:** [1] cap. 5, [2] cap. 4–5, [3], [8], [9], [11]; standarde [S1]; surse online [W13]–[W15]. Lista completă este în [README](README.md#bibliografie).
 
 [← Capitolul 2](02-masina-asincrona.md) · [Cuprins](README.md) · [Capitolul 4. Motorul sincron →](04-motorul-sincron.md)
