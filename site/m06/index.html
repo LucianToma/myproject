@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="ro" data-lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>M06 Generare distribuită</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..800&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<style>
+.inputs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:6px}
+.inputs-grid .panel{padding:10px 12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="mod">
+  <div>
+    <div class="crumbs"><a href="../index.html"><span lang="ro">← Cuprinsul cursului</span><span lang="en">← Course map</span></a><span class="modno">M06</span></div>
+    <h1><span lang="ro">Protecția rețelelor cu generare distribuită</span><span lang="en">Protection of networks with distributed generation</span></h1>
+    <p class="lede"><span lang="ro">O centrală racordată pe plecarea F1 schimbă curenții pe care i-au fost calculate reglajele din M03: releul din capul liniei vede mai puțin la defectele de după centrală (orbire), vede curent invers la defectele din altă parte (declanșare simpatică), iar centrala trebuie să rămână conectată la golurile de tensiune (FRT), dar să se deconecteze înainte de reanclanșare dacă rămâne insularizată. Compari un generator sincron cu o centrală cu invertor și verifici reglajele.</span><span lang="en">A plant connected on feeder F1 changes the currents the M03 settings were computed for: the feeder-head relay sees less for faults beyond the plant (blinding), sees reverse current for faults elsewhere (sympathetic tripping), and the plant must stay connected through voltage dips (FRT) yet disconnect before reclosing if it is left islanded. You compare a synchronous generator with an inverter-based plant and check the settings.</span></p>
+    <div class="ansi"><span>50/51</span><span>67</span><span>27/59</span><span>81U/O</span><span>81R</span><span>FRT</span><span>79</span></div>
+  </div>
+  <div class="hdr-tools">
+    <div class="seg" role="group" aria-label="Limba / Language"><button data-langbtn="ro">RO</button><button data-langbtn="en">EN</button></div>
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="lab"><span lang="ro">Laborator</span><span lang="en">Lab</span></button>
+      <button role="tab" data-tab="reglaje"><span lang="ro">Reglaje</span><span lang="en">Settings</span></button>
+      <button role="tab" data-tab="teorie"><span lang="ro">Teorie</span><span lang="en">Theory</span></button>
+      <button role="tab" data-tab="test"><span lang="ro">Test</span><span lang="en">Quiz</span></button>
+    </nav>
+  </div>
+</header>
+
+<!-- ================= LABORATOR ================= -->
+<section class="tab" id="lab">
+  <div class="lab">
+    <aside class="rail">
+      <div class="panel">
+        <div class="label" style="margin-bottom:8px"><span lang="ro">Scenarii</span><span lang="en">Scenarios</span></div>
+        <div class="presets" id="presets"></div>
+      </div>
+      <div class="panel" id="controls"></div>
+    </aside>
+    <div class="bench">
+      <div id="status"></div>
+      <div class="kpis" id="kpis"></div>
+      <div class="figure">
+        <div class="label"><span lang="ro">Rețeaua: plecarea F1 cu centrala, plecarea vecină și curenții de defect</span><span lang="en">The network: feeder F1 with the plant, the adjacent feeder and the fault currents</span></div>
+        <div class="scroll"><svg id="sld" viewBox="0 0 760 290" width="100%" style="min-width:600px" role="img" aria-label="Schema"></svg></div>
+      </div>
+      <div class="figure">
+        <h3><span lang="ro">Ce văd releele</span><span lang="en">What the relays see</span></h3>
+        <div class="scroll"><table class="data" id="rtab" style="min-width:680px"></table></div>
+      </div>
+      <div class="figure">
+        <div class="label"><span lang="ro">Orbirea: curentul văzut de R3 în lungul lui F1 (2F, regim minim), cu și fără centrală</span><span lang="en">Blinding: the current seen by R3 along F1 (2F, minimum case), with and without the plant</span></div>
+        <div class="scroll"><svg id="blind" viewBox="0 0 760 290" width="100%" style="min-width:600px" role="img" aria-label="Orbire"></svg></div>
+      </div>
+      <div class="figure">
+        <div class="label"><span lang="ro">Golul de tensiune în punctul de racordare față de profilul FRT (NC RfG) și treapta U&lt;</span><span lang="en">The voltage dip at the connection point against the FRT profile (NC RfG) and the U&lt; stage</span></div>
+        <div class="scroll"><svg id="frt" viewBox="0 0 760 290" width="100%" style="min-width:600px" role="img" aria-label="FRT"></svg></div>
+        <p class="note" id="frt-note" style="margin:6px 0 0"></p>
+      </div>
+      <div class="figure">
+        <div class="label"><span lang="ro">Insularizarea după deschiderea lui R3: frecvența, detecția și pauza RAR</span><span lang="en">Islanding after R3 opens: frequency, detection and the auto-reclose dead time</span></div>
+        <div class="scroll"><svg id="isl" viewBox="0 0 760 300" width="100%" style="min-width:600px" role="img" aria-label="Insularizare"></svg></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= REGLAJE ================= -->
+<section class="tab" id="reglaje" hidden>
+  <div class="sheet">
+    <div class="sheet-hd">
+      <div>
+        <div class="label"><span lang="ro">Fișa de calcul · plecare cu generare distribuită</span><span lang="en">Calculation sheet · feeder with distributed generation</span></div>
+        <h2 style="margin:4px 0 0"><span lang="ro">Verificarea reglajelor la racordarea unei centrale</span><span lang="en">Checking the settings when a plant is connected</span></h2>
+      </div>
+      <div class="note" id="sheet-meta"></div>
+    </div>
+    <div class="steps">
+      <div class="step"><div>
+        <h3><span lang="ro">Datele centralei și reglajele existente</span><span lang="en">Plant data and existing settings</span></h3>
+        <p><span lang="ro">Centrala, puterea și poziția se aleg în laborator. Reglajele lui R2, R3 și R4 sunt cele din fișa M03, calculate fără centrală. Aici fixezi pragurile de verificare și protecția de interfață a centralei.</span><span lang="en">The plant, its rating and position are chosen in the lab. The R2, R3 and R4 settings are those from the M03 sheet, computed without the plant. Here you set the check thresholds and the plant's interface protection.</span></p>
+        <div class="inputs-grid" id="rg-inputs"></div>
+        <div class="calc" id="rg-data" style="margin-top:10px"></div>
+      </div></div>
+      <div class="step"><div>
+        <h3><span lang="ro">Regimul normal: exportul centralei prin R3 și R4</span><span lang="en">Normal operation: plant export through R3 and R4</span></h3>
+        <p><span lang="ro">Fără sarcină pe linie, centrala exportă până la I<sub>rG</sub> prin R3 și, dacă e după el, prin R4. Releele sunt nedirecționale, deci pragul trebuie să rămână peste cel mai mare curent de regim normal: I&gt; ≥ k<sub>sig</sub>·k<sub>p</sub>·I<sub>max</sub>/k<sub>rev</sub>, cu coeficienții din M03. Dacă pragul se schimbă, procedura M03 (eșalonare, sensibilitate, I&gt;&gt;, TMS) se reface; restul fișei folosește reglajele revizuite.</span><span lang="en">With no load on the line, the plant exports up to I<sub>rG</sub> through R3 and, if it lies beyond it, through R4. The relays are non-directional, so the pickup must stay above the largest normal current: I&gt; ≥ k<sub>sig</sub>·k<sub>p</sub>·I<sub>max</sub>/k<sub>rev</sub>, with the M03 factors. If the pickup changes, the M03 procedure (grading, sensitivity, I&gt;&gt;, TMS) is redone; the rest of the sheet uses the revised settings.</span></p>
+        <div class="scroll"><table class="data" id="rg-norm" style="min-width:720px"></table></div>
+      </div></div>
+      <div class="step"><div>
+        <h3><span lang="ro">Orbirea: sensibilitatea lui R3 cu centrala</span><span lang="en">Blinding: R3 sensitivity with the plant</span></h3>
+        <p><span lang="ro">Ca rezervă pentru R4, R3 trebuie să vadă defectul 2F minim de la capătul liniei cu k<sub>sens</sub> ≥ 1,2 (M03). Centrala dintre R3 și defect preia o parte din curent; cazul cel mai defavorabil se caută pe toate pozițiile centralei.</span><span lang="en">As backup for R4, R3 must see the minimum 2F fault at the line end with k<sub>sens</sub> ≥ 1.2 (M03). A plant between R3 and the fault takes part of the current; the worst case is searched over all plant positions.</span></p>
+        <div class="scroll"><table class="data" id="rg-blind" style="min-width:620px"></table></div>
+        <div class="callout ind" id="rg-blind-note"></div>
+      </div></div>
+      <div class="step"><div>
+        <h3><span lang="ro">Declanșarea simpatică a lui R3 și R4</span><span lang="en">Sympathetic tripping of R3 and R4</span></h3>
+        <p><span lang="ro">La un defect pe altă plecare, R3 (și R4, dacă centrala e după el) vede curentul centralei în sens invers. Un releu nedirecțional e selectiv numai dacă nu pornește sau declanșează după releul plecării defecte cu cel puțin Δt. Se verifică defecte 3F și 2F, max și min, în 21 de puncte pe fiecare plecare vecină, cu reglajele revizuite.</span><span lang="en">For a fault on another feeder, R3 (and R4, if the plant lies beyond it) sees the plant current in the reverse direction. A non-directional relay is selective only if it does not pick up or trips after the faulted feeder's relay by at least Δt. 3F and 2F faults, max and min, are checked at 21 points on each adjacent feeder, with the revised settings.</span></p>
+        <div class="scroll"><table class="data" id="rg-symp" style="min-width:720px"></table></div>
+        <div class="callout ind" id="rg-symp-note"></div>
+      </div></div>
+      <div class="step"><div>
+        <h3><span lang="ro">Protecția de interfață și trecerea prin gol de tensiune</span><span lang="en">Interface protection and fault ride-through</span></h3>
+        <p><span lang="ro">Treapta U&lt; nu trebuie să deconecteze centrala la un gol pe care profilul FRT o obligă să-l suporte: tensiunea poate sta sub U<sub>set</sub> cel mult D secunde fără ca centrala să aibă voie să iasă, deci t<sub>set</sub> &gt; D și U<sub>set</sub> ≤ U<sub>rec2</sub>.</span><span lang="en">The U&lt; stage must not disconnect the plant for a dip the FRT profile obliges it to withstand: the voltage may stay below U<sub>set</sub> for at most D seconds without the plant being allowed to leave, so t<sub>set</sub> &gt; D and U<sub>set</sub> ≤ U<sub>rec2</sub>.</span></p>
+        <div class="scroll"><table class="data" id="rg-ifp" style="min-width:720px"></table></div>
+        <div class="calc" id="rg-frt" style="margin-top:10px"></div>
+      </div></div>
+      <div class="step"><div>
+        <h3><span lang="ro">Insularizarea și pauza RAR</span><span lang="en">Islanding and the auto-reclose dead time</span></h3>
+        <p><span lang="ro">Când R3 (sau R4) deschide, centrala poate rămâne să alimenteze singură consumatorii. Ea trebuie deconectată înainte ca RAR să reconecteze linia, altfel reanclanșarea se face în opoziție de fază.</span><span lang="en">When R3 (or R4) opens, the plant may keep supplying the loads on its own. It must be disconnected before auto-reclosing re-energises the line, otherwise the reclosure is out of phase.</span></p>
+        <div class="calc" id="rg-isl"></div>
+        <div class="callout ind" id="rg-isl-note"></div>
+      </div></div>
+      <div class="step"><div>
+        <h3><span lang="ro">Fișa de reglaje</span><span lang="en">Settings sheet</span></h3>
+        <div class="tools"><span class="label" id="rg-cap"></span><button class="btn" id="copy-sheet"><span lang="ro">Copiază pentru Excel</span><span lang="en">Copy for Excel</span></button></div>
+        <div class="scroll"><table class="data" id="rg-sheet" style="min-width:720px"></table></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TEORIE ================= -->
+<section class="tab" id="teorie" hidden>
+  <div class="theory">
+    <nav class="toc">
+      <a href="#t-why"><span lang="ro">Ce schimbă centrala</span><span lang="en">What the plant changes</span></a>
+      <a href="#t-model"><span lang="ro">Centrala la defect</span><span lang="en">The plant during a fault</span></a>
+      <a href="#t-blind"><span lang="ro">Orbirea</span><span lang="en">Blinding</span></a>
+      <a href="#t-symp"><span lang="ro">Declanșarea simpatică</span><span lang="en">Sympathetic tripping</span></a>
+      <a href="#t-frt"><span lang="ro">Trecerea prin gol (FRT)</span><span lang="en">Fault ride-through</span></a>
+      <a href="#t-ifp"><span lang="ro">Protecția de interfață</span><span lang="en">Interface protection</span></a>
+      <a href="#t-isl"><span lang="ro">Insularizarea și RAR</span><span lang="en">Islanding and reclosing</span></a>
+      <a href="#t-hyp"><span lang="ro">Ipotezele modelului</span><span lang="en">Model assumptions</span></a>
+      <a href="#t-ref"><span lang="ro">Surse</span><span lang="en">Sources</span></a>
+    </nav>
+    <article>
+      <section id="t-why">
+        <h2><span lang="ro">Ce schimbă o centrală pe plecare</span><span lang="en">What a plant on the feeder changes</span></h2>
+        <p><span lang="ro">Reglajele din M03 presupun o singură sursă, în amonte: curentul de defect curge de la bare spre defect și scade cu distanța. O centrală pe F1 adaugă o a doua sursă. Pentru protecție contează patru efecte: R3 vede mai puțin la defectele de după centrală (orbire), vede curent invers la defectele din afara liniei (declanșare simpatică), golul de tensiune la un defect îndepărtat nu are voie să deconecteze centrala (FRT), dar după deschiderea liniei centrala nu are voie să rămână în funcțiune insularizată până la reanclanșare. Literatura de specialitate notează că rezolvarea depinde de rețea și de tipul centralei și cere un studiu pentru fiecare caz.</span><span lang="en">The M03 settings assume a single upstream source: fault current flows from the busbar to the fault and decreases with distance. A plant on F1 adds a second source. Four effects matter for protection: R3 sees less for faults beyond the plant (blinding), sees reverse current for faults outside the line (sympathetic tripping), a voltage dip from a remote fault must not disconnect the plant (FRT), yet after the line opens the plant must not keep running as an island until reclosing. The literature notes that the remedy depends on the network and the plant type and calls for a study in each case.</span></p>
+      </section>
+      <section id="t-model">
+        <h2><span lang="ro">Centrala la defect</span><span lang="en">The plant during a fault</span></h2>
+        <p><span lang="ro"><b>Generatorul sincron</b> e o sursă de tensiune în spatele reactanței supratranzitorii și a transformatorului bloc. IEC 60909-0 îi atribuie, pentru U<sub>rG</sub> &gt; 1 kV și S<sub>rG</sub> &lt; 100 MVA, rezistența fictivă R<sub>Gf</sub> = 0,07·X″d (0,05 peste 100 MVA, 0,15 la joasă tensiune).</span><span lang="en"><b>The synchronous generator</b> is a voltage source behind the subtransient reactance and the unit transformer. For U<sub>rG</sub> &gt; 1 kV and S<sub>rG</sub> &lt; 100 MVA, IEC 60909-0 assigns it the fictitious resistance R<sub>Gf</sub> = 0.07·X″d (0.05 above 100 MVA, 0.15 at low voltage).</span></p>
+        <div class="eqn"><span data-tex="\underline{Z}_G = \left(0{,}07\,x''_d + j\,(x''_d + u_{kT})\right)\frac{U_n^2}{S_{rG}},\qquad I_{DG} \approx \frac{c\,U_n/\sqrt{3} - U_{g}}{Z_G}"></span><span class="no">(1)</span></div>
+        <p><span lang="ro"><b>Centrala cu invertor</b> limitează curentul: Boutsika și Papathanassiou dau I″<sub>k</sub> = k·I<sub>rG</sub>, cu k = 1,5–2. Invertorul injectează numai secvență pozitivă, cu unghiul legat de tensiunea din punctul de racordare; la φ = 90° curentul e reactiv (susține tensiunea). Modelul caută unghiul prin punct fix; sub 0,1 u.r. sau când punctul fix nu există (defect 3F franc între rețea și centrală) păstrează unghiul de dinainte de defect — o ipoteză, nu o proprietate a invertoarelor reale.</span><span lang="en"><b>The inverter-based plant</b> limits its current: Boutsika and Papathanassiou give I″<sub>k</sub> = k·I<sub>rG</sub>, with k = 1.5–2. The inverter injects positive sequence only, at an angle tied to the connection-point voltage; with φ = 90° the current is reactive (it supports the voltage). The model finds the angle by fixed-point iteration; below 0.1 p.u., or when no fixed point exists (bolted 3F fault between the grid and the plant), it keeps the pre-fault angle — an assumption, not a property of real inverters.</span></p>
+        <div class="eqn"><span data-tex="\underline{I}_{1,DG} = k\,I_{rG}\,e^{\,j(\arg \underline{U}_{1g} - \varphi)},\qquad \underline{I}_{2,DG} = 0"></span><span class="no">(2)</span></div>
+      </section>
+      <section id="t-blind">
+        <h2><span lang="ro">Orbirea releului din capul liniei</span><span lang="en">Blinding of the feeder-head relay</span></h2>
+        <p><span lang="ro">La un defect 3F după centrală, legea lui Kirchhoff în nodul centralei dă:</span><span lang="en">For a 3F fault beyond the plant, Kirchhoff's current law at the plant node gives:</span></p>
+        <div class="eqn"><span data-tex="\underline{I}_{R3} = \underline{I}_f - \underline{I}_{DG}"></span><span class="no">(3)</span></div>
+        <p><span lang="ro">Centrala ridică tensiunea în punctul ei de racordare și preia o parte din curentul de defect, așa că R3 vede mai puțin decât fără ea, iar R4, aflat după centrală, vede mai mult. În rețeaua-exemplu, la defectul 2F minim de la capătul liniei, un generator sincron de 5 MVA la 8 km reduce curentul lui R3 cu 11,8 %, iar unul de 10 MVA cu 21,8 %; sensibilitatea de rezervă rămâne peste 1,2, dar timpul de rezervă crește. Invertorul se comportă altfel la defectele 2F: nu dă secvență negativă, deci R3 duce tot curentul de secvență negativă al defectului, iar curentul lui de secvență pozitivă ridică tensiunea la defect. În rețeaua-exemplu, curentul văzut de R3 crește cu 7,9 %.</span><span lang="en">The plant raises the voltage at its connection point and supplies part of the fault current, so R3 sees less than without it, while R4, beyond the plant, sees more. In the example network, for the minimum 2F fault at the line end, a 5 MVA synchronous generator at 8 km reduces the R3 current by 11.8 %, and a 10 MVA one by 21.8 %; backup sensitivity stays above 1.2, but the backup time grows. The inverter behaves differently in 2F faults: it supplies no negative sequence, so R3 carries all of the fault's negative-sequence current, while the inverter's positive-sequence current raises the voltage at the fault. In the example network, the current seen by R3 increases by 7.9 %.</span></p>
+      </section>
+      <section id="t-symp">
+        <h2><span lang="ro">Declanșarea simpatică</span><span lang="en">Sympathetic tripping</span></h2>
+        <p><span lang="ro">La un defect pe altă plecare sau pe bare, centrala trimite curent prin R3 spre bare. Un releu nedirecțional nu distinge sensul: dacă acest curent depășește pragul și releul plecării defecte e mai lent, R3 deconectează o linie sănătoasă. Condiția de selectivitate:</span><span lang="en">For a fault on another feeder or on the busbar, the plant sends current through R3 towards the busbar. A non-directional relay cannot tell the direction: if this current exceeds the pickup and the faulted feeder's relay is slower, R3 disconnects a healthy line. The selectivity condition:</span></p>
+        <div class="eqn"><span data-tex="I_{R3,inv} < G_T\,I_{>}\quad\text{sau / or}\quad t_{R3}(I_{R3,inv}) - t_{A}(I_{A}) \ge \Delta t"></span><span class="no">(4)</span></div>
+        <p><span lang="ro">Înainte de orice defect contează regimul normal: prin R3, iar dacă centrala e după R4 și prin R4, trece exportul centralei, până la I<sub>rG</sub> când sarcina liniei e mică. În rețeaua-exemplu, R4 are I&gt; = 102 A (calculat în M03 pentru 80 A sarcină), iar o centrală de 5 MVA după R4 exportă până la 144 A: R4 ar declanșa fără defect, iar la defecte pe plecările vecine ar fi primul care vede curentul invers. Pragul se recalculează cu I<sub>max</sub> = max(I<sub>sarcină</sub>, I<sub>rG</sub>) și se refac eșalonarea și TMS-urile.</span><span lang="en">Before any fault, normal operation matters: the plant export flows through R3 and, if the plant lies beyond R4, through R4 as well, up to I<sub>rG</sub> when the line load is small. In the example network, R4 has I&gt; = 102 A (computed in M03 for an 80 A load), while a 5 MVA plant beyond R4 exports up to 144 A: R4 would trip without a fault, and for faults on adjacent feeders it would be the first to see reverse current. The pickup is recomputed with I<sub>max</sub> = max(I<sub>load</sub>, I<sub>rG</sub>) and the grading and TMS values are redone.</span></p>
+        <p><span lang="ro">Cu aceleași reglaje pe ambele plecări, R3 e întotdeauna mai lent, pentru că vede doar o parte a curentului de defect. Problema apare când plecarea vecină e reglată mai lent (are mai multe trepte în aval sau nu are I&gt;&gt;). Soluția uzuală e elementul direcțional pe R3 (67, M04). La un generator sincron decizia e sigură; la invertor, unghiul curentului invers e impus de reglajul invertorului, iar în rețeaua-exemplu ajunge în câteva cazuri la 1–3° în interiorul zonei „înainte”. La un defect pe bare, declanșarea lui R3 e utilă: oprește alimentarea defectului de către centrală. Cu R3 direcțional „înainte” e nevoie de o declanșare transmisă de la protecția barelor.</span><span lang="en">With the same settings on both feeders, R3 is always slower, because it sees only part of the fault current. The problem appears when the adjacent feeder is set slower (it has more downstream stages or no I&gt;&gt;). The usual remedy is a directional element on R3 (67, M04). With a synchronous generator the decision is reliable; with an inverter, the angle of the reverse current is set by the inverter control, and in the example network it reaches 1–3° inside the forward zone in a few cases. For a busbar fault, an R3 trip is useful: it stops the plant from feeding the fault. With R3 directional forward, a transfer trip from the busbar protection is needed.</span></p>
+      </section>
+      <section id="t-frt">
+        <h2><span lang="ro">Trecerea prin gol de tensiune (FRT)</span><span lang="en">Fault ride-through (FRT)</span></h2>
+        <p><span lang="ro">Regulamentul (UE) 2016/631 (NC RfG), art. 14(3)(a), cere modulelor de tip B să rămână conectate cât timp tensiunea din punctul de racordare rămâne deasupra unui profil tensiune–timp. Parametrii se aleg de operatorul de transport în intervalele din tabelele 3.1 (module sincrone: U<sub>ret</sub> 0,05–0,3, t<sub>clear</sub> 0,14–0,15 s, extensibil la 0,25 s, U<sub>clear</sub> 0,7–0,9, U<sub>rec2</sub> 0,85–0,9) și 3.2 (module cu invertor, PPM: U<sub>ret</sub> 0,05–0,15, U<sub>rec2</sub> 0,85, t<sub>rec3</sub> 1,5–3,0 s). Valorile naționale se iau din Ordinul ANRE 208/2018 și din avizul de racordare.</span><span lang="en">Regulation (EU) 2016/631 (NC RfG), Art. 14(3)(a), requires type B modules to stay connected while the connection-point voltage stays above a voltage–time profile. The TSO chooses the parameters within the ranges of Tables 3.1 (synchronous modules: U<sub>ret</sub> 0.05–0.3, t<sub>clear</sub> 0.14–0.15 s, extendable to 0.25 s, U<sub>clear</sub> 0.7–0.9, U<sub>rec2</sub> 0.85–0.9) and 3.2 (power park modules, PPM: U<sub>ret</sub> 0.05–0.15, U<sub>rec2</sub> 0.85, t<sub>rec3</sub> 1.5–3.0 s). National values come from ANRE Order 208/2018 and the connection permit.</span></p>
+        <p><span lang="ro">Profilul presupune eliminarea rapidă a defectului (zecimi de secundă). În rețeaua de MT, releele temporizate elimină defectele în 0,1–2 s, așa că la defecte apropiate tensiunea iese adesea de sub profil: centrala are voie să se deconecteze, dar nu e obligată.</span><span lang="en">The profile assumes fast fault clearing (tenths of a second). In MV networks, time-delayed relays clear faults in 0.1–2 s, so for close faults the voltage often falls below the profile: the plant is allowed to disconnect, but not obliged to.</span></p>
+      </section>
+      <section id="t-ifp">
+        <h2><span lang="ro">Protecția de interfață</span><span lang="en">Interface protection</span></h2>
+        <p><span lang="ro">Protecția de interfață deconectează centrala la tensiuni și frecvențe în afara limitelor și la insularizare. Ca exemplu documentat, tabelul din Ordinul ANRE 132/2020 (care modifică norma aprobată prin Ordinul ANRE 228/2018, pentru prosumatori) are U&lt; 0,85·U<sub>n</sub> / 3,2 s, U&gt; 1,15·U<sub>n</sub> / 0,5 s, U&gt; 1,1·U<sub>n</sub> pe media de 10 minute, f&lt; 47,5 Hz / 0,5 s și f&gt; 52 Hz / 0,5 s. Pentru o centrală de MT, reglajele se stabilesc prin avizul de racordare.</span><span lang="en">Interface protection disconnects the plant for voltage and frequency outside limits and on islanding. As a documented example, the table in ANRE Order 132/2020 (amending the norm approved by ANRE Order 228/2018, for prosumers) has U&lt; 0.85·U<sub>n</sub> / 3.2 s, U&gt; 1.15·U<sub>n</sub> / 0.5 s, U&gt; 1.1·U<sub>n</sub> on a 10-minute average, f&lt; 47.5 Hz / 0.5 s and f&gt; 52 Hz / 0.5 s. For an MV plant, settings are set by the connection permit.</span></p>
+        <div class="eqn"><span data-tex="D(U_{set}) = t_{rec2} + \frac{U_{set} - U_{clear}}{U_{rec2} - U_{clear}}\,(t_{rec3} - t_{rec2}),\qquad t_{set} > D"></span><span class="no">(5)</span></div>
+        <p><span lang="ro">Relația (5) dă, pentru U<sub>clear</sub> &lt; U<sub>set</sub> ≤ U<sub>rec2</sub>, cât poate sta tensiunea sub U<sub>set</sub> pe marginea profilului. Cu profilurile din laborator, D = 1,30 s (sincron) și 3,00 s (PPM): treapta U&lt; 0,85·U<sub>n</sub> / 3,2 s e compatibilă cu ambele.</span><span lang="en">Relation (5) gives, for U<sub>clear</sub> &lt; U<sub>set</sub> ≤ U<sub>rec2</sub>, how long the voltage may stay below U<sub>set</sub> along the profile edge. With the lab profiles, D = 1.30 s (synchronous) and 3.00 s (PPM): the U&lt; 0.85·U<sub>n</sub> / 3.2 s stage is compatible with both.</span></p>
+      </section>
+      <section id="t-isl">
+        <h2><span lang="ro">Insularizarea și reanclanșarea</span><span lang="en">Islanding and auto-reclosing</span></h2>
+        <p><span lang="ro">După deschiderea liniei, frecvența insulei variază după ecuația de mișcare a rotorului (fără regulatoare, cu puterile constante):</span><span lang="en">After the line opens, the island frequency follows the rotor equation of motion (no governors, constant powers):</span></p>
+        <div class="eqn"><span data-tex="\frac{2H}{f_0}\,\frac{df}{dt} = \frac{P_G - P_L}{S_{rG}}\ \Rightarrow\ \mathrm{RoCoF} = \frac{\Delta P}{S_{rG}}\cdot\frac{f_0}{2H}"></span><span class="no">(6)</span></div>
+        <p><span lang="ro">Un releu RoCoF reglat la RoCoF&gt; nu vede insula dacă |ΔP|/S<sub>rG</sub> &lt; 2H·RoCoF&gt;/f<sub>0</sub>: aceasta e zona nedetectată. Pentru H = 2 s și 1 Hz/s, zona e ±8 % din S<sub>rG</sub>. În Marea Britanie, reglajele RoCoF au fost aduse la 1 Hz/s cu 0,5 s (G59 revizuit, G99), după ce pragurile de 0,125 Hz/s s-au dovedit prea sensibile. Lucrările SEL arată că centrala trebuie să iasă înainte de prima reanclanșare; altfel reanclanșarea în opoziție de fază poate deteriora echipamentele rețelei, ale consumatorilor și centrala.</span><span lang="en">A RoCoF relay set to RoCoF&gt; does not see the island if |ΔP|/S<sub>rG</sub> &lt; 2H·RoCoF&gt;/f<sub>0</sub>: this is the non-detection zone. For H = 2 s and 1 Hz/s the zone is ±8 % of S<sub>rG</sub>. In Great Britain, RoCoF settings were moved to 1 Hz/s with 0.5 s (revised G59, G99) after 0.125 Hz/s settings proved too sensitive. SEL papers show that the plant must trip before the first reclosure; otherwise out-of-phase reclosing can damage network equipment, customer equipment and the plant.</span></p>
+        <div class="eqn"><span data-tex="t_{det} + t_{CB} < t_{RAR}"></span><span class="no">(7)</span></div>
+      </section>
+      <section id="t-hyp">
+        <h2><span lang="ro">Ipotezele modelului</span><span lang="en">Model assumptions</span></h2>
+        <ul>
+          <li><span lang="ro">Rețeaua, linia F1 și reglajele R2–R4 sunt cele din M01 și M03; plecările vecine F2, F4 și F6 sunt cele din M05. Releul plecării vecine are reglajele lui R3, cu TMS propriu și I&gt;&gt; activ sau nu.</span><span lang="en">The network, line F1 and the R2–R4 settings are those of M01 and M03; the adjacent feeders F2, F4 and F6 are those of M05. The adjacent feeder relay has the R3 settings, with its own TMS and I&gt;&gt; on or off.</span></li>
+          <li><span lang="ro">Generatorul sincron: 6,3 kV, x″d = 0,18 (valoarea din exemplul Boutsika și Papathanassiou), transformator bloc cu u<sub>k</sub> = 7 % (valoare de exemplu), X₂ = X″d; factorii de corecție K<sub>G</sub>/K<sub>SO</sub> din IEC 60909-0 nu sunt aplicați. Puterea maximă de 10 MVA corespunde curentului admisibil al LEA 70/12 (290 A, pandapower).</span><span lang="en">Synchronous generator: 6.3 kV, x″d = 0.18 (the value in the Boutsika and Papathanassiou example), unit transformer with u<sub>k</sub> = 7 % (example value), X₂ = X″d; the IEC 60909-0 correction factors K<sub>G</sub>/K<sub>SO</sub> are not applied. The 10 MVA maximum matches the ampacity of the 70/12 overhead line (290 A, pandapower).</span></li>
+          <li><span lang="ro">Fără sarcini în calculul de defect (metoda sursei echivalente IEC 60909); numai defecte 3F și 2F. Golul de tensiune e constant până la eliminarea defectului.</span><span lang="en">No loads in the fault calculation (IEC 60909 equivalent source method); 3F and 2F faults only. The voltage dip is constant until the fault is cleared.</span></li>
+          <li><span lang="ro">Insularizarea: puteri constante, fără regulator de turație, fără dependența sarcinii de frecvență; H = 2 s e capătul de jos al intervalului tipic 2–10 s pentru grupuri convenționale; t<sub>CB</sub> = 0,06 s și pauza RAR de 0,8 s sunt valori de exemplu.</span><span lang="en">Islanding: constant powers, no speed governor, no load–frequency dependence; H = 2 s is the low end of the typical 2–10 s range for conventional units; t<sub>CB</sub> = 0.06 s and the 0.8 s reclose dead time are example values.</span></li>
+        </ul>
+      </section>
+      <section id="t-ref">
+        <h2><span lang="ro">Surse</span><span lang="en">Sources</span></h2>
+        <ol class="refs">
+          <li>T. N. Boutsika, S. A. Papathanassiou, „Short-circuit calculations in networks with distributed generation”, <i>Electric Power Systems Research</i> 78 (2008) 1181–1191. <a href="https://doi.org/10.1016/j.epsr.2007.10.003" rel="noopener">doi:10.1016/j.epsr.2007.10.003</a></li>
+          <li><span lang="ro">Regulamentul (UE) 2016/631 (NC RfG), art. 14 și tabelele 3.1–3.2.</span><span lang="en">Regulation (EU) 2016/631 (NC RfG), Art. 14 and Tables 3.1–3.2.</span> <a href="https://eur-lex.europa.eu/eli/reg/2016/631/oj/eng" rel="noopener">eur-lex.europa.eu</a></li>
+          <li><span lang="ro">Ordinul ANRE 132/2020 (modifică norma tehnică aprobată prin Ordinul ANRE 228/2018) — reglajele protecției de interfață pentru prosumatori; reprodus și în condițiile tehnice DEER pentru generatoare.</span><span lang="en">ANRE Order 132/2020 (amending the technical norm approved by ANRE Order 228/2018) — interface protection settings for prosumers; also reproduced in DEER technical conditions for generators.</span> <a href="https://lege5.ro/gratuit/gm3tmobwguza/ordinul-nr-132-2020-privind-modificarea-si-completarea-normei-tehnice-conditii-tehnice-de-racordare-la-retelele-electrice-de-interes-public-pentru-prosumatorii-cu-injectie-de-putere-activa-in-retea-ap" rel="noopener">lege5.ro</a>, <a href="https://www.distributie-energie.ro/wp-content/uploads/2022/05/CONDITII-TEHNICE-GENERATOARE-Versiune8.pdf" rel="noopener">distributie-energie.ro</a></li>
+          <li><span lang="ro">Ordinul ANRE 208/2018 — norma tehnică de racordare a modulelor generatoare (transpune NC RfG).</span><span lang="en">ANRE Order 208/2018 — technical norm for connecting generating modules (transposes NC RfG).</span> <a href="https://www.transelectrica.ro/documents/10179/3992478/Ordinul+208_2018+pentru+aprobarea+Normei+Tehnice+MG%2CCfMG%2CCMGO/42de08da-8c14-4240-8051-66f73de5632d" rel="noopener">transelectrica.ro</a></li>
+          <li><span lang="ro">IEC 60909-0:2016, rezistența fictivă R<sub>Gf</sub>; aceleași valori în implementarea pandapower (shortcircuit/ppc_conversion.py) și în</span><span lang="en">IEC 60909-0:2016, fictitious resistance R<sub>Gf</sub>; the same values in the pandapower implementation (shortcircuit/ppc_conversion.py) and in</span> <a href="https://pacbasics.org/short-circuit-impedance-calculation-iec60909/" rel="noopener">pacbasics.org</a></li>
+          <li><span lang="ro">Reglajele RoCoF 1 Hz/s, 0,5 s (G59 revizuit, G99) și renunțarea la saltul de vector:</span><span lang="en">RoCoF settings 1 Hz/s, 0.5 s (revised G59, G99) and removal of vector shift:</span> <a href="https://www.westernpower.co.uk/downloads/4096/9-loss-of-mains-protection.pdf" rel="noopener">westernpower.co.uk</a>, <a href="https://www.gtc-uk.co.uk/wp-content/uploads/2020/06/GTC-G99-Protection-Settings-GE-CIC-ES-0131.pdf" rel="noopener">gtc-uk.co.uk</a>, <a href="https://www.ofgem.gov.uk/sites/default/files/docs/2019/08/dc0079_d.pdf" rel="noopener">Ofgem DC0079</a></li>
+          <li>D. Williston, D. Finney, „Consequences of Out-of-Phase Reclosing on Feeders With Distributed Generators”, SEL. <a href="https://selinc.com/api/download/9484" rel="noopener">selinc.com</a></li>
+          <li><span lang="ro">Orbire, declanșare simpatică și soluții (elemente direcționale, declanșare transmisă):</span><span lang="en">Blinding, sympathetic tripping and remedies (directional elements, transfer tripping):</span> <a href="https://www.ipstconf.org/papers/Proc_IPST2007/07IPST073.pdf" rel="noopener">IPST 2007</a>, <a href="https://core.ac.uk/download/357353268.pdf" rel="noopener">core.ac.uk</a>, <a href="https://www.scribd.com/document/321427245/Kau-Ha-Niemi-2004" rel="noopener">Kauhaniemi et al. 2004</a></li>
+          <li><span lang="ro">Constanta de inerție: valori tipice 2–10 s.</span><span lang="en">Inertia constant: typical values 2–10 s.</span> <a href="https://arxiv.org/pdf/1312.6435" rel="noopener">arxiv.org/abs/1312.6435</a>; P. Kundur, <i>Power System Stability and Control</i>, McGraw-Hill, 1994 (<span lang="ro">ecuația de mișcare</span><span lang="en">equation of motion</span>).</li>
+        </ol>
+      </section>
+    </article>
+  </div>
+</section>
+
+<!-- ================= TEST ================= -->
+<section class="tab" id="test" hidden>
+  <div class="quiz">
+    <div class="score"><h2 style="margin:0"><span lang="ro">Verifică-ți înțelegerea</span><span lang="en">Check your understanding</span></h2><div><span class="label"><span lang="ro">Scor</span><span lang="en">Score</span></span> <span class="mono" id="score">0 / 0</span> <button class="btn" id="q-reset"><span lang="ro">Test nou</span><span lang="en">New quiz</span></button></div></div>
+    <div id="qlist" class="quiz"></div>
+  </div>
+</section>
+
+<footer class="mod"><span><span lang="ro">Protecții în rețelele electrice · Modulul 06</span><span lang="en">Power system protection · Module 06</span></span><span><span lang="ro">Rezultatele motorului sunt verificate în verify/m06_verify.py</span><span lang="en">Engine results are checked in verify/m06_verify.py</span></span></footer>
+</div>
+
+<script src="../assets/cx.js"></script>
+<script src="../assets/course.js"></script>
+<script src="../m01/engine.js"></script>
+<script src="../m03/engine.js"></script>
+<script src="engine.js"></script>
+<script src="page.js"></script>
+</body>
+</html>

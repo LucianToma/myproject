@@ -16,7 +16,9 @@ Fiecare modul are patru tab-uri, în română și engleză:
 | M02 | Transformatoare de curent pentru protecții (F_a real, saturația tranzitorie, dimensionarea) | gata |
 | M03 | Protecția maximală de curent 50/51: reglaje și coordonare pe patru relee | gata |
 | M04 | Protecția maximală direcțională 67/67N: unghiul caracteristic, bucla închisă | gata |
-| M05–M14 | Punerea la pământ în MT, generare distribuită, distanță, teleprotecție, automatizări, transformatoare, generatoare, bare și motoare, relee numerice, proiectul stației | urmează |
+| M05 | Punerea la pământ în rețelele MT: neutru izolat, compensat, prin rezistor; 51N, 67N, sin φ, cos φ, admitanță | gata |
+| M06 | Rețele cu generare distribuită: regimul normal, orbirea, declanșarea simpatică, FRT, protecția de interfață, insularizarea | gata |
+| M07–M14 | Distanță, teleprotecție, automatizări, transformatoare, generatoare, bare și motoare, relee numerice, proiectul stației | urmează |
 
 Toate modulele lucrează pe aceeași rețea-exemplu: stația 110/20 kV cu transformatorul T1 de 25 MVA
 (tipul standard pandapower „25 MVA 110/20 kV”), neutrul de 20 kV tratat prin rezistor de 300 A și plecarea F1
@@ -28,7 +30,7 @@ Toate modulele lucrează pe aceeași rețea-exemplu: stația 110/20 kV cu transf
 site/                 paginile, gata de urcat pe server (HTML/CSS/JS static, fără build)
   index.html          cuprinsul cursului
   assets/             stilurile, funcțiile comune (limba, tab-uri, teste), numere complexe
-  m01…m04/            câte un modul: index.html (pagina), engine.js (calculele), page.js (interfața)
+  m01…m06/            câte un modul: index.html (pagina), engine.js (calculele), page.js (interfața)
 verify/               verificările independente ale motoarelor de calcul (Python)
 tests/                verificări în browser (Playwright) și ale formulelor (KaTeX)
 ```
@@ -52,6 +54,8 @@ Ce compară fiecare script:
 | `m02_verify.py` | ecuația TC integrată cu scipy (Radau) față de motor (abatere RMS 0,23 % din vârf); formula IEEE C37.110 a timpului până la saturație față de fluxul calculat exact; calibrarea erorii compuse la ALF |
 | `m03_verify.py` | curbele IEC/IEEE față de valorile de referință la 10·I>; reglajele recalculate cu curenții din pandapower; 328 de scenarii de defect (cine declanșează primul și marja); minimalitatea fiecărui TMS |
 | `m04_verify.py` | 128 de cazuri ale elementului direcțional prin analiză nodală în coordonate de fază; reglajele buclei recalculate; 152 de defecte în bucla închisă simulate independent (secvența de declanșare, izolarea corectă, rezerva ≥ Δt) |
+| `m05_verify.py` | capacitatea homopolară a LEA din geometrie (metoda imaginilor); 270 de cazuri (3 tratări × 6 plecări × 3 poziții × 5 R_f) prin analiză nodală în coordonate de fază (abatere 10⁻¹¹); relațiile de control (neutru izolat, U₀ ≈ 1/\|1 + 3R_f·Y₀\|); reglajele 51N și absența declanșărilor simpatice |
+| `m06_verify.py` | impedanțele rețelei și generatorului recalculate; 1 664 de cazuri (fără centrală, sincron, invertor) prin analiză nodală în coordonate de fază, cu unghiul invertorului găsit prin căutarea tuturor rădăcinilor (abatere 10⁻⁸); generatorul sincron față de pandapower (abatere 10⁻¹⁴); unghiurile elementelor direcționale; timpii releelor, regimul normal și pragurile revizuite, declanșarea simpatică (R3 și R4), orbirea, compatibilitatea U< cu profilul FRT, insularizarea prin integrarea ecuației de mișcare |
 
 Verificarea în browser (toate paginile, RO și EN, desktop și telefon, temele deschisă și întunecată):
 
@@ -67,5 +71,6 @@ Paginile încarcă fonturile de pe Google Fonts și KaTeX 0.16.9 de pe cdnjs; re
 ## Surse
 
 Fiecare modul își listează sursele în tab-ul Teorie. Regulile de reglaj sunt citate din standarde
-(IEC 60909-0, IEC 60255-151, IEEE C37.112, IEC 61869-2, IEEE C37.110), din manuale și ghiduri ale producătorilor
-(ABB, GE, SEL) și din cursuri românești de protecții. Unde o valoare e doar un exemplu sau o estimare, pagina o spune.
+(IEC 60909-0, IEC 60255-151, IEEE C37.112, IEC 61869-2, IEEE C37.110), din reglementări (Regulamentul (UE) 2016/631,
+ordinele ANRE 208/2018, 228/2018 și 132/2020), din manuale și ghiduri ale producătorilor (ABB, GE, SEL) și din
+cursuri românești de protecții. Unde o valoare e doar un exemplu sau o estimare, pagina o spune.

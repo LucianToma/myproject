@@ -57,7 +57,7 @@ a.mod-card:hover{border-color:var(--accent)}
     <div class="hero-tools"><div class="seg" role="group" aria-label="Limba / Language"><button data-langbtn="ro">RO</button><button data-langbtn="en">EN</button></div></div>
     <div class="facts">
       <div><b>14</b><span><span lang="ro">module în 5 părți</span><span lang="en">modules in 5 parts</span></span></div>
-      <div><b>4</b><span><span lang="ro">gata acum (partea I)</span><span lang="en">ready now (part I)</span></span></div>
+      <div><b>6</b><span><span lang="ro">gata acum (părțile I–II)</span><span lang="en">ready now (parts I–II)</span></span></div>
       <div><b>RO · EN</b><span><span lang="ro">fiecare pagină</span><span lang="en">every page</span></span></div>
     </div>
   </div>
@@ -108,7 +108,7 @@ a.mod-card:hover{border-color:var(--accent)}
   <p style="max-width:76ch"><span lang="ro">Motorul de calcul al fiecărui modul e un fișier separat (engine.js), care rulează și în pagină, și în teste. Scripturile din verify/ îl compară cu un calcul scris independent, pe altă cale: pandapower (IEC 60909-0), analiză nodală în coordonate de fază, integrarea numerică a ecuațiilor TC, recalcularea timpilor de coordonare. Un modul e marcat „gata” doar când toate verificările lui trec.</span><span lang="en">Each module's calculation engine is a separate file (engine.js) that runs both in the page and in the tests. The scripts in verify/ compare it with a calculation written independently, by another route: pandapower (IEC 60909-0), phase-domain nodal analysis, numerical integration of the CT equations, recomputation of coordination margins. A module is marked “ready” only when all its checks pass.</span></p>
 </section>
 
-<footer class="mod"><span><span lang="ro">Protecții în rețelele electrice · curs de master</span><span lang="en">Power system protection · master's course</span></span><span><span lang="ro">Partea I gata · părțile II–V urmează</span><span lang="en">Part I ready · parts II–V to follow</span></span></footer>
+<footer class="mod"><span><span lang="ro">Protecții în rețelele electrice · curs de master</span><span lang="en">Power system protection · master's course</span></span><span><span lang="ro">Părțile I–II gata · părțile III–V urmează</span><span lang="en">Parts I–II ready · parts III–V to follow</span></span></footer>
 </div>
 
 <script src="assets/course.js"></script>
@@ -123,8 +123,8 @@ a.mod-card:hover{border-color:var(--accent)}
       ["M04", "m04/index.html", true, { ro: "Protecția maximală direcțională", en: "Directional overcurrent protection" }, { ro: "Polarizare, unghiul caracteristic, rețele buclate și linii paralele.", en: "Polarisation, characteristic angle, ring networks and parallel lines." }, ["67", "67N"]],
     ] },
     { ro: "Partea II · Rețele de distribuție", en: "Part II · Distribution networks", mods: [
-      ["M05", "", false, { ro: "Punerea la pământ în rețelele MT", en: "Earth faults in MV networks" }, { ro: "Neutru izolat, compensat, prin rezistor; protecții homopolare, wattmetrice și de admitanță.", en: "Isolated, compensated and resistor-earthed neutral; zero-sequence, wattmetric and admittance protection." }, ["51N", "67N", "59N"]],
-      ["M06", "", false, { ro: "Rețele cu generare distribuită", en: "Networks with distributed generation" }, { ro: "Orbirea protecției, declanșări simpatice, protecția de interfață, trecerea prin gol de tensiune.", en: "Protection blinding, sympathetic tripping, interface protection, fault ride-through." }, ["27/59", "81", "RoCoF"]],
+      ["M05", "m05/index.html", true, { ro: "Punerea la pământ în rețelele MT", en: "Earth faults in MV networks" }, { ro: "Neutru izolat, compensat, prin rezistor; protecții homopolare, wattmetrice și de admitanță.", en: "Isolated, compensated and resistor-earthed neutral; zero-sequence, wattmetric and admittance protection." }, ["51N", "67N", "59N"]],
+      ["M06", "m06/index.html", true, { ro: "Rețele cu generare distribuită", en: "Networks with distributed generation" }, { ro: "Orbirea protecției, declanșări simpatice, protecția de interfață, trecerea prin gol de tensiune.", en: "Protection blinding, sympathetic tripping, interface protection, fault ride-through." }, ["27/59", "81", "RoCoF"]],
     ] },
     { ro: "Partea III · Rețele de transport", en: "Part III · Transmission networks", mods: [
       ["M07", "", false, { ro: "Protecția de distanță", en: "Distance protection" }, { ro: "Impedanța văzută, zone, rezistența de defect, alimentarea intermediară, pendulații.", en: "Apparent impedance, zones, fault resistance, infeed, power swings." }, ["21", "21N", "68"]],

@@ -36,5 +36,22 @@
   ];
   /* impedanță cu modul dat și raport R/X dat */
   const zRX = (Z, rx) => { const X = Z / Math.sqrt(1 + rx * rx); return C(rx * X, X); };
-  return { C, add, sub, mul, div, scale, neg, conj, abs, argDeg, polar, inv, par, A, A2, seq2abc, abc2seq, zRX };
+  /* sistem liniar complex Y·x = b, eliminare Gauss cu pivotare parțială */
+  function solve(Y, b) {
+    const n = b.length, M = Y.map((r) => r.slice()), v = b.slice();
+    for (let k = 0; k < n; k++) {
+      let p = k, best = abs(M[k][k]);
+      for (let i = k + 1; i < n; i++) if (abs(M[i][k]) > best) { best = abs(M[i][k]); p = i; }
+      [M[k], M[p]] = [M[p], M[k]]; [v[k], v[p]] = [v[p], v[k]];
+      for (let i = k + 1; i < n; i++) {
+        const f = div(M[i][k], M[k][k]);
+        for (let j = k; j < n; j++) M[i][j] = sub(M[i][j], mul(f, M[k][j]));
+        v[i] = sub(v[i], mul(f, v[k]));
+      }
+    }
+    const x = new Array(n).fill(C(0));
+    for (let i = n - 1; i >= 0; i--) { let s = v[i]; for (let j = i + 1; j < n; j++) s = sub(s, mul(M[i][j], x[j])); x[i] = div(s, M[i][i]); }
+    return x;
+  }
+  return { C, add, sub, mul, div, scale, neg, conj, abs, argDeg, polar, inv, par, A, A2, seq2abc, abc2seq, zRX, solve };
 });

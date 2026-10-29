@@ -11,7 +11,7 @@ const { chromium } = require("playwright");
 const ROOT = path.resolve(__dirname, "..", "site");
 const SHOTS = path.resolve(__dirname, "shots");
 fs.mkdirSync(SHOTS, { recursive: true });
-const ALL = ["index.html", "m01/index.html", "m02/index.html", "m03/index.html", "m04/index.html"];
+const ALL = ["index.html", "m01/index.html", "m02/index.html", "m03/index.html", "m04/index.html", "m05/index.html", "m06/index.html"];
 const PAGES = (process.argv.slice(2).length ? process.argv.slice(2) : ALL).filter((p) => fs.existsSync(path.join(ROOT, p)));
 // copie locală KaTeX 0.16.9 (npm), opțională: KATEX_JS=/cale/katex.min.js
 const KATEX = process.env.KATEX_JS && fs.existsSync(process.env.KATEX_JS) ? process.env.KATEX_JS : null;

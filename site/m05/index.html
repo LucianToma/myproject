@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="ro" data-lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>M05 Punerea la pământ în MT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..800&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap">
+<link rel="stylesheet" href="../assets/course.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<style>
+.yes{color:var(--trip);font-weight:600}
+.inputs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:6px}
+.inputs-grid .panel{padding:10px 12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="mod">
+  <div>
+    <div class="crumbs"><a href="../index.html"><span lang="ro">← Cuprinsul cursului</span><span lang="en">← Course map</span></a><span class="modno">M05</span></div>
+    <h1><span lang="ro">Punerea la pământ în rețelele de medie tensiune</span><span lang="en">Earth faults in medium-voltage networks</span></h1>
+    <p class="lede"><span lang="ro">În rețelele de 20 kV, curentul unei puneri la pământ depinde mai mult de tratarea neutrului și de capacitățile rețelei decât de locul defectului. Pe barele stației cu șase plecări compari principiile de protecție (curent rezidual, direcțional, sin φ, cos φ, admitanță) și calculezi reglajele lor pentru neutrul izolat, compensat și tratat prin rezistor.</span><span lang="en">In 20 kV networks, the current of an earth fault depends more on the neutral earthing and the network capacitances than on the fault location. On the substation busbar with six feeders you compare the protection principles (residual current, directional, sin φ, cos φ, admittance) and compute their settings for isolated, compensated and resistor-earthed neutrals.</span></p>
+    <div class="ansi"><span>51N</span><span>67N</span><span>I₀·sin φ</span><span>I₀·cos φ</span><span>Y₀</span><span>59N</span></div>
+  </div>
+  <div class="hdr-tools">
+    <div class="seg" role="group" aria-label="Limba / Language"><button data-langbtn="ro">RO</button><button data-langbtn="en">EN</button></div>
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="lab"><span lang="ro">Laborator</span><span lang="en">Lab</span></button>
+      <button role="tab" data-tab="reglaje"><span lang="ro">Reglaje</span><span lang="en">Settings</span></button>
+      <button role="tab" data-tab="teorie"><span lang="ro">Teorie</span><span lang="en">Theory</span></button>
+      <button role="tab" data-tab="test"><span lang="ro">Test</span><span lang="en">Quiz</span></button>
+    </nav>
+  </div>
+</header>
+
+<!-- ================= LABORATOR ================= -->
+<section class="tab" id="lab">
+  <div class="lab">
+    <aside class="rail">
+      <div class="panel">
+        <div class="label" style="margin-bottom:8px"><span lang="ro">Scenarii</span><span lang="en">Scenarios</span></div>
+        <div class="presets" id="presets"></div>
+      </div>
+      <div class="panel">
+        <div class="label" style="margin-bottom:8px"><span lang="ro">Principiul de protecție afișat</span><span lang="en">Protection principle shown</span></div>
+        <div class="presets" id="methods"></div>
+      </div>
+      <div class="panel" id="controls"></div>
+    </aside>
+    <div class="bench">
+      <div id="status"></div>
+      <div class="kpis" id="kpis"></div>
+      <div class="figure">
+        <div class="label"><span lang="ro">Barele de 20 kV, plecările și curenții reziduali 3I₀</span><span lang="en">The 20 kV busbar, the feeders and the residual currents 3I₀</span></div>
+        <div class="scroll"><svg id="sld" viewBox="0 0 760 300" width="100%" style="min-width:600px" role="img" aria-label="Schema"></svg></div>
+      </div>
+      <div class="figure">
+        <div class="label"><span lang="ro">Fazorii 3I₀ ai plecărilor față de −3U₀ și planul admitanțelor</span><span lang="en">Feeder 3I₀ phasors relative to −3U₀ and the admittance plane</span></div>
+        <div class="scroll"><svg id="phasor" viewBox="0 0 760 340" width="100%" style="min-width:600px" role="img" aria-label="Fazori"></svg></div>
+      </div>
+      <div class="figure">
+        <div class="label"><span lang="ro">Sensibilitatea: mărimile plecării defecte în funcție de rezistența de defect</span><span lang="en">Sensitivity: faulted-feeder quantities versus fault resistance</span></div>
+        <div class="scroll"><svg id="sens" viewBox="0 0 760 300" width="100%" style="min-width:600px" role="img" aria-label="Sensibilitate"></svg></div>
+      </div>
+      <div class="figure">
+        <h3><span lang="ro">Ce măsoară fiecare plecare</span><span lang="en">What each feeder measures</span></h3>
+        <div class="scroll"><table class="data" id="ftab" style="min-width:720px"></table></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= REGLAJE ================= -->
+<section class="tab" id="reglaje" hidden>
+  <div class="sheet">
+    <div class="sheet-hd">
+      <div>
+        <div class="label"><span lang="ro">Fișa de calcul · protecția la punere la pământ</span><span lang="en">Calculation sheet · earth-fault protection</span></div>
+        <h2 style="margin:4px 0 0"><span lang="ro">Reglajele protecțiilor homopolare ale plecărilor</span><span lang="en">Feeder earth-fault protection settings</span></h2>
+      </div>
+      <div class="note" id="sheet-meta"></div>
+    </div>
+    <div class="steps">
+      <div class="step"><div>
+        <h3><span lang="ro">Coeficienții și ținta de sensibilitate</span><span lang="en">Factors and sensitivity target</span></h3>
+        <p><span lang="ro">Tratarea neutrului și plecările se aleg în laborator. Aici fixezi coeficienții și rezistența de defect pe care protecția trebuie s-o vadă. Valorile implicite sunt alegeri de exemplu; deplasarea neutrului în regim normal se măsoară în rețea.</span><span lang="en">The neutral earthing and the feeders are chosen in the lab. Here you set the factors and the fault resistance the protection must see. The defaults are example choices; the healthy-state neutral displacement is measured in the network.</span></p>
+        <div class="inputs-grid" id="rg-inputs"></div>
+      </div></div>
+      <div class="step"><div>
+        <h3><span lang="ro">Curenții capacitivi ai rețelei</span><span lang="en">Network capacitive currents</span></h3>
+        <div class="eqn"><span data-tex="I_{C,i} = 3\,\omega\,C_0\,\ell_i\,U_f"></span><span class="no">(1)</span></div>
+        <div class="scroll"><table class="data" id="rg-net" style="min-width:560px"></table></div>
+        <div class="calc" id="rg-neutral"></div>
+      </div></div>
+      <div class="step"><div>
+        <h3><span lang="ro">Pornirea pe tensiune homopolară (59N)</span><span lang="en">Residual voltage start (59N)</span></h3>
+        <p><span lang="ro">Pragul U₀&gt; trebuie să stea peste deplasarea neutrului din regimul normal, cu o marjă. El limitează și cea mai mare rezistență de defect pe care o pot vedea principiile care cer pornirea pe tensiune.</span><span lang="en">The U₀&gt; pickup must sit above the healthy-state neutral displacement, with a margin. It also limits the largest fault resistance the principles requiring a voltage start can see.</span></p>
+        <div class="calc" id="rg-u0"></div>
+      </div></div>
+      <div class="step"><div>
+        <h3><span lang="ro">Pragurile fiecărui principiu, pe plecări</span><span lang="en">Pickups of each principle, per feeder</span></h3>
+        <p><span lang="ro">51N trebuie să rămână peste curentul capacitiv propriu al plecării, pe care îl vede la un defect pe altă plecare. Principiile direcționale nu au această restricție (curentul propriu e „înapoi”), deci se reglează pentru sensibilitate: semnalul la R<sub>f</sub> țintă, cu defect la capătul plecării, împărțit la k<sub>sens</sub>. Admitanța măsurată nu depinde de R<sub>f</sub>.</span><span lang="en">51N must stay above the feeder's own capacitive current, which it sees for a fault on another feeder. Directional principles have no such restriction (the own current is “reverse”), so they are set for sensitivity: the signal at the target R<sub>f</sub>, with the fault at the feeder end, divided by k<sub>sens</sub>. The measured admittance does not depend on R<sub>f</sub>.</span></p>
+        <div class="scroll"><table class="data" id="rg-set" style="min-width:760px"></table></div>
+        <div class="callout ind" id="rg-note"></div>
+      </div></div>
+      <div class="step"><div>
+        <h3><span lang="ro">Fișa de reglaje</span><span lang="en">Settings sheet</span></h3>
+        <div class="tools"><span class="label" id="rg-cap"></span><button class="btn" id="copy-sheet"><span lang="ro">Copiază pentru Excel</span><span lang="en">Copy for Excel</span></button></div>
+        <div class="scroll"><table class="data" id="rg-sheet" style="min-width:720px"></table></div>
+        <div class="calc" id="rg-time" style="margin-top:10px"></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TEORIE ================= -->
+<section class="tab" id="teorie" hidden>
+  <div class="theory">
+    <nav class="toc">
+      <a href="#t-what"><span lang="ro">Defectul și rețeaua</span><span lang="en">The fault and the network</span></a>
+      <a href="#t-seq"><span lang="ro">Curenții pe plecări</span><span lang="en">Feeder currents</span></a>
+      <a href="#t-iso"><span lang="ro">Neutru izolat</span><span lang="en">Isolated neutral</span></a>
+      <a href="#t-comp"><span lang="ro">Neutru compensat</span><span lang="en">Compensated neutral</span></a>
+      <a href="#t-res"><span lang="ro">Neutru prin rezistor</span><span lang="en">Resistor-earthed neutral</span></a>
+      <a href="#t-adm"><span lang="ro">Protecția de admitanță</span><span lang="en">Admittance protection</span></a>
+      <a href="#t-rf"><span lang="ro">Rezistența de defect</span><span lang="en">Fault resistance</span></a>
+      <a href="#t-model"><span lang="ro">Ipotezele modelului</span><span lang="en">Model assumptions</span></a>
+      <a href="#t-ref"><span lang="ro">Surse</span><span lang="en">Sources</span></a>
+    </nav>
+    <article>
+      <section id="t-what">
+        <h2><span lang="ro">Defectul și rețeaua</span><span lang="en">The fault and the network</span></h2>
+        <p><span lang="ro">La o punere la pământ, curentul se întoarce prin capacitățile homopolare ale întregii rețele galvanic legate și prin elementul de neutru. De aceea, în rețelele cu neutru izolat sau compensat, curentul e de ordinul amperilor sau zecilor de amperi, iar IEC 60909-0 nu îl tratează (M01). Normativele românești vechi, citate de Hățegan, permiteau neutrul izolat numai dacă curentul de punere la pământ nu depășea 10 A.</span><span lang="en">In an earth fault, the current returns through the zero-sequence capacitances of the whole galvanically connected network and through the neutral element. This is why, with an isolated or compensated neutral, the current is of the order of amperes or tens of amperes, and IEC 60909-0 does not cover it (M01). Older Romanian standards, cited by Hățegan, allowed an isolated neutral only if the earth-fault current did not exceed 10 A.</span></p>
+        <p><span lang="ro">Curentul capacitiv crește cu lungimea și mai ales cu ponderea cablurilor: în rețeaua-exemplu, un kilometru de cablu de 185 mm² aduce 2,97 A, iar un kilometru de LEA 70/12, 0,045 A, de 66 de ori mai puțin.</span><span lang="en">The capacitive current grows with length and above all with the share of cables: in the example network, one kilometre of 185 mm² cable adds 2.97 A, and one kilometre of 70/12 overhead line 0.045 A, 66 times less.</span></p>
+      </section>
+      <section id="t-seq">
+        <h2><span lang="ro">Curenții reziduali pe plecări</span><span lang="en">Residual currents on the feeders</span></h2>
+        <p><span lang="ro">În rețeaua de secvență zero, fiecare plecare i este o admitanță Y<sub>0i</sub> = G<sub>i</sub> + jωC<sub>0i</sub> spre pământ, iar neutrul o admitanță Y<sub>0N</sub>. Cu I<sub>0f</sub> curentul homopolar al defectului (relația 4 din M01) și Y<sub>0</sub> suma tuturor admitanțelor:</span><span lang="en">In the zero-sequence network, each feeder i is an admittance Y<sub>0i</sub> = G<sub>i</sub> + jωC<sub>0i</sub> to earth, and the neutral an admittance Y<sub>0N</sub>. With I<sub>0f</sub> the fault zero-sequence current (relation 4 in M01) and Y<sub>0</sub> the sum of all admittances:</span></p>
+        <div class="eqn"><span><span data-tex="U_0 = -\frac{I_{0f}}{Y_0},\qquad 3I_{0,i} = 3Y_{0i}U_0\ \ (i\ne k),\qquad 3I_{0,k} = -3\,(Y_0 - Y_{0k})\,U_0"></span> <span class="note"><span lang="ro">k = plecarea defectă</span><span lang="en">k = faulted feeder</span></span></span><span class="no">(2)</span></div>
+        <p><span lang="ro">Plecarea sănătoasă își vede doar curentul propriu; plecarea defectă vede curentul tuturor celorlalte plecări și al neutrului, de semn opus. Raportat la −3U₀ (polarizarea din M04), curentul plecării sănătoase are unghiul −90° (capacitiv), iar al celei defecte depinde de neutru.</span><span lang="en">A healthy feeder sees only its own current; the faulted feeder sees the current of all other feeders and of the neutral, with the opposite sign. Relative to −3U₀ (the M04 polarisation), the healthy-feeder current is at −90° (capacitive), while the faulted feeder's angle depends on the neutral.</span></p>
+      </section>
+      <section id="t-iso">
+        <h2><span lang="ro">Neutrul izolat: componenta reactivă (sin φ)</span><span lang="en">Isolated neutral: the reactive component (sin φ)</span></h2>
+        <div class="eqn"><span data-tex="3I_{0,k} = -3j\omega (C_0 - C_{0k})\,U_0\ \Rightarrow\ |3I_{0,k}| \approx (I_{C,tot} - I_{C,k})\,\frac{|U_0|}{U_f},\quad \varphi_k \approx +90^\circ"></span><span class="no">(3)</span></div>
+        <p><span lang="ro">Plecarea defectă duce curentul capacitiv al celorlalte plecări, defazat cu +90° față de −3U₀, iar cele sănătoase sunt la −90°. Criteriul I₀·sin φ ≥ prag le separă sigur. Manualele ABB 615 cer, pentru rețelele izolate, unghiul caracteristic −90° raportat la tensiunea de polarizare a releului; în convenția −3U₀ a cursului, aceasta înseamnă curent care conduce cu 90°. Convenția se verifică în manualul fiecărui releu.</span><span lang="en">The faulted feeder carries the capacitive current of the other feeders, at +90° relative to −3U₀, while healthy feeders are at −90°. The I₀·sin φ ≥ pickup criterion separates them reliably. The ABB 615 manuals specify, for isolated networks, a characteristic angle of −90° relative to the relay's polarising voltage; in this course's −3U₀ convention this means a current leading by 90°. Check the convention in each relay's manual.</span></p>
+      </section>
+      <section id="t-comp">
+        <h2><span lang="ro">Neutrul compensat: componenta activă (cos φ)</span><span lang="en">Compensated neutral: the active component (cos φ)</span></h2>
+        <div class="eqn"><span data-tex="I_L = I_C(1+v),\qquad I_{rest}\approx I_C\sqrt{v^2+d^2},\qquad I_{w} = (G_N + G_{PR} + \textstyle\sum_{i\ne k} G_i)\cdot 3|U_0|"></span><span class="no">(4)</span></div>
+        <p><span lang="ro">Bobina anulează aproape tot curentul capacitiv, așa că partea reactivă a curentului plecării defecte devine mică și poate avea orice semn, după dezacordul v. Rămâne componenta activă, din pierderile bobinei, scurgerile rețelei și, dacă există, rezistorul conectat în paralel cu bobina. Ea e în fază cu −3U₀ pe plecarea defectă și opusă pe cele sănătoase, deci se folosește criteriul I₀·cos φ (wattmetric), cu unghiul caracteristic 0°. Fiind mică, componenta activă se mărește de obicei cu rezistorul paralel.</span><span lang="en">The coil cancels almost all the capacitive current, so the reactive part of the faulted-feeder current becomes small and can have either sign, depending on the detuning v. What remains is the active component, from coil losses, network leakage and, if present, the resistor connected in parallel with the coil. It is in phase with −3U₀ on the faulted feeder and opposite on healthy ones, so the I₀·cos φ (wattmetric) criterion is used, with a 0° characteristic angle. Being small, the active component is usually increased with the parallel resistor.</span></p>
+      </section>
+      <section id="t-res">
+        <h2><span lang="ro">Neutrul tratat prin rezistor</span><span lang="en">Resistor-earthed neutral</span></h2>
+        <p><span lang="ro">Rezistorul dă un curent activ de sute de amperi, în fază cu −3U₀ pe plecarea defectă: funcționează atât 51N, cât și 67N cu unghiul 0° (M04). Riscul pentru 51N îl aduc plecările lungi în cablu: la un defect pe altă plecare ele își văd curentul capacitiv propriu, care poate depăși un prag mic și produce o declanșare simpatică. De aici regula: I₀&gt; peste curentul capacitiv propriu, cu un coeficient de siguranță.</span><span lang="en">The resistor gives an active current of hundreds of amperes, in phase with −3U₀ on the faulted feeder: both 51N and 67N with a 0° angle work (M04). The risk for 51N comes from long cable feeders: for a fault on another feeder they see their own capacitive current, which can exceed a low pickup and cause a sympathetic trip. Hence the rule: I₀&gt; above the own capacitive current, with a safety factor.</span></p>
+        <div class="eqn"><span data-tex="I_{0>}(51N) \ge k_{sig}\,I_{C,i}"></span><span class="no">(5)</span></div>
+      </section>
+      <section id="t-adm">
+        <h2><span lang="ro">Protecția de admitanță</span><span lang="en">Admittance protection</span></h2>
+        <div class="eqn"><span data-tex="Y_{0,m} = \frac{3I_0}{-3U_0}:\qquad Y_{0,m,k} = Y_0 - Y_{0k},\qquad Y_{0,m,i} = -Y_{0i}\ \ (i\ne k)"></span><span class="no">(6)</span></div>
+        <p><span lang="ro">Admitanța măsurată nu depinde de rezistența de defect: R<sub>f</sub> schimbă amplitudinea lui U₀ și a lui 3I₀, dar nu și raportul lor. Plecările sănătoase cad în cadranul al treilea al planului G–B; plecarea defectă are conductanța pozitivă (neutrul și scurgerile celorlalte plecări) și, la neutrul izolat, și susceptanța pozitivă. Funcția ABB EFPADM compară Y₀ = I₀/U₀ cu limite în planul admitanțelor, după o pornire pe tensiune homopolară. Sensibilitatea e limitată de pragul de tensiune, nu de curent.</span><span lang="en">The measured admittance does not depend on the fault resistance: R<sub>f</sub> changes the magnitudes of U₀ and 3I₀ but not their ratio. Healthy feeders fall in the third quadrant of the G–B plane; the faulted feeder has positive conductance (the neutral and the other feeders' leakage) and, with an isolated neutral, positive susceptance too. ABB's EFPADM function compares Y₀ = I₀/U₀ with boundaries in the admittance plane, after a residual-voltage start. Sensitivity is limited by the voltage pickup, not by current.</span></p>
+      </section>
+      <section id="t-rf">
+        <h2><span lang="ro">Rezistența de defect și deplasarea neutrului</span><span lang="en">Fault resistance and neutral displacement</span></h2>
+        <div class="eqn"><span data-tex="\frac{U_0}{U_f} \approx \frac{1}{|1 + 3R_f\,Y_0|}"></span><span class="no">(7)</span></div>
+        <p><span lang="ro">Relația (7) neglijează impedanțele serie; în rețeaua-exemplu se abate cu cel mult 1,8 puncte procentuale de calculul complet. La neutrul izolat sau compensat, Y₀ e mică și U₀ rămâne mare până la rezistențe de mii de ohmi; la neutrul prin rezistor, Y₀ e mare și U₀ scade repede. Pragul U₀&gt; trebuie să stea peste deplasarea neutrului din regim normal: manualul ABB menționează valori de până la 30 % din U<sub>f</sub> în rețelele compensate cu multe linii aeriene netranspuse.</span><span lang="en">Relation (7) neglects series impedances; in the example network it deviates by at most 1.8 percentage points from the full calculation. With an isolated or compensated neutral, Y₀ is small and U₀ stays high up to thousands of ohms; with a resistor neutral, Y₀ is large and U₀ falls quickly. The U₀&gt; pickup must sit above the healthy-state neutral displacement: the ABB manual mentions values up to 30 % of U<sub>f</sub> in compensated networks with many untransposed overhead lines.</span></p>
+      </section>
+      <section id="t-model">
+        <h2><span lang="ro">Ipotezele modelului</span><span lang="en">Model assumptions</span></h2>
+        <ul>
+          <li><span lang="ro">Capacitățile fiecărei plecări sunt concentrate la bare, numai în secvența zero; linia defectă are impedanțele serie complete până la defect.</span><span lang="en">Each feeder's capacitance is lumped at the busbar, in the zero sequence only; the faulted line has its full series impedances up to the fault.</span></li>
+          <li><span lang="ro">Capacitatea homopolară: cablu ecranat C₀ = C₁ = 273 nF/km (pandapower); LEA C₀ = 4,12 nF/km, calculată din geometria liniei folosite în M01.</span><span lang="en">Zero-sequence capacitance: screened cable C₀ = C₁ = 273 nF/km (pandapower); overhead line C₀ = 4.12 nF/km, computed from the M01 line geometry.</span></li>
+          <li><span lang="ro">Scurgerile rețelei (d<sub>N</sub>), pierderile bobinei (d<sub>L</sub>), dezacordul v și curentul rezistorului paralel sunt valori de exemplu.</span><span lang="en">Network leakage (d<sub>N</sub>), coil losses (d<sub>L</sub>), detuning v and parallel resistor current are example values.</span></li>
+          <li><span lang="ro">Regim permanent; fenomenele tranzitorii și defectele intermitente, pentru care există principii dedicate, nu sunt modelate.</span><span lang="en">Steady state; transients and intermittent faults, which have dedicated principles, are not modelled.</span></li>
+        </ul>
+      </section>
+      <section id="t-ref">
+        <h2><span lang="ro">Surse</span><span lang="en">Sources</span></h2>
+        <ol class="refs">
+          <li>ABB REF615 / RED615, <i>Technical manual</i>: <span lang="ro">protecția direcțională la punere la pământ (unghiul −90° în rețele izolate, 0° și componenta activă în rețele compensate, rezistorul paralel) și funcția de admitanță EFPADM.</span><span lang="en">directional earth-fault protection (−90° in isolated networks, 0° and active component in compensated networks, parallel resistor) and the EFPADM admittance function.</span> <a href="https://www.manualslib.com/manual/1253024/Abb-Ref615.html?page=156" rel="noopener">manualslib.com</a>, <a href="https://www.manualslib.com/manual/1253025/Abb-Red615.html?page=325" rel="noopener">manualslib.com</a></li>
+          <li><span lang="ro">I. D. Hățegan, teză de doctorat, UPT (tratarea neutrului; pragul de 10 A din normativele vechi).</span><span lang="en">I. D. Hățegan, PhD thesis, UPT (neutral earthing; the 10 A threshold of older standards).</span> <a href="https://dspace.upt.ro/xmlui/bitstream/handle/123456789/4664/BUPT_TD_Hategan%20Ioan%20Dorin.pdf" rel="noopener">dspace.upt.ro</a></li>
+          <li><span lang="ro">Declanșări simpatice cauzate de curentul capacitiv al cablurilor: Atsever și Hocaoğlu, <i>Electric Power Systems Research</i>, 2023.</span><span lang="en">Sympathetic trips caused by cable capacitive current: Atsever and Hocaoğlu, <i>Electric Power Systems Research</i>, 2023.</span> <a href="https://acikerisim.gtu.edu.tr/items/920e9107-e04b-464f-ae3c-9b59778282b1/full" rel="noopener">acikerisim.gtu.edu.tr</a></li>
+          <li><span lang="ro">A. Eberle, „Earth fault in compensated networks” (dezacordul v, amortizarea d, rezistența de defect).</span><span lang="en">A. Eberle, “Earth fault in compensated networks” (detuning v, damping d, fault resistance).</span> <a href="https://www.a-eberle.de/en/?p=22034" rel="noopener">a-eberle.de</a></li>
+          <li>IEC 60909-0:2016 (<span lang="ro">domeniul de aplicare</span><span lang="en">scope</span>); pandapower (<span lang="ro">capacitatea cablului</span><span lang="en">cable capacitance</span>).</li>
+        </ol>
+      </section>
+    </article>
+  </div>
+</section>
+
+<!-- ================= TEST ================= -->
+<section class="tab" id="test" hidden>
+  <div class="quiz">
+    <div class="score"><h2 style="margin:0"><span lang="ro">Verifică-ți înțelegerea</span><span lang="en">Check your understanding</span></h2><div><span class="label"><span lang="ro">Scor</span><span lang="en">Score</span></span> <span class="mono" id="score">0 / 0</span> <button class="btn" id="q-reset"><span lang="ro">Test nou</span><span lang="en">New quiz</span></button></div></div>
+    <div id="qlist" class="quiz"></div>
+  </div>
+</section>
+
+<footer class="mod"><span><span lang="ro">Protecții în rețelele electrice · Modulul 05</span><span lang="en">Power system protection · Module 05</span></span><span><span lang="ro">Rezultatele motorului sunt verificate în verify/m05_verify.py</span><span lang="en">Engine results are checked in verify/m05_verify.py</span></span></footer>
+</div>
+
+<script src="../assets/cx.js"></script>
+<script src="../assets/course.js"></script>
+<script src="../m01/engine.js"></script>
+<script src="engine.js"></script>
+<script src="page.js"></script>
+</body>
+</html>
